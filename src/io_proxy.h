@@ -19,6 +19,7 @@ public:
   bool send_data(string data);
   string receive(int);
   void getRawMeas();
+  void test();
   
 private:
   int sock;

@@ -7,7 +7,47 @@ IoProxy::IoProxy()
   port = 0;
   address = "";
 }
+
+void IoProxy::test()
+{
+  conn("192.168.0.2", 2002);
   
+  char command[3];
+  command[0] = 1; // size of command
+  command[1] = 2; // size of response
+  command[2] = '0'; // command
+  command[3] = '\n'; // end
+
+  command[0] = 1; // size of command
+  command[1] = 1; // size of response
+  command[2] = 's'; // command
+
+  
+  //send_data(command);
+  //receive(2);
+  
+  //Send some data
+    if( send(sock , command , 4 , 0) < 0)
+    {
+        perror("Send failed : ");
+        return;
+    }
+    cout<<"Data send " << command << " " << sizeof(command) << endl;
+     
+    char buffer[10];
+    string reply;
+     
+    //Receive a reply from the server
+    if( recv(sock , buffer , 10 , 0) < 0)
+    {
+        puts("recv failed");
+    }
+     
+    reply = buffer;
+    cout<<"Data received" << reply << endl;
+  
+}
+
 /**
     Connect to a host on a certain port number
 */

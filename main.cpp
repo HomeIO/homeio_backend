@@ -9,5 +9,9 @@ int main()
   a->addRaw(1);
   a->addRaw(1);
   a->assignBufferSize(1000);
+  
+  IoProxy *i = new IoProxy();
+  i->test();
+  
   return 0;
 }
