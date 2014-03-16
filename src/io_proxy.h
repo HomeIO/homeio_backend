@@ -8,6 +8,7 @@
 #include<sys/socket.h>    //socket
 #include<arpa/inet.h> //inet_addr
 #include<netdb.h> //hostent
+#include<unistd.h>
 
 using namespace std;
 
@@ -19,11 +20,9 @@ public:
 
   unsigned int fetch(char commandChar, char responseSize);
   
+  int prepareSocket();
   int connectSocket();
-  bool conn(string, int);
-  bool send_data(string data);
-  string receive(int);
-  void getRawMeas();
+  int disconnectSocket();
   
 private:
   int sock;

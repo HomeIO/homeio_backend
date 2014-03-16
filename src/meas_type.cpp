@@ -8,6 +8,7 @@ MeasType::MeasType(string _name) {
 
 unsigned int MeasType::fetch() {
   unsigned int raw = ioProxy->fetch(command, responseSize);
+  addRaw(raw);
   
   cout << name << " - fetch raw " << raw << endl;
   

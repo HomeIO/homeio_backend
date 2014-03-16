@@ -31,6 +31,8 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
     puts("recv failed");
   }
   
+  disconnectSocket();
+  
   unsigned int raw = 0;
   int i = 0;
   for (i; i < responseSize; i++)
@@ -46,25 +48,8 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
 }
 
 
-int IoProxy::connectSocket()
+int IoProxy::prepareSocket()
 {
-  //create socket if it is not already created
-  if(sock == -1)
-  {
-    //Create socket
-    sock = socket(AF_INET , SOCK_STREAM , 0);
-    if (sock == -1)
-    {
-      perror("Could not create socket");
-    }
-         
-    cout << "Socket created\n";
-  }
-  else
-  {
-    /* OK , nothing */
-  }
-     
   //setup address structure
   if(inet_addr(address.c_str()) == -1)
   {
@@ -103,7 +88,16 @@ int IoProxy::connectSocket()
      
   server.sin_family = AF_INET;
   server.sin_port = htons( port );
-     
+}
+
+int IoProxy::connectSocket()
+{
+  sock = socket(AF_INET , SOCK_STREAM , 0);
+  if (sock == -1)
+  {
+    perror("Could not create socket");
+  }
+  
   //Connect to remote server
   if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
   {
@@ -114,6 +108,20 @@ int IoProxy::connectSocket()
   cout<<"Connected\n";
   return 0;
 
+}
+
+int IoProxy::disconnectSocket()
+{
+  close(sock);
+  cout << "sock = " << sock;  
+  return 0;
+  
+  if (sock > 0)
+  {
+    //close(sock);
+    return 0;
+  }
+  return 1;
 }
 
   
