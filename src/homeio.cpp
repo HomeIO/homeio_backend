@@ -11,9 +11,10 @@ void *measStartThread(void *argument)
   } 
   
   unsigned int i;
-  for (i=0; i<1000; i++) {
+  for (i=0; i<30; i++) {
     for(std::vector<MeasType>::iterator m = h->measTypes.begin(); m != h->measTypes.end(); ++m) {
       m->fetch();
+      usleep(50000);
     } 
   }
   
@@ -25,17 +26,21 @@ void *tcpServerThread(void *argument)
   cout << "TCP Start" << endl;
 
   HomeIO *h = (HomeIO *) argument;
+  h->tcpServer->start();
   
+  /*
   unsigned int i;
   for (i=0; i<10; i++) {
     cout << i << endl;
     usleep(100000);
   }
+  */
   
 }
 
 HomeIO::HomeIO() {
   ioProxy = new IoProxy();
+  tcpServer = new TcpServer();
 }
 
 int HomeIO::start() {

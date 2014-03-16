@@ -13,7 +13,6 @@ class HomeIO {
 public:
   HomeIO();
   int start();
-  void *measStart(void *arguments);
   
   IoProxy *ioProxy;
   TcpServer *tcpServer;
