@@ -14,8 +14,10 @@ public:
   MeasType(string);
   unsigned int fetch();
   
-  int addRaw(unsigned int);
-  int assignBufferSize(unsigned int);
+  unsigned int bufferSize;
+  
+  unsigned int addRaw(unsigned int);
+  unsigned int assignBufferSize(unsigned int);
   
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
