@@ -10,11 +10,28 @@ void *measStartThread(void *argument)
     m->ioProxy = h->ioProxy;
   } 
   
-  for(std::vector<MeasType>::iterator m = h->measTypes.begin(); m != h->measTypes.end(); ++m) {
-    m->fetch();
-  } 
+  unsigned int i;
+  for (i=0; i<1000; i++) {
+    for(std::vector<MeasType>::iterator m = h->measTypes.begin(); m != h->measTypes.end(); ++m) {
+      m->fetch();
+    } 
+  }
   
   return NULL;
+}
+
+void *tcpServerThread(void *argument)
+{
+  cout << "TCP Start" << endl;
+
+  HomeIO *h = (HomeIO *) argument;
+  
+  unsigned int i;
+  for (i=0; i<10; i++) {
+    cout << i << endl;
+    usleep(100000);
+  }
+  
 }
 
 HomeIO::HomeIO() {
@@ -22,18 +39,14 @@ HomeIO::HomeIO() {
 }
 
 int HomeIO::start() {
-  const char NUM_THREADS = 1;
+  const char NUM_THREADS = 2;
   pthread_t threads[NUM_THREADS];
   int rc, i;
   
   HomeIO *h = this;
  
-   // create all threads one by one
-   for (i=0; i<NUM_THREADS; ++i) {
-      printf("In main: creating thread %d\n", i);
-      rc = pthread_create(&threads[i], NULL, measStartThread, (void *) h);
-      //assert(0 == rc);
-   }
+  rc = pthread_create(&threads[0], NULL, measStartThread, (void *) h);
+  rc = pthread_create(&threads[1], NULL, tcpServerThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {

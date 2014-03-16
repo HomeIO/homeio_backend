@@ -4,6 +4,8 @@
 #include <pthread.h>
 
 #include "meas_type.hpp"
+#include "io_proxy.hpp"
+#include "tcp_server.hpp"
 
 using namespace std;
 
@@ -14,6 +16,7 @@ public:
   void *measStart(void *arguments);
   
   IoProxy *ioProxy;
+  TcpServer *tcpServer;
   std::vector <MeasType> measTypes;
 };
 
