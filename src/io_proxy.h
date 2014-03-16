@@ -14,18 +14,21 @@ using namespace std;
 class IoProxy {
 public:
   IoProxy();
+  std::string address;
+  int port;
 
+  unsigned int fetch(char commandChar, char responseSize);
+  
+  int connectSocket();
   bool conn(string, int);
   bool send_data(string data);
   string receive(int);
   void getRawMeas();
-  void test();
   
 private:
   int sock;
-  std::string address;
-  int port;
   struct sockaddr_in server;
+  char buffer[10];
      
 };
 

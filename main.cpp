@@ -3,15 +3,28 @@
 
 int main()
 {
-  MeasType *a = new MeasType("batt_u");
-  a->assignBufferSize(1000);
-  a->addRaw(1);
-  a->addRaw(1);
-  a->addRaw(1);
-  a->assignBufferSize(1000);
-  
   IoProxy *i = new IoProxy();
-  i->test();
+  i->address = "192.168.0.2";
+  i->port = 2002;
+  
+  MeasType *mt = new MeasType("batt_u");
+  mt->ioProxy = i;
+  mt->command = '0';
+  mt->responseSize = 2;
+  
+  mt->fetch();
+  
+  /*
+  a->assignBufferSize(1000);
+  a->addRaw(1);
+  a->addRaw(1);
+  a->addRaw(1);
+  a->assignBufferSize(1000);
+  */
+  
+  
+  
+  //i->test();
   
   return 0;
 }

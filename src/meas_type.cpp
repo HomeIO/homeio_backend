@@ -6,6 +6,14 @@ MeasType::MeasType(string _name) {
   cout << "Created " << name << endl;
 }
 
+unsigned int MeasType::fetch() {
+  unsigned int raw = ioProxy->fetch(command, responseSize);
+  
+  cout << name << " - fetch raw " << raw << endl;
+  
+  return raw;
+}
+
 int MeasType::assignBufferSize(unsigned int _size) {
   buffer.reserve(_size);
   
