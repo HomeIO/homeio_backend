@@ -17,6 +17,7 @@ public:
   IoProxy();
   std::string address;
   int port;
+  bool verbose;
 
   unsigned int fetch(char commandChar, char responseSize);
   

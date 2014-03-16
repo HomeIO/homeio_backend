@@ -12,28 +12,25 @@ int main()
   mt->ioProxy = ip;
   mt->command = '0';
   mt->responseSize = 2;
+
+  MeasType *mu = new MeasType("t_test");
+  mu->ioProxy = ip;
+  mu->command = 't';
+  mu->responseSize = 2;
+  
+  MeasType *mv = new MeasType("s_test");
+  mv->ioProxy = ip;
+  mv->command = 's';
+  mv->responseSize = 1;
   
   unsigned int i = 0;
   for (i=0; i< 100; i++) {
-    cout << endl << endl;
-    cout << i;
+    cout << "fetch loop i = " << i << endl;
     
     mt->fetch();
+    mu->fetch();
+    mv->fetch();
   }
-  
-  
-  
-  /*
-  a->assignBufferSize(1000);
-  a->addRaw(1);
-  a->addRaw(1);
-  a->addRaw(1);
-  a->assignBufferSize(1000);
-  */
-  
-  
-  
-  //i->test();
   
   return 0;
 }

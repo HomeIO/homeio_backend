@@ -3,9 +3,9 @@
 // http://www.binarytides.com/code-a-simple-socket-client-class-in-c/
 IoProxy::IoProxy() 
 {
-  sock = -1;
   port = 0;
   address = "";
+  verbose = false;
 }
 
 unsigned int IoProxy::fetch(char commandChar, char responseSize)
@@ -20,10 +20,13 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
 
   if( send(sock, commandArray, sizeof(commandArray), 0) < 0)
   {
-    perror("Send failed : ");
+    perror("Send failed");
     return 1;
   }
-  cout << "Data send " << commandArray << " " << sizeof(commandArray) << endl;
+  
+  if (verbose) {
+    cout << "Data send " << commandArray << " " << sizeof(commandArray) << endl;
+  }  
      
   //Receive a reply from the server
   if( recv(sock, buffer, responseSize, 0) < 0)
@@ -39,10 +42,11 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   {
     raw *= 256;
     raw += buffer[i];
-    cout << buffer[i] << endl;
   }
   
-  cout << "Data received" << buffer << endl;
+  if (verbose) {
+    cout << "Data received" << buffer << endl;
+  }  
   
   return raw;
 }
@@ -74,7 +78,9 @@ int IoProxy::prepareSocket()
       //strcpy(ip , inet_ntoa(*addr_list[i]) );
       server.sin_addr = *addr_list[i];
              
-      cout<<address<<" resolved to "<<inet_ntoa(*addr_list[i])<<endl;
+      if (verbose) {
+	cout<<address<<" resolved to "<<inet_ntoa(*addr_list[i])<<endl;
+      }
              
       break;
     }
@@ -105,7 +111,9 @@ int IoProxy::connectSocket()
     return 1;
   }
      
-  cout<<"Connected\n";
+  if (verbose) {   
+    cout<<"Connected\n";
+  }  
   return 0;
 
 }
@@ -113,7 +121,6 @@ int IoProxy::connectSocket()
 int IoProxy::disconnectSocket()
 {
   close(sock);
-  cout << "sock = " << sock;  
   return 0;
   
   if (sock > 0)
