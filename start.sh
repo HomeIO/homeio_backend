@@ -1,4 +1,4 @@
 rm ./homeio
-#g++ -Wall main.cpp -o homeio
-g++ main.cpp -o homeio
+#g++ -Wall -oterm -lpthread main.cpp -o homeio
+g++ -oterm -lpthread main.cpp -o homeio
 ./homeio
