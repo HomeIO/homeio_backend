@@ -1,10 +1,5 @@
-#include "meas_type.h"
-
-MeasType::MeasType(string _name) {
-  name = _name;
+MeasType::MeasType() {
   bufferSize = 1000000;
-  
-  cout << "Created " << name << endl;
 }
 
 unsigned int MeasType::fetch() {

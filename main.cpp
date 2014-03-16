@@ -1,39 +1,35 @@
-#include "src/meas_type.cpp"
-#include "src/io_proxy.cpp"
+#include "src/homeio.hpp"
 
 int main()
 {
-  unsigned long long maxIteration = 100000000;
+  HomeIO *h = new HomeIO();
   
-  IoProxy *ip = new IoProxy();
-  ip->address = "192.168.0.2";
-  ip->port = 2002;
-  ip->prepareSocket();
+  h->ioProxy->address = "192.168.0.2";
+  h->ioProxy->port = 2002;
   
-  MeasType *mt = new MeasType("batt_u");
-  mt->ioProxy = ip;
-  mt->command = '0';
-  mt->responseSize = 2;
-  //mt->bufferSize = 10;
-
-  MeasType *mu = new MeasType("t_test");
-  mu->ioProxy = ip;
-  mu->command = 't';
-  mu->responseSize = 2;
+  MeasType *m;
+  m = new MeasType();
+  m->name = "batt_u";
+  m->command = '0';
+  m->responseSize = 2;
   
-  MeasType *mv = new MeasType("s_test");
-  mv->ioProxy = ip;
-  mv->command = 's';
-  mv->responseSize = 1;
+  h->measTypes.push_back(*m);
   
-  unsigned int i = 0;
-  for (i=0; i< maxIteration; i++) {
-    cout << endl << "fetch loop i = " << i << endl;
-    
-    mt->fetch();
-    //mu->fetch();
-    //mv->fetch();
-  }
+  m = new MeasType();
+  m->name = "test_t";
+  m->command = 't';
+  m->responseSize = 2;
+  
+  h->measTypes.push_back(*m);
+  
+  m = new MeasType();
+  m->name = "test_s";
+  m->command = 's';
+  m->responseSize = 1;
+  
+  h->measTypes.push_back(*m);
+  
+  h->start();
   
   return 0;
 }

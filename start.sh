@@ -1,3 +1,4 @@
 rm ./homeio
-c++ -Wall main.cpp -o homeio
+#g++ -Wall main.cpp -o homeio
+g++ main.cpp -o homeio
 ./homeio

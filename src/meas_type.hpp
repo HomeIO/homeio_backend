@@ -5,13 +5,13 @@
 #include <string>
 #include <vector>
 
-#include "io_proxy.h"
+#include "io_proxy.hpp"
 
 using namespace std;
 
 class MeasType {
 public:
-  MeasType(string);
+  MeasType();
   unsigned int fetch();
   
   unsigned int bufferSize;
@@ -19,16 +19,15 @@ public:
   unsigned int addRaw(unsigned int);
   unsigned int assignBufferSize(unsigned int);
   
+  string name; // name of measurements
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
   IoProxy *ioProxy;
 	
 private:
-  // variables
-  
-  string name;
   std::vector < unsigned int > buffer;
     
 };
 
+#include "meas_type.cpp"
 #endif	/* TCP_SERVER_H */

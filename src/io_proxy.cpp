@@ -1,4 +1,4 @@
-#include "io_proxy.h"
+#include "io_proxy.hpp"
 
 // http://www.binarytides.com/code-a-simple-socket-client-class-in-c/
 IoProxy::IoProxy() 
