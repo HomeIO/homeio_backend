@@ -1,5 +1,6 @@
 int TcpServer::start() {
   port = 2005;
+  commandBuffer = (char*)malloc(COMMAND_BUFFER_SIZE*sizeof(char));
   
   int conn_s; // connection socket
   int list_s = createTcpServer();
@@ -13,17 +14,16 @@ int TcpServer::start() {
       exit(EXIT_FAILURE);
     }
     
-    cout << "a";
-
     // Retrieve command
-    readLine(conn_s, buffer, MAX_LINE - 1);
-
-    cout << "get " << buffer << endl;
+    readLine(conn_s, MAX_LINE - 1);
     
     // command and response char count
-    char command = buffer[0];
+    char command = commandBuffer[0];
     char count_response = 1;
-    writeLine(conn_s, buffer, count_response);
+    
+    processCommand();
+    
+    writeLine(conn_s);
 
     // Close the connected socket
     if (close(conn_s) < 0) {
@@ -34,17 +34,30 @@ int TcpServer::start() {
   
   return 0;
 }
-    
-// Read line from socket
-ssize_t TcpServer::readLine(int sockd, void *vptr, size_t maxlen) {
-    ssize_t n, rc;
-    
-    buffer = (char*)vptr;
 
-    for (n = 1; n < maxlen; n++) {
+int TcpServer::processCommand() {
+  // get name
+  string measName, command;
+  command = (string) commandBuffer;
+  measName = command.substr(0, command.find(";"));
+  
+  //HomeIO *h; // = (HomeIO *) parent;
+  //(HomeIO)parent->measTypeByName(measName);
+  
+  responseBuffer = "{done: 1, meas: " + measName + "}";
+    
+  return 0;
+}
+
+// Read line from socket
+ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
+    ssize_t n, rc;
+
+    //MAX_LINE
+    for (n = 0; n < maxlen; n++) {
 
         if ((rc = read(sockd, &c, 1)) == 1) {
-            *buffer++ = c;
+            commandBuffer[n] = c;
             if (c == '\n')
                 break;
         } else if (rc == 0) {
@@ -59,31 +72,24 @@ ssize_t TcpServer::readLine(int sockd, void *vptr, size_t maxlen) {
         }
     }
 
-    *buffer = 0;
+    commandBuffer[n] = 0;
+
+    cout << n << endl;
+    cout << commandBuffer << endl;
+    cout << sizeof(commandBuffer) << endl;
+
     return n;
 }
 
 // Write line to socket
-ssize_t TcpServer::writeLine(int sockd, const void *vptr, size_t n) {
-    size_t nleft;
-    ssize_t nwritten;
-    const char *buffer;
-
-    buffer = (char*)vptr;
-    nleft = n;
-
-    while (nleft > 0) {
-        if ((nwritten = write(sockd, buffer, nleft)) <= 0) {
-            if (errno == EINTR)
-                nwritten = 0;
-            else
-                return -1;
-        }
-        nleft -= nwritten;
-        buffer += nwritten;
+ssize_t TcpServer::writeLine(int sockd) {
+  size_t nwritten;
+  if ((nwritten = write(sockd, responseBuffer.c_str(), responseBuffer.length())) <= 0) {
+        if (errno == EINTR)
+            return nwritten;
+        else
+            return -1;
     }
-
-    return n;
 }
 
 // Create TCP listening socket

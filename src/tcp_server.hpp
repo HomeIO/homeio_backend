@@ -15,22 +15,28 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "homeio.hpp"
+
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)
+#define COMMAND_BUFFER_SIZE 2000
 
 using namespace std;
 
 class TcpServer {
 public:
-  ssize_t readLine(int sockd, void *vptr, size_t maxlen);
-  ssize_t writeLine(int sockd, const void *vptr, size_t n);
+  ssize_t readLine(int sockd, size_t maxlen);
+  ssize_t writeLine(int sockd);
   int createTcpServer();
   int start();
+  int processCommand();
   
   short int port;
+  void *parent;
   
 private:
-  char c, *buffer;  
+  char c, *commandBuffer;
+  string responseBuffer;
 };
 
 #include "tcp_server.cpp"

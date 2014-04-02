@@ -13,6 +13,7 @@ class HomeIO {
 public:
   HomeIO();
   int start();
+  MeasType *measTypeByName(string measName);
   
   IoProxy *ioProxy;
   TcpServer *tcpServer;

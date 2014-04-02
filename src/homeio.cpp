@@ -41,9 +41,13 @@ void *tcpServerThread(void *argument)
 HomeIO::HomeIO() {
   ioProxy = new IoProxy();
   tcpServer = new TcpServer();
+  tcpServer->parent = this;
 }
 
 int HomeIO::start() {
+  tcpServer->start();
+  return 0;
+  
   const char NUM_THREADS = 2;
   pthread_t threads[NUM_THREADS];
   int rc, i;
@@ -63,4 +67,15 @@ int HomeIO::start() {
  
    printf("In main: All threads completed successfully\n");
    //exit(EXIT_SUCCESS);
+}
+
+MeasType *HomeIO::measTypeByName(string measName) {
+  for(std::vector<MeasType>::iterator m = measTypes.begin(); m != measTypes.end(); ++m) {
+    cout << m->name << endl;
+    if (m->name == measName) {
+      //
+    }
+    
+  }
+  return NULL;
 }
