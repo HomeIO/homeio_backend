@@ -1,14 +1,16 @@
 #ifndef TCP_COMMAND
 #define	TCP_COMMAND
 
-#include "homeio.hpp"
-
 using namespace std;
+
+#include "meas_type_array.hpp"
 
 class TcpCommand {
 public:
   TcpCommand();
-  HomeIO *parent;
+  string processCommand(string command);
+  
+  MeasTypeArray *measTypeArray;
 };
 
 #include "tcp_command.cpp"

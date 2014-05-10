@@ -9,7 +9,7 @@ void MeasFetcher::start() {
   }
   
   unsigned int i;
-  for (i=0; i<1; i++) {
+  while(true) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
       m->fetch();
     } 

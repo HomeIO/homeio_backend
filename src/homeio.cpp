@@ -3,13 +3,14 @@ HomeIO::HomeIO() {
   measFetcher = new MeasFetcher;
   ioProxy = new IoProxy;
   tcpServer = new TcpServer;
+  tcpCommand = new TcpCommand;
   
   // setup some variables
   measFetcher->measTypeArray = measTypeArray;
   measFetcher->ioProxy = ioProxy;
   
-  //tcpServer = new TcpServer();
-  //tcpServer->parent = this;
+  tcpCommand->measTypeArray = measTypeArray;
+  tcpServer->tcpCommand = tcpCommand;
 }
 
 unsigned char HomeIO::startFetch() {
@@ -43,10 +44,6 @@ void *tcpServerThread(void *argument)
 }
 
 unsigned char HomeIO::start() {
-  tcpServer->start();
-  
-  return 0;
-  
   const char NUM_THREADS = 2;
   pthread_t threads[NUM_THREADS];
   int rc, i;

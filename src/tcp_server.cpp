@@ -36,12 +36,9 @@ int TcpServer::start() {
 }
 
 int TcpServer::processCommand() {
-  // get name
-  string measName, command;
+  string command;
   command = (string) commandBuffer;
-  measName = command.substr(0, command.find(";"));
-  
-  responseBuffer = "{done: 1, meas: " + measName + "}";
+  responseBuffer = tcpCommand->processCommand(command);
     
   return 0;
 }

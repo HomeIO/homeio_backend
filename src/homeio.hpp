@@ -21,6 +21,7 @@ public:
   MeasFetcher *measFetcher;
   IoProxy *ioProxy;
   TcpServer *tcpServer;
+  TcpCommand *tcpCommand;
 };
 
 #include "homeio.cpp"

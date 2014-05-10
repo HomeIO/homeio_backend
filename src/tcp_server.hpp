@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-
 #include <sys/socket.h> // socket definitions
 #include <sys/types.h> // socket types
 #include <arpa/inet.h> // inet (3) funtions
@@ -14,6 +13,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <errno.h>
+
+#include "tcp_command.hpp"
 
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)
@@ -30,6 +31,7 @@ public:
   int processCommand();
   
   short int port;
+  TcpCommand *tcpCommand;
   
 private:
   char c, *commandBuffer;

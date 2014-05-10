@@ -27,7 +27,9 @@ int main()
 
   //cout << h->measTypeArray->byName("batt_u");
   
-  h->startFetch();
+  //h->startFetch();
+  //h->startServer();
+  h->start();
   
   return 0;
 }
