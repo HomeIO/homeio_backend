@@ -15,8 +15,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "homeio.hpp"
-
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)
 #define COMMAND_BUFFER_SIZE 2000
@@ -32,7 +30,6 @@ public:
   int processCommand();
   
   short int port;
-  void *parent;
   
 private:
   char c, *commandBuffer;

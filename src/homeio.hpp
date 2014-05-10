@@ -3,7 +3,8 @@
 
 #include <pthread.h>
 
-#include "meas_type.hpp"
+#include "meas_type_array.hpp"
+#include "meas_fetcher.hpp"
 #include "io_proxy.hpp"
 #include "tcp_server.hpp"
 
@@ -12,12 +13,14 @@ using namespace std;
 class HomeIO {
 public:
   HomeIO();
-  int start();
-  MeasType *measTypeByName(string measName);
+  unsigned char startFetch();
+  unsigned char startServer();
+  unsigned char start();
   
+  MeasTypeArray *measTypeArray;
+  MeasFetcher *measFetcher;
   IoProxy *ioProxy;
   TcpServer *tcpServer;
-  std::vector <MeasType> measTypes;
 };
 
 #include "homeio.cpp"

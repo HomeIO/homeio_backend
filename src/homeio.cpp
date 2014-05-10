@@ -1,22 +1,35 @@
+HomeIO::HomeIO() {
+  measTypeArray = new MeasTypeArray;
+  measFetcher = new MeasFetcher;
+  ioProxy = new IoProxy;
+  tcpServer = new TcpServer;
+  
+  // setup some variables
+  measFetcher->measTypeArray = measTypeArray;
+  measFetcher->ioProxy = ioProxy;
+  
+  //tcpServer = new TcpServer();
+  //tcpServer->parent = this;
+}
+
+unsigned char HomeIO::startFetch() {
+  measFetcher->start();
+  
+  return 0;
+}
+
+unsigned char HomeIO::startServer() {
+  tcpServer->start();
+  
+  return 0;
+}
+
 void *measStartThread(void *argument)
 {
   cout << "Meas Start" << endl;
 
   HomeIO *h = (HomeIO *) argument;
-  h->ioProxy->prepareSocket();
-  
-  // initials
-  for(std::vector<MeasType>::iterator m = h->measTypes.begin(); m != h->measTypes.end(); ++m) {
-    m->ioProxy = h->ioProxy;
-  } 
-  
-  unsigned int i;
-  for (i=0; i<30; i++) {
-    for(std::vector<MeasType>::iterator m = h->measTypes.begin(); m != h->measTypes.end(); ++m) {
-      m->fetch();
-      usleep(50000);
-    } 
-  }
+  h->startFetch();
   
   return NULL;
 }
@@ -26,26 +39,12 @@ void *tcpServerThread(void *argument)
   cout << "TCP Start" << endl;
 
   HomeIO *h = (HomeIO *) argument;
-  h->tcpServer->start();
-  
-  /*
-  unsigned int i;
-  for (i=0; i<10; i++) {
-    cout << i << endl;
-    usleep(100000);
-  }
-  */
-  
+  h->startServer();
 }
 
-HomeIO::HomeIO() {
-  ioProxy = new IoProxy();
-  tcpServer = new TcpServer();
-  tcpServer->parent = this;
-}
-
-int HomeIO::start() {
+unsigned char HomeIO::start() {
   tcpServer->start();
+  
   return 0;
   
   const char NUM_THREADS = 2;
@@ -67,15 +66,4 @@ int HomeIO::start() {
  
    printf("In main: All threads completed successfully\n");
    //exit(EXIT_SUCCESS);
-}
-
-MeasType *HomeIO::measTypeByName(string measName) {
-  for(std::vector<MeasType>::iterator m = measTypes.begin(); m != measTypes.end(); ++m) {
-    cout << m->name << endl;
-    if (m->name == measName) {
-      //
-    }
-    
-  }
-  return NULL;
 }

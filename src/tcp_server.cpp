@@ -41,9 +41,6 @@ int TcpServer::processCommand() {
   command = (string) commandBuffer;
   measName = command.substr(0, command.find(";"));
   
-  //HomeIO *h; // = (HomeIO *) parent;
-  //(HomeIO)parent->measTypeByName(measName);
-  
   responseBuffer = "{done: 1, meas: " + measName + "}";
     
   return 0;
