@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <time.h>
 
 #include "io_proxy.hpp"
 #include "meas_buffer.hpp"
@@ -18,6 +19,8 @@ public:
   MeasBuffer *buffer;
   
   unsigned int addRaw(unsigned int);
+  
+  time_t lastTime;
   
   string name; // name of measurements
   char command; // at this moment only 1 byte commands
