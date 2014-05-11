@@ -36,12 +36,20 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   
   disconnectSocket();
   
+  buffer[responseSize] = 0;
   unsigned int raw = 0;
+  unsigned char part_raw = 0;
   int i = 0;
   for (i; i < responseSize; i++)
   {
+    part_raw = buffer[i];
+    
+    if (false) {
+      cout << "  " << i << " - " << to_string( part_raw ) << "  ";
+    }  
+    
     raw *= 256;
-    raw += buffer[i];
+    raw += part_raw;
   }
   
   if (verbose) {

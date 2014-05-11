@@ -28,7 +28,7 @@ public:
 private:
   int sock;
   struct sockaddr_in server;
-  char buffer[10];
+  char buffer[16];
      
 };
 

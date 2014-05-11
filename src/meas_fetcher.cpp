@@ -12,8 +12,9 @@ void MeasFetcher::start() {
   while(true) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
       m->fetch();
+      usleep(5000);
     } 
 
-    usleep(50000);
+    usleep(20000);
   }
 }

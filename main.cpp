@@ -8,7 +8,6 @@ int main()
   h->ioProxy->port = 2002;
 
   MeasType *m;
-  
   m = new MeasType();
   m->name = "batt_u";
   m->command = '3';
@@ -60,13 +59,13 @@ int main()
   m = new MeasType();
   m->name = "res_pwm";
   m->command = 'p';
-  m->responseSize = 2;
+  m->responseSize = 1;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "res_pwm_avg";
   m->command = 'q';
-  m->responseSize = 2;
+  m->responseSize = 1;
   h->measTypeArray->add(m);
   
   m = new MeasType();
@@ -74,18 +73,17 @@ int main()
   m->command = 'o';
   m->responseSize = 1;
   h->measTypeArray->add(m);
-  
   //m = new MeasType();
   //m->name = "test_t";
   //m->command = 't';
   //m->responseSize = 2;
   //h->measTypeArray->add(m);
   
-  //m = new MeasType();
-  //m->name = "test_s";
-  //m->command = 's';
-  //m->responseSize = 1;
-  //h->measTypeArray->add(m);
+  m = new MeasType();
+  m->name = "test_s";
+  m->command = 's';
+  m->responseSize = 1;
+  h->measTypeArray->add(m);
 
   //cout << h->measTypeArray->byName("batt_u");
   
