@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "io_proxy.hpp"
+#include "meas_buffer.hpp"
 
 using namespace std;
 
@@ -14,19 +15,15 @@ public:
   MeasType();
   unsigned int fetch();
   
-  unsigned int bufferSize;
+  MeasBuffer *buffer;
   
   unsigned int addRaw(unsigned int);
-  unsigned int assignBufferSize(unsigned int);
   
   string name; // name of measurements
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
   IoProxy *ioProxy;
 	
-private:
-  std::vector < unsigned int > buffer;
-    
 };
 
 #include "meas_type.cpp"
