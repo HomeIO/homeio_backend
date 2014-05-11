@@ -3,6 +3,7 @@
 # Simple test for IoServer
 
 require 'socket'
+require 'json'
 
 hostname = 'localhost'
 port = 2005
@@ -15,7 +16,10 @@ loop do
   s.puts str
   data = s.gets
   #int_data = (data[0] * 256 + data[1].to_i)
-  puts data.inspect
+  #puts data.inspect
+  
+  puts JSON.parse(data).inspect
+
   s.close               # Close the socket when done
 
   sleep 2
