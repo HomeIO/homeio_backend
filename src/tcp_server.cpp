@@ -68,9 +68,9 @@ ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
 
     commandBuffer[n] = 0;
 
-    cout << n << endl;
-    cout << commandBuffer << endl;
-    cout << sizeof(commandBuffer) << endl;
+    //cout << n << endl;
+    //cout << commandBuffer << endl;
+    //cout << sizeof(commandBuffer) << endl;
 
     return n;
 }

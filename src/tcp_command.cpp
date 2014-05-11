@@ -5,6 +5,8 @@ TcpCommand::TcpCommand() {
 // sample response: "{data:[1,2,3....,100],measType:batt_u}
 
 string TcpCommand::processCommand(string command) {
+  cout << "TCP command: " << command << endl;
+  
   string measName, fromString, toString, response;
   unsigned long int from, to;
   
@@ -34,7 +36,7 @@ string TcpCommand::processCommand(string command) {
     response = "{\"status\":1,\"reason\":\"meas_not_found\"}";
   }
   
-  cout << measName;
+  cout << "TCP response: " << response << endl;
   
   return response;
 }
