@@ -33,7 +33,7 @@ string TcpCommand::processCommand(string command) {
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",\"last_time\":" + to_string( foundMeasType->lastTime ) + ",\"count\":" + to_string( foundMeasType->buffer->count ) + ",\"data\": " + bufferString + "}";
   }
   else {
-    response = "{\"status\":1,\"reason\":\"meas_not_found\"}";
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
   
   cout << "TCP response: " << response << endl;

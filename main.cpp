@@ -27,11 +27,11 @@ int main()
   m->responseSize = 2;
   h->measTypeArray->add(m);
   
-  //m = new MeasType();
-  //m->name = "i_inverters";
-  //m->command = '6';
-  //m->responseSize = 2;
-  //h->measTypeArray->add(m);
+  m = new MeasType();
+  m->name = "i_inverters";
+  m->command = '6';
+  m->responseSize = 2;
+  h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "imp_per_min";
