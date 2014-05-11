@@ -59,13 +59,13 @@ int main()
   m = new MeasType();
   m->name = "res_pwm";
   m->command = 'p';
-  m->responseSize = 1;
+  m->responseSize = 2;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "res_pwm_avg";
   m->command = 'q';
-  m->responseSize = 1;
+  m->responseSize = 2;
   h->measTypeArray->add(m);
   
   m = new MeasType();
