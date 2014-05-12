@@ -30,7 +30,12 @@ string TcpCommand::processCommand(string command) {
   
   if (foundMeasType) {
     string bufferString = foundMeasType->buffer->jsonArray(from, to);
-    response = "{\"status\":0,\"meas_type\":\"" + measName + "\",\"last_time\":" + to_string( foundMeasType->lastTime ) + ",\"count\":" + to_string( foundMeasType->buffer->count ) + ",\"data\": " + bufferString + "}";
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
+    response += ",\"last_time\":" + to_string( foundMeasType->buffer->lastTime );
+    response += ",\"first_time\":" + to_string( foundMeasType->buffer->firstTime );
+    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"data\": " + bufferString + "}";
   }
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";

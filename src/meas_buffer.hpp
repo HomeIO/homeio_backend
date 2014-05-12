@@ -12,10 +12,14 @@ public:
   unsigned long int index(unsigned long int i);
   bool stored(unsigned long int i);
   string jsonArray(unsigned long int from, unsigned long int to);
+  float calcInterval();
   
   unsigned long int maxSize;
   unsigned long int offset;
   unsigned long int count;
+  
+  time_t lastTime, firstTime, lastTimeForCount;
+  float interval;
   
 private:
   std::vector < unsigned int > buffer;

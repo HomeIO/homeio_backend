@@ -20,8 +20,6 @@ public:
   
   unsigned int addRaw(unsigned int);
   
-  time_t lastTime;
-  
   string name; // name of measurements
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2

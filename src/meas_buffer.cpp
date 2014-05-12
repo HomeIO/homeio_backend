@@ -2,6 +2,7 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
   maxSize = _maxSize;
   offset = 0;
   count = 0;
+  firstTime = 0;
   
   buffer.resize(maxSize);
 }
@@ -13,10 +14,25 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   }
   if (offset > count) {
     count = offset;
+    lastTimeForCount = time(NULL);
   }
+  if (firstTime == 0) {
+    firstTime = time(NULL);
+  }
+  lastTime = time(NULL);
   
   buffer[offset] = raw;
+  
   return offset;
+}
+
+float MeasBuffer::calcInterval() {
+  if (offset == 0) {
+    return 1.0; // not to fuck up all this shit somewhere
+  } else {
+    unsigned long int timeCount = (unsigned long int) lastTimeForCount - (unsigned long int) firstTime;
+    return (float) timeCount / (float) count;
+  }
 }
 
 unsigned int MeasBuffer::at(unsigned long int i) {
