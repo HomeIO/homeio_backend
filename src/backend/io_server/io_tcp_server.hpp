@@ -1,0 +1,35 @@
+#ifndef IO_TCP_SERVER_HPP
+#define	IO_TCP_SERVER_HPP
+
+using namespace std;
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+
+#include <sys/socket.h> // socket definitions
+#include <sys/types.h> // socket types
+#include <arpa/inet.h> // inet (3) funtions
+#include <unistd.h> // misc. UNIX functions
+#include <sys/socket.h>
+#include <unistd.h>
+#include <errno.h>
+
+#define IO_SERVER_LISTENQ (1024) // Backlog for listen()
+#define IO_SERVER_MAX_LINE (1000)
+
+class IoTcpServer {
+public:
+  int createTcpServer();
+  
+  // Read line from socket
+  ssize_t readLine(int sockd, char *vptr, size_t maxlen);
+  // Write line to socket
+  ssize_t writeLine(int sockd, const char *vptr, size_t n);
+  
+};
+
+#include "io_tcp_server.cpp"
+#endif

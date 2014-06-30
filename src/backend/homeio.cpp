@@ -25,6 +25,13 @@ unsigned char HomeIO::startServer() {
   return 0;
 }
 
+unsigned char HomeIO::startIoServer() {
+  ioServer->start();
+  
+  return 0;
+}
+
+
 void *measStartThread(void *argument)
 {
   cout << "Meas Start" << endl;
