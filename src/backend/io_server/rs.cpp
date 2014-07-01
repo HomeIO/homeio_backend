@@ -11,10 +11,10 @@ RS::RS() {
 
 // Open RS port and set all parameters. Parameters are stored in config.h
 int RS::openRS() {
-    ttyFileDescriptor = open(portDevice, O_RDWR);
+    ttyFileDescriptor = open(port.c_str(), O_RDWR);
 
-    cfsetospeed(&tio, RS_SPEED); // 115200 baud
-    cfsetispeed(&tio, RS_SPEED); // 115200 baud
+    cfsetospeed(&tio, RS_SPEED);
+    cfsetispeed(&tio, RS_SPEED);
 
     tcsetattr(ttyFileDescriptor, TCSANOW, &tio);
 

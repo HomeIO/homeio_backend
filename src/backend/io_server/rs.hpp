@@ -25,7 +25,8 @@ public:
   
   struct termios tio;
   int ttyFileDescriptor;
-  char* portDevice;
+  
+  string port;
 };
 
 #include "rs.cpp"

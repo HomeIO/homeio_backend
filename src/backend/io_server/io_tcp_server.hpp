@@ -22,7 +22,26 @@ using namespace std;
 
 class IoTcpServer {
 public:
+  // port number
+  short int port;
+  // listening socket
+  int list_s;
+  // socket address structure
+  struct sockaddr_in servaddr;
+  // for strtol()
+  char *endptr;
+  // connection socket
+  int conn_s;
+  // TCP buffer
+  char buffer[MAX_LINE];
+  // count of response bytes
+  unsigned char count_response = 0;
+  
   int createTcpServer();
+  int waitForCommand();
+  ssize_t readTcp();
+  void afterReadCommand();
+  ssize_t writeTcp();
   
   // Read line from socket
   ssize_t readLine(int sockd, char *vptr, size_t maxlen);

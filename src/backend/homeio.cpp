@@ -50,15 +50,24 @@ void *tcpServerThread(void *argument)
   h->startServer();
 }
 
+void *ioServerThread(void *argument)
+{
+  cout << "IoServer Start" << endl;
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startIoServer();
+}
+
 unsigned char HomeIO::start() {
-  const char NUM_THREADS = 2;
+  const char NUM_THREADS = 3;
   pthread_t threads[NUM_THREADS];
   int rc, i;
   
   HomeIO *h = this;
  
-  rc = pthread_create(&threads[0], NULL, measStartThread, (void *) h);
-  rc = pthread_create(&threads[1], NULL, tcpServerThread, (void *) h);
+  rc = pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
+  rc = pthread_create(&threads[1], NULL, measStartThread, (void *) h);
+  rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
