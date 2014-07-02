@@ -4,7 +4,7 @@ int main()
 {
   HomeIO *h = new HomeIO();
   
-  h->ioProxy->address = "192.168.0.13";
+  h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002;
 
   MeasType *m;
