@@ -19,13 +19,14 @@ int IoServer::start() {
     // Retrieve command
     tcp->waitForCommand();
     tcp->readTcp();
-    tcp->afterReadCommand();
    
-    tcp->buffer[0] = 1;
-    tcp->buffer[1] = 1;
+    tcp->buffer[0] = 80;
+    tcp->buffer[1] = 80;
     tcp->buffer[2] = 0;
+    tcp->count_response = 2;
    
     tcp->writeTcp();
+    tcp->closeSocket();
   }
   
   /*

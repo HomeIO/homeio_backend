@@ -37,6 +37,11 @@ int IoTcpServer::waitForCommand() {
     exit(EXIT_FAILURE);
   }
   
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+  strftime (verbose_buffer, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
+  printf("accept\t%s\t", verbose_buffer);
+  
   return conn_s;
 }
 
@@ -44,20 +49,36 @@ int IoTcpServer::waitForCommand() {
 ssize_t IoTcpServer::readTcp() {
   ssize_t n;
   n = readLine(conn_s, buffer, MAX_LINE - 1);
+  
+  escapeBuffer();
+  printf("'%s'\t", verbose_buffer);
   return n;
-}
-
-void IoTcpServer::afterReadCommand() {
-  time_t t = time(0);
-  printf("Time %srcv %s", ctime(&t), buffer);
 }
 
 ssize_t IoTcpServer::writeTcp() {
   ssize_t n;
+  printf("'%s'\t", buffer);
   n = writeLine(conn_s, buffer, count_response);
   return n;
 }
 
+void IoTcpServer::closeSocket() {
+  if (close(conn_s) < 0) {
+    fprintf(stderr, "ECHOSERV: Error calling close()\n");
+    exit(EXIT_FAILURE);
+  }
+  printf("\n");
+}
+
+void IoTcpServer::escapeBuffer() {
+  strcpy(verbose_buffer, buffer);
+  size_t n;
+  for (n=0; n<strlen(verbose_buffer); n++) {
+    if (verbose_buffer[n] == '\n') {
+      verbose_buffer[n] = ' ';
+    }
+  }
+}
 
 // Read line from socket
 ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {

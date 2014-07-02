@@ -16,6 +16,7 @@ using namespace std;
 #include <sys/socket.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 
 #define IO_SERVER_LISTENQ (1024) // Backlog for listen()
 #define IO_SERVER_MAX_LINE (1000)
@@ -36,12 +37,18 @@ public:
   char buffer[MAX_LINE];
   // count of response bytes
   unsigned char count_response = 0;
+  // just for logging
+  char verbose_buffer[80];
+  time_t rawtime;
+  struct tm * timeinfo;
   
   int createTcpServer();
   int waitForCommand();
   ssize_t readTcp();
-  void afterReadCommand();
   ssize_t writeTcp();
+  void closeSocket();
+  
+  void escapeBuffer();
   
   // Read line from socket
   ssize_t readLine(int sockd, char *vptr, size_t maxlen);
