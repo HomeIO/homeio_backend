@@ -20,13 +20,19 @@ public:
   // Parameters are stored in config.h
   int openRS();
   
-  // Close RS port
+  unsigned char send();
+  
   void closeRS();
   
   struct termios tio;
   int ttyFileDescriptor;
   
   string port;
+  char i, tmp_char;
+  
+  char *buffer;
+  unsigned char count_command;
+  unsigned char count_response;
 };
 
 #include "rs.cpp"

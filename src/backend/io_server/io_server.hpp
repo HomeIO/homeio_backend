@@ -13,6 +13,8 @@ public:
   unsigned char tmp_char, i;
   // count of command bytes
   unsigned char count_command;
+  // count of command response
+  unsigned char count_response;
   // RS device
   string port;
   
