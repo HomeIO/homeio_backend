@@ -1,10 +1,10 @@
-#include "src/homeio.hpp"
+#include "../backend/homeio.hpp"
 
 int main()
 {
   HomeIO *h = new HomeIO();
   
-  h->ioProxy->address = "192.168.0.2";
+  h->ioProxy->address = "192.168.0.20";
   h->ioProxy->port = 2002;
 
   MeasType *m;
