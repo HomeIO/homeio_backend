@@ -17,6 +17,8 @@ public:
   unsigned char count_response;
   // RS device
   string port;
+  // is ready
+  bool ready;
   
   
   RS *rs;

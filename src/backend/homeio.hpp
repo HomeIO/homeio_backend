@@ -26,6 +26,8 @@ public:
   TcpServer *tcpServer;
   TcpCommand *tcpCommand;
   IoServer *ioServer;
+  
+  bool ioServerReady;
 };
 
 #include "homeio.cpp"

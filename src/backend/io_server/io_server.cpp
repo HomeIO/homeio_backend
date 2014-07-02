@@ -1,4 +1,6 @@
 IoServer::IoServer() {
+  ready = false;
+  
   rs = new RS;
   tcp = new IoTcpServer;
   
@@ -15,6 +17,8 @@ IoServer::IoServer() {
 int IoServer::start() {
   rs->openRS();
   tcp->createTcpServer();
+  
+  ready = true;
   
   while(1) {
     // Retrieve command

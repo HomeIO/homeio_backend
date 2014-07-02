@@ -4,6 +4,9 @@ HomeIO::HomeIO() {
   ioProxy = new IoProxy;
   tcpServer = new TcpServer;
   tcpCommand = new TcpCommand;
+  ioServer = new IoServer;
+  
+  ioServerReady = false;
   
   // setup some variables
   measFetcher->measTypeArray = measTypeArray;
@@ -66,6 +69,13 @@ unsigned char HomeIO::start() {
   HomeIO *h = this;
  
   rc = pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
+  
+  // wait for IoServer
+  
+  while (ioServer->ready == false) {
+    usleep(50000);
+  }
+  
   rc = pthread_create(&threads[1], NULL, measStartThread, (void *) h);
   rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
  
