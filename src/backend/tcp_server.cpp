@@ -126,7 +126,7 @@ int TcpServer::createTcpServer() {
         exit(EXIT_FAILURE);
     }
 
-    cout << "list_s " << list_s << endl;
+    printf("TcpServer started on port %d\n", port);
     
     return list_s;
 

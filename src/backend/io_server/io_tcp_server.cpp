@@ -27,8 +27,9 @@ int IoTcpServer::createTcpServer() {
         exit(EXIT_FAILURE);
     }
 
+    printf("IoTcpServer started on port %d\n", port);
+    
     return list_s;
-
 }
 
 int IoTcpServer::waitForCommand() {
