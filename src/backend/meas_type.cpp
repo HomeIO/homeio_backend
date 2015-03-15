@@ -6,7 +6,7 @@ unsigned int MeasType::fetch() {
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
   
-  cout << name << " - fetched raw " << raw << " (offset " << buffer->offset << ", count " << buffer->count << ")" << endl;
+  cout << "MeasBuffer [" << name << "] raw\t" << raw << "\t[offset=" << buffer->offset << ",count=" << buffer->count << ",memory=" << buffer->memorySize() << "]" << endl;
   
   return raw;
 }

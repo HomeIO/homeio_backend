@@ -1,7 +1,7 @@
 // Create TCP listening socket
 int IoTcpServer::createTcpServer() {
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        fprintf(stderr, "ECHOSERV: Error creating listening socket.\n");
+        fprintf(stderr, "IoServer ECHOSERV: Error creating listening socket.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -18,30 +18,30 @@ int IoTcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        fprintf(stderr, "ECHOSERV: Error calling bind()\n");
+        fprintf(stderr, "IoServer ECHOSERV: Error calling bind()\n");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, IO_SERVER_LISTENQ) < 0) {
-        fprintf(stderr, "ECHOSERV: Error calling listen()\n");
+        fprintf(stderr, "IoServer ECHOSERV: Error calling listen()\n");
         exit(EXIT_FAILURE);
     }
 
-    printf("IoTcpServer started on port %d\n", port);
+    printf("IoServer started on port %d\n", port);
     
     return list_s;
 }
 
 int IoTcpServer::waitForCommand() {
   if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-    fprintf(stderr, "ECHOSERV: Error calling accept()\n");
+    fprintf(stderr, "IoServer ECHOSERV: Error calling accept()\n");
     exit(EXIT_FAILURE);
   }
   
   time (&rawtime);
   timeinfo = localtime (&rawtime);
   strftime (verbose_buffer, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
-  printf("accept\t%s\t", verbose_buffer);
+  printf("IoServer accept\t\t%s\t", verbose_buffer);
   
   return conn_s;
 }
@@ -52,20 +52,20 @@ ssize_t IoTcpServer::readTcp() {
   n = readLine(conn_s, buffer, MAX_LINE - 1);
   
   escapeBuffer();
-  printf("'%s'\t", verbose_buffer);
+  printf("'%s'", verbose_buffer);
   return n;
 }
 
 ssize_t IoTcpServer::writeTcp() {
   ssize_t n;
-  printf("'%s'\t", buffer);
+  printf(" - '%s'", buffer);
   n = writeLine(conn_s, buffer, count_response);
   return n;
 }
 
 void IoTcpServer::closeSocket() {
   if (close(conn_s) < 0) {
-    fprintf(stderr, "ECHOSERV: Error calling close()\n");
+    fprintf(stderr, "IoServer ECHOSERV: Error calling close()\n");
     exit(EXIT_FAILURE);
   }
   printf("\n");

@@ -3,6 +3,7 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
   offset = 0;
   count = 0;
   firstTime = 0;
+  elementSize = sizeof(_maxSize);
   
   buffer.resize(maxSize);
 }
@@ -48,6 +49,10 @@ unsigned long int MeasBuffer::index(unsigned long int i) {
   }
 }
 
+unsigned long int MeasBuffer::memorySize() {
+  return buffer.capacity() * elementSize;
+}
+
 bool MeasBuffer::stored(unsigned long int i) {
   if (i>count) {
     return false;
@@ -58,12 +63,6 @@ bool MeasBuffer::stored(unsigned long int i) {
 
 string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
   string s = "[";
-  
-//  cout << endl;
-//  cout << "from " << from << endl;
-//  cout << "to " << to << endl;
-//  cout << "offset " << offset << endl;
-//  cout << "count " << count << endl;
   
   unsigned long int i;
   for (i = from; i <= to; i++) {

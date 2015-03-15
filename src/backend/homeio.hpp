@@ -7,6 +7,8 @@
 #include "meas_fetcher.hpp"
 #include "io_proxy.hpp"
 #include "tcp_server.hpp"
+#include "action_type_array.hpp"
+#include "overseer_array.hpp"
 
 #include "io_server/io_server.hpp"
 
@@ -18,6 +20,7 @@ public:
   unsigned char startFetch();
   unsigned char startServer();
   unsigned char startIoServer();
+  unsigned char startOverseer();
   unsigned char start();
   
   MeasTypeArray *measTypeArray;
@@ -26,6 +29,8 @@ public:
   TcpServer *tcpServer;
   TcpCommand *tcpCommand;
   IoServer *ioServer;
+  ActionTypeArray *actionTypeArray;
+  OverseerArray *overseerArray;
   
   bool ioServerReady;
 };

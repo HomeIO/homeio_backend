@@ -10,6 +10,7 @@ public:
   unsigned long int add(unsigned int raw);
   unsigned int at(unsigned long int i);
   unsigned long int index(unsigned long int i);
+  unsigned long int memorySize();
   bool stored(unsigned long int i);
   string jsonArray(unsigned long int from, unsigned long int to);
   float calcInterval();
@@ -17,6 +18,8 @@ public:
   unsigned long int maxSize;
   unsigned long int offset;
   unsigned long int count;
+  
+  unsigned char elementSize;
   
   time_t lastTime, firstTime, lastTimeForCount;
   float interval;

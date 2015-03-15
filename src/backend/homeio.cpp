@@ -5,6 +5,8 @@ HomeIO::HomeIO() {
   tcpServer = new TcpServer;
   tcpCommand = new TcpCommand;
   ioServer = new IoServer;
+  actionTypeArray = new ActionTypeArray;
+  overseerArray = new OverseerArray;
   
   ioServerReady = false;
   
@@ -34,10 +36,18 @@ unsigned char HomeIO::startIoServer() {
   return 0;
 }
 
+unsigned char HomeIO::startOverseer() {
+  // access is needed to search for proper objects
+  overseerArray->measTypeArray = measTypeArray;
+  overseerArray->actionTypeArray = actionTypeArray;
+  overseerArray->start();
+  
+  return 0;
+}
 
 void *measStartThread(void *argument)
 {
-  cout << "Meas Start" << endl;
+  cout << "Thread: startFetch() - meas fetching" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startFetch();
@@ -47,7 +57,7 @@ void *measStartThread(void *argument)
 
 void *tcpServerThread(void *argument)
 {
-  cout << "TCP Start" << endl;
+  cout << "Thread: startServer() - TCP commands" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
@@ -55,11 +65,20 @@ void *tcpServerThread(void *argument)
 
 void *ioServerThread(void *argument)
 {
-  cout << "IoServer Start" << endl;
+  cout << "Thread: startIoServer() - IoServer - hardware-TCP bridge" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
 }
+
+void *ioOverseerThread(void *argument)
+{
+  cout << "Thread: ioOverseerThread() - low level overseeers" << endl;
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startOverseer();
+}
+
 
 unsigned char HomeIO::start() {
   const char NUM_THREADS = 3;
@@ -78,6 +97,7 @@ unsigned char HomeIO::start() {
   
   rc = pthread_create(&threads[1], NULL, measStartThread, (void *) h);
   rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
+  rc = pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
