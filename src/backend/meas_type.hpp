@@ -2,7 +2,9 @@
 #define	MEAS_TYPE_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <iomanip>
 #include <vector>
 #include <time.h>
 
@@ -21,7 +23,9 @@ public:
   double lastValue();
   double lastValueFor(unsigned int);
   string toJson();
+  
   void prepareFetch();
+  string fetchString(unsigned int raw);
 
   MeasBuffer *buffer;
   

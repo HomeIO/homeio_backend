@@ -12,8 +12,7 @@ unsigned int MeasType::fetch() {
   
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
-  
-  logInfo(logPrefix + "raw,value =  " + strColor(RESET, BLUE, BLACK) + to_string(raw) + strColor(RESET, GREEN, BLACK) + " , " + strColor(RESET, BLUE, BLACK) + to_string(rawToValue(raw)) + strColor(RESET, GREEN, BLACK) );
+  logInfo(fetchString(raw));
   
   return raw;
 }
@@ -24,8 +23,34 @@ void MeasType::prepareFetch() {
   }
 
   logPrefix = "MeasBuffer [" + name + "] ";
-  logPrefix.append(30 - logPrefix.length(), ' ');
+  logPrefix.append(35 - logPrefix.length(), ' ');
   started = true;
+}
+
+string MeasType::fetchString(unsigned int raw) {
+  string tmpString = "";
+  string partialString = "";
+  
+  tmpString += " raw ";
+  tmpString += strColor(RESET, BLUE, BLACK);
+  
+  partialString = to_string(raw);
+  partialString.insert(0, 8 - partialString.length(), ' ');
+  tmpString += partialString;
+  
+  tmpString += strColor(RESET, GREEN, BLACK);
+  tmpString += " , ";
+  tmpString += strColor(RESET, BLUE, BLACK);
+
+  ostringstream os;
+  os << setprecision(5) << rawToValue(raw);
+  partialString = os.str();
+  partialString.insert(0, 8 - partialString.length(), ' ');
+  tmpString += partialString;
+  
+  tmpString += strColor(RESET, GREEN, BLACK);
+ 
+  return logPrefix + tmpString;
 }
 
 unsigned int MeasType::addRaw(unsigned int _raw) {
