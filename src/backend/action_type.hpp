@@ -14,6 +14,7 @@ class ActionType {
 public:
   ActionType();
   unsigned int execute();
+  string toJson();
   
   string name; // name of action
   char command; // at this moment only 1 byte commands
@@ -21,6 +22,7 @@ public:
   unsigned int responseOkay; // value returned from uC when everything is okay
   
   unsigned long int executionCount;
+  unsigned long int failedCount;
   
   IoProxy *ioProxy;
 	

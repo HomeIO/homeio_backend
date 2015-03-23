@@ -18,6 +18,19 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measList") {
     response = processMeasListCommand(command);
   }
+
+  if (commandName == "measDetails") {
+    response = processMeasDetailsCommand(command);
+  }
+
+  if (commandName == "actionDetails") {
+    response = processActionDetailsCommand(command);
+  }
+
+  if (commandName == "actionExecute") {
+    response = processActionExecuteCommand(command);
+  }
+
   
   cout << currentTime() << " TCP response: " << response << endl;
   
@@ -73,8 +86,70 @@ string TcpCommand::processMeasListCommand(string command) {
   if (response[response.size() - 1] == ',') {
     response.resize(response.size() - 1);
   }
-  
   response += "]}";
     
   return response;
 }
+
+string TcpCommand::processMeasDetailsCommand(string command) {
+  string response, detailsResponse;
+  
+  response = "{\"status\":0,\"array\":[";
+  
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    detailsResponse += it->toJson() + ",";
+  }
+  
+  // remove last coma
+  if (detailsResponse[detailsResponse.size() - 1] == ',') {
+    detailsResponse.resize(detailsResponse.size() - 1);
+  }
+  
+  response += detailsResponse + "]}";
+    
+  return response;
+}
+
+string TcpCommand::processActionDetailsCommand(string command) {
+  string response, detailsResponse;
+  
+  response = "{\"status\":0,\"array\":[";
+  
+  for(std::vector<ActionType>::iterator it = actionTypeArray->actionTypes.begin(); it != actionTypeArray->actionTypes.end(); ++it) {
+    detailsResponse += it->toJson() + ",";
+  }  
+  
+  // remove last coma
+  if (detailsResponse[detailsResponse.size() - 1] == ',') {
+    detailsResponse.resize(detailsResponse.size() - 1);
+  }
+  
+  response += detailsResponse + "]}";
+    
+  return response;
+}
+
+string TcpCommand::processActionExecuteCommand(string command) {
+  string actionName;
+  actionName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  string response;
+  
+  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  
+  if (foundActionType) {
+    string bufferString;
+    foundActionType->execute();
+    response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
+  }
+  else {
+    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
+  }
+  
+  cout << currentTime() << " TCP response: " << response << endl;
+  
+  return response;  
+}
+
+

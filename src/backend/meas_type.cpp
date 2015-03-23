@@ -53,4 +53,19 @@ double MeasType::lastValueFor(unsigned int i) {
 double MeasType::rawToValue(unsigned int _raw) {
   return (double)((int) _raw + coefficientOffset) * coefficientLinear;
 }
+
+string MeasType::toJson() {
+  string json;
+  
+  json = "{";
+  json += "\"name\":\"" + name + "\",";
+  json += "\"buffer\":{\"count\":" + to_string(buffer->count) + "},";
+  json += "\"coefficientLinear\":" + to_string(coefficientLinear) + ",";
+  json += "\"coefficientOffset\":" + to_string(coefficientOffset) + ",";
+  json += "\"value\":" + to_string(lastValue()) + ",";
+  json += "\"raw\":" + to_string(lastRaw());
+  json += "}";
+  
+  return json;
+}
   

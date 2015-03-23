@@ -15,14 +15,14 @@ class MeasType {
 public:
   MeasType();
   unsigned int fetch();
-  
-  MeasBuffer *buffer;
-  
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);
   unsigned int lastRaw();
   double lastValue();
   double lastValueFor(unsigned int);
+  string toJson();
+
+  MeasBuffer *buffer;
   
   string name; // name of measurements
   char command; // at this moment only 1 byte commands
