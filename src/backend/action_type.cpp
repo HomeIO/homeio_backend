@@ -7,10 +7,10 @@ unsigned int ActionType::execute() {
   
   if (raw == responseOkay) {
     executionCount++;
-    cout << "ActionType [" << name << "] executed" << endl;
+    cout << currentTime() << " ActionType [" << name << "] executed" << endl;
   } 
   else {
-    cout << "ActionType [" << name << "] FAILED" << endl;
+    cout << currentTime() << " ActionType [" << name << "] FAILED, result=" << raw << ",command=" << command << ",responseSize=" << responseSize << endl;
   }
   
   return raw;

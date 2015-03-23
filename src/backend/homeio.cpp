@@ -19,6 +19,11 @@ HomeIO::HomeIO() {
 }
 
 unsigned char HomeIO::startFetch() {
+  // set IoProxy to measurements
+  for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
+    m->ioProxy = ioProxy;
+  }
+  
   measFetcher->start();
   
   return 0;
@@ -37,6 +42,12 @@ unsigned char HomeIO::startIoServer() {
 }
 
 unsigned char HomeIO::startOverseer() {
+  // set IoProxy to actions
+  for(std::vector<ActionType>::iterator a = actionTypeArray->actionTypes.begin(); a != actionTypeArray->actionTypes.end(); ++a) {
+    a->ioProxy = ioProxy;
+  }
+
+  
   // access is needed to search for proper objects
   overseerArray->measTypeArray = measTypeArray;
   overseerArray->actionTypeArray = actionTypeArray;
@@ -47,7 +58,7 @@ unsigned char HomeIO::startOverseer() {
 
 void *measStartThread(void *argument)
 {
-  cout << "Thread: startFetch() - meas fetching" << endl;
+  cout << currentTime() << " Thread: startFetch() - meas fetching" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startFetch();
@@ -57,7 +68,7 @@ void *measStartThread(void *argument)
 
 void *tcpServerThread(void *argument)
 {
-  cout << "Thread: startServer() - TCP commands" << endl;
+  cout << currentTime() << " Thread: startServer() - TCP commands" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
@@ -65,7 +76,7 @@ void *tcpServerThread(void *argument)
 
 void *ioServerThread(void *argument)
 {
-  cout << "Thread: startIoServer() - IoServer - hardware-TCP bridge" << endl;
+  cout << currentTime() << " Thread: startIoServer() - IoServer - hardware-TCP bridge" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
@@ -73,7 +84,7 @@ void *ioServerThread(void *argument)
 
 void *ioOverseerThread(void *argument)
 {
-  cout << "Thread: ioOverseerThread() - low level overseeers" << endl;
+  cout << currentTime << " Thread: ioOverseerThread() - low level overseeers" << endl;
 
   HomeIO *h = (HomeIO *) argument;
   h->startOverseer();
@@ -103,10 +114,10 @@ unsigned char HomeIO::start() {
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
       rc = pthread_join(threads[i], NULL);
-      printf("In main: thread %d is complete\n", i);
+      printf("%s In main: thread %d is complete\n", currentTime(), i);
       //assert(0 == rc);
    }
  
-   printf("In main: All threads completed successfully\n");
+   printf("%s In main: All threads completed successfully\n", currentTime() );
    //exit(EXIT_SUCCESS);
 }

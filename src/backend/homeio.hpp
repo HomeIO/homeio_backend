@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 
+#include "helpers.hpp"
 #include "meas_type_array.hpp"
 #include "meas_fetcher.hpp"
 #include "io_proxy.hpp"

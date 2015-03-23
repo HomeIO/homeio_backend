@@ -10,6 +10,9 @@ IoProxy::IoProxy()
 
 unsigned int IoProxy::fetch(char commandChar, char responseSize)
 {
+  tcpMutex.lock();
+  // after mutex
+  
   connectSocket();
   
   char commandArray[4];
@@ -21,6 +24,7 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   if( send(sock, commandArray, sizeof(commandArray), 0) < 0)
   {
     perror("Send failed");
+    tcpMutex.unlock(); // end of mutex
     return 1;
   }
   
@@ -35,6 +39,7 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   }
   
   disconnectSocket();
+  tcpMutex.unlock(); // end of mutex
   
   buffer[responseSize] = 0;
   unsigned int raw = 0;

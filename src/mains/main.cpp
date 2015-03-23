@@ -29,6 +29,9 @@ int main()
   m->command = 't';
   // number of bytes of response 
   m->responseSize = 2;
+  // value = (raw + coefficientOffset)* coefficientLinear 
+  m->coefficientLinear = 1.0;
+  m->coefficientOffset = 0;
   // add this measuremt type to measurement which will be fetched by this server
   h->measTypeArray->add(m);
   
@@ -39,52 +42,68 @@ int main()
   h->measTypeArray->add(m);
 
   // place measurement here
-    m = new MeasType();
+  m = new MeasType();
   m->name = "batt_u";
   m->command = '3';
   m->responseSize = 2;
+  m->coefficientLinear = 0.0777126099706744868;
+  m->coefficientOffset = 0;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "i_gen_batt";
   m->command = '4';
   m->responseSize = 2;
+  m->coefficientLinear = 0.191;
+  m->coefficientOffset = -512;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "i_gen_resist";
   m->command = '5';
   m->responseSize = 2;
+  m->coefficientLinear = 0.191;
+  m->coefficientOffset = -512;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "i_inverters";
   m->command = '6';
   m->responseSize = 2;
+  m->coefficientLinear = 0.191;
+  m->coefficientOffset = -512;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "imp_per_min";
   m->command = 'l';
   m->responseSize = 2;
+  m->coefficientLinear = 60.0;
+  m->coefficientOffset = 0;  
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "coil_1_u";
   m->command = '0';
   m->responseSize = 2;
+  m->coefficientLinear = 0.0777126099706744868;
+  m->coefficientOffset = 0;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "coil_2_u";
   m->command = '1';
   m->responseSize = 2;
+  m->coefficientLinear = 0.0777126099706744868;
+  m->coefficientOffset = 0;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "coil_3_u";
   m->command = '2';
   m->responseSize = 2;
+  m->coefficientLinear = 0.0777126099706744868;
+  m->coefficientOffset = 0;
   h->measTypeArray->add(m);
   
   m = new MeasType();
@@ -148,6 +167,12 @@ int main()
   o->actionName = "start_total_brake";
   // string name of measurement
   o->measName = "batt_u";
+  // critical value
+  o->thresholdValue = 40.0;
+  // check if value is higher
+  o->isMax = true;
+  // use average value using X raw measurements
+  o->windowSize = 50;
   // add this overseer type to list
   h->overseerArray->add(o);
   

@@ -19,13 +19,21 @@ public:
   MeasBuffer *buffer;
   
   unsigned int addRaw(unsigned int);
+  double rawToValue(unsigned int);
+  unsigned int lastRaw();
+  double lastValue();
+  double lastValueFor(unsigned int);
   
   string name; // name of measurements
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
+  
+  double coefficientLinear;
+  int coefficientOffset;
+  
   IoProxy *ioProxy;
 	
 };
 
 #include "meas_type.cpp"
-#endif	/* TCP_SERVER_H */
+#endif	

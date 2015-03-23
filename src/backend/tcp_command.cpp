@@ -1,12 +1,30 @@
 TcpCommand::TcpCommand() {
 }
 
-// sample command: "batt_u;0;100;"
-// sample response: "{data:[1,2,3....,100],measType:batt_u}
-
+// sample command: "meas;batt_u;0;100;"
 string TcpCommand::processCommand(string command) {
-  cout << "TCP command: " << command << endl;
+  cout << currentTime() << " TCP command: " << command << endl;
   
+  string commandName, response;
+  response = "{}";
+  
+  commandName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  if (commandName == "meas") {
+    response = processMeasCommand(command);
+  }
+
+  if (commandName == "measList") {
+    response = processMeasListCommand(command);
+  }
+  
+  cout << currentTime() << " TCP response: " << response << endl;
+  
+  return response;
+}
+
+string TcpCommand::processMeasCommand(string command) {
   string measName, fromString, toString, response;
   unsigned long int from, to;
   
@@ -21,10 +39,6 @@ string TcpCommand::processCommand(string command) {
   
   stringstream(fromString) >> from;
   stringstream(toString) >> to;
-  
-  //cout << "from " << from << endl;
-  //cout << "to " << to << endl;
-  //cout << "from " << command << endl;
   
   MeasType *foundMeasType = measTypeArray->byName(measName);
   
@@ -41,7 +55,26 @@ string TcpCommand::processCommand(string command) {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
   
-  cout << "TCP response: " << response << endl;
+  cout << currentTime() << " TCP response: " << response << endl;
   
+  return response;
+}
+
+string TcpCommand::processMeasListCommand(string command) {
+  string response;
+  
+  response = "{\"status\":0,\"array\":[";
+  
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    response += "\"" + it->name + "\",";
+  }
+  
+  // remove last coma
+  if (response[response.size() - 1] == ',') {
+    response.resize(response.size() - 1);
+  }
+  
+  response += "]}";
+    
   return response;
 }

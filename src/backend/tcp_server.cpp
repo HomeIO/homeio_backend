@@ -5,12 +5,12 @@ int TcpServer::start() {
   int conn_s; // connection socket
   int list_s = createTcpServer();
   
-  cout << "TCP Server started on " << port << endl;
+  cout << currentTime() << " TCP Server started on " << port << endl;
   
   while (1) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-      fprintf(stderr, "ECHOSERV: Error calling accept()\n");
+      fprintf(stderr, "TcpServer::start(): Error calling accept()\n");
       exit(EXIT_FAILURE);
     }
     
@@ -27,7 +27,7 @@ int TcpServer::start() {
 
     // Close the connected socket
     if (close(conn_s) < 0) {
-      fprintf(stderr, "ECHOSERV: Error calling close()\n");
+      fprintf(stderr, "TcpServer::start(): Error calling close()\n");
       exit(EXIT_FAILURE);
     }
   }
@@ -68,10 +68,6 @@ ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
 
     commandBuffer[n] = 0;
 
-    //cout << n << endl;
-    //cout << commandBuffer << endl;
-    //cout << sizeof(commandBuffer) << endl;
-
     return n;
 }
 
@@ -94,12 +90,10 @@ int TcpServer::createTcpServer() {
     
     char *endptr; /*  for strtol()              */
 
-
-
     /*  Create the listening socket  */
 
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        fprintf(stderr, "ECHOSERV: Error creating listening socket.\n");
+        fprintf(stderr, "TcpServer::createTcpServer(): Error creating listening socket.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -117,17 +111,16 @@ int TcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        fprintf(stderr, "ECHOSERV: Error calling bind()\n");
+        fprintf(stderr, "TcpServer::createTcpServer(): Error calling bind()\n");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, LISTENQ) < 0) {
-        fprintf(stderr, "ECHOSERV: Error calling listen()\n");
+        fprintf(stderr, "TcpServer::createTcpServer(): Error calling listen()\n");
         exit(EXIT_FAILURE);
     }
 
-    printf("TcpServer started on port %d\n", port);
+    cout << currentTime() << " TCP Server prepared" << endl;
     
     return list_s;
-
 }

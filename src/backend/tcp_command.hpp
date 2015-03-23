@@ -14,6 +14,8 @@ class TcpCommand {
 public:
   TcpCommand();
   string processCommand(string command);
+  string processMeasCommand(string command);
+  string processMeasListCommand(string command);
   
   MeasTypeArray *measTypeArray;
 };

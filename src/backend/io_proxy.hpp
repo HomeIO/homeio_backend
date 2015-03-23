@@ -10,6 +10,8 @@
 #include<netdb.h> //hostent
 #include<unistd.h>
 
+#include <mutex>
+
 using namespace std;
 
 class IoProxy {
@@ -18,6 +20,7 @@ public:
   std::string address;
   int port;
   bool verbose;
+  std::mutex tcpMutex;
 
   unsigned int fetch(char commandChar, char responseSize);
   

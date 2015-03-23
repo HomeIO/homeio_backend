@@ -38,10 +38,7 @@ int IoTcpServer::waitForCommand() {
     exit(EXIT_FAILURE);
   }
   
-  time (&rawtime);
-  timeinfo = localtime (&rawtime);
-  strftime (verbose_buffer, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
-  printf("IoServer accept\t\t%s\t", verbose_buffer);
+  printf("%s IoServer accept ", currentTime() );
   
   return conn_s;
 }

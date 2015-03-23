@@ -4,7 +4,7 @@ ActionTypeArray::ActionTypeArray() {
 
 unsigned int ActionTypeArray::add(ActionType *a) {
   actionTypes.push_back(*a);
-  cout << "ActionType added: '" << a->name << "' (" << actionTypes.size() << " total action types)" << endl;
+  cout << currentTime() << " ActionType added: '" << a->name << "' (" << actionTypes.size() << " total action types)" << endl;
   return 0;
 }
 

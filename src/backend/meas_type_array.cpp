@@ -4,7 +4,7 @@ MeasTypeArray::MeasTypeArray() {
 
 unsigned int MeasTypeArray::add(MeasType *m) {
   measTypes.push_back(*m);
-  cout << "MeasType added: '" << m->name << "' (" << measTypes.size() << " total meas types)" << endl;
+  cout << currentTime() << " MeasType added: '" << m->name << "' (" << measTypes.size() << " total meas types)" << endl;
   return 0;
 }
 
