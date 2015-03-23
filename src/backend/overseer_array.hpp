@@ -19,6 +19,7 @@ public:
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
   std::vector <Overseer> overseers;
+  unsigned long int cycleInterval;
 };
 
 #include "overseer_array.cpp"

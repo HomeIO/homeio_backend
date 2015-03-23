@@ -41,7 +41,9 @@ public:
   char verbose_buffer[80];
   time_t rawtime;
   struct tm * timeinfo;
+  bool verbose;
   
+  IoTcpServer();
   int createTcpServer();
   int waitForCommand();
   ssize_t readTcp();

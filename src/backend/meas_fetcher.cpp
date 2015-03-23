@@ -1,22 +1,19 @@
 MeasFetcher::MeasFetcher() {
+  // default intervals
+  betweenMeasInterval = 5000;
+  cycleInterval = 20000;
 }
 
 void MeasFetcher::start() {
   ioProxy->prepareSocket();
   
-  /*
-  for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
-    m->ioProxy = ioProxy;
-  }
-  */
-  
   unsigned int i;
   while(true) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
       m->fetch();
-      usleep(5000);
+      usleep(betweenMeasInterval);
     } 
 
-    usleep(20000);
+    usleep(cycleInterval);
   }
 }

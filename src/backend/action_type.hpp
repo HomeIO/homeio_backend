@@ -15,6 +15,7 @@ public:
   ActionType();
   unsigned int execute();
   string toJson();
+  void logInfo(string log); // overwritten color
   
   string name; // name of action
   char command; // at this moment only 1 byte commands

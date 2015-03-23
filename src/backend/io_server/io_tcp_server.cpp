@@ -1,7 +1,11 @@
+IoTcpServer::IoTcpServer() {
+  verbose = false;
+}
+
 // Create TCP listening socket
 int IoTcpServer::createTcpServer() {
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        fprintf(stderr, "IoServer ECHOSERV: Error creating listening socket.\n");
+        logError("IoServer ECHOSERV: Error creating listening socket.");
         exit(EXIT_FAILURE);
     }
 
@@ -18,27 +22,29 @@ int IoTcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        fprintf(stderr, "IoServer ECHOSERV: Error calling bind()\n");
+        logError("IoServer ECHOSERV: Error calling bind()");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, IO_SERVER_LISTENQ) < 0) {
-        fprintf(stderr, "IoServer ECHOSERV: Error calling listen()\n");
+        logError("IoServer ECHOSERV: Error calling listen()");
         exit(EXIT_FAILURE);
     }
 
-    printf("IoServer started on port %d\n", port);
+    logInfo("IoServer started on port " + to_string(port));
     
     return list_s;
 }
 
 int IoTcpServer::waitForCommand() {
   if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-    fprintf(stderr, "IoServer ECHOSERV: Error calling accept()\n");
+    logError("IoServer ECHOSERV: Error calling accept()");
     exit(EXIT_FAILURE);
   }
   
-  printf("%s IoServer accept ", currentTime() );
+  if (verbose) {
+    printf("%s IoServer accept ", currentTime() );
+  }
   
   return conn_s;
 }
@@ -49,13 +55,19 @@ ssize_t IoTcpServer::readTcp() {
   n = readLine(conn_s, buffer, MAX_LINE - 1);
   
   escapeBuffer();
-  printf("'%s'", verbose_buffer);
+  if (verbose) {
+    printf("'%s'", verbose_buffer);
+  }
   return n;
 }
 
 ssize_t IoTcpServer::writeTcp() {
   ssize_t n;
-  printf(" - '%s'", buffer);
+  
+  if (verbose) {
+    printf(" - '%s'\n", buffer);
+  }
+  
   n = writeLine(conn_s, buffer, count_response);
   return n;
 }
@@ -65,7 +77,6 @@ void IoTcpServer::closeSocket() {
     fprintf(stderr, "IoServer ECHOSERV: Error calling close()\n");
     exit(EXIT_FAILURE);
   }
-  printf("\n");
 }
 
 void IoTcpServer::escapeBuffer() {

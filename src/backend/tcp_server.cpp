@@ -5,12 +5,12 @@ int TcpServer::start() {
   int conn_s; // connection socket
   int list_s = createTcpServer();
   
-  cout << currentTime() << " TCP Server started on " << port << endl;
+  logInfo("TCP Server started on " + to_string(port));
   
   while (1) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-      fprintf(stderr, "TcpServer::start(): Error calling accept()\n");
+      logError("TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
     
@@ -27,7 +27,7 @@ int TcpServer::start() {
 
     // Close the connected socket
     if (close(conn_s) < 0) {
-      fprintf(stderr, "TcpServer::start(): Error calling close()\n");
+      logError("TcpServer::start(): Error calling close()");
       exit(EXIT_FAILURE);
     }
   }
@@ -93,7 +93,7 @@ int TcpServer::createTcpServer() {
     /*  Create the listening socket  */
 
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        fprintf(stderr, "TcpServer::createTcpServer(): Error creating listening socket.\n");
+        logError("TcpServer::createTcpServer(): Error creating listening socket.");
         exit(EXIT_FAILURE);
     }
 
@@ -111,16 +111,16 @@ int TcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        fprintf(stderr, "TcpServer::createTcpServer(): Error calling bind()\n");
+        logError("TcpServer::createTcpServer(): Error calling bind()");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, LISTENQ) < 0) {
-        fprintf(stderr, "TcpServer::createTcpServer(): Error calling listen()\n");
+        logError("TcpServer::createTcpServer(): Error calling listen()");
         exit(EXIT_FAILURE);
     }
 
-    cout << currentTime() << " TCP Server prepared" << endl;
+    logInfo("TCP Server prepared");
     
     return list_s;
 }

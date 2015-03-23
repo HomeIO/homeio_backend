@@ -4,7 +4,7 @@ Overseer::Overseer() {
 }
 
 bool Overseer::check() {
-  cout << currentTime() << " OverseerArray [" << name << "] check" << endl;
+  logInfo("OverseerArray [" + name + "] check");
   
   double value = currentValue();
   bool result = false;
@@ -20,10 +20,10 @@ bool Overseer::check() {
     }
   }
   
-  cout << currentTime() << " OverseerArray [" << name << "] value=" << value << endl;
-  cout << currentTime() << " OverseerArray [" << name << "] windowSize=" << windowSize << endl;
-  cout << currentTime() << " OverseerArray [" << name << "] thresholdValue=" << thresholdValue << endl;
-  cout << currentTime() << " OverseerArray [" << name << "] result=" << result << endl;
+  logInfo("OverseerArray [" + name + "] value=" + to_string(value));
+  logInfo("OverseerArray [" + name + "] windowSize=" + to_string(windowSize)); 
+  logInfo("OverseerArray [" + name + "] thresholdValue=" + to_string(thresholdValue));
+  logInfo("OverseerArray [" + name + "] result=" + to_string(result));
   
   if (result) {
     execute();
@@ -39,6 +39,6 @@ double Overseer::currentValue() {
 }
 
 unsigned int Overseer::execute() {
-  cout << currentTime() << " OverseerArray [" << name << "] execute" << endl;
+  logInfo("OverseerArray [" + name + "] execute now");
   action->execute();
 }

@@ -60,7 +60,7 @@ unsigned char HomeIO::startOverseer() {
 
 void *measStartThread(void *argument)
 {
-  cout << currentTime() << " Thread: startFetch() - meas fetching" << endl;
+  logInfo("Thread: startFetch() - meas fetching");
 
   HomeIO *h = (HomeIO *) argument;
   h->startFetch();
@@ -70,7 +70,7 @@ void *measStartThread(void *argument)
 
 void *tcpServerThread(void *argument)
 {
-  cout << currentTime() << " Thread: startServer() - TCP commands" << endl;
+  logInfo("Thread: startServer() - TCP commands");
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
@@ -78,7 +78,7 @@ void *tcpServerThread(void *argument)
 
 void *ioServerThread(void *argument)
 {
-  cout << currentTime() << " Thread: startIoServer() - IoServer - hardware-TCP bridge" << endl;
+  logInfo("Thread: startIoServer() - IoServer - hardware-TCP bridge");
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
@@ -86,7 +86,7 @@ void *ioServerThread(void *argument)
 
 void *ioOverseerThread(void *argument)
 {
-  cout << currentTime << " Thread: ioOverseerThread() - low level overseeers" << endl;
+  logInfo("Thread: ioOverseerThread() - low level overseeers");
 
   HomeIO *h = (HomeIO *) argument;
   h->startOverseer();
@@ -116,10 +116,9 @@ unsigned char HomeIO::start() {
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
       rc = pthread_join(threads[i], NULL);
-      printf("%s In main: thread %d is complete\n", currentTime(), i);
-      //assert(0 == rc);
+      logError("In main: thread " + to_string(i) + " is complete");
    }
  
-   printf("%s In main: All threads completed successfully\n", currentTime() );
-   //exit(EXIT_SUCCESS);
+   logError("In main: All threads completed successfully");
+   exit(EXIT_SUCCESS);
 }

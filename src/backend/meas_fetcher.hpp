@@ -13,6 +13,10 @@ public:
   
   MeasTypeArray *measTypeArray;
   IoProxy *ioProxy;
+  
+  unsigned long int betweenMeasInterval; // 5000
+  unsigned long int cycleInterval; // 20000
+  
 };
 
 #include "meas_fetcher.cpp"

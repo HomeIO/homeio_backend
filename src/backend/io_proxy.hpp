@@ -20,7 +20,7 @@ public:
   std::string address;
   int port;
   bool verbose;
-  std::mutex tcpMutex;
+  mutex tcpMutex;
 
   unsigned int fetch(char commandChar, char responseSize);
   

@@ -21,4 +21,25 @@ void resetColor() {
   txtColor(RESET, WHITE, BLACK);
 }
 
+void redColor() {
+  txtColor(RESET, RED, BLACK);
+}
 
+void logWithColor(string log, unsigned char color) {
+  logMutex.lock();
+  
+  txtColor(RESET, color, BLACK);
+  cout << currentTime() << " " << log << endl;
+  resetColor();
+  
+  logMutex.unlock();
+}
+
+void logError(string log) {
+  logWithColor(log, RED);
+}
+
+void logInfo(string log) {
+  //logWithColor(log, WHITE);
+  logWithColor(log, GREEN); // TODO remove it
+}

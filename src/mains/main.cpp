@@ -132,6 +132,10 @@ int main()
   io->port = "/dev/ttyUSB0";
   h->ioServer = io;
   
+  // meas fetcher intervals
+  h->measFetcher->betweenMeasInterval = 10000;
+  h->measFetcher->cycleInterval = 50000;
+  
   // actions
   ActionType *a;
   a = new ActionType();
@@ -157,6 +161,9 @@ int main()
   a->responseOkay = 20;
   // add this measuremt type to measurement which will be fetched by this server
   h->actionTypeArray->add(a);
+  
+  // overseers intervals
+  h->overseerArray->cycleInterval = 2000000;
   
   // overseers
   Overseer *o;

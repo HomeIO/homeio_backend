@@ -2,19 +2,20 @@ ActionType::ActionType() {
   executionCount = 0;
 }
 
+void ActionType::logInfo(string log) {
+  logWithColor(log, YELLOW);
+}
+
 unsigned int ActionType::execute() {
   unsigned int raw = ioProxy->fetch(command, responseSize);
   
   if (raw == responseOkay) {
     executionCount++;
-    cout << currentTime() << " ActionType [" << name << "] executed" << endl;
+    logInfo("ActionType [" + name + "] executed");
   } 
   else {
     failedCount++;
-    
-    txtColor(RESET, RED, BLACK);
-    cout << currentTime() << " ActionType [" << name << "] FAILED, result=" << raw << ",command=" << command << ",responseSize=" << responseSize << endl;
-    resetColor();
+    logError("ActionType [" + name + "] FAILED, result=" + to_string(raw) + ",command=" + to_string(command) + ",responseSize=" + to_string(responseSize) );
   }
   
   return raw;

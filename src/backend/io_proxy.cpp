@@ -23,19 +23,15 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
 
   if( send(sock, commandArray, sizeof(commandArray), 0) < 0)
   {
-    perror("Send failed");
+    logError("IoProxy: Send failed");
     tcpMutex.unlock(); // end of mutex
     return 1;
   }
   
-  if (verbose) {
-    cout << "Data send " << commandArray << " " << sizeof(commandArray) << endl;
-  }  
-     
   //Receive a reply from the server
   if( recv(sock, buffer, responseSize, 0) < 0)
   {
-    puts("recv failed");
+    logError("IoProxy: recv failed");
   }
   
   disconnectSocket();
@@ -48,17 +44,12 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   for (i; i < responseSize; i++)
   {
     part_raw = buffer[i];
-    
-    if (false) {
-      cout << "  " << i << " - " << to_string( part_raw ) << "  ";
-    }  
-    
     raw *= 256;
     raw += part_raw;
   }
   
   if (verbose) {
-    cout << "Data received" << buffer << endl;
+    logInfo("IoProxy: Data received" + to_string(raw));
   }  
   
   return raw;
@@ -76,9 +67,7 @@ int IoProxy::prepareSocket()
     //resolve the hostname, its not an ip address
     if ( (he = gethostbyname( address.c_str() ) ) == NULL)
     {
-      //gethostbyname failed
-      herror("gethostbyname");
-      cout<<"Failed to resolve hostname\n";
+      logError("IoProxy: Failed to resolve hostname " + address);
              
       return false;
     }
@@ -90,11 +79,6 @@ int IoProxy::prepareSocket()
     {
       //strcpy(ip , inet_ntoa(*addr_list[i]) );
       server.sin_addr = *addr_list[i];
-             
-      if (verbose) {
-	cout<<address<<" resolved to "<<inet_ntoa(*addr_list[i])<<endl;
-      }
-             
       break;
     }
   }
@@ -114,19 +98,16 @@ int IoProxy::connectSocket()
   sock = socket(AF_INET , SOCK_STREAM , 0);
   if (sock == -1)
   {
-    perror("Could not create socket");
+    logError("IoProxy: could not create socket");
   }
   
   //Connect to remote server
   if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
   {
-    perror("connect failed. Error");
+    logError("IoProxy: connect failed. Error");
     return 1;
   }
      
-  if (verbose) {   
-    cout<<"Connected\n";
-  }  
   return 0;
 
 }
@@ -138,7 +119,6 @@ int IoProxy::disconnectSocket()
   
   if (sock > 0)
   {
-    //close(sock);
     return 0;
   }
   return 1;

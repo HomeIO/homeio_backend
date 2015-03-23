@@ -21,6 +21,7 @@ public:
   double lastValue();
   double lastValueFor(unsigned int);
   string toJson();
+  void prepareFetch();
 
   MeasBuffer *buffer;
   
@@ -30,6 +31,9 @@ public:
   
   double coefficientLinear;
   int coefficientOffset;
+  
+  bool started;
+  string logPrefix;
   
   IoProxy *ioProxy;
 	

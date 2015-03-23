@@ -1,10 +1,11 @@
 OverseerArray::OverseerArray() {
   std::vector <Overseer> overseers;
+  cycleInterval = 1000000;
 }
 
 unsigned int OverseerArray::add(Overseer *o) {
   overseers.push_back(*o);
-  cout << currentTime() << " Overseer added: '" << o->name << "' (" << overseers.size() << " total overseers)" << endl;
+  logInfo("Overseer added: '" + o->name + "' (" + to_string(overseers.size()) + " total overseers)");
   return 0;
 }
 
@@ -20,7 +21,7 @@ Overseer *OverseerArray::byName(string s) {
 int OverseerArray::start() {
   // wait 2s to warm up
   usleep(200000);
-  cout << currentTime() << " OverseerArray start" << endl;
+  logInfo("OverseerArray start");
   
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     it->meas = measTypeArray->byName(it->measName);
@@ -29,14 +30,14 @@ int OverseerArray::start() {
   }
   
   while(true) {
-    cout << currentTime() << " OverseerArray loop start" << endl;
+    logInfo("OverseerArray loop start");
     for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
       it->check();
     }
-    cout << currentTime() << " OverseerArray loop end" << endl;
+    logInfo("OverseerArray loop end");
     
-    // check overseers every next 1s
-    usleep(100000);
+    // check overseers every next X useconds
+    usleep(cycleInterval);
   }
   
   return 0;

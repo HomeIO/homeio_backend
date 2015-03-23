@@ -3,17 +3,30 @@ MeasType::MeasType() {
   
   coefficientLinear = 1.0;
   coefficientOffset = 0;
+  
+  started = false;
 }
 
 unsigned int MeasType::fetch() {
+  prepareFetch();
+  
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
   
-  cout << currentTime() << " MeasBuffer [" << name << "] raw\t" << raw << "\tvalue\t" << rawToValue(raw) << "\t[offset=" << buffer->offset << ",count=" << buffer->count << ",memory=" << buffer->memorySize() << "]" << endl;
+  logInfo(logPrefix + "raw,value =  " + strColor(RESET, BLUE, BLACK) + to_string(raw) + strColor(RESET, GREEN, BLACK) + " , " + strColor(RESET, BLUE, BLACK) + to_string(rawToValue(raw)) + strColor(RESET, GREEN, BLACK) );
   
   return raw;
 }
 
+void MeasType::prepareFetch() {
+  if (started) {
+    return;
+  }
+
+  logPrefix = "MeasBuffer [" + name + "] ";
+  logPrefix.append(30 - logPrefix.length(), ' ');
+  started = true;
+}
 
 unsigned int MeasType::addRaw(unsigned int _raw) {
   buffer->add(_raw);

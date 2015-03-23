@@ -3,7 +3,7 @@ TcpCommand::TcpCommand() {
 
 // sample command: "meas;batt_u;0;100;"
 string TcpCommand::processCommand(string command) {
-  cout << currentTime() << " TCP command: " << command << endl;
+  logInfo("TCP command: " + command);
   
   string commandName, response;
   response = "{}";
@@ -31,8 +31,7 @@ string TcpCommand::processCommand(string command) {
     response = processActionExecuteCommand(command);
   }
 
-  
-  cout << currentTime() << " TCP response: " << response << endl;
+  logInfo("TCP response: " + response);
   
   return response;
 }
@@ -67,8 +66,6 @@ string TcpCommand::processMeasCommand(string command) {
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
-  
-  cout << currentTime() << " TCP response: " << response << endl;
   
   return response;
 }
@@ -146,8 +143,6 @@ string TcpCommand::processActionExecuteCommand(string command) {
   else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
-  
-  cout << currentTime() << " TCP response: " << response << endl;
   
   return response;  
 }
