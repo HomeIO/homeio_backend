@@ -23,6 +23,10 @@ string TcpCommand::processCommand(string command) {
     response = processMeasDetailsCommand(command);
   }
 
+  if (commandName == "measStorage") {
+    response = processMeasStorageCommand(command);
+  }
+  
   if (commandName == "actionDetails") {
     response = processActionDetailsCommand(command);
   }
@@ -115,6 +119,37 @@ string TcpCommand::processMeasDetailsCommand(string command) {
     
   return response;
 }
+
+string TcpCommand::processMeasStorageCommand(string command) {
+  string measName, fromString, toString, response;
+  double from, to;
+  
+  measName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  fromString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  toString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  stringstream(fromString) >> from;
+  stringstream(toString) >> to;
+  
+  MeasType *foundMeasType = measTypeArray->byName(measName);
+  
+  if (foundMeasType) {
+    string bufferString = foundMeasType->storageBuffer(from, to);
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
+    response +=  "\"data\":" + bufferString;
+    response += "}";
+  }
+  else {
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
+  }  
+  return response;
+}
+
 
 string TcpCommand::processActionDetailsCommand(string command) {
   string response, detailsResponse;

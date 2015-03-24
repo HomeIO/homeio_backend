@@ -1,10 +1,15 @@
 MeasType::MeasType() {
   buffer = new MeasBuffer;
+  measTypeStorage = new MeasTypeStorage;
   
   coefficientLinear = 1.0;
   coefficientOffset = 0;
   
   started = false;
+}
+
+string MeasType::storageBuffer(double timeFrom, double timeTo) {
+  return measTypeStorage->storageJson(timeFrom, timeTo);
 }
 
 unsigned int MeasType::fetch() {

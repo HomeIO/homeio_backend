@@ -19,6 +19,7 @@ public:
   string processMeasCommand(string command);
   string processMeasListCommand(string command);
   string processMeasDetailsCommand(string command);
+  string processMeasStorageCommand(string command);
   
   string processActionDetailsCommand(string command);
   string processActionExecuteCommand(string command);

@@ -10,6 +10,7 @@
 
 #include "io_proxy.hpp"
 #include "meas_buffer.hpp"
+#include "meas_type_storage.hpp"
 
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
   double lastValueFor(unsigned int);
   string toJson();
   void logInfo(string log); // overwritten color
+  string storageBuffer(double timeFrom, double timeTo);
 
   
   void prepareFetch();
@@ -42,6 +44,7 @@ public:
   string logPrefix;
   
   IoProxy *ioProxy;
+  MeasTypeStorage *measTypeStorage;
 	
 };
 
