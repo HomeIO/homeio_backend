@@ -27,6 +27,8 @@ public:
   
   string processOverseerDetailsCommand(string command);
   
+  void logInfo(string log); // overwritten color
+  
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;

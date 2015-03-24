@@ -13,16 +13,15 @@ public:
   unsigned long int memorySize();
   bool stored(unsigned long int i);
   string jsonArray(unsigned long int from, unsigned long int to);
-  float calcInterval();
   
   unsigned long int maxSize;
   unsigned long int offset;
   unsigned long int count;
   
   unsigned char elementSize;
-  
-  time_t lastTime, firstTime, lastTimeForCount;
-  float interval;
+
+  unsigned long int calcInterval();
+  unsigned long long lastTime, firstTime, lastTimeForCount;
   
 private:
   vector < unsigned int > buffer;

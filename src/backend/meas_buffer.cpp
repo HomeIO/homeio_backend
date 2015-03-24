@@ -15,24 +15,24 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   }
   if (offset > count) {
     count = offset;
-    lastTimeForCount = time(NULL);
+    lastTimeForCount = mTime();
   }
   if (firstTime == 0) {
-    firstTime = time(NULL);
+    firstTime = mTime();
   }
-  lastTime = time(NULL);
+  lastTime = mTime();
   
   buffer[offset] = raw;
   
   return offset;
 }
 
-float MeasBuffer::calcInterval() {
+unsigned long int MeasBuffer::calcInterval() {
   if (offset == 0) {
-    return 1.0; // not to fuck up all this shit somewhere
+    return 1; // not to fuck up all this shit somewhere
   } else {
-    unsigned long int timeCount = (unsigned long int) lastTimeForCount - (unsigned long int) firstTime;
-    return (float) timeCount / (float) count;
+    unsigned long long timeCount = lastTimeForCount - firstTime;
+    return timeCount / count;
   }
 }
 
@@ -74,7 +74,12 @@ string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
     s += ",";
   }
   
-  s += "null]";
+  // remove last coma
+  if (s[s.size() - 1] == ',') {
+    s.resize(s.size() - 1);
+  }
+  
+  s += "]";
   
   return s;
 }

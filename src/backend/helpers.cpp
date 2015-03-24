@@ -7,6 +7,16 @@ char* currentTime() {
   return currentTimeBuffer;
 }
 
+unsigned long long uTime() {
+  unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1) ;
+  return ut;  
+}
+
+unsigned long long mTime() {
+  unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::milliseconds(1) ;
+  return ut;  
+}
+
 char *strColor(int attr, int fg, int bg) {
   sprintf(colorCommand, "%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
   return colorCommand;

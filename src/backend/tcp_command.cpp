@@ -1,6 +1,10 @@
 TcpCommand::TcpCommand() {
 }
 
+void TcpCommand::logInfo(string log) {
+  logWithColor(log, CYAN);
+}
+
 // sample command: "meas;batt_u;0;100;"
 string TcpCommand::processCommand(string command) {
   logInfo("TCP command: " + command);
@@ -70,11 +74,13 @@ string TcpCommand::processMeasCommand(string command) {
   if (foundMeasType) {
     string bufferString = foundMeasType->buffer->jsonArray(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
-    response += ",\"last_time\":" + to_string( foundMeasType->buffer->lastTime );
-    response += ",\"first_time\":" + to_string( foundMeasType->buffer->firstTime );
+    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
     response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
     response += ",\"count\":" + to_string( foundMeasType->buffer->count );
-    response += ",\"data\": " + bufferString + "}";
+    response += ",\"miliSeconds\":1";
+    response += ",\"data\": " + bufferString;
+    response += "}";
   }
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
@@ -122,7 +128,7 @@ string TcpCommand::processMeasDetailsCommand(string command) {
 
 string TcpCommand::processMeasStorageCommand(string command) {
   string measName, fromString, toString, response;
-  double from, to;
+  unsigned long long from, to;
   
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);

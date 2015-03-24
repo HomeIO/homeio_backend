@@ -20,12 +20,13 @@ public:
   unsigned int fetch();
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);
+  double valueAt(unsigned long int i);
   unsigned int lastRaw();
   double lastValue();
   double lastValueFor(unsigned int);
   string toJson();
   void logInfo(string log); // overwritten color
-  string storageBuffer(double timeFrom, double timeTo);
+  string storageBuffer(unsigned long long timeFrom, unsigned long long timeTo);
 
   
   void prepareFetch();
@@ -45,6 +46,10 @@ public:
   
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
+  
+  unsigned long int timeToIndex(unsigned long long t);
+  string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
+
 	
 };
 

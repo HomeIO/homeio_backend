@@ -1,6 +1,8 @@
 MeasType::MeasType() {
   buffer = new MeasBuffer;
+  
   measTypeStorage = new MeasTypeStorage;
+  measTypeStorage->measBuffer = buffer;
   
   coefficientLinear = 1.0;
   coefficientOffset = 0;
@@ -8,8 +10,8 @@ MeasType::MeasType() {
   started = false;
 }
 
-string MeasType::storageBuffer(double timeFrom, double timeTo) {
-  return measTypeStorage->storageJson(timeFrom, timeTo);
+string MeasType::storageBuffer(unsigned long long timeFrom, unsigned long long timeTo) {
+  return storageJson(timeFrom, timeTo);
 }
 
 unsigned int MeasType::fetch() {
@@ -71,6 +73,7 @@ double MeasType::lastValue() {
   rawToValue(lastRaw());
 }
 
+// last avg value
 double MeasType::lastValueFor(unsigned int i) {
   long int tmpRaw = 0;
   unsigned int j = 0;
@@ -97,6 +100,10 @@ double MeasType::rawToValue(unsigned int _raw) {
   return (double)((int) _raw + coefficientOffset) * coefficientLinear;
 }
 
+double MeasType::valueAt(unsigned long int i) {
+  rawToValue(buffer->at(i));
+}
+
 string MeasType::toJson() {
   string json;
   
@@ -114,4 +121,59 @@ string MeasType::toJson() {
   
 void MeasType::logInfo(string log) {
   logWithColor(log, GREEN);
+}
+
+unsigned long int MeasType::timeToIndex(unsigned long long t) {
+  if (t >= buffer->lastTime) {
+    return 0; // out of range
+  }
+  
+  unsigned long long tempTime = (buffer->lastTime - t);
+  unsigned long int tempIndex = (unsigned long int) (tempTime / (unsigned long long) buffer->calcInterval() );
+  
+  cout << "tempTime " << tempTime << endl;
+  cout << "tempIndex " << tempIndex << endl;
+  cout << "t " << t << endl;
+  cout << "buffer->lastTime " << buffer->lastTime << endl;
+  
+  
+  return tempIndex;  
+}
+
+string MeasType::storageJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  unsigned long int indexFrom = timeToIndex(timeFrom);
+  unsigned long int indexTo = timeToIndex(timeTo);
+  
+  string devData, valueArray, storageArray, response;
+  
+  // just debug data
+  devData = "{";
+  devData += "\"indexFrom\":" + to_string(indexFrom) + ",";
+  devData += "\"indexTo\":" + to_string(indexTo) + ",";
+  devData += "\"timeFrom\":" + to_string(timeFrom) + ",";
+  devData += "\"timeTo\":" + to_string(timeTo) + ",";
+  devData += "\"interval\":" + to_string(buffer->calcInterval()) + ",";
+  devData += "\"count\":" + to_string(buffer->count) + ",";
+  devData += "\"lastTime\":" + to_string(buffer->lastTime) + ",";
+  devData += "\"firstTime\":" + to_string(buffer->firstTime);
+  devData += "}";
+
+  // raw values
+  valueArray = "[";
+  for (unsigned long int i = indexFrom; i <= indexTo; i--) {
+    valueArray += to_string(valueAt(i)); 
+  }
+  valueArray += "]"; 
+  
+  // processed to storage format
+  // TODO copy storage parameters, value array, time ranges to storage class
+  storageArray = "[]";
+  
+  response = "{";
+  response += "\"devData\":" + devData + ",";
+  response += "\"valueArray\":" + valueArray + ",";  
+  response += "\"storageArray\":" + storageArray;  
+  response += "}";
+  
+  return response;
 }
