@@ -3,6 +3,10 @@ OverseerArray::OverseerArray() {
   cycleInterval = 1000000;
 }
 
+void OverseerArray::logInfo(string log) {
+  logWithColor(log, MAGENTA);
+}
+
 unsigned int OverseerArray::add(Overseer *o) {
   overseers.push_back(*o);
   logInfo("Overseer added: '" + o->name + "' (" + to_string(overseers.size()) + " total overseers)");

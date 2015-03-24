@@ -23,6 +23,8 @@ public:
   double lastValue();
   double lastValueFor(unsigned int);
   string toJson();
+  void logInfo(string log); // overwritten color
+
   
   void prepareFetch();
   string fetchString(unsigned int raw);

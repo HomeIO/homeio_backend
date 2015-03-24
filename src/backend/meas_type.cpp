@@ -107,3 +107,6 @@ string MeasType::toJson() {
   return json;
 }
   
+void MeasType::logInfo(string log) {
+  logWithColor(log, GREEN);
+}

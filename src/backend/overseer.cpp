@@ -6,6 +6,10 @@ Overseer::Overseer() {
   maxTimeBufferSize = 10;
 }
 
+void Overseer::logInfo(string log) {
+  logWithColor(log, MAGENTA);
+}
+
 bool Overseer::check() {
   if (checkLastExecutionTime() == false) {
     return false;

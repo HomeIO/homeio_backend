@@ -15,6 +15,7 @@ public:
   unsigned int add(Overseer *m);
   int start();
   Overseer *byName(string s);
+  void logInfo(string log); // overwritten color
   
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;

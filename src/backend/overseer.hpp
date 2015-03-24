@@ -35,6 +35,9 @@ public:
   unsigned int execute();
   string toJson();
   
+  void logInfo(string log); // overwritten color
+
+  
 private:
 };
 

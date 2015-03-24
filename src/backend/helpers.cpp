@@ -40,6 +40,5 @@ void logError(string log) {
 }
 
 void logInfo(string log) {
-  //logWithColor(log, WHITE);
-  logWithColor(log, GREEN); // TODO remove it
+  logWithColor(log, WHITE);
 }
