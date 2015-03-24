@@ -25,7 +25,6 @@ public:
   
   string processOverseerDetailsCommand(string command);
   
-  
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;

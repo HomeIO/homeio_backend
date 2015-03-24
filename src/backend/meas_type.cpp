@@ -35,7 +35,7 @@ string MeasType::fetchString(unsigned int raw) {
   tmpString += strColor(RESET, BLUE, BLACK);
   
   partialString = to_string(raw);
-  partialString.insert(0, 8 - partialString.length(), ' ');
+  partialString.insert(0, 10 - partialString.length(), ' ');
   tmpString += partialString;
   
   tmpString += strColor(RESET, GREEN, BLACK);
@@ -45,7 +45,7 @@ string MeasType::fetchString(unsigned int raw) {
   ostringstream os;
   os << setprecision(5) << rawToValue(raw);
   partialString = os.str();
-  partialString.insert(0, 8 - partialString.length(), ' ');
+  partialString.insert(0, 12 - partialString.length(), ' ');
   tmpString += partialString;
   
   tmpString += strColor(RESET, GREEN, BLACK);

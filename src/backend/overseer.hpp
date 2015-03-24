@@ -2,8 +2,12 @@
 #define	OVERSEER
 
 #include <string>
+#include <ctime>
+
 #include "action_type.hpp"
 #include "meas_type.hpp"
+
+using namespace std;
 
 class Overseer {
 public:
@@ -15,6 +19,13 @@ public:
   bool isMax; // when true execute only if higher
   unsigned int windowSize; // use average of measurements
   
+  // related to execution time buffer
+  unsigned long int minExecInterval; // allow execution only when X seconds passed since previous execution
+  unsigned int maxTimeBufferSize; // how many execution times should be stored in
+  vector < unsigned long int > timeBuffer;
+  void markExecutionTime();
+  bool checkLastExecutionTime();
+  
   MeasType *meas;
   ActionType *action;
   
@@ -22,6 +33,7 @@ public:
   bool check();
   double currentValue();
   unsigned int execute();
+  string toJson();
   
 private:
 };

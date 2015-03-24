@@ -25,7 +25,7 @@ public:
   float interval;
   
 private:
-  std::vector < unsigned int > buffer;
+  vector < unsigned int > buffer;
   
 };
 

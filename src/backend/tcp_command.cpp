@@ -31,6 +31,11 @@ string TcpCommand::processCommand(string command) {
     response = processActionExecuteCommand(command);
   }
 
+  if (commandName == "overseerDetails") {
+    response = processOverseerDetailsCommand(command);
+  }
+  
+  
   logInfo("TCP response: " + response);
   
   return response;
@@ -147,4 +152,22 @@ string TcpCommand::processActionExecuteCommand(string command) {
   return response;  
 }
 
+string TcpCommand::processOverseerDetailsCommand(string command) {
+  string response, detailsResponse;
+  
+  response = "{\"status\":0,\"array\":[";
+  
+  for(std::vector<Overseer>::iterator it = overseerArray->overseers.begin(); it != overseerArray->overseers.end(); ++it) {
+    detailsResponse += it->toJson() + ",";
+  }  
+  
+  // remove last coma
+  if (detailsResponse[detailsResponse.size() - 1] == ',') {
+    detailsResponse.resize(detailsResponse.size() - 1);
+  }
+  
+  response += detailsResponse + "]}";
+    
+  return response;
+}
 
