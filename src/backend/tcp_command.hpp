@@ -22,6 +22,7 @@ public:
   
   string processActionDetailsCommand(string command);
   string processActionExecuteCommand(string command);
+  string processActionHistoryCommand(string command);
   
   string processOverseerDetailsCommand(string command);
   

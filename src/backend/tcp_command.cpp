@@ -31,6 +31,10 @@ string TcpCommand::processCommand(string command) {
     response = processActionExecuteCommand(command);
   }
 
+  if (commandName == "actionHistory") {
+    response = processActionHistoryCommand(command);
+  }
+  
   if (commandName == "overseerDetails") {
     response = processOverseerDetailsCommand(command);
   }
@@ -141,9 +145,27 @@ string TcpCommand::processActionExecuteCommand(string command) {
   ActionType *foundActionType = actionTypeArray->byName(actionName);
   
   if (foundActionType) {
-    string bufferString;
     foundActionType->execute();
     response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
+  }
+  else {
+    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
+  }
+  
+  return response;  
+}
+
+string TcpCommand::processActionHistoryCommand(string command) {
+  string actionName;
+  actionName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  string response;
+  
+  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  
+  if (foundActionType) {
+    response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
   }
   else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";

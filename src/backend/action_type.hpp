@@ -15,6 +15,7 @@ public:
   ActionType();
   unsigned int execute();
   string toJson();
+  string historyToJson();
   void logInfo(string log); // overwritten color
   
   string name; // name of action
@@ -24,6 +25,11 @@ public:
   
   unsigned long int executionCount;
   unsigned long int failedCount;
+  
+  // time buffer
+  unsigned int maxTimeBufferSize; // how many execution times should be stored in
+  vector < unsigned long int > timeBuffer;
+  void markExecutionTime();
   
   IoProxy *ioProxy;
 	
