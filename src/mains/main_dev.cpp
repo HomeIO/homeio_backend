@@ -53,21 +53,21 @@ int main()
   // overseers
   Overseer *o;
   o = new Overseer();
-  o->name = "turn_led_on_on_low_light";
-  o->actionName = "turn_led_on";
-  o->measName = "light";
-  o->thresholdValue = 100.0;
-  o->isMax = false;
-  o->windowSize = 50;
-  h->overseerArray->add(o);
-
-  o = new Overseer();
   o->name = "turn_led_off_on_high_light";
   o->actionName = "turn_led_off";
   o->measName = "light";
-  o->thresholdValue = 300.0;
+  o->thresholdValue = 200.0; // TODO
+  o->isMax = true;
+  o->windowSize = 60;
+  h->overseerArray->add(o);
+  
+  o = new Overseer();
+  o->name = "turn_led_on_on_low_light";
+  o->actionName = "turn_led_on";
+  o->measName = "light";
+  o->thresholdValue = 160.0; // TODO
   o->isMax = false;
-  o->windowSize = 50;
+  o->windowSize = 60;
   h->overseerArray->add(o);
   
   h->start();
