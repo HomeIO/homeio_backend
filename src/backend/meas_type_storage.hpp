@@ -1,7 +1,7 @@
 #ifndef MEAS_TYPE_STORAGE_H
 #define	MEAS_TYPE_STORAGE_H
 
-#include <time.h>
+#include <cmath>
 #include <string>
 
 #include "storage_hash.hpp"
@@ -19,9 +19,14 @@ public:
   
   vector < double > buffer;
   
+  StorageHash *sh;
   void clearBuffer();
   vector < StorageHash > prepareStorageBuffer();
   string storageJson();
+  
+  bool valueDiffCheck(double p, double n);
+  bool minTimeDiffCheck(unsigned long long p, unsigned long long n);
+  bool maxTimeDiffCheck(unsigned long long p, unsigned long long n);
 };
 
 #include "meas_type_storage.cpp"

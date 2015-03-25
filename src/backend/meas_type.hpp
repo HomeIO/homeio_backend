@@ -26,8 +26,11 @@ public:
   double lastValueFor(unsigned int);
   string toJson();
   void logInfo(string log); // overwritten color
+  
+  unsigned long int minTimeDiffToStore;
+  unsigned long int maxTimeDiffToStore;
+  double valueDiffToStore;
   string storageBuffer(unsigned long long timeFrom, unsigned long long timeTo);
-
   
   void prepareFetch();
   string fetchString(unsigned int raw);

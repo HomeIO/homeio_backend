@@ -2,6 +2,10 @@ MeasType::MeasType() {
   buffer = new MeasBuffer;
   
   measTypeStorage = new MeasTypeStorage;
+  // default storage parameters
+  minTimeDiffToStore = 1000;
+  maxTimeDiffToStore = 3600000;
+  valueDiffToStore = 1.0;
   
   coefficientLinear = 1.0;
   coefficientOffset = 0;
@@ -158,14 +162,13 @@ string MeasType::storageJson(unsigned long long timeFrom, unsigned long long tim
   detailsString += "\"firstTime\":" + to_string(buffer->firstTime);
   detailsString += "}";
 
-  cout << indexFrom << endl;
-  cout << indexTo << endl;
+  //cout << indexFrom << endl;
+  //cout << indexTo << endl;
   
   // values array
   valueArrayString = "[";
   // something weird if "i >=", so better stay "i >"
   for (unsigned long int i = indexFrom; i > indexTo; i--) {
-    cout << i << endl;
     tmpValue = valueAt(i);
     valueArrayString += to_string(tmpValue) + ","; 
     // will be used in storage
@@ -177,9 +180,10 @@ string MeasType::storageJson(unsigned long long timeFrom, unsigned long long tim
   }
   valueArrayString += "]"; 
   
-  // processed to storage format
-  // TODO copy storage parameters, value array, time ranges to storage class
-  
+  // copy storage parameters
+  measTypeStorage->minTimeDiffToStore = minTimeDiffToStore;
+  measTypeStorage->maxTimeDiffToStore = maxTimeDiffToStore;
+  measTypeStorage->valueDiffToStore = valueDiffToStore;
   measTypeStorage->timeTo = timeTo;
   measTypeStorage->timeFrom = timeFrom;
   measTypeStorage->interval = buffer->calcInterval();

@@ -32,6 +32,13 @@ int main()
   // value = (raw + coefficientOffset)* coefficientLinear 
   m->coefficientLinear = 1.0;
   m->coefficientOffset = 0;
+  // do not store measurements if they are 'too short', in miliseconds
+  m->minTimeDiffToStore = 2000;
+  // force to store measurements if too much time passed, in miliseconds
+  m->maxTimeDiffToStore = 3600000;
+  // store measurement if value changed enough
+  m->valueDiffToStore = 1.0;
+  
   // add this measuremt type to measurement which will be fetched by this server
   h->measTypeArray->add(m);
   
@@ -48,7 +55,11 @@ int main()
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
   m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 1000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 2.0;
   h->measTypeArray->add(m);
+
   
   m = new MeasType();
   m->name = "i_gen_batt";
