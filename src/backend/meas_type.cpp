@@ -2,7 +2,6 @@ MeasType::MeasType() {
   buffer = new MeasBuffer;
   
   measTypeStorage = new MeasTypeStorage;
-  measTypeStorage->measBuffer = buffer;
   
   coefficientLinear = 1.0;
   coefficientOffset = 0;
@@ -144,34 +143,51 @@ string MeasType::storageJson(unsigned long long timeFrom, unsigned long long tim
   unsigned long int indexFrom = timeToIndex(timeFrom);
   unsigned long int indexTo = timeToIndex(timeTo);
   
-  string devData, valueArray, storageArray, response;
+  string detailsString, valueArrayString, storageArray, response;
+  double tmpValue;
   
   // just debug data
-  devData = "{";
-  devData += "\"indexFrom\":" + to_string(indexFrom) + ",";
-  devData += "\"indexTo\":" + to_string(indexTo) + ",";
-  devData += "\"timeFrom\":" + to_string(timeFrom) + ",";
-  devData += "\"timeTo\":" + to_string(timeTo) + ",";
-  devData += "\"interval\":" + to_string(buffer->calcInterval()) + ",";
-  devData += "\"count\":" + to_string(buffer->count) + ",";
-  devData += "\"lastTime\":" + to_string(buffer->lastTime) + ",";
-  devData += "\"firstTime\":" + to_string(buffer->firstTime);
-  devData += "}";
+  detailsString = "{";
+  detailsString += "\"indexFrom\":" + to_string(indexFrom) + ",";
+  detailsString += "\"indexTo\":" + to_string(indexTo) + ",";
+  detailsString += "\"timeFrom\":" + to_string(timeFrom) + ",";
+  detailsString += "\"timeTo\":" + to_string(timeTo) + ",";
+  detailsString += "\"interval\":" + to_string(buffer->calcInterval()) + ",";
+  detailsString += "\"count\":" + to_string(buffer->count) + ",";
+  detailsString += "\"lastTime\":" + to_string(buffer->lastTime) + ",";
+  detailsString += "\"firstTime\":" + to_string(buffer->firstTime);
+  detailsString += "}";
 
-  // raw values
-  valueArray = "[";
-  for (unsigned long int i = indexFrom; i <= indexTo; i--) {
-    valueArray += to_string(valueAt(i)); 
+  cout << indexFrom << endl;
+  cout << indexTo << endl;
+  
+  // values array
+  valueArrayString = "[";
+  // something weird if "i >=", so better stay "i >"
+  for (unsigned long int i = indexFrom; i > indexTo; i--) {
+    cout << i << endl;
+    tmpValue = valueAt(i);
+    valueArrayString += to_string(tmpValue) + ","; 
+    // will be used in storage
+    measTypeStorage->buffer.push_back(tmpValue);
   }
-  valueArray += "]"; 
+  // remove last coma
+  if (valueArrayString[valueArrayString.size() - 1] == ',') {
+    valueArrayString.resize(valueArrayString.size() - 1);
+  }
+  valueArrayString += "]"; 
   
   // processed to storage format
   // TODO copy storage parameters, value array, time ranges to storage class
-  storageArray = "[]";
+  
+  measTypeStorage->timeTo = timeTo;
+  measTypeStorage->timeFrom = timeFrom;
+  measTypeStorage->interval = buffer->calcInterval();
+  storageArray = measTypeStorage->storageJson();
   
   response = "{";
-  response += "\"devData\":" + devData + ",";
-  response += "\"valueArray\":" + valueArray + ",";  
+  response += "\"details\":" + detailsString + ",";
+  response += "\"valueArray\":" + valueArrayString + ",";  
   response += "\"storageArray\":" + storageArray;  
   response += "}";
   
