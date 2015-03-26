@@ -130,11 +130,10 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   unsigned long long tempTime = (buffer->lastTime - t);
   unsigned long int tempIndex = (unsigned long int) (tempTime / (unsigned long long) buffer->calcInterval() );
   
-  cout << "tempTime " << tempTime << endl;
-  cout << "tempIndex " << tempIndex << endl;
-  cout << "t " << t << endl;
-  cout << "buffer->lastTime " << buffer->lastTime << endl;
-  
+  //cout << "tempTime " << tempTime << endl;
+  //cout << "tempIndex " << tempIndex << endl;
+  //cout << "t " << t << endl;
+  //cout << "buffer->lastTime " << buffer->lastTime << endl;
   
   return tempIndex;  
 }

@@ -7,6 +7,8 @@ FileStorage::FileStorage() {
 void FileStorage::start()
 {
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  // TODO maybe add S_IWOTH 
+  // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
   
   while(true) {
     performMeasStore();
