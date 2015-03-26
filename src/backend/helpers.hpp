@@ -14,6 +14,8 @@ time_t currentTimeObject;
 struct tm * currentTimeInfo;
 char currentTimeBuffer[20];
 mutex logMutex;
+mutex storageMutex; // must place here, because MeasType is in array or sth
+
 
 // colors
 

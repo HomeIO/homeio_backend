@@ -13,10 +13,6 @@ MeasType::MeasType() {
   started = false;
 }
 
-string MeasType::storageBuffer(unsigned long long timeFrom, unsigned long long timeTo) {
-  return storageJson(timeFrom, timeTo);
-}
-
 unsigned int MeasType::fetch() {
   prepareFetch();
   
@@ -143,57 +139,44 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   return tempIndex;  
 }
 
-string MeasType::storageJson(unsigned long long timeFrom, unsigned long long timeTo) {
-  unsigned long int indexFrom = timeToIndex(timeFrom);
-  unsigned long int indexTo = timeToIndex(timeTo);
-  
-  string detailsString, valueArrayString, storageArray, response;
-  double tmpValue;
-  
-  // just debug data
-  detailsString = "{";
-  detailsString += "\"indexFrom\":" + to_string(indexFrom) + ",";
-  detailsString += "\"indexTo\":" + to_string(indexTo) + ",";
-  detailsString += "\"timeFrom\":" + to_string(timeFrom) + ",";
-  detailsString += "\"timeTo\":" + to_string(timeTo) + ",";
-  detailsString += "\"interval\":" + to_string(buffer->calcInterval()) + ",";
-  detailsString += "\"count\":" + to_string(buffer->count) + ",";
-  detailsString += "\"lastTime\":" + to_string(buffer->lastTime) + ",";
-  detailsString += "\"firstTime\":" + to_string(buffer->firstTime);
-  detailsString += "}";
-
-  //cout << indexFrom << endl;
-  //cout << indexTo << endl;
-  
-  // values array
-  valueArrayString = "[";
-  // something weird if "i >=", so better stay "i >"
-  for (unsigned long int i = indexFrom; i > indexTo; i--) {
-    tmpValue = valueAt(i);
-    valueArrayString += to_string(tmpValue) + ","; 
-    // will be used in storage
-    measTypeStorage->buffer.push_back(tmpValue);
-  }
-  // remove last coma
-  if (valueArrayString[valueArrayString.size() - 1] == ',') {
-    valueArrayString.resize(valueArrayString.size() - 1);
-  }
-  valueArrayString += "]"; 
-  
-  // copy storage parameters
+vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {
   measTypeStorage->minTimeDiffToStore = minTimeDiffToStore;
   measTypeStorage->maxTimeDiffToStore = maxTimeDiffToStore;
   measTypeStorage->valueDiffToStore = valueDiffToStore;
   measTypeStorage->timeTo = timeTo;
   measTypeStorage->timeFrom = timeFrom;
   measTypeStorage->interval = buffer->calcInterval();
-  storageArray = measTypeStorage->storageJson();
   
-  response = "{";
-  response += "\"details\":" + detailsString + ",";
-  response += "\"valueArray\":" + valueArrayString + ",";  
-  response += "\"storageArray\":" + storageArray;  
-  response += "}";
+  // less important, used for details in json
+  measTypeStorage->indexFrom = timeToIndex(timeFrom);
+  measTypeStorage->indexTo = timeToIndex(timeTo);
+  measTypeStorage->count = buffer->count;
+  measTypeStorage->lastTime = buffer->lastTime;
+  measTypeStorage->firstTime = buffer->firstTime;
   
-  return response;
+  double tmpValue;
+  measTypeStorage->clearBuffer();
+  for (unsigned long int i = measTypeStorage->indexFrom; i > measTypeStorage->indexTo; i--) {
+    tmpValue = valueAt(i);
+    measTypeStorage->buffer.push_back(tmpValue);
+  }
+  return measTypeStorage->prepareStorageBuffer();
+}
+
+vector < StorageHash > MeasType::storageArray(unsigned long long timeFrom, unsigned long long timeTo) {
+  storageMutex.lock();
+  vector < StorageHash > tmp = prepareStorage(timeFrom, timeTo);
+  storageMutex.unlock();
+  
+  return tmp;
+}
+
+string MeasType::storageJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  storageMutex.lock();
+  string tmp;
+  prepareStorage(timeFrom, timeTo);
+  tmp = measTypeStorage->storageFullJson();
+  storageMutex.unlock();
+  
+  return tmp;
 }

@@ -14,7 +14,7 @@ public:
   unsigned int add(MeasType *m);
   MeasType *byName(string s);
   
-  std::vector <MeasType> measTypes;
+  vector <MeasType> measTypes;
   IoProxy *ioProxy;
 };
 

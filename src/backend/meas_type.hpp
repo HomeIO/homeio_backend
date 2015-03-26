@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <mutex>
 #include <iomanip>
 #include <vector>
 #include <time.h>
@@ -30,7 +31,6 @@ public:
   unsigned long int minTimeDiffToStore;
   unsigned long int maxTimeDiffToStore;
   double valueDiffToStore;
-  string storageBuffer(unsigned long long timeFrom, unsigned long long timeTo);
   
   void prepareFetch();
   string fetchString(unsigned int raw);
@@ -49,8 +49,11 @@ public:
   
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
-  
+
+  //mutex storageMutex;  
   unsigned long int timeToIndex(unsigned long long t);
+  vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
+  vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
   string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
 
 	

@@ -145,7 +145,7 @@ string TcpCommand::processMeasStorageCommand(string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
   
   if (foundMeasType) {
-    string bufferString = foundMeasType->storageBuffer(from, to);
+    string bufferString = foundMeasType->storageJson(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
     response +=  "\"data\":" + bufferString;
     response += "}";

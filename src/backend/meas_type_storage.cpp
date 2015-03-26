@@ -10,14 +10,14 @@ void MeasTypeStorage::clearBuffer() {
 }
 
 vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
-  vector < StorageHash > shBuffer;
+  storageBuffer.clear();
   unsigned long int i = 0;
   bool storeElement = false;
   unsigned long long currentTimeFrom, currentTimeTo;
   
   // empty buffer, nothing to do
   if (buffer.size() == 0) {
-    return shBuffer;
+    return storageBuffer;
   }
   
   // create first StorageHash
@@ -44,7 +44,7 @@ vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
     // if store, push hash to buffer and create new one
     if (storeElement) {
       sh->timeTo = currentTimeFrom;
-      shBuffer.push_back(*sh);
+      storageBuffer.push_back(*sh);
       
       sh = new StorageHash( currentTimeFrom, currentTimeTo, *it ); 
     }
@@ -53,7 +53,7 @@ vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
     i++;
   }
   
-  return shBuffer;
+  return storageBuffer;
 }
 
 bool MeasTypeStorage::valueDiffCheck(double p, double n) {
@@ -77,7 +77,7 @@ bool MeasTypeStorage::maxTimeDiffCheck(unsigned long long p, unsigned long long 
 }
 
 
-string MeasTypeStorage::storageJson() {
+string MeasTypeStorage::storageBufferJson() {
   string json;
   
   vector < StorageHash > shBuffer = prepareStorageBuffer();
@@ -96,4 +96,26 @@ string MeasTypeStorage::storageJson() {
   
   return json;
 }
+
+string MeasTypeStorage::storageFullJson() {
+  string detailsString, response;
   
+  // just debug data
+  detailsString = "{";
+  detailsString += "\"indexFrom\":" + to_string(indexFrom) + ",";
+  detailsString += "\"indexTo\":" + to_string(indexTo) + ",";
+  detailsString += "\"timeFrom\":" + to_string(timeFrom) + ",";
+  detailsString += "\"timeTo\":" + to_string(timeTo) + ",";
+  detailsString += "\"interval\":" + to_string(interval) + ",";
+  detailsString += "\"count\":" + to_string(count) + ",";
+  detailsString += "\"lastTime\":" + to_string(lastTime) + ",";
+  detailsString += "\"firstTime\":" + to_string(firstTime);
+  detailsString += "}";
+
+  response = "{";
+  response += "\"details\":" + detailsString + ",";
+  response += "\"storageArray\":" + storageBufferJson();  
+  response += "}";
+  
+  return response;
+}

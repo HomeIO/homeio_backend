@@ -7,6 +7,7 @@ HomeIO::HomeIO() {
   ioServer = new IoServer;
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
+  fileStorage = new FileStorage;
   
   ioServerReady = false;
   
@@ -18,6 +19,8 @@ HomeIO::HomeIO() {
   tcpCommand->actionTypeArray = actionTypeArray;
   tcpCommand->overseerArray = overseerArray;
   tcpServer->tcpCommand = tcpCommand;
+  
+  fileStorage->measTypeArray = measTypeArray;
 }
 
 unsigned char HomeIO::startFetch() {
@@ -49,7 +52,6 @@ unsigned char HomeIO::startOverseer() {
     a->ioProxy = ioProxy;
   }
 
-  
   // access is needed to search for proper objects
   overseerArray->measTypeArray = measTypeArray;
   overseerArray->actionTypeArray = actionTypeArray;
@@ -57,6 +59,13 @@ unsigned char HomeIO::startOverseer() {
   
   return 0;
 }
+
+unsigned char HomeIO::startFileStorage() {
+  fileStorage->start();
+  
+  return 0;
+}
+
 
 void *measStartThread(void *argument)
 {
@@ -92,9 +101,16 @@ void *ioOverseerThread(void *argument)
   h->startOverseer();
 }
 
+void *fileStorageThread(void *argument)
+{
+  logInfo("Thread: fileStorageThread() - store measurement in files");
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startFileStorage();
+}
 
 unsigned char HomeIO::start() {
-  const char NUM_THREADS = 3;
+  const char NUM_THREADS = 4;
   pthread_t threads[NUM_THREADS];
   int rc, i;
   
@@ -111,6 +127,7 @@ unsigned char HomeIO::start() {
   rc = pthread_create(&threads[1], NULL, measStartThread, (void *) h);
   rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
   rc = pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
+  rc = pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
