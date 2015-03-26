@@ -15,8 +15,8 @@ int main()
   m->coefficientLinear = 1.0;
   m->coefficientOffset = 0;
   m->minTimeDiffToStore = 1000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 2.0;
+  m->maxTimeDiffToStore = 5000; // 3600000
+  m->valueDiffToStore = 0.5;
   h->measTypeArray->add(m);
   
   m = new MeasType();

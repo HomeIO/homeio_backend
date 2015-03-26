@@ -17,7 +17,7 @@ public:
   FileStorage();
   void start();
   void performMeasStore();
-  //void FileStorage::storeMeasArray(MeasType measType, vector <StorageHash> storageVector);
+  void storeMeasArray(MeasType measType, vector <StorageHash> storageVector);
 
   string path;
   string measPrefix;

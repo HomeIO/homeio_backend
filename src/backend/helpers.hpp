@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <string>
+#include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <mutex>
 
 
@@ -16,6 +18,11 @@ char currentTimeBuffer[20];
 mutex logMutex;
 mutex storageMutex; // must place here, because MeasType is in array or sth
 
+char* currentTime();
+string detailCurrentTime();
+unsigned long long uTime();
+unsigned long long mTime();
+unsigned int onlyMiliseconds();
 
 // colors
 
