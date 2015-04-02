@@ -13,6 +13,7 @@ public:
   unsigned long int memorySize();
   bool stored(unsigned long int i);
   string jsonArray(unsigned long int from, unsigned long int to);
+  string toJson();
   
   unsigned long int maxSize;
   unsigned long int offset;

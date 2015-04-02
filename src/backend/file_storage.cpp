@@ -6,6 +6,9 @@ FileStorage::FileStorage() {
 
 void FileStorage::start()
 {
+  // wait 10s to warm up - get enough measurements
+  usleep(1000000);
+  
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   // TODO maybe add S_IWOTH 
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html

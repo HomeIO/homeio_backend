@@ -83,3 +83,14 @@ string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
   
   return s;
 }
+
+string MeasBuffer::toJson() {
+  string response;
+  response = "{";
+  response += "\"count\":" + to_string(count) + ",";
+  response += "\"offset\":" + to_string(offset) + ",";
+  response += "\"maxSize\":" + to_string(maxSize) + ",";
+  response += "\"firstTime\":" + to_string(firstTime);
+  response += "}";
+  return response;  
+}

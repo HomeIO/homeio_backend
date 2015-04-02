@@ -58,6 +58,7 @@ int main()
   m->minTimeDiffToStore = 1000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 2.0;
+  m->priority = 1;
   h->measTypeArray->add(m);
 
   
@@ -67,6 +68,7 @@ int main()
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
   m->coefficientOffset = -512;
+  m->priority = 1;
   h->measTypeArray->add(m);
   
   m = new MeasType();

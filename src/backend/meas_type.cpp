@@ -11,6 +11,7 @@ MeasType::MeasType() {
   coefficientOffset = 0;
   
   started = false;
+  priority = 0;
 }
 
 unsigned int MeasType::fetch() {
@@ -108,7 +109,8 @@ string MeasType::toJson() {
   
   json = "{";
   json += "\"name\":\"" + name + "\",";
-  json += "\"buffer\":{\"count\":" + to_string(buffer->count) + "},";
+  json += "\"priority\":\"" + to_string(priority) + "\",";
+  json += "\"buffer\":" + buffer->toJson() + ",";
   json += "\"coefficientLinear\":" + to_string(coefficientLinear) + ",";
   json += "\"coefficientOffset\":" + to_string(coefficientOffset) + ",";
   json += "\"value\":" + to_string(lastValue()) + ",";
