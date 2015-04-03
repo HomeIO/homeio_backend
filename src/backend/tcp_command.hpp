@@ -20,6 +20,8 @@ public:
   // name standarization done
   string processMeasIndexCommand(string command);
   string processMeasShowCommand(string command);
+  string processMeasRawForTimeCommand(string command);
+  string processMeasRawForIndexCommand(string command);
   
   string processActionIndexCommand(string command);
   string processActionShowCommand(string command);

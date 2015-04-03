@@ -61,16 +61,46 @@ bool MeasBuffer::stored(unsigned long int i) {
   }
 }
 
+vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to) {
+  unsigned long int i;
+  vector < unsigned int > result;
+  
+  if (from <= to) {
+    // safety
+    if (to >= maxSize) {
+      to = maxSize - 1;
+    }
+    
+    logInfo("MeasBuffer: UP getFromBuffer(" + to_string(from) + ", " + to_string(to) + ")");
+    
+    for (i = from; i <= to; i++) {
+      if (stored(i)) {
+        result.push_back(at(i));
+      }
+    }
+    return result;
+  } else {
+    // safety
+    if (from >= maxSize) {
+      from = maxSize - 1;
+    }
+    
+    logInfo("MeasBuffer: DOWN getFromBuffer(" + to_string(from) + ", " + to_string(to) + ")");
+    
+    for (i = from; i > to; i--) {
+      if (stored(i)) {
+        result.push_back(at(i));
+      }
+    }
+    return result;
+  }
+}
+
 string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
   string s = "[";
-  
-  unsigned long int i;
-  for (i = from; i <= to; i++) {
-    if (stored(i)) {
-      s += to_string(at(i));
-    } else {
-      s += "null";
-    }
+  vector < unsigned int > tmp = getFromBuffer(from, to);
+  for(vector<unsigned int>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+    s += to_string(*it);
     s += ",";
   }
   

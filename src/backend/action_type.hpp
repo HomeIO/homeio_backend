@@ -17,6 +17,8 @@ public:
   string toJson();
   string historyToJson();
   void logInfo(string log); // overwritten color
+  unsigned long long lastExecutedAt();
+  bool wasExecuted();
   
   string name; // name of action
   char command; // at this moment only 1 byte commands
@@ -28,7 +30,7 @@ public:
   
   // time buffer
   unsigned int maxTimeBufferSize; // how many execution times should be stored in
-  vector < unsigned long int > timeBuffer;
+  vector < unsigned long long > timeBuffer;
   void markExecutionTime();
   
   IoProxy *ioProxy;

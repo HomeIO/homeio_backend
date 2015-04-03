@@ -1,9 +1,11 @@
 Overseer::Overseer() {
   isMax = false;
   thresholdValue = 0.0;
-  minExecInterval = 1;
+  minExecInterval = 1000;
   
   maxTimeBufferSize = 10;
+  
+  priority = 0;
 }
 
 void Overseer::logInfo(string log) {
@@ -57,8 +59,18 @@ string Overseer::toJson() {
   
   json += "\"minExecInterval\":" + to_string(minExecInterval) + ",";
   json += "\"checkLastExecutionTime()\":" + to_string(checkLastExecutionTime()) + ",";
+  
+  json += "\"currentValue()\":" + to_string(currentValue());
+  
+  json += "}";
+  
+  return json;
+}
 
-  for(std::vector<unsigned long int>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
+string Overseer::timeBufferToJson() {
+  string timeBufferString;
+  
+  for(std::vector<unsigned long long>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
     timeBufferString += to_string(*it) + ",";
   }
   
@@ -66,11 +78,8 @@ string Overseer::toJson() {
   if (timeBufferString[timeBufferString.size() - 1] == ',') {
     timeBufferString.resize(timeBufferString.size() - 1);
   }
-  
-  json += "\"timeBuffer\":[" + timeBufferString + "]";
-  json += "}";
-  
-  return json;
+
+  return timeBufferString;
 }
 
 double Overseer::currentValue() {
@@ -94,6 +103,10 @@ void Overseer::markExecutionTime() {
   timeBuffer.push_back( (unsigned long int) time(0) );
 }
 
+unsigned long long Overseer::lastExecuteTime() {
+  return timeBuffer.back();
+}
+
 bool Overseer::checkLastExecutionTime()
 {
   // empty list
@@ -101,7 +114,7 @@ bool Overseer::checkLastExecutionTime()
     return true;
   }
   
-  if ( ( (unsigned long int) time(0) - timeBuffer.back() ) >= minExecInterval ) {
+  if ( ( (unsigned long long) mTime() - lastExecuteTime() ) >= minExecInterval ) {
     return true;
   } else {
     return false;

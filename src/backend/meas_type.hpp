@@ -26,6 +26,8 @@ public:
   double lastValue();
   double lastValueFor(unsigned int);
   string toJson();
+  string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);
+  string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
   void logInfo(string log); // overwritten color
   
   unsigned long int minTimeDiffToStore;

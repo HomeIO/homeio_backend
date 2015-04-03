@@ -18,11 +18,13 @@ public:
   double thresholdValue; // execute if value is higher than this
   bool isMax; // when true execute only if higher
   unsigned int windowSize; // use average of measurements
+  unsigned char priority; // used in frontend
   
   // related to execution time buffer
-  unsigned long int minExecInterval; // allow execution only when X seconds passed since previous execution
+  unsigned long long minExecInterval; // allow execution only when X mili seconds passed since previous execution
   unsigned int maxTimeBufferSize; // how many execution times should be stored in
-  vector < unsigned long int > timeBuffer;
+  vector < unsigned long long > timeBuffer;
+  unsigned long long lastExecuteTime();
   void markExecutionTime();
   bool checkLastExecutionTime();
   
@@ -34,6 +36,7 @@ public:
   double currentValue();
   unsigned int execute();
   string toJson();
+  string timeBufferToJson();
   
   void logInfo(string log); // overwritten color
 

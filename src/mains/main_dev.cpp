@@ -17,6 +17,7 @@ int main()
   m->minTimeDiffToStore = 1000;
   m->maxTimeDiffToStore = 5000; // 3600000
   m->valueDiffToStore = 0.5;
+  m->priority = 1;
   h->measTypeArray->add(m);
   
   m = new MeasType();

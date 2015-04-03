@@ -21,6 +21,12 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measShow") {
     response = processMeasShowCommand(command);
   }
+  if (commandName == "measRawForTime") {
+    response = processMeasRawForTimeCommand(command);
+  }
+  if (commandName == "measRawForIndex") {
+    response = processMeasRawForIndexCommand(command);
+  }
   if (commandName == "actionIndex") {
     response = processActionIndexCommand(command);
   }
@@ -101,6 +107,89 @@ string TcpCommand::processMeasShowCommand(string command) {
   
   return response;
 }
+
+// meas#raw_for_time
+string TcpCommand::processMeasRawForTimeCommand(string command) {
+  string measName, fromString, toString, response;
+  unsigned long long tFrom, tTo;
+  
+  measName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  fromString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  toString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  stringstream(fromString) >> tFrom;
+  stringstream(toString) >> tTo;
+  
+  MeasType *foundMeasType = measTypeArray->byName(measName);
+  
+  if (foundMeasType) {
+    logInfo("TCP command: processMeasRawForTimeCommand(" + measName + ", " + to_string(tFrom) + ", " + to_string(tTo) + ")" );
+    
+    string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
+    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
+    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"usingMiliSeconds\":1";
+    response += ",\"data\": " + bufferString;
+    response += ",\"fromTime\":" + to_string( tFrom );
+    response += ",\"toTime\":" + to_string( tTo );
+    response += "}";
+  }
+  else {
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
+  }
+  
+  return response;
+}
+
+// meas#raw_for_index
+string TcpCommand::processMeasRawForIndexCommand(string command) {
+  string measName, fromString, toString, response;
+  unsigned long int iFrom, iTo;
+  
+  measName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  fromString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  toString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  stringstream(fromString) >> iFrom;
+  stringstream(toString) >> iTo;
+  
+  MeasType *foundMeasType = measTypeArray->byName(measName);
+  
+  if (foundMeasType) {
+    logInfo("TCP command: processMeasRawForIndexCommand(" + measName + ", " + to_string(iFrom) + ", " + to_string(iTo) + ")" );
+    
+    string bufferString = foundMeasType->rawForIndexJson(iFrom, iTo);
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
+    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
+    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"usingMiliSeconds\":1";
+    response += ",\"data\": " + bufferString;
+    response += ",\"fromIndex\":" + to_string( iFrom );
+    response += ",\"toIndex\":" + to_string( iTo );
+    response += "}";
+  }
+  else {
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
+  }
+  
+  return response;
+}
+
 
 // actions#index
 string TcpCommand::processActionIndexCommand(string command) {

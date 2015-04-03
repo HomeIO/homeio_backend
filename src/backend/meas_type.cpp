@@ -132,12 +132,15 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   unsigned long long tempTime = (buffer->lastTime - t);
   unsigned long int tempIndex = (unsigned long int) (tempTime / (unsigned long long) buffer->calcInterval() );
   
-  //cout << "tempTime " << tempTime << endl;
-  //cout << "tempIndex " << tempIndex << endl;
-  //cout << "t " << t << endl;
-  //cout << "buffer->lastTime " << buffer->lastTime << endl;
-  
   return tempIndex;  
+}
+
+string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo));
+}
+
+string MeasType::rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo) {
+  return buffer->jsonArray(indexFrom, indexTo);
 }
 
 vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {

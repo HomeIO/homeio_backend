@@ -24,14 +24,35 @@ unsigned int ActionType::execute() {
   return raw;
 }
 
+unsigned long long ActionType::lastExecutedAt() {
+  return timeBuffer.back();
+}
+
+bool ActionType::wasExecuted() {
+  if (timeBuffer.size() > 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 string ActionType::toJson() {
   string json;
   
   json = "{";
   json += "\"name\":\"" + name + "\",";
+  
+  if (wasExecuted()) {
+    json += "\"lastExecutedAt()\":" + to_string(lastExecutedAt()) + ",";
+  }
+  else {
+    json += "\"lastExecutedAt()\":null,";
+  }
+  
   json += "\"executionCount\":" + to_string(executionCount) + ",";
   json += "\"failedCount\":" + to_string(failedCount);
-
+  
   json += "}";
   
   return json;
@@ -40,7 +61,7 @@ string ActionType::toJson() {
 string ActionType::historyToJson() {
   string json, timeBufferString;
   
-  for(std::vector<unsigned long int>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
+  for(std::vector<unsigned long long>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
     timeBufferString += to_string(*it) + ",";
   }
   
@@ -64,5 +85,5 @@ void ActionType::markExecutionTime() {
     timeBuffer.erase(timeBuffer.begin());
   }
   
-  timeBuffer.push_back( (unsigned long int) time(0) );
+  timeBuffer.push_back( mTime() );
 }

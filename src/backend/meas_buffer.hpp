@@ -12,6 +12,7 @@ public:
   unsigned long int index(unsigned long int i);
   unsigned long int memorySize();
   bool stored(unsigned long int i);
+  vector < unsigned int > getFromBuffer(unsigned long int from, unsigned long int to);
   string jsonArray(unsigned long int from, unsigned long int to);
   string toJson();
   
