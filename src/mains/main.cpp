@@ -149,6 +149,8 @@ int main()
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 50000;
   
+  h->fileStorage->cycleInterval = 24*3600*1000;
+  
   // actions
   ActionType *a;
   a = new ActionType();

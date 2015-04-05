@@ -33,6 +33,8 @@ int main()
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 50000;
   
+  h->fileStorage->cycleInterval = 2*3600*1000;
+  
   ActionType *a;
   a = new ActionType();
   a->name = "turn_led_on"; // led on pin 3 (count from 0)
