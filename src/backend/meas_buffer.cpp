@@ -120,6 +120,7 @@ string MeasBuffer::toJson() {
   response += "\"count\":" + to_string(count) + ",";
   response += "\"offset\":" + to_string(offset) + ",";
   response += "\"maxSize\":" + to_string(maxSize) + ",";
+  response += "\"lastTime\":" + to_string(lastTime) + ",";
   response += "\"firstTime\":" + to_string(firstTime);
   response += "}";
   return response;  
