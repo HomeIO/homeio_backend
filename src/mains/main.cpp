@@ -177,6 +177,37 @@ int main()
   // add this measuremt type to measurement which will be fetched by this server
   h->actionTypeArray->add(a);
   
+
+  a = new ActionType();
+  a->name = "inverter_A_off"; // "output_2_off";
+  a->command = 'b';
+  a->responseSize = 1;
+  a->responseOkay = 1;
+  h->actionTypeArray->add(a);
+  
+  a = new ActionType();
+  a->name = "inverter_B_off"; // "output_3_off";
+  a->command = 'c';
+  a->responseSize = 1;
+  a->responseOkay = 2;
+  h->actionTypeArray->add(a);
+  
+  a = new ActionType();
+  a->name = "inverter_A_on"; // "output_2_on";
+  a->command = 'B';
+  a->responseSize = 1;
+  a->responseOkay = 11;
+  h->actionTypeArray->add(a);
+  
+  a = new ActionType();
+  a->name = "inverter_B_on"; // "output_3_on";
+  a->command = 'C';
+  a->responseSize = 1;
+  a->responseOkay = 12;
+  h->actionTypeArray->add(a);
+  
+
+  
   // overseers intervals
   h->overseerArray->cycleInterval = 2000000;
   
@@ -190,13 +221,68 @@ int main()
   // string name of measurement
   o->measName = "batt_u";
   // critical value
-  o->thresholdValue = 40.0;
+  o->thresholdValue = 50.0;
   // check if value is higher
   o->isMax = true;
   // use average value using X raw measurements
-  o->windowSize = 50;
+  o->windowSize = 300;
   // add this overseer type to list
   h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "no_brake_on_low_voltage";
+  o->actionName = "turn_off_brake";
+  o->measName = "batt_u";
+  o->thresholdValue = 10.0;
+  o->isMax = false;
+  o->windowSize = 100;
+  h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_on_inverter_A_on_high_battery";
+  o->actionName = "inverter_A_on";
+  o->measName = "coil_1_u";
+  o->thresholdValue = 8.0;
+  o->isMax = true;
+  o->windowSize = 100;
+  h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_on_inverter_A_on_high_coil";
+  o->actionName = "inverter_A_on";
+  o->measName = "batt_u";
+  o->thresholdValue = 15.0;
+  o->isMax = true;
+  o->windowSize = 200;
+  h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_off_inverter_A_on_low_coil";
+  o->actionName = "inverter_A_off";
+  o->measName = "coil_1_u";
+  o->thresholdValue = 2.0;
+  o->isMax = false;
+  o->windowSize = 200;
+  h->overseerArray->add(o);  
+
+  o = new Overseer();
+  o->name = "turn_on_inverter_B_on_high_battery";
+  o->actionName = "inverter_B_on";
+  o->measName = "batt_u";
+  o->thresholdValue = 35.0;
+  o->isMax = true;
+  o->windowSize = 1000;
+  h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_off_inverter_B_on_low_battery";
+  o->actionName = "inverter_B_off";
+  o->measName = "batt_u";
+  o->thresholdValue = 22.0;
+  o->isMax = false;
+  o->windowSize = 4;
+  h->overseerArray->add(o);
+
   
   // Now you can run everything of parts of backend. 
   // TODO: way to disable IoServer
