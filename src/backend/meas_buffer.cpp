@@ -117,6 +117,7 @@ string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
 string MeasBuffer::toJson() {
   string response;
   response = "{";
+  response += "\"interval\":" + to_string(calcInterval()) + ",";
   response += "\"count\":" + to_string(count) + ",";
   response += "\"offset\":" + to_string(offset) + ",";
   response += "\"maxSize\":" + to_string(maxSize) + ",";

@@ -6,6 +6,7 @@ Overseer::Overseer() {
   maxTimeBufferSize = 10;
   
   priority = 0;
+  
 }
 
 void Overseer::logInfo(string log) {
@@ -58,9 +59,10 @@ string Overseer::toJson() {
   json += "\"thresholdValue\":" + to_string(thresholdValue) + ",";
   
   json += "\"minExecInterval\":" + to_string(minExecInterval) + ",";
-  json += "\"checkLastExecutionTime()\":" + to_string(checkLastExecutionTime()) + ",";
+  json += "\"checkLastExecutionTime\":" + to_string(checkLastExecutionTime()) + ",";
   
-  json += "\"currentValue()\":" + to_string(currentValue());
+  json += "\"currentValue\":" + to_string(currentValue()) + ",";
+  json += "\"currentAvgValue\":" + to_string(meas->currentAvgValue());
   
   json += "}";
   

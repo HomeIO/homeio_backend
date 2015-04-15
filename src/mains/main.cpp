@@ -22,31 +22,33 @@ int main()
   // store in RAM buffer.
   
   MeasType *m;
-  m = new MeasType();
+  
+  // note: test meas is not needed
+  //m = new MeasType();
   // this must be unique and will be used by frontend and overseers
-  m->name = "test_t";
+  //m->name = "test_t";
   // ascii command to get measurement 
-  m->command = 't';
+  //m->command = 't';
   // number of bytes of response 
-  m->responseSize = 2;
+  //m->responseSize = 2;
   // value = (raw + coefficientOffset)* coefficientLinear 
-  m->coefficientLinear = 1.0;
-  m->coefficientOffset = 0;
+  //m->coefficientLinear = 1.0;
+  //m->coefficientOffset = 0;
   // do not store measurements if they are 'too short', in miliseconds
-  m->minTimeDiffToStore = 2000;
+  //m->minTimeDiffToStore = 2000;
   // force to store measurements if too much time passed, in miliseconds
-  m->maxTimeDiffToStore = 3600000;
+  //m->maxTimeDiffToStore = 3600000;
   // store measurement if value changed enough
-  m->valueDiffToStore = 1.0;
+  //m->valueDiffToStore = 1.0;
   
   // add this measuremt type to measurement which will be fetched by this server
-  h->measTypeArray->add(m);
+  //h->measTypeArray->add(m);
   
-  m = new MeasType();
-  m->name = "test_s";
-  m->command = 's';
-  m->responseSize = 1;
-  h->measTypeArray->add(m);
+  //m = new MeasType();
+  //m->name = "test_s";
+  //m->command = 's';
+  //m->responseSize = 1;
+  //h->measTypeArray->add(m);
 
   // place measurement here
   m = new MeasType();

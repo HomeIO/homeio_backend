@@ -18,6 +18,9 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measIndex") {
     response = processMeasIndexCommand(command);
   }
+  if (commandName == "measNameList") {
+    response = processMeasNameListCommand(command);
+  }
   if (commandName == "measShow") {
     response = processMeasShowCommand(command);
   }
@@ -27,11 +30,20 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measRawForIndex") {
     response = processMeasRawForIndexCommand(command);
   }
+  if (commandName == "measStorage") {
+    response = processMeasStorageCommand(command);
+  }
   if (commandName == "actionIndex") {
     response = processActionIndexCommand(command);
   }
   if (commandName == "actionShow") {
     response = processActionShowCommand(command);
+  }
+  if (commandName == "actionExecute") {
+    response = processActionExecuteCommand(command);
+  }
+  if (commandName == "actionHistory") {
+    response = processActionHistoryCommand(command);
   }
   if (commandName == "overseerIndex") {
     response = processOverseerIndexCommand(command);
@@ -39,31 +51,6 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "overseerShow") {
     response = processOverseerShowCommand(command);
   }
-  
-  
-
-  //
-  if (commandName == "measNameList") {
-    response = processMeasNameListCommand(command);
-  }
-  
-  if (commandName == "meas") {
-    response = processMeasCommand(command);
-  }
-
-  if (commandName == "measStorage") {
-    response = processMeasStorageCommand(command);
-  }
-  
-
-  if (commandName == "actionExecute") {
-    response = processActionExecuteCommand(command);
-  }
-
-  if (commandName == "actionHistory") {
-    response = processActionHistoryCommand(command);
-  }
-  
   
   
   logInfo("TCP response: " + response);
@@ -87,6 +74,25 @@ string TcpCommand::processMeasIndexCommand(string command) {
   }
   
   response += detailsResponse + "]}";
+    
+  return response;
+}
+
+// meas#name_list
+string TcpCommand::processMeasNameListCommand(string command) {
+  string response;
+  
+  response = "{\"status\":0,\"array\":[";
+  
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    response += "\"" + it->name + "\",";
+  }
+  
+  // remove last coma
+  if (response[response.size() - 1] == ',') {
+    response.resize(response.size() - 1);
+  }
+  response += "]}";
     
   return response;
 }
@@ -190,6 +196,36 @@ string TcpCommand::processMeasRawForIndexCommand(string command) {
   return response;
 }
 
+// meas#storage
+string TcpCommand::processMeasStorageCommand(string command) {
+  string measName, fromString, toString, response;
+  unsigned long long from, to;
+  
+  measName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  fromString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  toString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  stringstream(fromString) >> from;
+  stringstream(toString) >> to;
+  
+  MeasType *foundMeasType = measTypeArray->byName(measName);
+  
+  if (foundMeasType) {
+    string bufferString = foundMeasType->storageJson(from, to);
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
+    response +=  "\"data\":" + bufferString;
+    response += "}";
+  }
+  else {
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
+  }  
+  return response;
+}
 
 // actions#index
 string TcpCommand::processActionIndexCommand(string command) {
@@ -227,6 +263,48 @@ string TcpCommand::processActionShowCommand(string command) {
   
   return response;
 }
+
+// action#execute
+string TcpCommand::processActionExecuteCommand(string command) {
+  string actionName;
+  actionName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  string response;
+  
+  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  
+  if (foundActionType) {
+    foundActionType->execute();
+    response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
+  }
+  else {
+    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
+  }
+  
+  return response;  
+}
+
+// action#history
+string TcpCommand::processActionHistoryCommand(string command) {
+  string actionName;
+  actionName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  string response;
+  
+  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  
+  if (foundActionType) {
+    response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
+  }
+  else {
+    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
+  }
+  
+  return response;  
+}
+
 
 // overseers#index
 string TcpCommand::processOverseerIndexCommand(string command) {
@@ -267,134 +345,14 @@ string TcpCommand::processOverseerShowCommand(string command) {
 
 
 
-string TcpCommand::processMeasNameListCommand(string command) {
-  string response;
-  
-  response = "{\"status\":0,\"array\":[";
-  
-  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    response += "\"" + it->name + "\",";
-  }
-  
-  // remove last coma
-  if (response[response.size() - 1] == ',') {
-    response.resize(response.size() - 1);
-  }
-  response += "]}";
-    
-  return response;
-}
+
 
 //
-string TcpCommand::processMeasCommand(string command) {
-  string measName, fromString, toString, response;
-  unsigned long int from, to;
-  
-  measName = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  fromString = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  toString = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  stringstream(fromString) >> from;
-  stringstream(toString) >> to;
-  
-  MeasType *foundMeasType = measTypeArray->byName(measName);
-  
-  if (foundMeasType) {
-    string bufferString = foundMeasType->buffer->jsonArray(from, to);
-    response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
-    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
-    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
-    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
-    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
-    response += ",\"miliSeconds\":1";
-    response += ",\"data\": " + bufferString;
-    response += "}";
-  }
-  else {
-    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
-  }
-  
-  return response;
-}
 
 
 
 
 
-string TcpCommand::processMeasStorageCommand(string command) {
-  string measName, fromString, toString, response;
-  unsigned long long from, to;
-  
-  measName = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  fromString = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  toString = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  stringstream(fromString) >> from;
-  stringstream(toString) >> to;
-  
-  MeasType *foundMeasType = measTypeArray->byName(measName);
-  
-  if (foundMeasType) {
-    string bufferString = foundMeasType->storageJson(from, to);
-    response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
-    response +=  "\"data\":" + bufferString;
-    response += "}";
-  }
-  else {
-    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
-  }  
-  return response;
-}
-
-
-string TcpCommand::processActionExecuteCommand(string command) {
-  string actionName;
-  actionName = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  string response;
-  
-  ActionType *foundActionType = actionTypeArray->byName(actionName);
-  
-  if (foundActionType) {
-    foundActionType->execute();
-    response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
-  }
-  else {
-    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
-  }
-  
-  return response;  
-}
-
-string TcpCommand::processActionHistoryCommand(string command) {
-  string actionName;
-  actionName = command.substr(0, command.find(";"));
-  command = command.substr(command.find(";") + 1);
-  
-  string response;
-  
-  ActionType *foundActionType = actionTypeArray->byName(actionName);
-  
-  if (foundActionType) {
-    response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
-  }
-  else {
-    response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
-  }
-  
-  return response;  
-}
 
 
 

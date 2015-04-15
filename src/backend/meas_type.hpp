@@ -24,7 +24,7 @@ public:
   double valueAt(unsigned long int i);
   unsigned int lastRaw();
   double lastValue();
-  double lastValueFor(unsigned int);
+  double lastValueFor(unsigned long int);
   string toJson();
   string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);
   string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
@@ -33,6 +33,14 @@ public:
   unsigned long int minTimeDiffToStore;
   unsigned long int maxTimeDiffToStore;
   double valueDiffToStore;
+
+  void recalculateAvg(); 
+  double currentAvgValue(); // recalculate if needed and get stored
+  double avgValue; // calculated periodically to show value deviation from standard value
+  unsigned long long lastAvgTime; // when last was execute
+  unsigned long long intervalAvg; // how often refresh
+  unsigned long int windowAvg; // how many meas use to calculate avg
+
   
   void prepareFetch();
   string fetchString(unsigned int raw);

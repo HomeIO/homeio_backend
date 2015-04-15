@@ -44,10 +44,10 @@ string ActionType::toJson() {
   json += "\"name\":\"" + name + "\",";
   
   if (wasExecuted()) {
-    json += "\"lastExecutedAt()\":" + to_string(lastExecutedAt()) + ",";
+    json += "\"lastExecutedAt\":" + to_string(lastExecutedAt()) + ",";
   }
   else {
-    json += "\"lastExecutedAt()\":null,";
+    json += "\"lastExecutedAt\":null,";
   }
   
   json += "\"executionCount\":" + to_string(executionCount) + ",";

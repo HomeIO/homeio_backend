@@ -17,7 +17,7 @@ public:
   
   double thresholdValue; // execute if value is higher than this
   bool isMax; // when true execute only if higher
-  unsigned int windowSize; // use average of measurements
+  unsigned long int windowSize; // use average of measurements
   unsigned char priority; // used in frontend
   
   // related to execution time buffer

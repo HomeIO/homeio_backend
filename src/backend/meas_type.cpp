@@ -12,6 +12,11 @@ MeasType::MeasType() {
   
   started = false;
   priority = 0;
+  
+  avgValue = 0.0;
+  intervalAvg = 3600000; // recalculate avg every 1 hour
+  windowAvg = 50000; // use this amount of measurements to calc avg
+
 }
 
 unsigned int MeasType::fetch() {
@@ -74,7 +79,7 @@ double MeasType::lastValue() {
 }
 
 // last avg value
-double MeasType::lastValueFor(unsigned int i) {
+double MeasType::lastValueFor(unsigned long int i) {
   long int tmpRaw = 0;
   unsigned int j = 0;
   unsigned int count = 0;
@@ -95,6 +100,21 @@ double MeasType::lastValueFor(unsigned int i) {
   return ((double) tmpRaw / (double) count) * coefficientLinear;
 }
 
+double MeasType::currentAvgValue() {
+  recalculateAvg();
+  return avgValue;
+}
+
+void MeasType::recalculateAvg() {
+  if ( (mTime() - lastAvgTime) > intervalAvg) {
+    logInfo("recalculateAvg() start");
+
+    avgValue = lastValueFor(windowAvg);
+    lastAvgTime = mTime();
+
+    logInfo("recalculateAvg() finish");
+  }
+}
 
 double MeasType::rawToValue(unsigned int _raw) {
   return (double)((int) _raw + coefficientOffset) * coefficientLinear;
@@ -114,6 +134,7 @@ string MeasType::toJson() {
   json += "\"coefficientLinear\":" + to_string(coefficientLinear) + ",";
   json += "\"coefficientOffset\":" + to_string(coefficientOffset) + ",";
   json += "\"value\":" + to_string(lastValue()) + ",";
+  json += "\"currentAvgValue\":" + to_string(currentAvgValue()) + ",";
   json += "\"raw\":" + to_string(lastRaw());
   json += "}";
   

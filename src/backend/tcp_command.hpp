@@ -19,25 +19,19 @@ public:
   
   // name standarization done
   string processMeasIndexCommand(string command);
+  string processMeasNameListCommand(string command);
   string processMeasShowCommand(string command);
   string processMeasRawForTimeCommand(string command);
   string processMeasRawForIndexCommand(string command);
+  string processMeasStorageCommand(string command);
   
   string processActionIndexCommand(string command);
   string processActionShowCommand(string command);
-  
-  string processOverseerIndexCommand(string command);
-  string processOverseerShowCommand(string command);
-  
-  // todo
-  string processMeasCommand(string command);
-  string processMeasNameListCommand(string command);
-  string processMeasStorageCommand(string command);
-  
-  
   string processActionExecuteCommand(string command);
   string processActionHistoryCommand(string command);
   
+  string processOverseerIndexCommand(string command);
+  string processOverseerShowCommand(string command);
   
   
   void logInfo(string log); // overwritten color
