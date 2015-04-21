@@ -75,7 +75,7 @@ unsigned int MeasType::lastRaw() {
 }
 
 double MeasType::lastValue() {
-  rawToValue(lastRaw());
+  return rawToValue(lastRaw());
 }
 
 // last avg value
