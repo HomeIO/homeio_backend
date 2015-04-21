@@ -24,6 +24,8 @@ public:
   unsigned long int cycleInterval;
   unsigned long long lastTime, currentTime;
   
+  unsigned long long usDelay;
+  
   MeasTypeArray *measTypeArray;
 };
 

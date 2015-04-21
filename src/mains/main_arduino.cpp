@@ -12,37 +12,52 @@ int main()
   m->name = "light";
   m->command = '0';
   m->responseSize = 2;
-  m->coefficientLinear = -1.0;
-  m->coefficientOffset = -1024;
-  m->minTimeDiffToStore = 1000;
+  m->coefficientLinear = -0.09765625;
+  m->coefficientOffset = -1023;
+  m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 5;
+  m->valueDiffToStore = 3.0;
   m->priority = 1;
   h->measTypeArray->add(m);
   
   m = new MeasType();
-  m->name = "humidity";
+  m->name = "soil_humidity";
   m->command = '1';
   m->responseSize = 2;
-  m->coefficientLinear = 1.0;
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 1000;
+  m->coefficientLinear = -0.09765625;
+  m->coefficientOffset = -1023;
+  m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 10;
+  m->valueDiffToStore = 3.0;
   m->priority = 1;
   h->measTypeArray->add(m);
+
+  /*
+  // something not worky
+  m = new MeasType();
+  m->name = "temperature";
+  m->command = '2';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.48828125;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 1.0;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+  */
   
   IoServer *io = new IoServer();
   io->port = "/dev/ttyACM0";
   h->ioServer = io;
   
-  h->measFetcher->betweenMeasInterval = 10000; // 10000;
-  h->measFetcher->cycleInterval = 50000; //50000;
+  h->measFetcher->betweenMeasInterval = 10000;
+  h->measFetcher->cycleInterval = 10000000; //50000;
   
-  h->fileStorage->cycleInterval = 2*3600*1000;
+  h->fileStorage->cycleInterval = 6*3600*1000;
   
   // overseers intervals
-  h->overseerArray->cycleInterval = 2000000;
+  h->overseerArray->cycleInterval = 10000000;
   
   h->start();
   

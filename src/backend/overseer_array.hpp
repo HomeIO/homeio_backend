@@ -21,6 +21,8 @@ public:
   ActionTypeArray *actionTypeArray;
   std::vector <Overseer> overseers;
   unsigned long int cycleInterval;
+  
+  unsigned long long usDelay;
 };
 
 #include "overseer_array.cpp"

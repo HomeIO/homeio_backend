@@ -26,6 +26,8 @@ public:
   unsigned char startFileStorage();
   unsigned char start();
   
+  void copyInternalDelays();
+  
   MeasTypeArray *measTypeArray;
   MeasFetcher *measFetcher;
   IoProxy *ioProxy;

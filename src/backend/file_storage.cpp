@@ -1,13 +1,13 @@
 FileStorage::FileStorage() {
   cycleInterval = 20000000; // 10000000
+  usDelay = 1000000; // wait 10s to warm up - get enough measurements
   lastTime = mTime();
   path = "data";
 }
 
 void FileStorage::start()
 {
-  // wait 10s to warm up - get enough measurements
-  usleep(1000000);
+  usleep(usDelay);
   
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   // TODO maybe add S_IWOTH 

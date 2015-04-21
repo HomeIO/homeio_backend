@@ -109,7 +109,15 @@ void *fileStorageThread(void *argument)
   h->startFileStorage();
 }
 
+void HomeIO::copyInternalDelays() {
+  fileStorage->usDelay = measFetcher->cycleInterval * 4;
+  overseerArray->usDelay = measFetcher->cycleInterval * 2;
+  tcpServer->usDelay = measFetcher->cycleInterval * 2;
+}
+
 unsigned char HomeIO::start() {
+  copyInternalDelays();
+  
   const char NUM_THREADS = 4;
   pthread_t threads[NUM_THREADS];
   int rc, i;

@@ -1,6 +1,7 @@
 OverseerArray::OverseerArray() {
   std::vector <Overseer> overseers;
   cycleInterval = 1000000;
+  usDelay = 200000; // wait 2s to warm up
 }
 
 void OverseerArray::logInfo(string log) {
@@ -23,8 +24,7 @@ Overseer *OverseerArray::byName(string s) {
 }
 
 int OverseerArray::start() {
-  // wait 2s to warm up
-  usleep(200000);
+  usleep(usDelay);
   logInfo("OverseerArray start");
   
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {

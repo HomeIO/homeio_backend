@@ -1,4 +1,10 @@
+TcpServer::TcpServer() {
+  usDelay = 2000000;
+}
+
 int TcpServer::start() {
+  usleep(usDelay);
+  
   port = 2005;
   commandBuffer = (char*)malloc(COMMAND_BUFFER_SIZE*sizeof(char));
   

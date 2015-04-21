@@ -24,6 +24,8 @@ using namespace std;
 
 class TcpServer {
 public:
+  TcpServer();
+  
   ssize_t readLine(int sockd, size_t maxlen);
   ssize_t writeLine(int sockd);
   int createTcpServer();
@@ -32,6 +34,8 @@ public:
   
   short int port;
   TcpCommand *tcpCommand;
+  
+  unsigned long long usDelay;
   
 private:
   char c, *commandBuffer;
