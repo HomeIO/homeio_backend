@@ -23,6 +23,7 @@ public:
   string processMeasShowCommand(string command);
   string processMeasRawForTimeCommand(string command);
   string processMeasRawForIndexCommand(string command);
+  string processMeasRawHistoryForTimeCommand(string command);
   string processMeasStorageCommand(string command);
   
   string processActionIndexCommand(string command);

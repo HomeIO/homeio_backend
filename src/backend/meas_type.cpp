@@ -157,11 +157,15 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
 }
 
 string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {
-  return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo));
+  return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
+}
+
+string MeasType::rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize) {
+  return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo), responseMaxSize);
 }
 
 string MeasType::rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo) {
-  return buffer->jsonArray(indexFrom, indexTo);
+  return buffer->jsonArray(indexFrom, indexTo, 0);
 }
 
 vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {

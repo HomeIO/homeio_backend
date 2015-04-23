@@ -4,6 +4,7 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
   count = 0;
   firstTime = 0;
   elementSize = sizeof(_maxSize);
+  responseIndexInterval = 1;
   
   buffer.resize(maxSize);
 }
@@ -61,7 +62,21 @@ bool MeasBuffer::stored(unsigned long int i) {
   }
 }
 
-vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to) {
+unsigned long int MeasBuffer::calculateIndexInterval(unsigned long int lower, unsigned long int higher, unsigned long int responseMaxSize) {
+  if (responseMaxSize == 0) {
+    return 1;
+  }
+  
+  unsigned long int distance = higher - lower;
+  
+  if (distance <= responseMaxSize) {
+    return 1;
+  } else {
+    return (unsigned long int) ceil((double) distance / (double) responseMaxSize);
+  }
+}
+
+vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
   unsigned long int i;
   vector < unsigned int > result;
   
@@ -71,9 +86,10 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
       to = maxSize - 1;
     }
     
-    logInfo("MeasBuffer: UP getFromBuffer(" + to_string(from) + ", " + to_string(to) + ")");
+    logInfo("MeasBuffer: UP getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
     
-    for (i = from; i <= to; i++) {
+    responseIndexInterval = calculateIndexInterval(from, to, responseMaxSize);
+    for (i = from; i <= to; i += responseIndexInterval) {
       if (stored(i)) {
         result.push_back(at(i));
       }
@@ -85,20 +101,22 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
       from = maxSize - 1;
     }
     
-    logInfo("MeasBuffer: DOWN getFromBuffer(" + to_string(from) + ", " + to_string(to) + ")");
+    logInfo("MeasBuffer: DOWN getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
     
-    for (i = from; i > to; i--) {
+    responseIndexInterval = calculateIndexInterval(to, from, responseMaxSize);
+    for (i = from; (i > to) && (i >= responseIndexInterval); i -= responseIndexInterval) {
       if (stored(i)) {
         result.push_back(at(i));
       }
     }
+    
     return result;
   }
 }
 
-string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to) {
+string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
   string s = "[";
-  vector < unsigned int > tmp = getFromBuffer(from, to);
+  vector < unsigned int > tmp = getFromBuffer(from, to, responseMaxSize);
   for(vector<unsigned int>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
     s += to_string(*it);
     s += ",";
