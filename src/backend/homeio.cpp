@@ -110,9 +110,9 @@ void *fileStorageThread(void *argument)
 }
 
 void HomeIO::copyInternalDelays() {
-  fileStorage->usDelay = measFetcher->cycleInterval * 4;
-  overseerArray->usDelay = measFetcher->cycleInterval * 2;
-  tcpServer->usDelay = measFetcher->cycleInterval * 2;
+  fileStorage->usDelay += measFetcher->cycleInterval * 4;
+  overseerArray->usDelay += measFetcher->cycleInterval * 2;
+  tcpServer->usDelay += measFetcher->cycleInterval * 2;
 }
 
 unsigned char HomeIO::start() {
