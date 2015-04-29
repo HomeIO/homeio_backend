@@ -12,6 +12,7 @@
 #include "io_proxy.hpp"
 #include "meas_buffer.hpp"
 #include "meas_type_storage.hpp"
+#include "meas_trend.hpp"
 
 using namespace std;
 
@@ -68,8 +69,11 @@ public:
   vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
   string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
 
+  // stats
+  vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
 	
 };
 
 #include "meas_type.cpp"
+#include "meas_type_stats.cpp"
 #endif	

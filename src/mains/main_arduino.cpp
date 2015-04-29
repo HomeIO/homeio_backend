@@ -21,7 +21,7 @@ int main()
   h->measTypeArray->add(m);
   
   m = new MeasType();
-  m->name = "soil_humidity";
+  m->name = "moisture_alfa";
   m->command = '1';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;
@@ -32,6 +32,19 @@ int main()
   m->priority = 1;
   h->measTypeArray->add(m);
 
+  m = new MeasType();
+  m->name = "moisture_beta";
+  m->command = '2';
+  m->responseSize = 2;
+  m->coefficientLinear = -0.09765625;
+  m->coefficientOffset = -1023;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 3.0;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+
+  
   /*
   // something not worky
   m = new MeasType();
@@ -54,7 +67,7 @@ int main()
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 10000000; //50000;
   
-  h->fileStorage->cycleInterval = 6*3600*1000;
+  h->fileStorage->cycleInterval = 3600*1000;
   
   // overseers intervals
   h->overseerArray->cycleInterval = 10000000;
