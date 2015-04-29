@@ -9,6 +9,11 @@ int IoTcpServer::createTcpServer() {
         exit(EXIT_FAILURE);
     }
 
+    // http://stackoverflow.com/questions/548879/releasing-bound-ports-on-process-exit/548912#548912
+    // allow faster restart
+    int iSetOption = 1;
+    setsockopt(list_s, SOL_SOCKET, SO_REUSEADDR, (char*)&iSetOption, sizeof(iSetOption));
+    
     /*  Set all bytes in socket address structure to
         zero, and fill in the relevant data members   */
 

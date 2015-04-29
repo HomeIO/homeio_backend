@@ -209,3 +209,111 @@ string MeasType::storageJson(unsigned long long timeFrom, unsigned long long tim
   
   return tmp;
 }
+
+vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
+  vector < MeasTrend > result;
+  
+  vector < unsigned int > rawBuffer = buffer->getFromBuffer(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
+  
+  // no meas
+  if (rawBuffer.size() == 0) {
+    return result;
+  }
+  
+  unsigned long long tempInterval = buffer->calcInterval();
+  long int tmpDeviation = 0;
+  long int maxDeviation = 4;
+  bool createNew = false;
+  unsigned char newType = MeasTrend::typeStable;
+  
+  MeasTrend *tempTrend = new MeasTrend;
+  tempTrend->type = 0; // default equal
+  tempTrend->rawFrom = rawBuffer[0];
+  tempTrend->rawTo = rawBuffer[0];
+  tempTrend->timeFrom = timeFrom;
+  tempTrend->timeTo = timeFrom;
+  
+  for(std::vector<unsigned int>::iterator it = rawBuffer.begin(); it != rawBuffer.end(); ++it) {
+    tmpDeviation = (long int) *it - (long int) tempTrend->rawFrom;
+    if (labs(tmpDeviation) < maxDeviation) {
+      // stable
+      if (tempTrend->type != MeasTrend::typeStable) {
+        // was asc/desc, now is stable
+        createNew = true;
+        newType = MeasTrend::typeStable;
+      }
+    }
+    else if (tmpDeviation > maxDeviation) {
+      // ascending
+      if (tempTrend->type != MeasTrend::typeAscend) {
+        // was stable/desc, now is asc
+        createNew = true;
+        newType = MeasTrend::typeAscend;
+      }
+    }
+    else {
+      // descening
+      if (tempTrend->type != MeasTrend::typeDescend) {
+        // was stable/asc, now is asc
+        createNew = true;
+        newType = MeasTrend::typeDescend;
+      }
+    }
+    
+    if (createNew) {
+      result.push_back(*tempTrend);
+
+      tempTrend = new MeasTrend;
+      tempTrend->type = newType; // default equal
+      tempTrend->rawFrom = *it;
+      tempTrend->timeFrom = timeFrom + tempInterval * (it - rawBuffer.begin() );
+      
+      createNew = false;
+    }
+    
+    tempTrend->rawTo = *it;
+    tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
+    
+    // set to current
+  }
+  
+  // add last element
+  result.push_back(*tempTrend);
+  
+  for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
+    it->valueFrom = rawToValue(it->rawFrom);
+    it->valueTo = rawToValue(it->rawTo);
+  }
+  
+  return result;
+}
+
+string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  vector < MeasTrend > result = getTrendsBetween(timeFrom, timeTo);
+  
+  string trendString = "[";
+  
+  for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
+    trendString += "{";
+    trendString += "\"type\":" + to_string(it->type) + ",";
+    trendString += "\"rawFrom\":" + to_string(it->rawFrom) + ",";
+    trendString += "\"rawTo\":" + to_string(it->rawTo) + ",";
+    trendString += "\"valueFrom\":" + to_string(it->valueFrom) + ",";
+    trendString += "\"valueTo\":" + to_string(it->valueTo) + ",";
+    trendString += "\"timeFrom\":" + to_string(it->timeFrom) + ",";
+    trendString += "\"timeTo\":" + to_string(it->timeTo);
+    trendString += "},";
+  }
+
+  // remove last coma
+  if (trendString[trendString.size() - 1] == ',') {
+    trendString.resize(trendString.size() - 1);
+  }
+  
+  trendString += "]";
+  
+  string responseString = "{";
+  responseString += "\"trends\":" + trendString + "}";
+  
+  return responseString;
+}

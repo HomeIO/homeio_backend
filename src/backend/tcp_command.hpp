@@ -25,6 +25,7 @@ public:
   string processMeasRawForIndexCommand(string command);
   string processMeasRawHistoryForTimeCommand(string command);
   string processMeasStorageCommand(string command);
+  string processMeasStatsCommand(string command);
   
   string processActionIndexCommand(string command);
   string processActionShowCommand(string command);

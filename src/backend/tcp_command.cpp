@@ -36,6 +36,9 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measStorage") {
     response = processMeasStorageCommand(command);
   }
+  if (commandName == "measStats") {
+    response = processMeasStatsCommand(command);
+  }
   if (commandName == "actionIndex") {
     response = processActionIndexCommand(command);
   }
@@ -278,6 +281,38 @@ string TcpCommand::processMeasStorageCommand(string command) {
   }  
   return response;
 }
+
+// meas#stats
+string TcpCommand::processMeasStatsCommand(string command) {
+  string measName, fromString, toString, response;
+  unsigned long long from, to;
+  
+  measName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  fromString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  toString = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+  
+  stringstream(fromString) >> from;
+  stringstream(toString) >> to;
+  
+  MeasType *foundMeasType = measTypeArray->byName(measName);
+  
+  if (foundMeasType) {
+    string statsString = foundMeasType->statsJson(from, to);
+    response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
+    response +=  "\"data\":" + statsString;
+    response += "}";
+  }
+  else {
+    response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
+  }  
+  return response;
+}
+
 
 // actions#index
 string TcpCommand::processActionIndexCommand(string command) {

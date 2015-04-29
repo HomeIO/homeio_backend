@@ -70,6 +70,7 @@ public:
   string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
 
   // stats
+  string statsJson(unsigned long long timeFrom, unsigned long long timeTo);
   vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
 	
 };
