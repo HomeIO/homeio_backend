@@ -10,6 +10,9 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
 }
 
 unsigned long int MeasBuffer::add(unsigned int raw) {
+  // must be here because in other case buffer[0] = 0
+  buffer[offset] = raw;
+  
   offset++;
   if (offset >= maxSize) {
     offset = 0;
@@ -23,7 +26,7 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   }
   lastTime = mTime();
   
-  buffer[offset] = raw;
+  //buffer[offset] = raw;
   
   return offset;
 }

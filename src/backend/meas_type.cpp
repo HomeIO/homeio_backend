@@ -296,6 +296,10 @@ string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeT
   for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
     trendString += "{";
     trendString += "\"type\":" + to_string(it->type) + ",";
+    trendString += "\"timeDiff\":" + to_string(it->timeDiff() ) + ",";
+    trendString += "\"valueDiff\":" + to_string(it->valueDiff() ) + ",";
+    trendString += "\"trend\":" + to_string(it->trend() ) + ",";
+    
     trendString += "\"rawFrom\":" + to_string(it->rawFrom) + ",";
     trendString += "\"rawTo\":" + to_string(it->rawTo) + ",";
     trendString += "\"valueFrom\":" + to_string(it->valueFrom) + ",";

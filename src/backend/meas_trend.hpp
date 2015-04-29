@@ -1,3 +1,8 @@
+#ifndef MEAS_TREND_H
+#define MEAS_TREND_H
+
+using namespace std;
+
 class MeasTrend {
 public: 
   static const int typeStable = 0;
@@ -17,4 +22,12 @@ public:
   
   unsigned long int indexFrom;
   unsigned long int indexTo;
-} ;
+  
+  MeasTrend();
+  unsigned long long timeDiff();
+  double valueDiff();
+  double trend();
+};
+
+#include "meas_trend.cpp"
+#endif  
