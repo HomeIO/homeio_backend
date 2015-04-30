@@ -10,6 +10,7 @@ int main()
   MeasType *m;
   m = new MeasType();
   m->name = "light";
+  m->unit = "%";
   m->command = '0';
   m->responseSize = 2;
   m->coefficientLinear = 1.0;
@@ -22,6 +23,7 @@ int main()
   
   m = new MeasType();
   m->name = "outputs";
+  m->unit = "bit array";
   m->command = 'o';
   m->responseSize = 1;
   h->measTypeArray->add(m);

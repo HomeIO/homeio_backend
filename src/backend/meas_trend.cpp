@@ -5,13 +5,25 @@ MeasTrend::MeasTrend() {
   rawFrom = 0;
   rawTo = 0;
   
-  type = MeasTrend::typeStable;
+  tmpType = MeasTrend::typeStable;
   
   timeFrom = 0;
   timeTo = 0;
   
   indexFrom = 0;
   indexTo = 0;
+}
+
+unsigned char MeasTrend::type() {
+  if (valueFrom > valueTo) {
+    return typeDescend;
+  }
+  else if (valueFrom < valueTo) {
+    return typeAscend;
+  }
+  else {
+    return typeStable;
+  }
 }
 
 unsigned long long MeasTrend::timeDiff() {

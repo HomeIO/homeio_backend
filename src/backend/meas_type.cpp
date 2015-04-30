@@ -129,6 +129,7 @@ string MeasType::toJson() {
   
   json = "{";
   json += "\"name\":\"" + name + "\",";
+  json += "\"unit\":\"" + unit + "\",";
   json += "\"priority\":\"" + to_string(priority) + "\",";
   json += "\"buffer\":" + buffer->toJson() + ",";
   json += "\"coefficientLinear\":" + to_string(coefficientLinear) + ",";
@@ -227,7 +228,7 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
   unsigned char newType = MeasTrend::typeStable;
   
   MeasTrend *tempTrend = new MeasTrend;
-  tempTrend->type = 0; // default equal
+  tempTrend->tmpType = 0; // default equal
   tempTrend->rawFrom = rawBuffer[0];
   tempTrend->rawTo = rawBuffer[0];
   tempTrend->timeFrom = timeFrom;
@@ -237,7 +238,7 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
     tmpDeviation = (long int) *it - (long int) tempTrend->rawFrom;
     if (labs(tmpDeviation) < maxDeviation) {
       // stable
-      if (tempTrend->type != MeasTrend::typeStable) {
+      if (tempTrend->tmpType != MeasTrend::typeStable) {
         // was asc/desc, now is stable
         createNew = true;
         newType = MeasTrend::typeStable;
@@ -245,7 +246,7 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
     }
     else if (tmpDeviation > maxDeviation) {
       // ascending
-      if (tempTrend->type != MeasTrend::typeAscend) {
+      if (tempTrend->tmpType != MeasTrend::typeAscend) {
         // was stable/desc, now is asc
         createNew = true;
         newType = MeasTrend::typeAscend;
@@ -253,7 +254,7 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
     }
     else {
       // descening
-      if (tempTrend->type != MeasTrend::typeDescend) {
+      if (tempTrend->tmpType != MeasTrend::typeDescend) {
         // was stable/asc, now is asc
         createNew = true;
         newType = MeasTrend::typeDescend;
@@ -261,11 +262,18 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
     }
     
     if (createNew) {
-      result.push_back(*tempTrend);
+      tempTrend->rawTo = *it;
+      tempTrend->valueTo = rawToValue(tempTrend->rawTo);
+      tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
+      
+      if (tempTrend->timeDiff() > 0) {
+        result.push_back(*tempTrend);
+      }
 
       tempTrend = new MeasTrend;
-      tempTrend->type = newType; // default equal
+      tempTrend->tmpType = newType; // default equal
       tempTrend->rawFrom = *it;
+      tempTrend->valueFrom = rawToValue(tempTrend->valueFrom);
       tempTrend->timeFrom = timeFrom + tempInterval * (it - rawBuffer.begin() );
       
       createNew = false;
@@ -280,11 +288,6 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
   // add last element
   result.push_back(*tempTrend);
   
-  for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
-    it->valueFrom = rawToValue(it->rawFrom);
-    it->valueTo = rawToValue(it->rawTo);
-  }
-  
   return result;
 }
 
@@ -295,7 +298,7 @@ string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeT
   
   for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
     trendString += "{";
-    trendString += "\"type\":" + to_string(it->type) + ",";
+    trendString += "\"type\":" + to_string(it->type()) + ",";
     trendString += "\"timeDiff\":" + to_string(it->timeDiff() ) + ",";
     trendString += "\"valueDiff\":" + to_string(it->valueDiff() ) + ",";
     trendString += "\"trend\":" + to_string(it->trend() ) + ",";

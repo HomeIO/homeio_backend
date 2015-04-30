@@ -10,6 +10,7 @@ int main()
   MeasType *m;
   m = new MeasType();
   m->name = "light";
+  m->unit = "%";
   m->command = '0';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;
@@ -22,6 +23,7 @@ int main()
   
   m = new MeasType();
   m->name = "moisture_alfa";
+  m->unit = "%";
   m->command = '1';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;
@@ -34,6 +36,7 @@ int main()
 
   m = new MeasType();
   m->name = "moisture_beta";
+  m->unit = "%";
   m->command = '2';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;

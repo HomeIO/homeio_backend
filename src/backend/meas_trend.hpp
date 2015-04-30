@@ -9,7 +9,7 @@ public:
   static const int typeAscend = 10;
   static const int typeDescend = 20;
   
-  unsigned char type;
+  unsigned char tmpType;
   
   double valueFrom;
   double valueTo;
@@ -27,6 +27,7 @@ public:
   unsigned long long timeDiff();
   double valueDiff();
   double trend();
+  unsigned char type();
 };
 
 #include "meas_trend.cpp"

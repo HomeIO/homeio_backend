@@ -53,6 +53,7 @@ int main()
   // place measurement here
   m = new MeasType();
   m->name = "batt_u";
+  m->unit = "V";
   m->command = '3';
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
@@ -66,6 +67,7 @@ int main()
   
   m = new MeasType();
   m->name = "i_gen_batt";
+  m->unit = "A";
   m->command = '4';
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
@@ -75,6 +77,7 @@ int main()
   
   m = new MeasType();
   m->name = "i_gen_resist";
+  m->unit = "A";
   m->command = '5';
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
@@ -83,6 +86,7 @@ int main()
   
   m = new MeasType();
   m->name = "i_inverters";
+  m->unit = "A";
   m->command = '6';
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
@@ -91,6 +95,7 @@ int main()
   
   m = new MeasType();
   m->name = "imp_per_min";
+  m->unit = "imp/min";
   m->command = 'l';
   m->responseSize = 2;
   m->coefficientLinear = 60.0;
@@ -99,6 +104,7 @@ int main()
   
   m = new MeasType();
   m->name = "coil_1_u";
+  m->unit = "V";
   m->command = '0';
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
@@ -107,6 +113,7 @@ int main()
   
   m = new MeasType();
   m->name = "coil_2_u";
+  m->unit = "V";
   m->command = '1';
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
@@ -115,6 +122,7 @@ int main()
   
   m = new MeasType();
   m->name = "coil_3_u";
+  m->unit = "V";
   m->command = '2';
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
@@ -123,18 +131,21 @@ int main()
   
   m = new MeasType();
   m->name = "res_pwm";
+  m->unit = "pwm";
   m->command = 'p';
   m->responseSize = 2;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "res_pwm_avg";
+  m->unit = "pwm";
   m->command = 'q';
   m->responseSize = 2;
   h->measTypeArray->add(m);
   
   m = new MeasType();
   m->name = "outputs";
+  m->unit = "bit array";
   m->command = 'o';
   m->responseSize = 1;
   h->measTypeArray->add(m);
