@@ -22,9 +22,9 @@ int main()
   h->measTypeArray->add(m);
   
   m = new MeasType();
-  m->name = "moisture_alfa";
+  m->name = "moisture_shadow";
   m->unit = "%";
-  m->command = '1';
+  m->command = '5';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;
   m->coefficientOffset = -1023;
@@ -35,9 +35,22 @@ int main()
   h->measTypeArray->add(m);
 
   m = new MeasType();
-  m->name = "moisture_beta";
+  m->name = "moisture_external";
   m->unit = "%";
-  m->command = '2';
+  m->command = '4';
+  m->responseSize = 2;
+  m->coefficientLinear = -0.09765625;
+  m->coefficientOffset = -1023;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 3.0;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+  
+  m = new MeasType();
+  m->name = "moisture_top";
+  m->unit = "%";
+  m->command = '3';
   m->responseSize = 2;
   m->coefficientLinear = -0.09765625;
   m->coefficientOffset = -1023;
@@ -70,7 +83,7 @@ int main()
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 10000000; //50000;
   
-  h->fileStorage->cycleInterval = 3600*1000;
+  h->fileStorage->cycleInterval = 60*1000000; //3600*1000;
   
   // overseers intervals
   h->overseerArray->cycleInterval = 10000000;

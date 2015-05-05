@@ -1,7 +1,7 @@
 HomeIO backend
 ==============
 
-Biggest resource hungry features from HomeIO (lite and the old one) was moved to backend written in C++.
+Super fast and resource friendly version of HomeIO backend!
 
 Features
 --------
