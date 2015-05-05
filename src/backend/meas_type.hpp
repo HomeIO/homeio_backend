@@ -64,11 +64,11 @@ public:
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
 
-  //mutex storageMutex;  
   unsigned long int timeToIndex(unsigned long long t);
   vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
   vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
   string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
+  unsigned long long lastStored;
 
   // stats
   string statsJson(unsigned long long timeFrom, unsigned long long timeTo);

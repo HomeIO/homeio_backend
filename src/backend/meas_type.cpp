@@ -16,7 +16,8 @@ MeasType::MeasType() {
   avgValue = 0.0;
   intervalAvg = 3600000; // recalculate avg every 1 hour
   windowAvg = 50000; // use this amount of measurements to calc avg
-
+  
+  lastStored = mTime();
 }
 
 unsigned int MeasType::fetch() {

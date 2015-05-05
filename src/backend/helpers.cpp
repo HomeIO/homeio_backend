@@ -1,3 +1,12 @@
+char* currentDateSafe() {
+  time (&currentTimeObject);
+  currentTimeInfo = localtime (&currentTimeObject);
+  
+  strftime (currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
+
+  return currentTimeBuffer;
+}
+
 char* currentTime() {
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);

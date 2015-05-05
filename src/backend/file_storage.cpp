@@ -9,13 +9,14 @@ void FileStorage::start()
 {
   usleep(usDelay);
   
-  mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH 
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
   
   while(true) {
     performMeasStore();
     logInfo("FileStorage");
+    
     usleep(cycleInterval);
   };
 }
@@ -26,29 +27,32 @@ void FileStorage::performMeasStore() {
   logInfo("FileStorage - start meas file storage");
   
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    storeMeasArray(*it, it->storageArray(lastTime, currentTime));
+    storeMeasArray(&*it, it->storageArray(it->lastStored, currentTime));
   }
-  
-  lastTime = currentTime;
   
   logInfo("FileStorage - end meas file storage");
 }
 
-void FileStorage::storeMeasArray(MeasType measType, vector <StorageHash> storageVector) {
+void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storageVector) {
   if (storageVector.size() == 0) {
-    logInfo("FileStorage [" + measType.name + "] no data to store");
+    logInfo("FileStorage [" + measType->name + "] no data to store");
     return;
+  }
+  else {
+    // mark last time stored
+    measType->lastStored = storageVector.back().timeTo;
   }
   
   unsigned long int measCount = 0;
   ofstream outfile;
-  string filename = path + "/" + measType.name + "_" + to_string(mTime()) + ".csv";
+  string currentDate( currentDateSafe() );
+  string filename = path + "/" + measType->name + "_" + currentDate + ".csv";
 
-  logInfo("FileStorage [" + measType.name + "] path " + filename);
+  logInfo("FileStorage [" + measType->name + "] path " + filename);
   
   outfile.open(filename, ios_base::app);
   for(std::vector<StorageHash>::iterator it = storageVector.begin(); it != storageVector.end(); ++it) {
-    outfile << measType.name << "; ";
+    outfile << measType->name << "; ";
     outfile << to_string(it->timeFrom) << "; ";
     outfile << to_string(it->timeTo) << "; ";
     outfile << to_string(it->value) << endl;
@@ -56,5 +60,5 @@ void FileStorage::storeMeasArray(MeasType measType, vector <StorageHash> storage
     measCount++;
   }
   
-  logInfo("FileStorage [" + measType.name + "] stored " + to_string(measCount));
+  logInfo("FileStorage [" + measType->name + "] stored " + to_string(measCount));
 }
