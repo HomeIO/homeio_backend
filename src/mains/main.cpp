@@ -246,7 +246,7 @@ int main()
   o->name = "no_brake_on_low_voltage";
   o->actionName = "turn_off_brake";
   o->measName = "batt_u";
-  o->thresholdValue = 19.0;
+  o->thresholdValue = 25.0;
   o->isMax = false;
   o->windowSize = 100;
   h->overseerArray->add(o);
@@ -255,7 +255,7 @@ int main()
   o->name = "turn_on_inverter_A_on_high_battery";
   o->actionName = "inverter_A_on";
   o->measName = "coil_1_u";
-  o->thresholdValue = 18.0;
+  o->thresholdValue = 28.0;
   o->isMax = true;
   o->windowSize = 100;
   h->overseerArray->add(o);
@@ -264,7 +264,7 @@ int main()
   o->name = "turn_on_inverter_A_on_high_coil";
   o->actionName = "inverter_A_on";
   o->measName = "batt_u";
-  o->thresholdValue = 25.0;
+  o->thresholdValue = 33.0;
   o->isMax = true;
   o->windowSize = 200;
   h->overseerArray->add(o);
@@ -282,7 +282,7 @@ int main()
   o->name = "turn_on_inverter_B_on_high_battery";
   o->actionName = "inverter_B_on";
   o->measName = "batt_u";
-  o->thresholdValue = 35.0;
+  o->thresholdValue = 36.0;
   o->isMax = true;
   o->windowSize = 1000;
   h->overseerArray->add(o);
