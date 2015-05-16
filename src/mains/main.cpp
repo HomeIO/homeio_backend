@@ -228,13 +228,13 @@ int main()
   Overseer *o;
   o = new Overseer();
   // this must be unique and can be used to access overseer parameters in future
-  o->name = "brake_on_high_voltage";
+  o->name = "brake_on_high_batt_voltage";
   // string name of action
   o->actionName = "start_total_brake";
   // string name of measurement
   o->measName = "batt_u";
   // critical value
-  o->thresholdValue = 50.0;
+  o->thresholdValue = 46.5;
   // check if value is higher
   o->isMax = true;
   // use average value using X raw measurements
@@ -243,28 +243,28 @@ int main()
   h->overseerArray->add(o);
 
   o = new Overseer();
-  o->name = "no_brake_on_low_voltage";
+  o->name = "no_brake_on_low_batt_voltage";
   o->actionName = "turn_off_brake";
   o->measName = "batt_u";
-  o->thresholdValue = 25.0;
+  o->thresholdValue = 29.0;
   o->isMax = false;
-  o->windowSize = 100;
-  h->overseerArray->add(o);
-
-  o = new Overseer();
-  o->name = "turn_on_inverter_A_on_high_battery";
-  o->actionName = "inverter_A_on";
-  o->measName = "coil_1_u";
-  o->thresholdValue = 28.0;
-  o->isMax = true;
   o->windowSize = 100;
   h->overseerArray->add(o);
 
   o = new Overseer();
   o->name = "turn_on_inverter_A_on_high_coil";
   o->actionName = "inverter_A_on";
+  o->measName = "coil_1_u";
+  o->thresholdValue = 30.0;
+  o->isMax = true;
+  o->windowSize = 100;
+  h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_on_inverter_A_on_high_battery";
+  o->actionName = "inverter_A_on";
   o->measName = "batt_u";
-  o->thresholdValue = 33.0;
+  o->thresholdValue = 36.0;
   o->isMax = true;
   o->windowSize = 200;
   h->overseerArray->add(o);
@@ -275,14 +275,23 @@ int main()
   o->measName = "coil_1_u";
   o->thresholdValue = 2.0;
   o->isMax = false;
-  o->windowSize = 200;
+  o->windowSize = 50;
+  h->overseerArray->add(o);  
+
+  o = new Overseer();
+  o->name = "turn_off_inverter_B_on_low_coil";
+  o->actionName = "inverter_B_off";
+  o->measName = "coil_1_u";
+  o->thresholdValue = 2.0;
+  o->isMax = false;
+  o->windowSize = 50;
   h->overseerArray->add(o);  
 
   o = new Overseer();
   o->name = "turn_on_inverter_B_on_high_battery";
   o->actionName = "inverter_B_on";
   o->measName = "batt_u";
-  o->thresholdValue = 36.0;
+  o->thresholdValue = 43.0;
   o->isMax = true;
   o->windowSize = 1000;
   h->overseerArray->add(o);
@@ -291,10 +300,20 @@ int main()
   o->name = "turn_off_inverter_B_on_low_battery";
   o->actionName = "inverter_B_off";
   o->measName = "batt_u";
-  o->thresholdValue = 25.0;
+  o->thresholdValue = 33.0;
   o->isMax = false;
-  o->windowSize = 4;
+  o->windowSize = 100;
   h->overseerArray->add(o);
+
+  o = new Overseer();
+  o->name = "turn_off_inverter_A_on_low_battery";
+  o->actionName = "inverter_A_off";
+  o->measName = "batt_u";
+  o->thresholdValue = 27.0;
+  o->isMax = false;
+  o->windowSize = 100;
+  h->overseerArray->add(o);
+
 
   
   // Now you can run everything of parts of backend. 
