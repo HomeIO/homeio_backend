@@ -16,6 +16,7 @@ HomeIO::HomeIO() {
   measFetcher->ioProxy = ioProxy;
   
   tcpCommand->measTypeArray = measTypeArray;
+  tcpCommand->measFetcher = measFetcher;
   tcpCommand->actionTypeArray = actionTypeArray;
   tcpCommand->overseerArray = overseerArray;
   tcpServer->tcpCommand = tcpCommand;

@@ -1,4 +1,5 @@
 TcpCommand::TcpCommand() {
+  bootTime = mTime();
 }
 
 void TcpCommand::logInfo(string log) {
@@ -57,7 +58,12 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "overseerShow") {
     response = processOverseerShowCommand(command);
   }
-  
+  if (commandName == "settings") {
+    response = processSettingsCommand(command);
+  }  
+  if (commandName == "stats") {
+    response = processStatsCommand(command);
+  } 
   
   logInfo("TCP response: " + response);
   
@@ -430,16 +436,49 @@ string TcpCommand::processOverseerShowCommand(string command) {
   return response;
 }
 
+// settings
+string TcpCommand::processSettingsCommand(string command) {
+  string response, measResponse, timeResponse, resourceResponse;
+  
+  measResponse = "{";
+  measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval) + ",";
+  measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval);
+  measResponse += "}";
+  
+  response = "{\"status\":0,\"object\":{";
+  response += "\"meas\":" + measResponse;
+  response += "}}";
+  
+  return response;
+}
 
+// stats
+string TcpCommand::processStatsCommand(string command) {
+  string response, timeResponse, resourceResponse;
 
-
-
-//
-
-
-
-
-
+  timeResponse = "{";
+  timeResponse += "\"bootTime\":" + to_string(bootTime) + ",";
+  timeResponse += "\"time\":" + to_string(mTime()) + ",";
+  timeResponse += "\"uptime\":" + to_string(mTime() - bootTime);
+  timeResponse += "}";
+  
+  // http://stackoverflow.com/questions/669438/how-to-get-memory-usage-at-run-time-in-c
+  double vmUsage;
+  double residentSet;  
+  processMemUsage(vmUsage, residentSet);
+  
+  resourceResponse = "{";
+  resourceResponse += "\"vmUsage\":" + to_string(vmUsage) + ",";
+  resourceResponse += "\"residentSet\":" + to_string(residentSet);
+  resourceResponse += "}";
+  
+  response = "{\"status\":0,\"object\":{";
+  response += "\"time\":" + timeResponse + ",";
+  response += "\"resources\":" + resourceResponse;
+  response += "}}";
+  
+  return response;
+}
 
 
 

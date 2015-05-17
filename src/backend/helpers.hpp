@@ -9,6 +9,11 @@
 #include <iomanip>
 #include <mutex>
 
+#include <unistd.h>
+#include <sys/resource.h>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -52,6 +57,8 @@ void logWithColor(string log, unsigned char color);
 void logError(string log);
 void logInfo(string log);
 
+
+void processMemUsage(double& vm_usage, double& resident_set);
 
 #include "helpers.cpp"
 #endif

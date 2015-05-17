@@ -9,6 +9,7 @@
 #include "meas_type_array.hpp"
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
+#include "meas_fetcher.hpp"
 
 using namespace std;
 
@@ -35,12 +36,18 @@ public:
   string processOverseerIndexCommand(string command);
   string processOverseerShowCommand(string command);
   
+  string processSettingsCommand(string command);
+  string processStatsCommand(string command);
+ 
+  long long int bootTime;
   
   void logInfo(string log); // overwritten color
   
   MeasTypeArray *measTypeArray;
+  MeasFetcher *measFetcher;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
+  
 };
 
 #include "tcp_command.cpp"
