@@ -441,8 +441,8 @@ string TcpCommand::processSettingsCommand(string command) {
   string response, measResponse, timeResponse, resourceResponse;
   
   measResponse = "{";
-  measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval) + ",";
-  measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval);
+  measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval / 1000) + ",";
+  measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval / 1000);
   measResponse += "}";
   
   response = "{\"status\":0,\"object\":{";
