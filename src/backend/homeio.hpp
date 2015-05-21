@@ -11,6 +11,7 @@
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
 #include "file_storage.hpp"
+#include "frontend_settings.hpp"
 
 #include "io_server/io_server.hpp"
 
@@ -37,6 +38,7 @@ public:
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FileStorage *fileStorage;
+  FrontendSettings *frontendSettings;
   
   bool ioServerReady;
 };

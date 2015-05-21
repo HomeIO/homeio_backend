@@ -88,6 +88,9 @@ int main()
   // overseers intervals
   h->overseerArray->cycleInterval = 10000000;
   
+  h->frontendSettings->intervalCurrent = 10000;
+  h->frontendSettings->intervalHistory = 3600*1000;
+  
   h->start();
   
   return 0;

@@ -8,6 +8,7 @@ HomeIO::HomeIO() {
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
+  frontendSettings = new FrontendSettings;
   
   ioServerReady = false;
   
@@ -19,6 +20,7 @@ HomeIO::HomeIO() {
   tcpCommand->measFetcher = measFetcher;
   tcpCommand->actionTypeArray = actionTypeArray;
   tcpCommand->overseerArray = overseerArray;
+  tcpCommand->frontendSettings = frontendSettings;
   tcpServer->tcpCommand = tcpCommand;
   
   fileStorage->measTypeArray = measTypeArray;

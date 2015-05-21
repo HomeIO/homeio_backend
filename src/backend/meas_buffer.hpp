@@ -23,13 +23,17 @@ public:
   string toJson();
   
   unsigned long int maxSize;
+  // position of current raw
   unsigned long int offset;
+  // how many raws were added
   unsigned long int count;
   
   unsigned char elementSize;
 
   unsigned long int calcInterval();
   unsigned long long lastTime, firstTime, lastTimeForCount;
+  // it's not very accurate
+  unsigned long long earliestTime();
   
 private:
   vector < unsigned int > buffer;

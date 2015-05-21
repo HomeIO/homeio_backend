@@ -75,6 +75,9 @@ int main()
   o->windowSize = 60;
   h->overseerArray->add(o);
   
+  h->frontendSettings->intervalCurrent = 1000;
+  h->frontendSettings->intervalHistory = 3600*1000;
+  
   h->start();
   
   return 0;

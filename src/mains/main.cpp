@@ -315,6 +315,9 @@ int main()
   h->overseerArray->add(o);
 
 
+  // settings which will only be usable in frontend
+  h->frontendSettings->intervalCurrent = 1000;
+  h->frontendSettings->intervalHistory = 3600*1000;
   
   // Now you can run everything of parts of backend. 
   // TODO: way to disable IoServer

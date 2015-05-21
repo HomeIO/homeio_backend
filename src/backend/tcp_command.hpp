@@ -10,6 +10,7 @@
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
 #include "meas_fetcher.hpp"
+#include "frontend_settings.hpp"
 
 using namespace std;
 
@@ -47,6 +48,7 @@ public:
   MeasFetcher *measFetcher;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
+  FrontendSettings *frontendSettings;
   
 };
 

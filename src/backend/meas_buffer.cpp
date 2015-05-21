@@ -42,6 +42,10 @@ unsigned long int MeasBuffer::calcInterval() {
   }
 }
 
+unsigned long long MeasBuffer::earliestTime() {
+  return lastTime - ((unsigned long long) calcInterval() * (unsigned long long) count);
+}
+
 unsigned int MeasBuffer::at(unsigned long int i) {
   return buffer[index(i)];
 }
@@ -145,7 +149,8 @@ string MeasBuffer::toJson() {
   response += "\"offset\":" + to_string(offset) + ",";
   response += "\"maxSize\":" + to_string(maxSize) + ",";
   response += "\"lastTime\":" + to_string(lastTime) + ",";
-  response += "\"firstTime\":" + to_string(firstTime);
+  response += "\"firstTime\":" + to_string(firstTime); //+ ",";
+  //response += "\"earliestTime\":" + to_string(earliestTime());
   response += "}";
   return response;  
 }

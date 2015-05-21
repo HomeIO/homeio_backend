@@ -438,15 +438,22 @@ string TcpCommand::processOverseerShowCommand(string command) {
 
 // settings
 string TcpCommand::processSettingsCommand(string command) {
-  string response, measResponse, timeResponse, resourceResponse;
+  string response, measResponse, frontendResponse;
   
   measResponse = "{";
   measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval / 1000) + ",";
   measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval / 1000);
   measResponse += "}";
+
+  frontendResponse = "{";
+  frontendResponse += "\"intervalCurrent\":" + to_string(frontendSettings->intervalCurrent ) + ",";
+  frontendResponse += "\"intervalHistory\":" + to_string(frontendSettings->intervalHistory);
+  frontendResponse += "}";
   
   response = "{\"status\":0,\"object\":{";
   response += "\"meas\":" + measResponse;
+  response += ",";
+  response += "\"frontend\":" + frontendResponse;
   response += "}}";
   
   return response;
