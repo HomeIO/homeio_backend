@@ -59,6 +59,7 @@ void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storag
     
     measCount++;
   }
+  outfile.close();
   
   logInfo("FileStorage [" + measType->name + "] stored " + to_string(measCount));
 }

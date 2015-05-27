@@ -8,6 +8,7 @@ HomeIO::HomeIO() {
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
+  measBufferBackupStorage = new MeasBufferBackupStorage;
   frontendSettings = new FrontendSettings;
   spy = new Spy;
   
@@ -25,6 +26,7 @@ HomeIO::HomeIO() {
   tcpServer->tcpCommand = tcpCommand;
   
   fileStorage->measTypeArray = measTypeArray;
+  measBufferBackupStorage->measTypeArray = measTypeArray;
   spy->measTypeArray = measTypeArray;
 }
 
@@ -67,6 +69,12 @@ unsigned char HomeIO::startOverseer() {
 
 unsigned char HomeIO::startFileStorage() {
   fileStorage->start();
+  
+  return 0;
+}
+
+unsigned char HomeIO::startBufferBackupStorage() {
+  measBufferBackupStorage->start();
   
   return 0;
 }
@@ -119,6 +127,14 @@ void *fileStorageThread(void *argument)
   h->startFileStorage();
 }
 
+void *fileBufferBackupThread(void *argument)
+{
+  logInfo("Thread: fileBufferBackupThread() - store measurement buffer backup");
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startBufferBackupStorage();
+}
+
 void *spyThread(void *argument)
 {
   logInfo("Thread: spyThread() - announce measurements to central server");
@@ -129,6 +145,7 @@ void *spyThread(void *argument)
 
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
+  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 2;
   overseerArray->usDelay += measFetcher->cycleInterval * 2;
   tcpServer->usDelay += measFetcher->cycleInterval * 2;
   spy->usDelay += measFetcher->cycleInterval * 2;
@@ -137,7 +154,7 @@ void HomeIO::copyInternalDelays() {
 unsigned char HomeIO::start() {
   copyInternalDelays();
   
-  const char NUM_THREADS = 5;
+  const char NUM_THREADS = 6;
   pthread_t threads[NUM_THREADS];
   int rc, i;
   
@@ -155,7 +172,8 @@ unsigned char HomeIO::start() {
   rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
   rc = pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
   rc = pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
-  rc = pthread_create(&threads[5], NULL, spyThread, (void *) h);
+  rc = pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
+  rc = pthread_create(&threads[6], NULL, spyThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
