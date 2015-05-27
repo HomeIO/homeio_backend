@@ -78,6 +78,14 @@ int main()
   h->frontendSettings->intervalCurrent = 1000;
   h->frontendSettings->intervalHistory = 3600*1000;
   
+  // WARNING
+  // this announce measurements to global server used for statistics and uptime
+  h->spy->enabled = true;
+  h->spy->cycleInterval = 10*60*1000*1000; // 10 minutes
+  h->spy->hiveHost = "http://hive.homeio.org.pl/";
+  h->spy->siteName = "dev";
+  h->spy->enabled = true;
+  
   h->start();
   
   return 0;

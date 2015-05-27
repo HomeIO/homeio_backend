@@ -12,6 +12,7 @@
 #include "overseer_array.hpp"
 #include "file_storage.hpp"
 #include "frontend_settings.hpp"
+#include "spy.hpp"
 
 #include "io_server/io_server.hpp"
 
@@ -25,6 +26,7 @@ public:
   unsigned char startIoServer();
   unsigned char startOverseer();
   unsigned char startFileStorage();
+  unsigned char startSpy();
   unsigned char start();
   
   void copyInternalDelays();
@@ -39,6 +41,7 @@ public:
   OverseerArray *overseerArray;
   FileStorage *fileStorage;
   FrontendSettings *frontendSettings;
+  Spy *spy;
   
   bool ioServerReady;
 };

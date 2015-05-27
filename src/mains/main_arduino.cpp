@@ -81,7 +81,8 @@ int main()
   h->ioServer = io;
   
   h->measFetcher->betweenMeasInterval = 10000;
-  h->measFetcher->cycleInterval = 10000000; //50000;
+  //h->measFetcher->cycleInterval = 10000000; //50000;
+  h->measFetcher->cycleInterval = 50000; //50000;
   
   h->fileStorage->cycleInterval = 60*1000000; //3600*1000;
   
@@ -90,6 +91,14 @@ int main()
   
   h->frontendSettings->intervalCurrent = 10000;
   h->frontendSettings->intervalHistory = 3600*1000;
+  
+  // WARNING
+  // this announce measurements to global server used for statistics and uptime
+  h->spy->enabled = true;
+  h->spy->cycleInterval = 30*60*1000*1000; // 10 minutes
+  h->spy->hiveHost = "http://hive.homeio.org.pl/";
+  h->spy->siteName = "poznan_dev";
+  h->spy->enabled = true;
   
   h->start();
   

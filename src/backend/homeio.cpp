@@ -9,6 +9,7 @@ HomeIO::HomeIO() {
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
   frontendSettings = new FrontendSettings;
+  spy = new Spy;
   
   ioServerReady = false;
   
@@ -24,6 +25,7 @@ HomeIO::HomeIO() {
   tcpServer->tcpCommand = tcpCommand;
   
   fileStorage->measTypeArray = measTypeArray;
+  spy->measTypeArray = measTypeArray;
 }
 
 unsigned char HomeIO::startFetch() {
@@ -69,6 +71,11 @@ unsigned char HomeIO::startFileStorage() {
   return 0;
 }
 
+unsigned char HomeIO::startSpy() {
+  spy->start();
+  
+  return 0;
+}
 
 void *measStartThread(void *argument)
 {
@@ -112,16 +119,25 @@ void *fileStorageThread(void *argument)
   h->startFileStorage();
 }
 
+void *spyThread(void *argument)
+{
+  logInfo("Thread: spyThread() - announce measurements to central server");
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startSpy();
+}
+
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
   overseerArray->usDelay += measFetcher->cycleInterval * 2;
   tcpServer->usDelay += measFetcher->cycleInterval * 2;
+  spy->usDelay += measFetcher->cycleInterval * 2;
 }
 
 unsigned char HomeIO::start() {
   copyInternalDelays();
   
-  const char NUM_THREADS = 4;
+  const char NUM_THREADS = 5;
   pthread_t threads[NUM_THREADS];
   int rc, i;
   
@@ -139,6 +155,7 @@ unsigned char HomeIO::start() {
   rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
   rc = pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
   rc = pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
+  rc = pthread_create(&threads[5], NULL, spyThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
