@@ -102,7 +102,7 @@ int main()
   
   // buffer storage
   h->measBufferBackupStorage->cycleInterval = (long) 20*60*1000*1000; // 20 minutes
-  h->measBufferBackupStorage->thresholdTimeRange = (long) 3*60*60*1000*1000; // 3 hours
+  h->measBufferBackupStorage->thresholdTimeRange = (unsigned long long) 3*60*60*1000*1000; // 3 hours
   h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
   
   h->start();
