@@ -122,7 +122,7 @@ double MeasType::rawToValue(unsigned int _raw) {
 }
 
 double MeasType::valueAt(unsigned long int i) {
-  rawToValue(buffer->at(i));
+  return rawToValue(buffer->at(i));
 }
 
 string MeasType::toJson() {
