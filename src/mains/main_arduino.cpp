@@ -100,6 +100,11 @@ int main()
   h->spy->siteName = "poznan_dev";
   h->spy->enabled = true;
   
+  // buffer storage
+  h->measBufferBackupStorage->cycleInterval = (long) 20*60*1000*1000; // 20 minutes
+  h->measBufferBackupStorage->thresholdTimeRange = (long) 3*60*60*1000*1000; // 3 hours
+  h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
+  
   h->start();
   
   return 0;

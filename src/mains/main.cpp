@@ -327,6 +327,11 @@ int main()
   h->spy->siteName = "lakie_dev";
   h->spy->enabled = true;
   
+  // buffer storage
+  h->measBufferBackupStorage->cycleInterval = (long) 10*60*1000*1000; // 10 minutes
+  h->measBufferBackupStorage->thresholdTimeRange = (long) 20*60*1000*1000; // 20 minutes
+  h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
+  
   // Now you can run everything of parts of backend. 
   // TODO: way to disable IoServer
   h->start();

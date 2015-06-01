@@ -1,7 +1,7 @@
 MeasBufferBackupStorage::MeasBufferBackupStorage() {
-  //cycleInterval = 10*60*1000*1000;
-  cycleInterval = 10*1000*1000;
-  usDelay = 1000000;
+  cycleInterval = 10*60*1000*1000;
+  thresholdTimeRange = cycleInterval * 2;
+  usDelay = 30*1000*1000;
   path = "data";
 }
 
@@ -13,11 +13,21 @@ void MeasBufferBackupStorage::start()
   // TODO maybe add S_IWOTH 
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
   
+  // debug loop
+  /*
+  cycleInterval = 10*1000*1000;
   while(true) {
-    performMeasStore();
-    performLoad();
+    performDump();
+    performRestore();
     usleep(cycleInterval);
   };
+  */
+
+  while(true) {
+    performDump();
+    usleep(cycleInterval);
+  };
+  
 }
 
 string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
@@ -25,9 +35,7 @@ string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
   return filename;
 }
 
-// TODO add parameters used in MeasBuffer::calcInterval()
-
-void MeasBufferBackupStorage::performMeasStore() {
+void MeasBufferBackupStorage::performDump() {
   unsigned long int i = 0;
   logInfo("MeasBufferBackupStorage - start");
   
@@ -36,16 +44,18 @@ void MeasBufferBackupStorage::performMeasStore() {
     string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
     
-    logInfo("MeasBufferBackupStorage [" + it->name + "] path " + filename);
+    logInfo("MeasBufferBackupStorage DUMP [" + it->name + "] path " + filename);
   
     outfile.open(filename, ios_base::out);
 
+    outfile << to_string(mTime()) << "\n";
     outfile << to_string(measBuffer->maxSize) << "\n";
     outfile << to_string(measBuffer->count) << "\n";
     outfile << to_string(measBuffer->offset) << "\n";
     outfile << to_string(measBuffer->lastTimeForCount) << "\n";
     outfile << to_string(measBuffer->firstTime) << "\n";
-
+    outfile << to_string(measBuffer->calcInterval()) << "\n";
+    
     outfile << "\n\n";
     
     for(i = measBuffer->count; i > 0; i--) {
@@ -58,11 +68,13 @@ void MeasBufferBackupStorage::performMeasStore() {
   logInfo("MeasBufferBackupStorage - end");
 }
 
-void MeasBufferBackupStorage::performLoad() {
+void MeasBufferBackupStorage::performRestore() {
   unsigned long int i = 0;
   string line;
   unsigned int tmpRaw, count;
-  unsigned long long firstTime, lastTimeForCount;
+  unsigned long int interval;
+  unsigned long long storeTime;
+  struct stat sBuffer;   
   
   logInfo("MeasBufferBackupStorage - start");
   
@@ -71,42 +83,70 @@ void MeasBufferBackupStorage::performLoad() {
     string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
     
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] path " + filename);
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE interval " + to_string(measBuffer->calcInterval()));
-    
     infile.open(filename, ios_base::in);
+    
+    if (infile.good()) {
+      // buffer file exists
+      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] path " + filename);
+      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE interval " + to_string(measBuffer->calcInterval()));
+      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE count " + to_string(measBuffer->count));
 
-    infile >> measBuffer->maxSize;
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] updated max size " + to_string(measBuffer->maxSize));
+      // time of dump
+      infile >> storeTime;
     
-    // TODO resize buffer
-    //measBuffer->buffer = 
+      if (thresholdTimeRange > (mTime() - storeTime) ) {
+        // fresh enough
+
+        infile >> measBuffer->maxSize;
+        // resize buffer
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] updated max size " + to_string(measBuffer->maxSize));
+        measBuffer->clearAndResize();
     
-    // count
-    infile >> count;
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] count " + to_string(count));
+        // count
+        infile >> count;
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] count " + to_string(count));
     
-    // offset - not used now; and 2 new lines
-    infile >> line;
-    // needer for proper interval calculation
-    infile >> lastTimeForCount;
-    infile >> firstTime;
-    // 2 empty lines
-    infile >> line;
-    infile >> line;
+        // offset - not used now
+        infile >> line;
+        // lastTimeForCount - not used now
+        infile >> line;
+        // firstTime - not needed now
+        infile >> line;
     
-    for(i = count; i > 0; i--) {
-      infile >> tmpRaw;
-      measBuffer->add(tmpRaw);
+        // interval - needed for recalculate times to meet proper interval calculation
+        // time offset error is not a very bad thing
+        infile >> interval;
+    
+        // 2 empty lines
+        infile >> line;
+        infile >> line;
+    
+        for(i = count; i > 0; i--) {
+          infile >> tmpRaw;
+          measBuffer->add(tmpRaw);
+        }
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded");
+    
+        // modify times
+        measBuffer->lastTimeForCount = mTime();
+        measBuffer->firstTime = measBuffer->lastTimeForCount - count * interval;
+    
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST interval " + to_string(measBuffer->calcInterval()));
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST count " + to_string(measBuffer->count));
+      }
+      else {
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] buffer is too old");
+      }
+    
+      
     }
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded");
+    else {
+      // buffer file not exists
+      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] file not exists " + filename);
+    }
     
-    measBuffer->lastTimeForCount = lastTimeForCount;
-    measBuffer->firstTime = firstTime;
+  infile.close();
     
-    logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE interval " + to_string(measBuffer->calcInterval()));
-    
-    infile.close();
   }
   
   logInfo("MeasBufferBackupStorage - end");

@@ -35,7 +35,13 @@ unsigned char HomeIO::startFetch() {
   for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
     m->ioProxy = ioProxy;
   }
+
+  // restore buffer before restart
+  measBufferBackupStorage->performRestore();
   
+  // start fetching measurements
+  // to clear buffer or
+  // restored buffer
   measFetcher->start();
   
   return 0;
@@ -145,7 +151,7 @@ void *spyThread(void *argument)
 
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
-  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 2;
+  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 20;
   overseerArray->usDelay += measFetcher->cycleInterval * 2;
   tcpServer->usDelay += measFetcher->cycleInterval * 2;
   spy->usDelay += measFetcher->cycleInterval * 2;

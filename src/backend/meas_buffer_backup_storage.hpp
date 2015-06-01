@@ -15,13 +15,14 @@ class MeasBufferBackupStorage {
 public:
   MeasBufferBackupStorage();
   void start();
-  void performMeasStore();
-  void performLoad();
+  void performDump();
+  void performRestore();
     
   string pathForMeasType(MeasType *measType);
 
   string path;
-  unsigned long int cycleInterval;
+  unsigned long long cycleInterval;
+  unsigned long long thresholdTimeRange;
   unsigned long long usDelay;
  
   MeasTypeArray *measTypeArray;
