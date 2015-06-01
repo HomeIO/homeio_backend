@@ -81,8 +81,8 @@ int main()
   h->ioServer = io;
   
   h->measFetcher->betweenMeasInterval = 10000;
-  //h->measFetcher->cycleInterval = 10000000; //50000;
-  h->measFetcher->cycleInterval = 50000; //50000;
+  h->measFetcher->cycleInterval = 10000000; //50000;
+  //h->measFetcher->cycleInterval = 50000; //50000;
   
   h->fileStorage->cycleInterval = 60*1000000; //3600*1000;
   
