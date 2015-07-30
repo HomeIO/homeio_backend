@@ -4,6 +4,7 @@ Spy::Spy() {
   lastTime = mTime();
   
   hiveHost = "http://localhost:3000";
+  urlPath = "/meas_payloads/announce.json";
   siteName = "test";
   
   quiet = true;
@@ -24,28 +25,45 @@ void Spy::start()
   };
 }
 
-// I know it's security issue 
 void Spy::announceAll(){
-  string command;
+  url = hiveHost + urlPath;
   
   for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    command = "curl -X PUT -d \"meas_payload%5Bname%5D=";
-    command += it->name;
-    command += "&meas_payload%5Bsite%5D=";
-    command += siteName;
-    command += "&meas_payload%5Bvalue%5D=";
-    command += to_string(it->lastValue());
-    command += "\" \"";
-    command += hiveHost;
-    command += "/meas_payloads/announce.json\" ";
-    
-    if (quiet) {
-      command += ">/dev/null 2>&1";
-    }
-    
-    system(command.c_str());
+    annouceMeas(it->name, it->lastValue());
   }
 
   logInfo("Spy: announce completed");
   lastTime = mTime();
+}
+
+unsigned char Spy::annouceMeas(string name, float value) {
+  try {
+    curlpp::Cleanup cleaner;
+    curlpp::Easy request;
+    
+    request.setOpt(new curlpp::options::Url(url)); 
+    request.setOpt(new curlpp::options::Verbose(quiet == false)); 
+    
+    std::list<std::string> header; 
+    header.push_back("Content-Type: application/json");
+    header.push_back("Accept: application/json"); 
+    
+    request.setOpt(new curlpp::options::HttpHeader(header)); 
+    
+    string command;
+    command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + to_string(value) + "\"}}";
+    
+    request.setOpt(new curlpp::options::PostFields(command));
+    request.setOpt(new curlpp::options::PostFieldSize(command.length()));
+    
+    request.perform();
+    
+  }
+  catch ( curlpp::LogicError & e ) {
+    logError(e.what());
+  }
+  catch ( curlpp::RuntimeError & e ) {
+    logError(e.what());
+  }
+
 }
