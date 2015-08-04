@@ -105,6 +105,9 @@ int main()
   h->measBufferBackupStorage->thresholdTimeRange = (unsigned long long) 3*60*60*1000*1000; // 3 hours
   h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
   
+  // ram buffer resize 
+  h->measFetcher->maxBufferSize = 2000000;
+  
   h->start();
   
   return 0;

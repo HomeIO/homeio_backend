@@ -332,6 +332,9 @@ int main()
   h->measBufferBackupStorage->thresholdTimeRange = (long) 20*60*1000*1000; // 20 minutes
   h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
   
+  // ram buffer resize 
+  h->measFetcher->maxBufferSize = 4000000;
+  
   // Now you can run everything of parts of backend. 
   // TODO: way to disable IoServer
   h->start();

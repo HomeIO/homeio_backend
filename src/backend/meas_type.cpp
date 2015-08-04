@@ -20,6 +20,10 @@ MeasType::MeasType() {
   lastStored = mTime();
 }
 
+void MeasType::resizeBuffer(unsigned long int _maxSize = 1000000) {
+  buffer->clearAndResize(_maxSize);
+}
+
 unsigned int MeasType::fetch() {
   prepareFetch();
   

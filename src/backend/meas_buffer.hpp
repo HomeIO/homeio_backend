@@ -9,7 +9,7 @@ class MeasBuffer {
 public:
   MeasBuffer(unsigned long int _maxSize);
   
-  void clearAndResize();
+  void clearAndResize(unsigned long int _maxSize);
   unsigned long int add(unsigned int raw);
   unsigned int at(unsigned long int i);
   unsigned long int index(unsigned long int i);

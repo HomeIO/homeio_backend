@@ -2,10 +2,12 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
   maxSize = _maxSize;
   elementSize = sizeof(_maxSize);
   
-  clearAndResize();
+  clearAndResize(_maxSize);
 }
 
-void MeasBuffer::clearAndResize() {
+void MeasBuffer::clearAndResize(unsigned long int _maxSize = 1000000) {
+  maxSize = _maxSize;
+  
   offset = 0;
   count = 0;
   firstTime = 0;

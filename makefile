@@ -2,7 +2,7 @@ hello: ;
 	@echo Hello
 
 run: prepare-dir clean build exec;
-debug: prepare-dir clean build-debug exec;
+debug: prepare-dir clean build-debug exec-debug;
 setup: debian-deps prepare-dir;
 	
 prepare-dir:
@@ -17,9 +17,12 @@ build-debug: ;
 	
 exec: ;
 	sudo bin/homeio_main_${SITE}
+
+exec-debug: ;
+	gdb bin/homeio_main_${SITE}
 	
 debian-deps: ; 
-	sudo apt-get install libcurl4-openssl-dev git g++-4.9 cpp-4.9
+	sudo apt-get install libcurl4-openssl-dev git g++-4.9 cpp-4.9 libcurlpp0 libcurlpp-dev
 	
 clean: ;
 	[ -e bin ] || rm -v ./bin/*

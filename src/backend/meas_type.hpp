@@ -19,6 +19,7 @@ using namespace std;
 class MeasType {
 public:
   MeasType();
+  void resizeBuffer(unsigned long int);
   unsigned int fetch();
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);

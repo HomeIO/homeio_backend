@@ -2,6 +2,7 @@ MeasFetcher::MeasFetcher() {
   // default intervals
   betweenMeasInterval = 5000;
   cycleInterval = 20000;
+  maxBufferSize = 1000000; 
 }
 
 void MeasFetcher::start() {

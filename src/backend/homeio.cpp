@@ -36,6 +36,12 @@ unsigned char HomeIO::startFetch() {
     m->ioProxy = ioProxy;
   }
 
+  // resize buffer to custom size
+  for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
+    m->resizeBuffer( measFetcher->maxBufferSize );
+  }
+  logInfo("MeasFetcher: resize buffer size to " + to_string(measFetcher->maxBufferSize) );
+  
   // restore buffer before restart
   measBufferBackupStorage->performRestore();
   
@@ -150,11 +156,11 @@ void *spyThread(void *argument)
 }
 
 void HomeIO::copyInternalDelays() {
-  fileStorage->usDelay += measFetcher->cycleInterval * 4;
-  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 20;
-  overseerArray->usDelay += measFetcher->cycleInterval * 2;
-  tcpServer->usDelay += measFetcher->cycleInterval * 2;
-  spy->usDelay += measFetcher->cycleInterval * 2;
+  fileStorage->usDelay += measFetcher->cycleInterval * 4 + 1000000;
+  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 20 + 1000000;
+  overseerArray->usDelay += measFetcher->cycleInterval * 10 + 1000000;
+  tcpServer->usDelay += measFetcher->cycleInterval * 2 + 1000000;
+  spy->usDelay += measFetcher->cycleInterval * 2 + 1000000;
 }
 
 unsigned char HomeIO::start() {
