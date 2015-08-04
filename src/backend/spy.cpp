@@ -15,6 +15,8 @@ Spy::Spy() {
 void Spy::start()
 {
   usleep(usDelay);
+  // wait for enough measurements
+  measTypeArray->delayTillReady();
   
   while(true) {
     if (enabled) {

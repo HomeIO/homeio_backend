@@ -13,6 +13,9 @@ void MeasBufferBackupStorage::start()
   // TODO maybe add S_IWOTH 
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
   
+  // wait for enough measurements
+  measTypeArray->delayTillReady();
+  
   // debug loop
   /*
   cycleInterval = 10*1000*1000;

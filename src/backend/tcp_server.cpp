@@ -4,6 +4,8 @@ TcpServer::TcpServer() {
 
 int TcpServer::start() {
   usleep(usDelay);
+  // wait for enough measurements
+  measTypeArray->delayTillReady();
   
   port = 2005;
   commandBuffer = (char*)malloc(COMMAND_BUFFER_SIZE*sizeof(char));

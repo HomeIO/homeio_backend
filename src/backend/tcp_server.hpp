@@ -15,6 +15,7 @@
 #include <errno.h>
 
 #include "tcp_command.hpp"
+#include "meas_type_array.hpp"
 
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)
@@ -34,6 +35,7 @@ public:
   
   short int port;
   TcpCommand *tcpCommand;
+  MeasTypeArray *measTypeArray;
   
   unsigned long long usDelay;
   

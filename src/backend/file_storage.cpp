@@ -13,6 +13,9 @@ void FileStorage::start()
   // TODO maybe add S_IWOTH 
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
   
+  // wait for enough measurements
+  measTypeArray->delayTillReady();
+  
   while(true) {
     performMeasStore();
     logInfo("FileStorage");

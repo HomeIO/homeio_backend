@@ -1,5 +1,6 @@
 MeasTypeArray::MeasTypeArray() {
   std::vector <MeasType> measTypes;
+  isReady = false;
 }
 
 unsigned int MeasTypeArray::add(MeasType *m) {
@@ -15,4 +16,10 @@ MeasType *MeasTypeArray::byName(string s) {
     }
   }
   return NULL;
+}
+
+void MeasTypeArray::delayTillReady() {
+  while(isReady == false) {
+    usleep(100000);
+  }
 }

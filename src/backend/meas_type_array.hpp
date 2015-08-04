@@ -16,6 +16,11 @@ public:
   
   vector <MeasType> measTypes;
   IoProxy *ioProxy;
+  
+  // used by other utils like overseers, storage, to
+  // delay them
+  bool isReady;
+  void delayTillReady();
 };
 
 #include "meas_type_array.cpp"

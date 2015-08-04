@@ -24,6 +24,7 @@ HomeIO::HomeIO() {
   tcpCommand->overseerArray = overseerArray;
   tcpCommand->frontendSettings = frontendSettings;
   tcpServer->tcpCommand = tcpCommand;
+  tcpServer->measTypeArray = measTypeArray;
   
   fileStorage->measTypeArray = measTypeArray;
   measBufferBackupStorage->measTypeArray = measTypeArray;

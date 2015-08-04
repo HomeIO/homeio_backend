@@ -25,6 +25,10 @@ Overseer *OverseerArray::byName(string s) {
 
 int OverseerArray::start() {
   usleep(usDelay);
+  // wait for enough measurements
+  measTypeArray->delayTillReady();
+  
+  
   logInfo("OverseerArray start");
   
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
