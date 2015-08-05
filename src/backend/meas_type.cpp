@@ -278,7 +278,7 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
       tempTrend = new MeasTrend;
       tempTrend->tmpType = newType; // default equal
       tempTrend->rawFrom = *it;
-      tempTrend->valueFrom = rawToValue(tempTrend->valueFrom);
+      tempTrend->valueFrom = rawToValue(tempTrend->rawFrom);
       tempTrend->timeFrom = timeFrom + tempInterval * (it - rawBuffer.begin() );
       
       createNew = false;

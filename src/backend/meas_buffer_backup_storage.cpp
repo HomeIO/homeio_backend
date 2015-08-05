@@ -7,7 +7,7 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
 
 void MeasBufferBackupStorage::start()
 {
-  usleep(usDelay);
+  longSleep(usDelay);
   
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH 
@@ -22,13 +22,13 @@ void MeasBufferBackupStorage::start()
   while(true) {
     performDump();
     performRestore();
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   };
   */
 
   while(true) {
     performDump();
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   };
   
 }

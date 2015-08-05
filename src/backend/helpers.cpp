@@ -98,5 +98,15 @@ void processMemUsage(double& vm_usage, double& resident_set)
 
     long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
     vm_usage = (double) vsize / 1024.0;
-    resident_set = rss * page_size_kb;
+    resident_set = (double) (rss * page_size_kb);
+}
+
+void longSleep(unsigned long int interval) {
+  unsigned long int counts = interval / numeric_limits<unsigned long int>::max();
+  unsigned int rest = (unsigned int) (interval % numeric_limits<unsigned long int>::max() );
+  
+  for (unsigned long int i = 0; i < counts; i++) {
+    usleep( numeric_limits<int>::max() );
+  }
+  usleep( rest );
 }

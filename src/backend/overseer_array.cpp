@@ -24,7 +24,7 @@ Overseer *OverseerArray::byName(string s) {
 }
 
 int OverseerArray::start() {
-  usleep(usDelay);
+  longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
   
@@ -45,7 +45,7 @@ int OverseerArray::start() {
     logInfo("OverseerArray loop end");
     
     // check overseers every next X useconds
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   }
   
   return 0;

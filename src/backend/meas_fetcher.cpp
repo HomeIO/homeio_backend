@@ -11,7 +11,7 @@ void MeasFetcher::start() {
   while(true) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
       m->fetch();
-      usleep(betweenMeasInterval);
+      longSleep(betweenMeasInterval);
       
       // if there is more than 2 measurements after fetching
       // other utils (overseer, storage, ...) can be started
@@ -20,6 +20,6 @@ void MeasFetcher::start() {
       }
     } 
 
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   }
 }

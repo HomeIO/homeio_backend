@@ -3,7 +3,7 @@ TcpServer::TcpServer() {
 }
 
 int TcpServer::start() {
-  usleep(usDelay);
+  longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
   

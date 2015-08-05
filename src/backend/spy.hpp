@@ -20,7 +20,7 @@ public:
   Spy();
   void start();
   void announceAll();
-  unsigned char annouceMeas(string name, float value);
+  unsigned char annouceMeas(string name, double value);
   
   string hiveHost;
   string siteName;

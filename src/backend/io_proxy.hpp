@@ -17,7 +17,7 @@ class IoProxy {
 public:
   IoProxy();
   std::string address;
-  int port;
+  uint16_t port;
   bool verbose;
   mutex tcpMutex;
 

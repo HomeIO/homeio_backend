@@ -36,7 +36,7 @@ double MeasTrend::valueDiff() {
 
 double MeasTrend::trend() {
   if (timeDiff() > 0) {
-    return valueDiff() / timeDiff();
+    return (double) valueDiff() / (double) timeDiff();
   } 
   else {
     return 0.0;

@@ -14,7 +14,7 @@ Spy::Spy() {
 
 void Spy::start()
 {
-  usleep(usDelay);
+  longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
   
@@ -23,7 +23,7 @@ void Spy::start()
       announceAll();
     }
     
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   };
 }
 
@@ -38,7 +38,7 @@ void Spy::announceAll(){
   lastTime = mTime();
 }
 
-unsigned char Spy::annouceMeas(string name, float value) {
+unsigned char Spy::annouceMeas(string name, double value) {
   try {
     curlpp::Cleanup cleaner;
     curlpp::Easy request;

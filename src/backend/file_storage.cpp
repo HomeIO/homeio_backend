@@ -7,7 +7,7 @@ FileStorage::FileStorage() {
 
 void FileStorage::start()
 {
-  usleep(usDelay);
+  longSleep(usDelay);
   
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH 
@@ -20,7 +20,7 @@ void FileStorage::start()
     performMeasStore();
     logInfo("FileStorage");
     
-    usleep(cycleInterval);
+    longSleep(cycleInterval);
   };
 }
 
