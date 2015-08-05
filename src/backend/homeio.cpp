@@ -114,6 +114,8 @@ void *tcpServerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
+  
+  return NULL;
 }
 
 void *ioServerThread(void *argument)
@@ -122,6 +124,8 @@ void *ioServerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
+  
+  return NULL;
 }
 
 void *ioOverseerThread(void *argument)
@@ -130,6 +134,8 @@ void *ioOverseerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startOverseer();
+  
+  return NULL;
 }
 
 void *fileStorageThread(void *argument)
@@ -138,6 +144,8 @@ void *fileStorageThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startFileStorage();
+  
+  return NULL;
 }
 
 void *fileBufferBackupThread(void *argument)
@@ -146,6 +154,8 @@ void *fileBufferBackupThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startBufferBackupStorage();
+  
+  return NULL;
 }
 
 void *spyThread(void *argument)
@@ -154,6 +164,8 @@ void *spyThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startSpy();
+  
+  return NULL;
 }
 
 void HomeIO::copyInternalDelays() {
@@ -169,11 +181,11 @@ unsigned char HomeIO::start() {
   
   const char NUM_THREADS = 6;
   pthread_t threads[NUM_THREADS];
-  int rc, i;
+  int i;
   
   HomeIO *h = this;
  
-  rc = pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
+  pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
   
   // wait for IoServer
   
@@ -181,17 +193,17 @@ unsigned char HomeIO::start() {
     usleep(50000);
   }
   
-  rc = pthread_create(&threads[1], NULL, measStartThread, (void *) h);
-  rc = pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
-  rc = pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
-  rc = pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
-  rc = pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
-  rc = pthread_create(&threads[6], NULL, spyThread, (void *) h);
+  pthread_create(&threads[1], NULL, measStartThread, (void *) h);
+  pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
+  pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
+  pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
+  pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
+  pthread_create(&threads[6], NULL, spyThread, (void *) h);
  
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
-      rc = pthread_join(threads[i], NULL);
+      pthread_join(threads[i], NULL);
       logError("In main: thread " + to_string(i) + " is complete");
    }
  

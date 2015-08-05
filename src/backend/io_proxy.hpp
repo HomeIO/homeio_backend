@@ -21,9 +21,9 @@ public:
   bool verbose;
   mutex tcpMutex;
 
-  unsigned int fetch(char commandChar, char responseSize);
+  unsigned int fetch(char commandChar, unsigned char responseSize);
   
-  int prepareSocket();
+  unsigned int prepareSocket();
   int connectSocket();
   int disconnectSocket();
   

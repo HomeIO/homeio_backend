@@ -1,3 +1,6 @@
+OPTIM_FLAG = -O3
+WARNING_FLAG = -Wall
+
 hello: ;
 	@echo Hello
 
@@ -10,7 +13,10 @@ prepare-dir:
 	[ -d data ] || mkdir data
 	
 build: ;
-	g++ -std=gnu++11 -O3 -I /usr/include -lpthread -lcurlpp -lcurl src/mains/main_${SITE}.cpp -o bin/homeio_main_${SITE}
+	g++ $(WARNING_FLAG) -std=gnu++11 -I /usr/include -lpthread -lcurlpp -lcurl src/mains/main_${SITE}.cpp -o bin/homeio_main_${SITE}
+
+build-warning:
+	g++ -Wextra -Wall -std=gnu++11 -O3 -I /usr/include -lpthread -lcurlpp -lcurl src/mains/main_${SITE}.cpp -o bin/homeio_main_${SITE}
 	
 build-debug: ;
 	g++ -std=gnu++11 -g -oterm -I /usr/include -lpthread -lcurlpp -lcurl src/mains/main_${SITE}.cpp -o bin/homeio_main_${SITE}

@@ -76,7 +76,7 @@ void MeasBufferBackupStorage::performRestore() {
   string line;
   unsigned int tmpRaw;
   unsigned long long storeTime, count, interval;
-  struct stat sBuffer;   
+  //struct stat sBuffer;   
   
   logInfo("MeasBufferBackupStorage - start");
   

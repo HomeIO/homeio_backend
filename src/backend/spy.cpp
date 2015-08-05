@@ -60,12 +60,16 @@ unsigned char Spy::annouceMeas(string name, float value) {
     
     request.perform();
     
+    return 0;
+    
   }
   catch ( curlpp::LogicError & e ) {
     logError(e.what());
+    return 1;
   }
   catch ( curlpp::RuntimeError & e ) {
     logError(e.what());
+    return 1;
   }
 
 }

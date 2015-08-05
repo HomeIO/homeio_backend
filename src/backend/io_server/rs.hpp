@@ -28,7 +28,7 @@ public:
   int ttyFileDescriptor;
   
   string port;
-  char i, tmp_char;
+  unsigned char i, tmp_char;
   
   char *buffer;
   unsigned char count_command;

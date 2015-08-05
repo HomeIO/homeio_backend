@@ -92,8 +92,17 @@ double Overseer::currentValue() {
 
 unsigned int Overseer::execute() {
   logInfo("OverseerArray [" + name + "] execute now");
-  action->execute();
-  markExecutionTime();
+  
+  unsigned int result;
+  result = action->execute();
+  
+  if (result == 0) {
+    markExecutionTime();
+    return 0;
+  }
+  else {
+    return 1;
+  }
 }
 
 void Overseer::markExecutionTime() {

@@ -15,13 +15,16 @@ unsigned int ActionType::execute() {
     executionCount++;
     markExecutionTime();
     logInfo("ActionType [" + name + "] executed");
+    
+    return 0;
   } 
   else {
     failedCount++;
     logError("ActionType [" + name + "] FAILED, result=" + to_string(raw) + ",command=" + to_string(command) + ",responseSize=" + to_string(responseSize) );
+    
+    return 1;
   }
   
-  return raw;
 }
 
 unsigned long long ActionType::lastExecutedAt() {

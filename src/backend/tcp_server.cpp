@@ -26,8 +26,8 @@ int TcpServer::start() {
     readLine(conn_s, MAX_LINE - 1);
     
     // command and response char count
-    char command = commandBuffer[0];
-    char count_response = 1;
+    //char command = commandBuffer[0];
+    //char count_response = 1;
     
     processCommand();
     
@@ -53,7 +53,8 @@ int TcpServer::processCommand() {
 
 // Read line from socket
 ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
-    ssize_t n, rc;
+  size_t n;  
+  ssize_t rc;
 
     //MAX_LINE
     for (n = 0; n < maxlen; n++) {
@@ -88,6 +89,8 @@ ssize_t TcpServer::writeLine(int sockd) {
         else
             return -1;
     }
+    
+  return 0;  
 }
 
 // Create TCP listening socket
@@ -96,10 +99,9 @@ int TcpServer::createTcpServer() {
     int list_s; /*  listening socket          */
     struct sockaddr_in servaddr; /*  socket address structure  */
     
-    char *endptr; /*  for strtol()              */
+    //char *endptr;
 
     /*  Create the listening socket  */
-
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         logError("TcpServer::createTcpServer(): Error creating listening socket.");
         exit(EXIT_FAILURE);

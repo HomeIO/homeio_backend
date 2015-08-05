@@ -8,7 +8,7 @@ IoProxy::IoProxy()
   verbose = false;
 }
 
-unsigned int IoProxy::fetch(char commandChar, char responseSize)
+unsigned int IoProxy::fetch(char commandChar, unsigned char responseSize)
 {
   tcpMutex.lock();
   // after mutex
@@ -37,11 +37,10 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
   disconnectSocket();
   tcpMutex.unlock(); // end of mutex
   
-  buffer[responseSize] = 0;
   unsigned int raw = 0;
   unsigned char part_raw = 0;
-  int i = 0;
-  for (i; i < responseSize; i++)
+
+  for (unsigned char i = 0; i < responseSize; i++)
   {
     part_raw = buffer[i];
     raw *= 256;
@@ -56,7 +55,7 @@ unsigned int IoProxy::fetch(char commandChar, char responseSize)
 }
 
 
-int IoProxy::prepareSocket()
+unsigned int IoProxy::prepareSocket()
 {
   //setup address structure
   if(inet_addr(address.c_str()) == -1)
@@ -88,9 +87,11 @@ int IoProxy::prepareSocket()
   {
     server.sin_addr.s_addr = inet_addr( address.c_str() );
   }
-     
+  
   server.sin_family = AF_INET;
   server.sin_port = htons( port );
+  
+  return 0;
 }
 
 int IoProxy::connectSocket()

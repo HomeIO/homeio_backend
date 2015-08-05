@@ -8,7 +8,6 @@ MeasFetcher::MeasFetcher() {
 void MeasFetcher::start() {
   ioProxy->prepareSocket();
   
-  unsigned int i;
   while(true) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
       m->fetch();

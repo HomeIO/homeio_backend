@@ -96,10 +96,11 @@ void IoTcpServer::escapeBuffer() {
 
 // Read line from socket
 ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
-    ssize_t n, rc;
-    char c, *buffer;
+  size_t n;  
+  ssize_t rc;
+  char c, *buffer;
 
-    buffer = vptr;
+  buffer = vptr;
 
     for (n = 1; n < maxlen; n++) {
 
