@@ -74,9 +74,8 @@ void MeasBufferBackupStorage::performDump() {
 void MeasBufferBackupStorage::performRestore() {
   unsigned long int i = 0;
   string line;
-  unsigned int tmpRaw, count;
-  unsigned long int interval;
-  unsigned long long storeTime;
+  unsigned int tmpRaw;
+  unsigned long long storeTime, count, interval;
   struct stat sBuffer;   
   
   logInfo("MeasBufferBackupStorage - start");
@@ -134,6 +133,7 @@ void MeasBufferBackupStorage::performRestore() {
         measBuffer->lastTimeForCount = mTime();
         measBuffer->firstTime = measBuffer->lastTimeForCount - count * interval;
     
+        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded interval " + to_string(interval));
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST interval " + to_string(measBuffer->calcInterval()));
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST count " + to_string(measBuffer->count));
       }
