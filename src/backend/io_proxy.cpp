@@ -57,8 +57,13 @@ unsigned int IoProxy::fetch(char commandChar, unsigned char responseSize)
 
 unsigned int IoProxy::prepareSocket()
 {
+  // crazy way to get rid of warning
+  // it checks if address is ip or name based, like localhost
+  in_addr *tmp = new in_addr;
+  bool isIp = (inet_aton(address.c_str(), tmp) > 0);
+ 
   //setup address structure
-  if(inet_addr(address.c_str()) == -1)
+  if(isIp == false)
   {
     struct hostent *he;
     struct in_addr **addr_list;

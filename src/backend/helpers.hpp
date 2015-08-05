@@ -1,6 +1,8 @@
 #ifndef HELPERS
 #define	HELPERS
 
+#define UNUSED(x) (void)(x)
+
 #include <stdio.h>
 #include <time.h>
 #include <string>

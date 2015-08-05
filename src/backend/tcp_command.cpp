@@ -72,6 +72,8 @@ string TcpCommand::processCommand(string command) {
 
 // meas#index
 string TcpCommand::processMeasIndexCommand(string command) {
+  UNUSED(command);
+  
   string response, detailsResponse;
   
   response = "{\"status\":0,\"array\":[";
@@ -92,6 +94,7 @@ string TcpCommand::processMeasIndexCommand(string command) {
 
 // meas#name_list
 string TcpCommand::processMeasNameListCommand(string command) {
+  UNUSED(command);  
   string response;
   
   response = "{\"status\":0,\"array\":[";
@@ -322,6 +325,7 @@ string TcpCommand::processMeasStatsCommand(string command) {
 
 // actions#index
 string TcpCommand::processActionIndexCommand(string command) {
+  UNUSED(command);
   string response, detailsResponse;
   
   response = "{\"status\":0,\"array\":[";
@@ -401,6 +405,7 @@ string TcpCommand::processActionHistoryCommand(string command) {
 
 // overseers#index
 string TcpCommand::processOverseerIndexCommand(string command) {
+  UNUSED(command);
   string response, detailsResponse;
   
   response = "{\"status\":0,\"array\":[";
@@ -438,6 +443,7 @@ string TcpCommand::processOverseerShowCommand(string command) {
 
 // settings
 string TcpCommand::processSettingsCommand(string command) {
+  UNUSED(command);
   string response, measResponse, frontendResponse;
   
   measResponse = "{";
@@ -461,6 +467,7 @@ string TcpCommand::processSettingsCommand(string command) {
 
 // stats
 string TcpCommand::processStatsCommand(string command) {
+  UNUSED(command);
   string response, timeResponse, resourceResponse;
 
   timeResponse = "{";
