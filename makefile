@@ -1,6 +1,6 @@
 OPTIM_FLAG = -O3
 WARNING_FLAG = -Wall
-FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept  -Woverloaded-virtual -Wredundant-decls   -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused
+FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept  -Woverloaded-virtual -Wredundant-decls   -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings 
 POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wconversion  -Wmissing-declarations  -Wold-style-cast -Wshadow -Wsign-promo  -Wsign-conversion 
 
