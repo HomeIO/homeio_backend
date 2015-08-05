@@ -17,7 +17,7 @@ void MeasFetcher::start() {
       // if there is more than 2 measurements after fetching
       // other utils (overseer, storage, ...) can be started
       if ( (measTypeArray->isReady == false) && (m->buffer->count > 2) ) {
-        measTypeArray->isReady == false;
+        measTypeArray->isReady = true;
       }
     } 
 

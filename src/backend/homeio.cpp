@@ -157,11 +157,11 @@ void *spyThread(void *argument)
 }
 
 void HomeIO::copyInternalDelays() {
-  fileStorage->usDelay += measFetcher->cycleInterval * 4 + 1000000;
-  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 20 + 1000000;
-  overseerArray->usDelay += measFetcher->cycleInterval * 10 + 1000000;
-  tcpServer->usDelay += measFetcher->cycleInterval * 2 + 1000000;
-  spy->usDelay += measFetcher->cycleInterval * 2 + 1000000;
+  fileStorage->usDelay += measFetcher->cycleInterval * 4;
+  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 6;
+  overseerArray->usDelay += measFetcher->cycleInterval * 5;
+  tcpServer->usDelay += measFetcher->cycleInterval * 2;
+  spy->usDelay += measFetcher->cycleInterval * 3;
 }
 
 unsigned char HomeIO::start() {
