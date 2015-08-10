@@ -3,6 +3,8 @@ FileStorage::FileStorage() {
   usDelay = 1000000; // wait 10s to warm up - get enough measurements
   lastTime = mTime();
   path = "data";
+  
+  isRunning = true;
 }
 
 void FileStorage::start()
@@ -16,7 +18,7 @@ void FileStorage::start()
   // wait for enough measurements
   measTypeArray->delayTillReady();
   
-  while(true) {
+  while(isRunning) {
     performMeasStore();
     logInfo("FileStorage");
     
@@ -24,7 +26,14 @@ void FileStorage::start()
   };
 }
 
+void FileStorage::stop() {
+  shutdownMutex.lock();
+  logInfo("FileStorage - stop");
+}
+
 void FileStorage::performMeasStore() {
+  shutdownMutex.lock();
+  
   currentTime = mTime();
   
   logInfo("FileStorage - start meas file storage");
@@ -34,6 +43,8 @@ void FileStorage::performMeasStore() {
   }
   
   logInfo("FileStorage - end meas file storage");
+  
+  shutdownMutex.unlock();
 }
 
 void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storageVector) {

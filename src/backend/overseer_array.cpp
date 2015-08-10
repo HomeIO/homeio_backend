@@ -2,6 +2,8 @@ OverseerArray::OverseerArray() {
   std::vector <Overseer> overseers;
   cycleInterval = 1000000;
   usDelay = 200000; // wait 2s to warm up
+  
+  isRunning = true;
 }
 
 void OverseerArray::logInfo(string log) {
@@ -23,7 +25,7 @@ Overseer *OverseerArray::byName(string s) {
   return NULL;
 }
 
-int OverseerArray::start() {
+void OverseerArray::start() {
   longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -37,16 +39,23 @@ int OverseerArray::start() {
     it->check();
   }
   
-  while(true) {
+  while(isRunning) {
+    shutdownMutex.lock();
     logInfo("OverseerArray loop start");
+    
     for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
       it->check();
     }
+    
     logInfo("OverseerArray loop end");
+    shutdownMutex.unlock();
     
     // check overseers every next X useconds
     longSleep(cycleInterval);
   }
-  
-  return 0;
+}
+
+void OverseerArray::stop() {
+  shutdownMutex.lock();
+  logInfo("OverseerArray - stop");
 }

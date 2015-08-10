@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <vector>
+#include <mutex>
 
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
@@ -16,6 +17,7 @@ class FileStorage {
 public:
   FileStorage();
   void start();
+  void stop();  
   void performMeasStore();
   void storeMeasArray(MeasType* measType, vector <StorageHash> storageVector);
 
@@ -25,6 +27,9 @@ public:
   unsigned long long lastTime, currentTime;
   
   unsigned long long usDelay;
+  
+  bool isRunning;
+  mutex shutdownMutex;
   
   MeasTypeArray *measTypeArray;
 };

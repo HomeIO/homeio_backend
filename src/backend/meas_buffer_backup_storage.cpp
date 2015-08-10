@@ -3,6 +3,8 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
   thresholdTimeRange = cycleInterval * 2;
   usDelay = 30*1000*1000;
   path = "data";
+  
+  isRunning = true;
 }
 
 void MeasBufferBackupStorage::start()
@@ -19,19 +21,24 @@ void MeasBufferBackupStorage::start()
   // debug loop
   /*
   cycleInterval = 10*1000*1000;
-  while(true) {
+  while(isRunning) {
     performDump();
     performRestore();
     longSleep(cycleInterval);
   };
   */
 
-  while(true) {
+  while(isRunning) {
     performDump();
     longSleep(cycleInterval);
   };
-  
 }
+
+void MeasBufferBackupStorage::stop() {
+  shutdownMutex.lock();
+  logInfo("MeasBufferBackupStorage - stop");
+}
+
 
 string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
   string filename = path + "/buffer_" + measType->name + ".txt";
@@ -39,6 +46,8 @@ string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
 }
 
 void MeasBufferBackupStorage::performDump() {
+  shutdownMutex.lock();
+  
   unsigned long int i = 0;
   logInfo("MeasBufferBackupStorage - start");
   
@@ -69,6 +78,7 @@ void MeasBufferBackupStorage::performDump() {
   }
   
   logInfo("MeasBufferBackupStorage - end");
+  shutdownMutex.unlock();
 }
 
 void MeasBufferBackupStorage::performRestore() {

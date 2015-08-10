@@ -11,9 +11,11 @@ IoServer::IoServer() {
   
   tcp->port = IO_TCP_SERVER_PORT;
   rs->buffer = tcp->buffer;
+  
+  isRunning = true;
 }
 
-int IoServer::start() {
+void IoServer::start() {
   rs->port = port;
   
   rs->openRS();
@@ -21,15 +23,20 @@ int IoServer::start() {
   
   ready = true;
   
-  while(1) {
+  while(isRunning) {
     // Retrieve command
     tcp->waitForCommand();
+    
+    shutdownMutex.lock();
     tcp->readTcp();
-   
     tcp->count_response = rs->send();
     tcp->writeTcp();
     tcp->closeSocket();
+    shutdownMutex.unlock();
   }
-  
-  return 0;
+}
+
+void IoServer::stop() {
+  shutdownMutex.lock();
+  logInfo("IoServer - stop");
 }

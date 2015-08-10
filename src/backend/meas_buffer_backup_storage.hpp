@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <vector>
+#include <mutex>
 
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
@@ -15,6 +16,7 @@ class MeasBufferBackupStorage {
 public:
   MeasBufferBackupStorage();
   void start();
+  void stop();  
   void performDump();
   void performRestore();
     
@@ -25,6 +27,9 @@ public:
   unsigned long long thresholdTimeRange;
   unsigned long long usDelay;
  
+  bool isRunning;
+  mutex shutdownMutex;
+  
   MeasTypeArray *measTypeArray;
 };
 

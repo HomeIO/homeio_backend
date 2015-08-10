@@ -1,8 +1,10 @@
 TcpServer::TcpServer() {
   usDelay = 2000000;
+  
+  isRunning = true;
 }
 
-int TcpServer::start() {
+void TcpServer::start() {
   longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -15,12 +17,14 @@ int TcpServer::start() {
   
   logInfo("TCP Server started on " + to_string(port));
   
-  while (1) {
+  while (isRunning) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
       logError("TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
+    
+    shutdownMutex.lock();
     
     // Retrieve command
     readLine(conn_s, MAX_LINE - 1);
@@ -30,9 +34,12 @@ int TcpServer::start() {
     //char count_response = 1;
     
     processCommand();
-    
+
     writeLine(conn_s);
 
+    
+    shutdownMutex.unlock();
+    
     // Close the connected socket
     if (close(conn_s) < 0) {
       logError("TcpServer::start(): Error calling close()");
@@ -40,7 +47,11 @@ int TcpServer::start() {
     }
   }
   
-  return 0;
+}
+
+void TcpServer::stop() {
+  shutdownMutex.lock();
+  logInfo("TcpServer - stop");
 }
 
 int TcpServer::processCommand() {

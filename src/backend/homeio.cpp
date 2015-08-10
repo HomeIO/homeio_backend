@@ -1,4 +1,6 @@
 HomeIO::HomeIO() {
+  //HomeIO::running = true;
+  
   measTypeArray = new MeasTypeArray;
   measFetcher = new MeasFetcher;
   ioProxy = new IoProxy;
@@ -209,4 +211,20 @@ unsigned char HomeIO::start() {
  
    logError("In main: All threads completed successfully");
    exit(EXIT_SUCCESS);
+}
+
+unsigned char HomeIO::stop() {
+  cout << endl << endl;
+  logInfo("Shutdown initialized");
+  
+  measBufferBackupStorage->stop();
+  fileStorage->stop();
+  tcpServer->stop();
+  spy->stop();
+  overseerArray->stop();
+  measFetcher->stop();
+  ioServer->stop();
+  
+  logInfo("Shutdown completed");
+  return 0;
 }

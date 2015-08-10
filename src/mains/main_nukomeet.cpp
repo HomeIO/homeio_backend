@@ -1,8 +1,17 @@
 #include "../backend/homeio.hpp"
 
+HomeIO *h;
+
+void handleSignal(int s) {
+  UNUSED(s);
+  h->stop();
+  exit(1);
+}
+
 int main()
 {
-  HomeIO *h = new HomeIO();
+  h = new HomeIO();
+  signal(SIGINT, handleSignal);
 
   h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002;

@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <mutex>
+
 #include "meas_type_array.hpp"
 
 #include <cstdlib>
@@ -19,6 +21,7 @@ class Spy {
 public:
   Spy();
   void start();
+  void stop();
   void announceAll();
   unsigned char annouceMeas(string name, double value);
   
@@ -35,6 +38,9 @@ public:
   
   bool quiet;
   bool enabled;
+  
+  bool isRunning;
+  mutex shutdownMutex;
 };
 
 #include "spy.cpp"

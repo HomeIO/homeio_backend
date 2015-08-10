@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <mutex>
 
 #include <sys/socket.h> // socket definitions
 #include <sys/types.h> // socket types
@@ -30,7 +31,8 @@ public:
   ssize_t readLine(int sockd, size_t maxlen);
   ssize_t writeLine(int sockd);
   int createTcpServer();
-  int start();
+  void start();
+  void stop();
   int processCommand();
   
   short int port;
@@ -38,6 +40,9 @@ public:
   MeasTypeArray *measTypeArray;
   
   unsigned long long usDelay;
+  
+  bool isRunning;
+  mutex shutdownMutex;
   
 private:
   char c, *commandBuffer;

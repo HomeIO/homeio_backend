@@ -2,6 +2,7 @@
 #define	HOMEIO
 
 #include <pthread.h>
+#include <signal.h>
 
 #include "helpers.hpp"
 #include "meas_type_array.hpp"
@@ -30,6 +31,9 @@ public:
   unsigned char startBufferBackupStorage();  
   unsigned char startSpy();
   unsigned char start();
+  
+  unsigned char stop();
+  bool isSafeToShutdown();
   
   void copyInternalDelays();
   

@@ -9,6 +9,8 @@ Spy::Spy() {
   
   quiet = true;
   enabled = false; // disabled by default
+  
+  isRunning = true;
 }
 
 
@@ -18,7 +20,7 @@ void Spy::start()
   // wait for enough measurements
   measTypeArray->delayTillReady();
   
-  while(true) {
+  while(isRunning) {
     if (enabled) {
       announceAll();
     }
@@ -27,14 +29,22 @@ void Spy::start()
   };
 }
 
+void Spy::stop() {
+  shutdownMutex.lock();
+  logInfo("Spy - stop");
+}
+
+
 void Spy::announceAll(){
   url = hiveHost + urlPath;
   
   for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    shutdownMutex.lock();
     annouceMeas(it->name, it->lastValue());
+    shutdownMutex.unlock();
   }
 
-  logInfo("Spy: announce completed");
+  logInfo("Spy - announce completed");
   lastTime = mTime();
 }
 

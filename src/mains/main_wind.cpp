@@ -1,8 +1,17 @@
 #include "../backend/homeio.hpp"
 
+HomeIO *h;
+
+void handleSignal(int s) {
+  UNUSED(s);
+  h->stop();
+  exit(1);
+}
+
 int main()
 {
-  HomeIO *h = new HomeIO();
+  h = new HomeIO();
+  signal(SIGINT, handleSignal);
   
   // IoProxy connects to IoServer.
   // IoServer acts as bridge between uC via UART/RS/USB/hardware using TCP protocol.
