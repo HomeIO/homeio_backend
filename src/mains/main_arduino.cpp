@@ -26,10 +26,10 @@ int main()
   m->coefficientOffset = -1023;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 3.0;
+  m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
-  
+
   m = new MeasType();
   m->name = "moisture_shadow";
   m->unit = "%";
@@ -39,7 +39,7 @@ int main()
   m->coefficientOffset = -1023;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 3.0;
+  m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
 
@@ -52,7 +52,7 @@ int main()
   m->coefficientOffset = -1023;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 3.0;
+  m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
   
@@ -65,13 +65,10 @@ int main()
   m->coefficientOffset = -1023;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 3.0;
+  m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
-
   
-  /*
-  // something not worky
   m = new MeasType();
   m->name = "temperature";
   m->command = '2';
@@ -80,10 +77,33 @@ int main()
   m->coefficientOffset = 0;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 1.0;
+  m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
-  */
+  
+  m = new MeasType();
+  m->name = "digital_temperature";
+  m->command = 'd';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.05;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+  
+  m = new MeasType();
+  m->name = "humidity";
+  m->command = 'h';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.05;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 1;
+  h->measTypeArray->add(m);
   
   IoServer *io = new IoServer();
   io->port = "/dev/ttyACM0";
