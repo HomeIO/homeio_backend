@@ -453,6 +453,7 @@ string TcpCommand::processSettingsCommand(string command) {
 
   frontendResponse = "{";
   frontendResponse += "\"intervalCurrent\":" + to_string(frontendSettings->intervalCurrent ) + ",";
+  frontendResponse += "\"currentCoeff\":" + to_string(frontendSettings->currentCoeff ) + ",";
   frontendResponse += "\"intervalHistory\":" + to_string(frontendSettings->intervalHistory);
   frontendResponse += "}";
   

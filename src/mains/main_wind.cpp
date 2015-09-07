@@ -327,6 +327,7 @@ int main()
   // settings which will only be usable in frontend
   h->frontendSettings->intervalCurrent = 1000;
   h->frontendSettings->intervalHistory = 3600*1000;
+  h->frontendSettings->currentCoeff = 0.4;
   
   // WARNING
   // this announce measurements to global server used for statistics and uptime

@@ -120,6 +120,7 @@ int main()
   
   h->frontendSettings->intervalCurrent = 10000;
   h->frontendSettings->intervalHistory = 3600*1000;
+  h->frontendSettings->currentCoeff = 5.0;
   
   // WARNING
   // this announce measurements to global server used for statistics and uptime

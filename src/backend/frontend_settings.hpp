@@ -7,6 +7,7 @@ public:
   
   unsigned long int intervalCurrent;
   unsigned long int intervalHistory;
+  double currentCoeff;
 };
 
 #include "frontend_settings.cpp"
