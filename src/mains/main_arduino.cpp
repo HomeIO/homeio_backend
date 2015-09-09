@@ -73,6 +73,7 @@ int main()
   // temporary not used
   m = new MeasType();
   m->name = "lm35_temperature";
+  m->unit = "C";
   m->command = '2';
   m->responseSize = 2;
   m->coefficientLinear = 0.48828125;
@@ -86,6 +87,7 @@ int main()
   
   m = new MeasType();
   m->name = "int_temperature";
+  m->unit = "C";
   m->command = 'd';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
@@ -98,6 +100,7 @@ int main()
   
   m = new MeasType();
   m->name = "int_humidity";
+  m->unit = "%";
   m->command = 'h';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
@@ -110,6 +113,7 @@ int main()
  
   m = new MeasType();
   m->name = "ext_temperature";
+  m->unit = "C";
   m->command = 'D';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
@@ -122,6 +126,7 @@ int main()
   
   m = new MeasType();
   m->name = "ext_humidity";
+  m->unit = "%";
   m->command = 'H';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
