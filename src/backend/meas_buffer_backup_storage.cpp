@@ -38,11 +38,10 @@ void MeasBufferBackupStorage::stop() {
   shutdownMutex.lock();
   logInfo("MeasBufferBackupStorage - stop");
   
-  
   // reset mutex
   shutdownMutex.unlock();
   // perform the last storage before exiting
-  performDump()
+  performDump();
   logInfo("MeasBufferBackupStorage - terminal storage done");
 }
 
