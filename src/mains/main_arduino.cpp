@@ -27,7 +27,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
 
   m = new MeasType();
@@ -53,7 +53,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
   
   m = new MeasType();
@@ -66,7 +66,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
   
   /*
@@ -80,7 +80,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
   */
   
@@ -105,7 +105,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
  
   m = new MeasType();
@@ -129,7 +129,7 @@ int main()
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
-  m->priority = 1;
+  m->priority = 0;
   h->measTypeArray->add(m);
   
   IoServer *io = new IoServer();
@@ -137,8 +137,8 @@ int main()
   h->ioServer = io;
   
   h->measFetcher->betweenMeasInterval = 10000;
-  h->measFetcher->cycleInterval = 10000000; //50000;
-  //h->measFetcher->cycleInterval = 50000; //50000;
+  h->measFetcher->cycleInterval = 5000000; 
+  //h->measFetcher->cycleInterval = 50000;
   
   h->fileStorage->cycleInterval = 60*1000000; //3600*1000;
   
