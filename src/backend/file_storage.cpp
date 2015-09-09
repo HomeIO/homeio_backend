@@ -27,8 +27,15 @@ void FileStorage::start()
 }
 
 void FileStorage::stop() {
+  // wait for end storage
   shutdownMutex.lock();
   logInfo("FileStorage - stop");
+  
+  // reset mutex
+  shutdownMutex.unlock();
+  // perform the last storage before exiting
+  performMeasStore();
+  logInfo("FileStorage - terminal storage done");
 }
 
 void FileStorage::performMeasStore() {
