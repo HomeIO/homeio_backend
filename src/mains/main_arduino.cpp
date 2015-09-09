@@ -92,7 +92,7 @@ int main()
   m->coefficientOffset = -500;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 0.3;
   m->priority = 1;
   h->measTypeArray->add(m);
   
@@ -104,7 +104,7 @@ int main()
   m->coefficientOffset = 0;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 0.3;
   m->priority = 0;
   h->measTypeArray->add(m);
  
