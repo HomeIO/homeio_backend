@@ -35,6 +35,7 @@ void MeasBufferBackupStorage::start()
 }
 
 void MeasBufferBackupStorage::stop() {
+  isRunning = false;
   shutdownMutex.lock();
   logInfo("MeasBufferBackupStorage - stop");
   

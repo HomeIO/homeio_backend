@@ -27,6 +27,7 @@ void FileStorage::start()
 }
 
 void FileStorage::stop() {
+  isRunning = false;
   // wait for end storage
   shutdownMutex.lock();
   logInfo("FileStorage - stop");
