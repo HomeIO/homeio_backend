@@ -69,8 +69,10 @@ int main()
   m->priority = 1;
   h->measTypeArray->add(m);
   
+  /*
+  // temporary not used
   m = new MeasType();
-  m->name = "temperature";
+  m->name = "lm35_temperature";
   m->command = '2';
   m->responseSize = 2;
   m->coefficientLinear = 0.48828125;
@@ -80,13 +82,14 @@ int main()
   m->valueDiffToStore = 0.5;
   m->priority = 1;
   h->measTypeArray->add(m);
+  */
   
   m = new MeasType();
-  m->name = "digital_temperature";
+  m->name = "int_temperature";
   m->command = 'd';
   m->responseSize = 2;
-  m->coefficientLinear = 0.05;
-  m->coefficientOffset = 0;
+  m->coefficientLinear = 0.1;
+  m->coefficientOffset = -500;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
@@ -94,10 +97,34 @@ int main()
   h->measTypeArray->add(m);
   
   m = new MeasType();
-  m->name = "humidity";
+  m->name = "int_humidity";
   m->command = 'h';
   m->responseSize = 2;
-  m->coefficientLinear = 0.05;
+  m->coefficientLinear = 0.1;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+ 
+  m = new MeasType();
+  m->name = "ext_temperature";
+  m->command = 'D';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.1;
+  m->coefficientOffset = -500;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 1;
+  h->measTypeArray->add(m);
+  
+  m = new MeasType();
+  m->name = "ext_humidity";
+  m->command = 'H';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.1;
   m->coefficientOffset = 0;
   m->minTimeDiffToStore = 5000;
   m->maxTimeDiffToStore = 3600000;
