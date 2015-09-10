@@ -59,6 +59,11 @@ public:
   double coefficientLinear;
   int coefficientOffset;
   
+  // extensions - not needed, but can be used by external tools, like frontend
+  // it's okay to ignore "spikes" - when raw is unnaturally diferent for only 1 measurement
+  // change it to raw before the "spike"
+  bool extRemoveSpikes; 
+  
   bool started;
   string logPrefix;
   

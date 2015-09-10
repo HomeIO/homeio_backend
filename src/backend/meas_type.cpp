@@ -17,6 +17,8 @@ MeasType::MeasType() {
   intervalAvg = 3600000; // recalculate avg every 1 hour
   windowAvg = 50000; // use this amount of measurements to calc avg
   
+  extRemoveSpikes = false;
+  
   lastStored = mTime();
 }
 
@@ -141,7 +143,14 @@ string MeasType::toJson() {
   json += "\"coefficientOffset\":" + to_string(coefficientOffset) + ",";
   json += "\"value\":" + to_string(lastValue()) + ",";
   json += "\"currentAvgValue\":" + to_string(currentAvgValue()) + ",";
-  json += "\"raw\":" + to_string(lastRaw());
+  json += "\"raw\":" + to_string(lastRaw()) + ",";
+  
+      
+  // extensions
+  json += "\"options\": {";
+  json += "\"removeSpikes\": " + to_string(extRemoveSpikes);
+  json += "}";
+  
   json += "}";
   
   return json;
@@ -314,6 +323,7 @@ string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeT
     trendString += "\"valueTo\":" + to_string(it->valueTo) + ",";
     trendString += "\"timeFrom\":" + to_string(it->timeFrom) + ",";
     trendString += "\"timeTo\":" + to_string(it->timeTo);
+
     trendString += "},";
   }
 

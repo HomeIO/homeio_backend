@@ -122,6 +122,7 @@ int main()
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
   m->priority = 1;
+  m->extRemoveSpikes = true;
   h->measTypeArray->add(m);
   
   m = new MeasType();
