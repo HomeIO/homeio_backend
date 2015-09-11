@@ -69,7 +69,7 @@ bool MeasBuffer::isSpike(unsigned int a, unsigned int b, unsigned int c) {
   int absA = abs( (int) a - (int) c );
   int absB = abs( (int) a - (int) b );
   
-  if (absB > 10 * absA) {
+  if (absB > 10 * (absA + 1) ) {
     logInfo("MeasBuffer: found SPIKE " + to_string(a) + " - " + to_string(b) + " - " + to_string(c) );
     return true;
   } else {
