@@ -153,6 +153,14 @@ void MeasBufferBackupStorage::performRestore() {
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded interval " + to_string(interval));
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST interval " + to_string(measBuffer->calcInterval()));
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST count " + to_string(measBuffer->count));
+        
+        // extension - backend remove spikes
+        if (it->extBackendRemoveSpikes) {
+          measBuffer->removeSpikes = it->extBackendRemoveSpikes;
+          measBuffer->filterStoredSpikes();
+          logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] removed spikes");
+        }
+        
       }
       else {
         logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] buffer is too old");

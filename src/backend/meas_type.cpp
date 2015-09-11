@@ -18,6 +18,7 @@ MeasType::MeasType() {
   windowAvg = 50000; // use this amount of measurements to calc avg
   
   extRemoveSpikes = false;
+  extBackendRemoveSpikes = false;
   
   lastStored = mTime();
 }
@@ -41,6 +42,9 @@ void MeasType::prepareFetch() {
     return;
   }
 
+  // mark buffer to fix spikes 
+  buffer->removeSpikes = extBackendRemoveSpikes;
+  
   logPrefix = "MeasBuffer [" + name + "] ";
   logPrefix.append(35 - logPrefix.length(), ' ');
   started = true;

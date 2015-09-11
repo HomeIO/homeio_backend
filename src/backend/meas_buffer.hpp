@@ -12,9 +12,22 @@ public:
   void clearAndResize(unsigned long int _maxSize);
   unsigned long int add(unsigned int raw);
   unsigned int at(unsigned long int i);
+  unsigned int last();
   unsigned long int index(unsigned long int i);
   unsigned long int memorySize();
   bool stored(unsigned long int i);
+  
+  // extension - remove one time spikes 
+  bool removeSpikes;
+  // detect if b is spike near a and c
+  bool isSpike(unsigned int a, unsigned int b, unsigned int c);
+  // detect if last stored measuremt is spike
+  // it can only be done one measurement after that
+  bool wasSpike(unsigned int latestRaw);
+  // iterate buffer and filter spikes
+  void filterStoredSpikes();
+
+
   
   unsigned long int responseIndexInterval;
   unsigned long int calculateIndexInterval(unsigned long int lower, unsigned long int higher, unsigned long int responseMaxSize);
@@ -35,6 +48,7 @@ public:
   unsigned long long lastTime, firstTime, lastTimeForCount;
   // it's not very accurate
   unsigned long long earliestTime();
+  
   
 private:
   vector < unsigned int > buffer;

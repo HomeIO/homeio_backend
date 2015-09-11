@@ -3,6 +3,8 @@ MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
   elementSize = sizeof(_maxSize);
   
   clearAndResize(_maxSize);
+  
+  removeSpikes = false;
 }
 
 void MeasBuffer::clearAndResize(unsigned long int _maxSize = 1000000) {
@@ -18,6 +20,12 @@ void MeasBuffer::clearAndResize(unsigned long int _maxSize = 1000000) {
 }
 
 unsigned long int MeasBuffer::add(unsigned int raw) {
+  // special algorithm to remove spikes
+  // update spike with raw before
+  if ( (removeSpikes) && (wasSpike(raw)) ) {
+    buffer[offset] = at(1);
+  }
+  
   // must be here because in other case first measurement is equal 0
   if (count == 0) {
     buffer[offset] = raw;
@@ -41,6 +49,8 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   return offset;
 }
 
+
+
 unsigned long int MeasBuffer::calcInterval() {
   if (offset == 0) {
     return 1; // not to fuck up all this shit somewhere
@@ -54,8 +64,53 @@ unsigned long long MeasBuffer::earliestTime() {
   return lastTime - ((unsigned long long) calcInterval() * (unsigned long long) count);
 }
 
+// detect if b is spike near a and c
+bool MeasBuffer::isSpike(unsigned int a, unsigned int b, unsigned int c) {
+  int absA = abs( (int) a - (int) c );
+  int absB = abs( (int) a - (int) b );
+  
+  if (absB > 10 * absA) {
+    logInfo("MeasBuffer: found SPIKE " + to_string(a) + " - " + to_string(b) + " - " + to_string(c) );
+    return true;
+  } else {
+    return false;
+  }
+  
+}
+
+bool MeasBuffer::wasSpike(unsigned int latestRaw) {
+  // not enough data
+  if (count <= 3) {
+    return false;
+  }
+    
+  return isSpike(at(1), at(0), latestRaw);
+}
+
+void MeasBuffer::filterStoredSpikes() {
+  // not enough data
+  if (count <= 3) {
+    return;
+  }
+
+  unsigned long int i;
+  
+  // iterate buffer
+  for (i = 1; i < (count - 1); i++) {
+    // check if spike within closest raws
+    if ( isSpike( at(i+1), at(i), at(i-1)) ) {
+      // overwrite
+      buffer[index(i)] = buffer[index(i+1)];
+    }
+  }
+}
+
 unsigned int MeasBuffer::at(unsigned long int i) {
   return buffer[index(i)];
+}
+
+unsigned int MeasBuffer::last() {
+  return at(0);
 }
 
 unsigned long int MeasBuffer::index(unsigned long int i) {

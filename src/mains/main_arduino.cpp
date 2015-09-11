@@ -123,6 +123,7 @@ int main()
   m->valueDiffToStore = 0.5;
   m->priority = 1;
   m->extRemoveSpikes = true;
+  m->extBackendRemoveSpikes = true;
   h->measTypeArray->add(m);
   
   m = new MeasType();

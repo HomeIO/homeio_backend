@@ -63,6 +63,8 @@ public:
   // it's okay to ignore "spikes" - when raw is unnaturally diferent for only 1 measurement
   // change it to raw before the "spike"
   bool extRemoveSpikes; 
+  // not its something to remove them in backend
+  bool extBackendRemoveSpikes;
   
   bool started;
   string logPrefix;
