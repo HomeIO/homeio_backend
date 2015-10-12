@@ -9,10 +9,10 @@ void TcpCommand::logInfo(string log) {
 // sample command: "meas;batt_u;0;100;"
 string TcpCommand::processCommand(string command) {
   logInfo("TCP command: " + command);
-  
+
   string commandName, response;
   response = "{}";
-  
+
   commandName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
@@ -40,6 +40,11 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measStats") {
     response = processMeasStatsCommand(command);
   }
+  
+  if (commandName == "measGroups") {
+    response = processMeasGroupIndexCommand(command);
+  }
+
   if (commandName == "actionIndex") {
     response = processActionIndexCommand(command);
   }
@@ -60,55 +65,55 @@ string TcpCommand::processCommand(string command) {
   }
   if (commandName == "settings") {
     response = processSettingsCommand(command);
-  }  
+  }
   if (commandName == "stats") {
     response = processStatsCommand(command);
-  } 
-  
+  }
+
   logInfo("TCP response: " + response);
-  
+
   return response;
 }
 
 // meas#index
 string TcpCommand::processMeasIndexCommand(string command) {
   UNUSED(command);
-  
+
   string response, detailsResponse;
-  
+
   response = "{\"status\":0,\"array\":[";
-  
+
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     detailsResponse += it->toJson() + ",";
   }
-  
+
   // remove last coma
   if (detailsResponse[detailsResponse.size() - 1] == ',') {
     detailsResponse.resize(detailsResponse.size() - 1);
   }
-  
+
   response += detailsResponse + "]}";
-    
+
   return response;
 }
 
 // meas#name_list
 string TcpCommand::processMeasNameListCommand(string command) {
-  UNUSED(command);  
+  UNUSED(command);
   string response;
-  
+
   response = "{\"status\":0,\"array\":[";
-  
+
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     response += "\"" + it->name + "\",";
   }
-  
+
   // remove last coma
   if (response[response.size() - 1] == ',') {
     response.resize(response.size() - 1);
   }
   response += "]}";
-    
+
   return response;
 }
 
@@ -118,14 +123,14 @@ string TcpCommand::processMeasShowCommand(string command) {
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     response = "{\"status\":0,\"object\":" + foundMeasType->toJson() + "}";
   }
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -133,24 +138,24 @@ string TcpCommand::processMeasShowCommand(string command) {
 string TcpCommand::processMeasRawForTimeCommand(string command) {
   string measName, fromString, toString, response;
   unsigned long long tFrom, tTo;
-  
+
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   fromString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   stringstream(fromString) >> tFrom;
   stringstream(toString) >> tTo;
-  
+
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     logInfo("TCP command: processMeasRawForTimeCommand(" + measName + ", " + to_string(tFrom) + ", " + to_string(tTo) + ")" );
-    
+
     string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
     response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
@@ -166,7 +171,7 @@ string TcpCommand::processMeasRawForTimeCommand(string command) {
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -175,28 +180,28 @@ string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
   string measName, fromString, toString, maxSizeString, response;
   unsigned long long tFrom, tTo;
   unsigned long int maxSize = 1;
-  
+
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   fromString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
   maxSizeString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   stringstream(fromString) >> tFrom;
   stringstream(toString) >> tTo;
   stringstream(maxSizeString) >> maxSize;
-  
+
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     logInfo("TCP command: processMeasRawHistoryForTimeCommand(" + measName + ", " + to_string(tFrom) + ", " + to_string(tTo) + ", " + to_string(maxSize) + ")" );
-    
+
     string bufferString = foundMeasType->rawHistoryForTimeJson(tFrom, tTo, maxSize);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
     response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
@@ -214,7 +219,7 @@ string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -223,24 +228,24 @@ string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
 string TcpCommand::processMeasRawForIndexCommand(string command) {
   string measName, fromString, toString, response;
   unsigned long int iFrom, iTo;
-  
+
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   fromString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   stringstream(fromString) >> iFrom;
   stringstream(toString) >> iTo;
-  
+
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     logInfo("TCP command: processMeasRawForIndexCommand(" + measName + ", " + to_string(iFrom) + ", " + to_string(iTo) + ")" );
-    
+
     string bufferString = foundMeasType->rawForIndexJson(iFrom, iTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
     response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
@@ -256,7 +261,7 @@ string TcpCommand::processMeasRawForIndexCommand(string command) {
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -264,21 +269,21 @@ string TcpCommand::processMeasRawForIndexCommand(string command) {
 string TcpCommand::processMeasStorageCommand(string command) {
   string measName, fromString, toString, response;
   unsigned long long from, to;
-  
+
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   fromString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   stringstream(fromString) >> from;
   stringstream(toString) >> to;
-  
+
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     string bufferString = foundMeasType->storageJson(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
@@ -287,7 +292,7 @@ string TcpCommand::processMeasStorageCommand(string command) {
   }
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
-  }  
+  }
   return response;
 }
 
@@ -295,21 +300,21 @@ string TcpCommand::processMeasStorageCommand(string command) {
 string TcpCommand::processMeasStatsCommand(string command) {
   string measName, fromString, toString, response;
   unsigned long long from, to;
-  
+
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   fromString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   stringstream(fromString) >> from;
   stringstream(toString) >> to;
-  
+
   MeasType *foundMeasType = measTypeArray->byName(measName);
-  
+
   if (foundMeasType) {
     string statsString = foundMeasType->statsJson(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
@@ -318,7 +323,20 @@ string TcpCommand::processMeasStatsCommand(string command) {
   }
   else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
-  }  
+  }
+  return response;
+}
+
+
+// meas_groups#index
+string TcpCommand::processMeasGroupIndexCommand(string command) {
+  UNUSED(command);
+
+  string response, detailsResponse;
+
+  response = "{\"status\":0,\"array\":";
+  response += measGroup->toJson() + "}";
+
   return response;
 }
 
@@ -327,20 +345,20 @@ string TcpCommand::processMeasStatsCommand(string command) {
 string TcpCommand::processActionIndexCommand(string command) {
   UNUSED(command);
   string response, detailsResponse;
-  
+
   response = "{\"status\":0,\"array\":[";
-  
+
   for(std::vector<ActionType>::iterator it = actionTypeArray->actionTypes.begin(); it != actionTypeArray->actionTypes.end(); ++it) {
     detailsResponse += it->toJson() + ",";
-  }  
-  
+  }
+
   // remove last coma
   if (detailsResponse[detailsResponse.size() - 1] == ',') {
     detailsResponse.resize(detailsResponse.size() - 1);
   }
-  
+
   response += detailsResponse + "]}";
-    
+
   return response;
 }
 
@@ -350,14 +368,14 @@ string TcpCommand::processActionShowCommand(string command) {
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   ActionType *foundActionType = actionTypeArray->byName(actionName);
-  
+
   if (foundActionType) {
     response = "{\"status\":0,\"object\":" + foundActionType->toJson() + "}";
   }
   else {
     response = "{\"status\":1,\"action_type\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -366,11 +384,11 @@ string TcpCommand::processActionExecuteCommand(string command) {
   string actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   string response;
-  
+
   ActionType *foundActionType = actionTypeArray->byName(actionName);
-  
+
   if (foundActionType) {
     foundActionType->execute();
     response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
@@ -378,8 +396,8 @@ string TcpCommand::processActionExecuteCommand(string command) {
   else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
-  
-  return response;  
+
+  return response;
 }
 
 // action#history
@@ -387,19 +405,19 @@ string TcpCommand::processActionHistoryCommand(string command) {
   string actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  
+
   string response;
-  
+
   ActionType *foundActionType = actionTypeArray->byName(actionName);
-  
+
   if (foundActionType) {
     response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
   }
   else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
-  
-  return response;  
+
+  return response;
 }
 
 
@@ -407,20 +425,20 @@ string TcpCommand::processActionHistoryCommand(string command) {
 string TcpCommand::processOverseerIndexCommand(string command) {
   UNUSED(command);
   string response, detailsResponse;
-  
+
   response = "{\"status\":0,\"array\":[";
-  
+
   for(std::vector<Overseer>::iterator it = overseerArray->overseers.begin(); it != overseerArray->overseers.end(); ++it) {
     detailsResponse += it->toJson() + ",";
-  }  
-  
+  }
+
   // remove last coma
   if (detailsResponse[detailsResponse.size() - 1] == ',') {
     detailsResponse.resize(detailsResponse.size() - 1);
   }
-  
+
   response += detailsResponse + "]}";
-    
+
   return response;
 }
 
@@ -430,14 +448,14 @@ string TcpCommand::processOverseerShowCommand(string command) {
   overseerName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   Overseer *foundOverseer = overseerArray->byName(overseerName);
-  
+
   if (foundOverseer) {
     response = "{\"status\":0,\"object\":" + foundOverseer->toJson() + "}";
   }
   else {
     response = "{\"status\":1,\"overseer\":\"" + overseerName + "\",\"reason\":\"overseer_not_found\"}";
   }
-  
+
   return response;
 }
 
@@ -445,7 +463,7 @@ string TcpCommand::processOverseerShowCommand(string command) {
 string TcpCommand::processSettingsCommand(string command) {
   UNUSED(command);
   string response, measResponse, frontendResponse;
-  
+
   measResponse = "{";
   measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval / 1000) + ",";
   measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval / 1000);
@@ -456,13 +474,13 @@ string TcpCommand::processSettingsCommand(string command) {
   frontendResponse += "\"currentCoeff\":" + to_string(frontendSettings->currentCoeff ) + ",";
   frontendResponse += "\"intervalHistory\":" + to_string(frontendSettings->intervalHistory);
   frontendResponse += "}";
-  
+
   response = "{\"status\":0,\"object\":{";
   response += "\"meas\":" + measResponse;
   response += ",";
   response += "\"frontend\":" + frontendResponse;
   response += "}}";
-  
+
   return response;
 }
 
@@ -476,24 +494,21 @@ string TcpCommand::processStatsCommand(string command) {
   timeResponse += "\"time\":" + to_string(mTime()) + ",";
   timeResponse += "\"uptime\":" + to_string(mTime() - bootTime);
   timeResponse += "}";
-  
+
   // http://stackoverflow.com/questions/669438/how-to-get-memory-usage-at-run-time-in-c
   double vmUsage;
-  double residentSet;  
+  double residentSet;
   processMemUsage(vmUsage, residentSet);
-  
+
   resourceResponse = "{";
   resourceResponse += "\"vmUsage\":" + to_string(vmUsage) + ",";
   resourceResponse += "\"residentSet\":" + to_string(residentSet);
   resourceResponse += "}";
-  
+
   response = "{\"status\":0,\"object\":{";
   response += "\"time\":" + timeResponse + ",";
   response += "\"resources\":" + resourceResponse;
   response += "}}";
-  
+
   return response;
 }
-
-
-

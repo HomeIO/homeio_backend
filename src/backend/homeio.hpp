@@ -13,6 +13,7 @@
 #include "overseer_array.hpp"
 #include "file_storage.hpp"
 #include "meas_buffer_backup_storage.hpp"
+#include "meas_group.hpp"
 #include "frontend_settings.hpp"
 #include "spy.hpp"
 
@@ -28,15 +29,15 @@ public:
   unsigned char startIoServer();
   unsigned char startOverseer();
   unsigned char startFileStorage();
-  unsigned char startBufferBackupStorage();  
+  unsigned char startBufferBackupStorage();
   unsigned char startSpy();
   unsigned char start();
-  
+
   unsigned char stop();
   bool isSafeToShutdown();
-  
+
   void copyInternalDelays();
-  
+
   MeasTypeArray *measTypeArray;
   MeasFetcher *measFetcher;
   IoProxy *ioProxy;
@@ -49,7 +50,8 @@ public:
   MeasBufferBackupStorage *measBufferBackupStorage;
   FrontendSettings *frontendSettings;
   Spy *spy;
-  
+  MeasGroup *measGroup;
+
   bool ioServerReady;
 };
 

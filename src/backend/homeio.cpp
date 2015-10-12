@@ -1,6 +1,6 @@
 HomeIO::HomeIO() {
   //HomeIO::running = true;
-  
+
   measTypeArray = new MeasTypeArray;
   measFetcher = new MeasFetcher;
   ioProxy = new IoProxy;
@@ -13,21 +13,27 @@ HomeIO::HomeIO() {
   measBufferBackupStorage = new MeasBufferBackupStorage;
   frontendSettings = new FrontendSettings;
   spy = new Spy;
-  
+  measGroup = new MeasGroup;
+
   ioServerReady = false;
-  
+
   // setup some variables
   measFetcher->measTypeArray = measTypeArray;
   measFetcher->ioProxy = ioProxy;
-  
+
+  measGroup->measTypeArray = measTypeArray;
+
   tcpCommand->measTypeArray = measTypeArray;
   tcpCommand->measFetcher = measFetcher;
   tcpCommand->actionTypeArray = actionTypeArray;
   tcpCommand->overseerArray = overseerArray;
   tcpCommand->frontendSettings = frontendSettings;
+  tcpCommand->measGroup = measGroup;
+
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
-  
+
+
   fileStorage->measTypeArray = measTypeArray;
   measBufferBackupStorage->measTypeArray = measTypeArray;
   spy->measTypeArray = measTypeArray;
@@ -44,27 +50,27 @@ unsigned char HomeIO::startFetch() {
     m->resizeBuffer( measFetcher->maxBufferSize );
   }
   logInfo("MeasFetcher: resize buffer size to " + to_string(measFetcher->maxBufferSize) );
-  
+
   // restore buffer before restart
   measBufferBackupStorage->performRestore();
-  
+
   // start fetching measurements
   // to clear buffer or
   // restored buffer
   measFetcher->start();
-  
+
   return 0;
 }
 
 unsigned char HomeIO::startServer() {
   tcpServer->start();
-  
+
   return 0;
 }
 
 unsigned char HomeIO::startIoServer() {
   ioServer->start();
-  
+
   return 0;
 }
 
@@ -78,25 +84,25 @@ unsigned char HomeIO::startOverseer() {
   overseerArray->measTypeArray = measTypeArray;
   overseerArray->actionTypeArray = actionTypeArray;
   overseerArray->start();
-  
+
   return 0;
 }
 
 unsigned char HomeIO::startFileStorage() {
   fileStorage->start();
-  
+
   return 0;
 }
 
 unsigned char HomeIO::startBufferBackupStorage() {
   measBufferBackupStorage->start();
-  
+
   return 0;
 }
 
 unsigned char HomeIO::startSpy() {
   spy->start();
-  
+
   return 0;
 }
 
@@ -106,7 +112,7 @@ void *measStartThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startFetch();
-  
+
   return NULL;
 }
 
@@ -116,7 +122,7 @@ void *tcpServerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
-  
+
   return NULL;
 }
 
@@ -126,7 +132,7 @@ void *ioServerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
-  
+
   return NULL;
 }
 
@@ -136,7 +142,7 @@ void *ioOverseerThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startOverseer();
-  
+
   return NULL;
 }
 
@@ -146,7 +152,7 @@ void *fileStorageThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startFileStorage();
-  
+
   return NULL;
 }
 
@@ -156,7 +162,7 @@ void *fileBufferBackupThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startBufferBackupStorage();
-  
+
   return NULL;
 }
 
@@ -166,7 +172,7 @@ void *spyThread(void *argument)
 
   HomeIO *h = (HomeIO *) argument;
   h->startSpy();
-  
+
   return NULL;
 }
 
@@ -180,35 +186,35 @@ void HomeIO::copyInternalDelays() {
 
 unsigned char HomeIO::start() {
   copyInternalDelays();
-  
+
   const char NUM_THREADS = 6;
   pthread_t threads[NUM_THREADS];
   int i;
-  
+
   HomeIO *h = this;
- 
+
   pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
-  
+
   // wait for IoServer
-  
+
   while (ioServer->ready == false) {
     usleep(50000);
   }
-  
+
   pthread_create(&threads[1], NULL, measStartThread, (void *) h);
   pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
   pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
   pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
   pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
   pthread_create(&threads[6], NULL, spyThread, (void *) h);
- 
+
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
       pthread_join(threads[i], NULL);
       logError("In main: thread " + to_string(i) + " is complete");
    }
- 
+
    logError("In main: All threads completed successfully");
    exit(EXIT_SUCCESS);
 }
@@ -216,7 +222,7 @@ unsigned char HomeIO::start() {
 unsigned char HomeIO::stop() {
   cout << endl << endl;
   logInfo("Shutdown initialized");
-  
+
   measBufferBackupStorage->stop();
   fileStorage->stop();
   tcpServer->stop();
@@ -224,7 +230,7 @@ unsigned char HomeIO::stop() {
   overseerArray->stop();
   measFetcher->stop();
   ioServer->stop();
-  
+
   logInfo("Shutdown completed");
   return 0;
 }

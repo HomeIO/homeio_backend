@@ -11,6 +11,7 @@
 #include "overseer_array.hpp"
 #include "meas_fetcher.hpp"
 #include "frontend_settings.hpp"
+#include "meas_group.hpp"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class TcpCommand {
 public:
   TcpCommand();
   string processCommand(string command);
-  
+
   // name standarization done
   string processMeasIndexCommand(string command);
   string processMeasNameListCommand(string command);
@@ -28,28 +29,31 @@ public:
   string processMeasRawHistoryForTimeCommand(string command);
   string processMeasStorageCommand(string command);
   string processMeasStatsCommand(string command);
-  
+
+  string processMeasGroupIndexCommand(string command);
+
   string processActionIndexCommand(string command);
   string processActionShowCommand(string command);
   string processActionExecuteCommand(string command);
   string processActionHistoryCommand(string command);
-  
+
   string processOverseerIndexCommand(string command);
   string processOverseerShowCommand(string command);
-  
+
   string processSettingsCommand(string command);
   string processStatsCommand(string command);
- 
+
   long long int bootTime;
-  
+
   void logInfo(string log); // overwritten color
-  
+
   MeasTypeArray *measTypeArray;
   MeasFetcher *measFetcher;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FrontendSettings *frontendSettings;
-  
+  MeasGroup *measGroup;
+
 };
 
 #include "tcp_command.cpp"
