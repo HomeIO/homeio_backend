@@ -85,6 +85,7 @@ int main()
   h->overseerArray->add(o);
 
   h->measGroup->addGroup("group1", "light");
+  h->measGroup->addGroup("group2", "light,outputs");
 
   h->frontendSettings->intervalCurrent = 1000;
   h->frontendSettings->intervalHistory = 3600*1000;
