@@ -343,7 +343,7 @@ int main()
   h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
 
   // ram buffer resize
-  h->measFetcher->maxBufferSize = 4000000;
+  h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
   WindTurbineStats *wts = new WindTurbineStats;
