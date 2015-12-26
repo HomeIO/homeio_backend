@@ -53,7 +53,6 @@ double WindTurbineStats::calculatePowerForHour(unsigned long long t) {
 }
 
 void WindTurbineStats::store(unsigned long long t, double w) {
-  unsigned long int measCount = 0;
   ofstream outfile;
   string currentDate( currentDateSafe() );
   string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
