@@ -12,7 +12,7 @@ void WindTurbineStats::perform() {
     lastTime = calculateTimeFrom();
   }
 
-  if (calculateTimeFrom() > lastTime {
+  if (calculateTimeFrom() > lastTime) {
     // calculate now
 
     lastTime = calculateTimeFrom();
