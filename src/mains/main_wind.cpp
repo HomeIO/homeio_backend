@@ -345,6 +345,12 @@ int main()
   // ram buffer resize
   h->measFetcher->maxBufferSize = 4000000;
 
+  // addons
+  WindTurbineStats *wts = new WindTurbineStats;
+  wts->measNameU = "batt_u";
+  wts->measNameI = "i_gen_batt";
+  h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(wts));
+
   // Now you can run everything of parts of backend.
   // TODO: way to disable IoServer
   h->start();

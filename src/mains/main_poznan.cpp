@@ -177,6 +177,10 @@ int main()
   // ram buffer resize
   h->measFetcher->maxBufferSize = 2000000;
 
+  // addons
+  //SampleAddon *sa = new SampleAddon;
+  //h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(sa));
+
   h->start();
 
   return 0;

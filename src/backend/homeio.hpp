@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include <signal.h>
+#include <vector>
 
 #include "helpers.hpp"
 #include "meas_type_array.hpp"
@@ -16,8 +17,13 @@
 #include "meas_group.hpp"
 #include "frontend_settings.hpp"
 #include "spy.hpp"
+#include "addons_array.hpp"
 
 #include "io_server/io_server.hpp"
+
+#include "addons/abstract_addon.hpp"
+#include "addons/sample_addon.hpp"
+#include "addons/wind_turbine_stats.hpp"
 
 using namespace std;
 
@@ -31,6 +37,7 @@ public:
   unsigned char startFileStorage();
   unsigned char startBufferBackupStorage();
   unsigned char startSpy();
+  unsigned char startAddons();
   unsigned char start();
 
   unsigned char stop();
@@ -51,6 +58,7 @@ public:
   FrontendSettings *frontendSettings;
   Spy *spy;
   MeasGroup *measGroup;
+  AddonsArray *addonsArray;
 
   bool ioServerReady;
 };

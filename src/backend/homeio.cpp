@@ -14,6 +14,7 @@ HomeIO::HomeIO() {
   frontendSettings = new FrontendSettings;
   spy = new Spy;
   measGroup = new MeasGroup;
+  addonsArray = new AddonsArray;
 
   ioServerReady = false;
 
@@ -33,10 +34,10 @@ HomeIO::HomeIO() {
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
 
-
   fileStorage->measTypeArray = measTypeArray;
   measBufferBackupStorage->measTypeArray = measTypeArray;
   spy->measTypeArray = measTypeArray;
+  addonsArray->measTypeArray = measTypeArray;
 }
 
 unsigned char HomeIO::startFetch() {
@@ -102,6 +103,12 @@ unsigned char HomeIO::startBufferBackupStorage() {
 
 unsigned char HomeIO::startSpy() {
   spy->start();
+
+  return 0;
+}
+
+unsigned char HomeIO::startAddons() {
+  addonsArray->start();
 
   return 0;
 }
@@ -176,6 +183,17 @@ void *spyThread(void *argument)
   return NULL;
 }
 
+void *addonsThread(void *argument)
+{
+  logInfo("Thread: addonsThread() - execute addon modules");
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startAddons();
+
+  return NULL;
+
+}
+
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
   measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 6;
@@ -187,7 +205,7 @@ void HomeIO::copyInternalDelays() {
 unsigned char HomeIO::start() {
   copyInternalDelays();
 
-  const char NUM_THREADS = 6;
+  const char NUM_THREADS = 7;
   pthread_t threads[NUM_THREADS];
   int i;
 
@@ -207,6 +225,7 @@ unsigned char HomeIO::start() {
   pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
   pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
   pthread_create(&threads[6], NULL, spyThread, (void *) h);
+  pthread_create(&threads[7], NULL, addonsThread, (void *) h);
 
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
@@ -230,6 +249,7 @@ unsigned char HomeIO::stop() {
   overseerArray->stop();
   measFetcher->stop();
   ioServer->stop();
+  addonsArray->stop();
 
   logInfo("Shutdown completed");
   return 0;
