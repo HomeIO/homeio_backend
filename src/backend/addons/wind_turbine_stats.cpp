@@ -6,7 +6,13 @@ WindTurbineStats::WindTurbineStats() {
 }
 
 void WindTurbineStats::perform() {
-  if (calculateTimeFrom() > lastTime) {
+  // first run
+  // so it won't calculate and write
+  if (lastTime == 0) {
+    lastTime = calculateTimeFrom();
+  }
+
+  if (calculateTimeFrom() > lastTime {
     // calculate now
 
     lastTime = calculateTimeFrom();
@@ -24,6 +30,7 @@ unsigned long long WindTurbineStats::calculateTimeFrom() {
 
 double WindTurbineStats::calculatePowerForHour(unsigned long long t) {
   double w = 0.0;
+  double wPartial = 0.0;
 
   MeasType *u = measTypeArray->byName(measNameU);
   MeasType *i = measTypeArray->byName(measNameI);
@@ -34,10 +41,15 @@ double WindTurbineStats::calculatePowerForHour(unsigned long long t) {
   float measInterval = (float) u->buffer->calcInterval();
 
   for (unsigned long j = 0; j < uRaw.size(); j++ ) {
-    w += ( u->rawToValue( uRaw.at(j) ) ) * ( i->rawToValue( iRaw.at(j) ) ) * measInterval;
+    // V*A*s
+    // you need to divide 3600*1000 if you want to have kWh
+    wPartial = ( u->rawToValue( uRaw.at(j) ) ) * ( i->rawToValue( iRaw.at(j) ) ) * measInterval / 1000.0;
+    if (wPartial > 0.0) {
+        w += wPartial;
+    }
   }
 
-  return 0.0;
+  return w;
 }
 
 void WindTurbineStats::store(unsigned long long t, double w) {
