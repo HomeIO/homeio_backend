@@ -8,6 +8,7 @@ void AddonsArray::start() {
   logInfo("AddonsArray - start");
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
       (*itr)->measTypeArray = measTypeArray;
+      (*itr)->setup();
   }
 
   while(isRunning) {
