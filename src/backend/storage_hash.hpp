@@ -10,7 +10,7 @@ public:
   unsigned long long timeFrom, timeTo;
   double value;
 
-  string toJson();
+  std::string toJson();
 };
 
 //#include "storage_hash.cpp"

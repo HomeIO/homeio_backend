@@ -6,11 +6,11 @@ StorageHash::StorageHash(unsigned long long tF, unsigned long long tT, double v)
   value = v;
 }
 
-string StorageHash::toJson() {
-  string s = "{";
-  s += "\"f\":" + to_string(timeFrom) + ",";
-  s += "\"t\":" + to_string(timeTo) + ",";
-  s += "\"v\":" + to_string(value);
+std::string StorageHash::toJson() {
+  std::string s = "{";
+  s += "\"f\":" + std::to_string(timeFrom) + ",";
+  s += "\"t\":" + std::to_string(timeTo) + ",";
+  s += "\"v\":" + std::to_string(value);
   s += "}";
 
   return s;

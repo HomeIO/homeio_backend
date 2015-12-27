@@ -11,7 +11,7 @@ void MeasTypeStorage::clearBuffer() {
   buffer.clear();
 }
 
-vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
+std::vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
   storageBuffer.clear();
   unsigned long int i = 0;
   bool storeElement = false;
@@ -79,10 +79,10 @@ bool MeasTypeStorage::maxTimeDiffCheck(unsigned long long p, unsigned long long 
 }
 
 
-string MeasTypeStorage::storageBufferJson() {
-  string json;
+std::string MeasTypeStorage::storageBufferJson() {
+  std::string json;
 
-  vector < StorageHash > shBuffer = prepareStorageBuffer();
+  std::vector < StorageHash > shBuffer = prepareStorageBuffer();
 
   json = "[";
 
@@ -99,19 +99,19 @@ string MeasTypeStorage::storageBufferJson() {
   return json;
 }
 
-string MeasTypeStorage::storageFullJson() {
-  string detailsString, response;
+std::string MeasTypeStorage::storageFullJson() {
+  std::string detailsString, response;
 
   // just debug data
   detailsString = "{";
-  detailsString += "\"indexFrom\":" + to_string(indexFrom) + ",";
-  detailsString += "\"indexTo\":" + to_string(indexTo) + ",";
-  detailsString += "\"timeFrom\":" + to_string(timeFrom) + ",";
-  detailsString += "\"timeTo\":" + to_string(timeTo) + ",";
-  detailsString += "\"interval\":" + to_string(interval) + ",";
-  detailsString += "\"count\":" + to_string(count) + ",";
-  detailsString += "\"lastTime\":" + to_string(lastTime) + ",";
-  detailsString += "\"firstTime\":" + to_string(firstTime);
+  detailsString += "\"indexFrom\":" + std::to_string(indexFrom) + ",";
+  detailsString += "\"indexTo\":" + std::to_string(indexTo) + ",";
+  detailsString += "\"timeFrom\":" + std::to_string(timeFrom) + ",";
+  detailsString += "\"timeTo\":" + std::to_string(timeTo) + ",";
+  detailsString += "\"interval\":" + std::to_string(interval) + ",";
+  detailsString += "\"count\":" + std::to_string(count) + ",";
+  detailsString += "\"lastTime\":" + std::to_string(lastTime) + ",";
+  detailsString += "\"firstTime\":" + std::to_string(firstTime);
   detailsString += "}";
 
   response = "{";

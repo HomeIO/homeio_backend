@@ -21,14 +21,14 @@ public:
   unsigned long int maxTimeDiffToStore;
   double valueDiffToStore;
 
-  vector < double > buffer;
+  std::vector < double > buffer;
 
   StorageHash *sh;
   void clearBuffer();
-  vector < StorageHash > storageBuffer;
-  vector < StorageHash > prepareStorageBuffer();
-  string storageBufferJson();
-  string storageFullJson();
+  std::vector < StorageHash > storageBuffer;
+  std::vector < StorageHash > prepareStorageBuffer();
+  std::string storageBufferJson();
+  std::string storageFullJson();
 
 
   bool valueDiffCheck(double p, double n);
