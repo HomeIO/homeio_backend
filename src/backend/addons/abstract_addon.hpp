@@ -8,6 +8,7 @@ using namespace std;
 
 class AbstractAddon {
 public:
+  virtual void setup();
   virtual void perform();
 
   MeasTypeArray *measTypeArray;

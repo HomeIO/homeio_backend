@@ -346,9 +346,11 @@ int main()
   h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
-  WindTurbineStats *wts = new WindTurbineStats;
+  WindTurbineStatsAddon *wts = new WindTurbineStatsAddon;
   wts->measNameU = "batt_u";
   wts->measNameI = "i_gen_batt";
+  wts->measCoil = "coil_1_u";
+  wts->measResistor = "res_pwm_avg";
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(wts));
 
   // Now you can run everything of parts of backend.

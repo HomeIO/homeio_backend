@@ -23,7 +23,7 @@
 
 #include "addons/abstract_addon.hpp"
 #include "addons/sample_addon.hpp"
-#include "addons/wind_turbine_stats.hpp"
+#include "addons/wind_turbine_stats_addon.hpp"
 
 using namespace std;
 
