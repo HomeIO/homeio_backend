@@ -3,8 +3,10 @@ WindTurbineStat::WindTurbineStat() {
   timeLength = 0;
 
   work = 0.0;
-  
+
   coilTime = 0;
   battCurrentTime = 0;
   resistorTime = 0;
+
+  maxBattCurrent = 0.0;
 }
