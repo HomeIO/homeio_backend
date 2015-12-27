@@ -7,7 +7,7 @@ using namespace std;
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-
+#include <string>
 
 #include <termios.h>
 #include "config.hpp"
@@ -15,25 +15,25 @@ using namespace std;
 class RS {
 public:
   RS();
-  
+
   // Open RS port and set all parameters
   // Parameters are stored in config.h
   int openRS();
-  
+
   unsigned char send();
-  
+
   void closeRS();
-  
+
   struct termios tio;
   int ttyFileDescriptor;
-  
+
   string port;
   unsigned char i, tmp_char;
-  
+
   char *buffer;
   unsigned char count_command;
   unsigned char count_response;
 };
 
-#include "rs.cpp"
+//#include "rs.cpp"
 #endif

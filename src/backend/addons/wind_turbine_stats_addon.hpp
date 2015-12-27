@@ -2,6 +2,9 @@
 #define	WIND_TURBINE_STATS_ADDON_HPP
 
 #include <string>
+#include <sys/stat.h>
+#include <fstream>
+
 #include "abstract_addon.hpp"
 #include "wind_turbine_stat.hpp"
 
@@ -34,5 +37,5 @@ public:
   void store(WindTurbineStat s);
 };
 
-#include "wind_turbine_stats_addon.cpp"
+//#include "wind_turbine_stats_addon.cpp"
 #endif

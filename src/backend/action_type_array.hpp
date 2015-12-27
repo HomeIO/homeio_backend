@@ -13,10 +13,10 @@ public:
   ActionTypeArray();
   unsigned int add(ActionType *m);
   ActionType *byName(string s);
-  
+
   std::vector <ActionType> actionTypes;
   IoProxy *ioProxy;
 };
 
-#include "action_type_array.cpp"
+//#include "action_type_array.cpp"
 #endif

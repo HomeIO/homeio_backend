@@ -1,3 +1,5 @@
+#include "meas_type_array.hpp"
+
 MeasTypeArray::MeasTypeArray() {
   std::vector <MeasType> measTypes;
   isReady = false;

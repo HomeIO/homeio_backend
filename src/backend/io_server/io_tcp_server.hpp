@@ -7,6 +7,7 @@ using namespace std;
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <cstring>
 
 #include <sys/socket.h> // socket definitions
 #include <sys/types.h> // socket types
@@ -16,6 +17,9 @@ using namespace std;
 #include <unistd.h>
 #include <errno.h>
 #include <time.h>
+
+#include "config.hpp"
+#include "../helpers.hpp" // TODO
 
 #define IO_SERVER_LISTENQ (1024) // Backlog for listen()
 #define IO_SERVER_MAX_LINE (1000)
@@ -33,7 +37,7 @@ public:
   // connection socket
   int conn_s;
   // TCP buffer
-  char buffer[MAX_LINE];
+  char buffer[IO_SERVER_MAX_LINE];
   // count of response bytes
   unsigned char count_response = 0;
   // just for logging
@@ -41,22 +45,22 @@ public:
   time_t rawtime;
   struct tm * timeinfo;
   bool verbose;
-  
+
   IoTcpServer();
   int createTcpServer();
   int waitForCommand();
   ssize_t readTcp();
   ssize_t writeTcp();
   void closeSocket();
-  
+
   void escapeBuffer();
-  
+
   // Read line from socket
   ssize_t readLine(int sockd, char *vptr, size_t maxlen);
   // Write line to socket
   ssize_t writeLine(int sockd, const char *vptr, size_t n);
-  
+
 };
 
-#include "io_tcp_server.cpp"
+//#include "io_tcp_server.cpp"
 #endif

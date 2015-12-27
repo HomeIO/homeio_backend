@@ -24,25 +24,24 @@ public:
   void stop();
   void announceAll();
   unsigned char annouceMeas(string name, double value);
-  
+
   string hiveHost;
   string siteName;
   string urlPath;
   string url;
-  
+
   MeasTypeArray *measTypeArray;
 
   unsigned long int cycleInterval;
   unsigned long long lastTime;
   unsigned long long usDelay;
-  
+
   bool quiet;
   bool enabled;
-  
+
   bool isRunning;
   mutex shutdownMutex;
 };
 
-#include "spy.cpp"
+//#include "spy.cpp"
 #endif
-

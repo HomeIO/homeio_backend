@@ -1,3 +1,5 @@
+#include "wind_turbine_stat.hpp"
+
 WindTurbineStat::WindTurbineStat() {
   time = 0;
   timeLength = 0;

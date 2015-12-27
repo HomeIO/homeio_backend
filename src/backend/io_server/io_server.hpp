@@ -13,7 +13,7 @@ class IoServer {
 public:
   IoServer();
   void start();
-  void stop();  
+  void stop();
 
   bool isRunning;
   mutex shutdownMutex;
@@ -31,8 +31,8 @@ public:
 
   RS *rs;
   IoTcpServer *tcp;
-  
+
 };
 
-#include "io_server.cpp"
+//#include "io_server.cpp"
 #endif

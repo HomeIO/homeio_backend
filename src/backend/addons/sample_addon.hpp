@@ -11,5 +11,5 @@ public:
   void perform();
 };
 
-#include "sample_addon.cpp"
+//#include "sample_addon.cpp"
 #endif

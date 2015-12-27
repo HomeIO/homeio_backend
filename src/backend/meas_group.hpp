@@ -21,5 +21,5 @@ public:
   MeasTypeArray *measTypeArray;
 };
 
-#include "meas_group.cpp"
+//#include "meas_group.cpp"
 #endif

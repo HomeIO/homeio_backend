@@ -15,5 +15,5 @@ public:
   string name;
 };
 
-#include "abstract_addon.cpp"
+//#include "abstract_addon.cpp"
 #endif

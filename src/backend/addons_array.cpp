@@ -1,3 +1,5 @@
+#include "addons_array.hpp"
+
 AddonsArray::AddonsArray() {
   // default intervals
   cycleInterval = 1000000; //1s

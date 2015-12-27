@@ -1,7 +1,9 @@
+#include "helpers.hpp"
+
 char* currentDateSafe() {
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
-  
+
   strftime (currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
 
   return currentTimeBuffer;
@@ -10,7 +12,7 @@ char* currentDateSafe() {
 char* currentTime() {
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
-  
+
   strftime (currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
 
   return currentTimeBuffer;
@@ -19,27 +21,27 @@ char* currentTime() {
 string detailCurrentTime() {
   string t = (string) currentTime();
   t += ".";
-  
+
   ostringstream os;
   os << setfill('0') << setw(3) << to_string(onlyMiliseconds());
   t += os.str();
-  
+
   return t;
 }
 
 unsigned long long uTime() {
   unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1) ;
-  return ut;  
+  return ut;
 }
 
 unsigned long long mTime() {
   unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::milliseconds(1) ;
-  return ut;  
+  return ut;
 }
 
 unsigned int onlyMiliseconds() {
   unsigned long long ut = mTime() % 1000;
-  return (unsigned int)ut;  
+  return (unsigned int)ut;
 }
 
 
@@ -63,11 +65,11 @@ void redColor() {
 
 void logWithColor(string log, unsigned char color) {
   logMutex.lock();
-  
+
   txtColor(RESET, color, BLACK);
   cout << detailCurrentTime() << " " << log << endl;
   resetColor();
-  
+
   logMutex.unlock();
 }
 
@@ -104,7 +106,7 @@ void processMemUsage(double& vm_usage, double& resident_set)
 void longSleep(unsigned long int interval) {
   unsigned long int counts = interval / numeric_limits<unsigned long int>::max();
   unsigned int rest = (unsigned int) (interval % numeric_limits<unsigned long int>::max() );
-  
+
   for (unsigned long int i = 0; i < counts; i++) {
     usleep( numeric_limits<int>::max() );
   }

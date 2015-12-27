@@ -1,3 +1,5 @@
+#include "meas_type_storage.hpp"
+
 MeasTypeStorage::MeasTypeStorage() {
   minTimeDiffToStore = 1000;
   maxTimeDiffToStore = 3600000;
@@ -14,20 +16,20 @@ vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
   unsigned long int i = 0;
   bool storeElement = false;
   unsigned long long currentTimeFrom, currentTimeTo;
-  
+
   // empty buffer, nothing to do
   if (buffer.size() == 0) {
     return storageBuffer;
   }
-  
+
   // create first StorageHash
-  sh = new StorageHash( timeFrom, timeFrom + interval, buffer.front() ); 
-  
+  sh = new StorageHash( timeFrom, timeFrom + interval, buffer.front() );
+
   for(std::vector<double>::iterator it = buffer.begin(); it != buffer.end(); ++it) {
     storeElement = false;
     currentTimeFrom = timeFrom + i*interval;
     currentTimeTo = timeFrom + (i+1)*interval;
-    
+
     // value change - store
     if ( valueDiffCheck(sh->value, *it ) ) {
       storeElement = true;
@@ -40,19 +42,19 @@ vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
     if ( maxTimeDiffCheck(sh->timeTo, currentTimeTo ) ) {
       storeElement = true;
     }
-    
+
     // if store, push hash to buffer and create new one
     if (storeElement) {
       sh->timeTo = currentTimeFrom;
       storageBuffer.push_back(*sh);
-      
-      sh = new StorageHash( currentTimeFrom, currentTimeTo, *it ); 
+
+      sh = new StorageHash( currentTimeFrom, currentTimeTo, *it );
     }
-    
+
     // end of loop
     i++;
   }
-  
+
   return storageBuffer;
 }
 
@@ -79,11 +81,11 @@ bool MeasTypeStorage::maxTimeDiffCheck(unsigned long long p, unsigned long long 
 
 string MeasTypeStorage::storageBufferJson() {
   string json;
-  
+
   vector < StorageHash > shBuffer = prepareStorageBuffer();
-  
+
   json = "[";
-  
+
   for(std::vector<StorageHash>::iterator it = shBuffer.begin(); it != shBuffer.end(); ++it) {
     json += it->toJson() + ",";
   }
@@ -91,15 +93,15 @@ string MeasTypeStorage::storageBufferJson() {
   if (json[json.size() - 1] == ',') {
     json.resize(json.size() - 1);
   }
-  
+
   json += "]";
-  
+
   return json;
 }
 
 string MeasTypeStorage::storageFullJson() {
   string detailsString, response;
-  
+
   // just debug data
   detailsString = "{";
   detailsString += "\"indexFrom\":" + to_string(indexFrom) + ",";
@@ -114,8 +116,8 @@ string MeasTypeStorage::storageFullJson() {
 
   response = "{";
   response += "\"details\":" + detailsString + ",";
-  response += "\"storageArray\":" + storageBufferJson();  
+  response += "\"storageArray\":" + storageBufferJson();
   response += "}";
-  
+
   return response;
 }

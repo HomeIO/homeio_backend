@@ -4,6 +4,7 @@
 #include <vector>
 #include <mutex>
 
+#include "helpers.hpp"
 #include "addons/abstract_addon.hpp"
 #include "meas_type_array.hpp"
 
@@ -24,5 +25,5 @@ public:
   MeasTypeArray* measTypeArray;
 };
 
-#include "addons_array.cpp"
+//#include "addons_array.cpp"
 #endif

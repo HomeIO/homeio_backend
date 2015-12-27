@@ -1,22 +1,31 @@
-MeasBuffer::MeasBuffer(unsigned long int _maxSize = 1000000) {
-  maxSize = _maxSize;
-  elementSize = sizeof(_maxSize);
-  
-  clearAndResize(_maxSize);
-  
+#include "meas_buffer.hpp"
+
+MeasBuffer::MeasBuffer() {
+  maxSize = 1000000;
+  elementSize = sizeof(meas_buffer_elemt);
+  clearAndResize(maxSize);
   removeSpikes = false;
 }
 
-void MeasBuffer::clearAndResize(unsigned long int _maxSize = 1000000) {
+MeasBuffer::MeasBuffer(unsigned long int _maxSize) {
   maxSize = _maxSize;
-  
+  elementSize = sizeof(meas_buffer_elemt);
+  clearAndResize(maxSize);
+  removeSpikes = false;
+}
+
+void MeasBuffer::clearAndResize(unsigned long int _maxSize) {
+  maxSize = _maxSize;
+
   offset = 0;
   count = 0;
   firstTime = 0;
   responseIndexInterval = 1;
 
   buffer.clear();
+  buffer.reserve(maxSize);
   buffer.resize(maxSize);
+  // http://www.cplusplus.com/reference/vector/vector/reserve/
 }
 
 unsigned long int MeasBuffer::add(unsigned int raw) {
@@ -25,12 +34,12 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   if ( (removeSpikes) && (wasSpike(raw)) ) {
     buffer[offset] = at(1);
   }
-  
+
   // must be here because in other case first measurement is equal 0
   if (count == 0) {
     buffer[offset] = raw;
   }
-  
+
   offset++;
   if (offset >= maxSize) {
     offset = 0;
@@ -43,9 +52,9 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
     firstTime = mTime();
   }
   lastTime = mTime();
-  
+
   buffer[offset] = raw;
-  
+
   return offset;
 }
 
@@ -68,14 +77,14 @@ unsigned long long MeasBuffer::earliestTime() {
 bool MeasBuffer::isSpike(unsigned int a, unsigned int b, unsigned int c) {
   int absA = abs( (int) a - (int) c );
   int absB = abs( (int) a - (int) b );
-  
+
   if (absB > 10 * (absA + 1) ) {
     logInfo("MeasBuffer: found SPIKE " + to_string(a) + " - " + to_string(b) + " - " + to_string(c) );
     return true;
   } else {
     return false;
   }
-  
+
 }
 
 bool MeasBuffer::wasSpike(unsigned int latestRaw) {
@@ -83,7 +92,7 @@ bool MeasBuffer::wasSpike(unsigned int latestRaw) {
   if (count <= 3) {
     return false;
   }
-    
+
   return isSpike(at(1), at(0), latestRaw);
 }
 
@@ -94,7 +103,7 @@ void MeasBuffer::filterStoredSpikes() {
   }
 
   unsigned long int i;
-  
+
   // iterate buffer
   for (i = 1; i < (count - 1); i++) {
     // check if spike within closest raws
@@ -138,9 +147,9 @@ unsigned long int MeasBuffer::calculateIndexInterval(unsigned long int lower, un
   if (responseMaxSize == 0) {
     return 1;
   }
-  
+
   unsigned long int distance = higher - lower;
-  
+
   if (distance <= responseMaxSize) {
     return 1;
   } else {
@@ -151,15 +160,15 @@ unsigned long int MeasBuffer::calculateIndexInterval(unsigned long int lower, un
 vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
   unsigned long int i;
   vector < unsigned int > result;
-  
+
   if (from <= to) {
     // safety
     if (to >= maxSize) {
       to = maxSize - 1;
     }
-    
+
     logInfo("MeasBuffer: UP getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
-    
+
     responseIndexInterval = calculateIndexInterval(from, to, responseMaxSize);
     for (i = from; i <= to; i += responseIndexInterval) {
       if (stored(i)) {
@@ -172,16 +181,16 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
     if (from >= maxSize) {
       from = maxSize - 1;
     }
-    
+
     logInfo("MeasBuffer: DOWN getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
-    
+
     responseIndexInterval = calculateIndexInterval(to, from, responseMaxSize);
     for (i = from; (i > to) && (i >= responseIndexInterval); i -= responseIndexInterval) {
       if (stored(i)) {
         result.push_back(at(i));
       }
     }
-    
+
     return result;
   }
 }
@@ -193,14 +202,14 @@ string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to, unsig
     s += to_string(*it);
     s += ",";
   }
-  
+
   // remove last coma
   if (s[s.size() - 1] == ',') {
     s.resize(s.size() - 1);
   }
-  
+
   s += "]";
-  
+
   return s;
 }
 
@@ -215,5 +224,5 @@ string MeasBuffer::toJson() {
   response += "\"firstTime\":" + to_string(firstTime); //+ ",";
   //response += "\"earliestTime\":" + to_string(earliestTime());
   response += "}";
-  return response;  
+  return response;
 }

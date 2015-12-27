@@ -32,43 +32,43 @@ public:
   string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
   string rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize);
   void logInfo(string log); // overwritten color
-  
+
   unsigned long int minTimeDiffToStore;
   unsigned long int maxTimeDiffToStore;
   double valueDiffToStore;
 
-  void recalculateAvg(); 
+  void recalculateAvg();
   double currentAvgValue(); // recalculate if needed and get stored
   double avgValue; // calculated periodically to show value deviation from standard value
   unsigned long long lastAvgTime; // when last was execute
   unsigned long long intervalAvg; // how often refresh
   unsigned long int windowAvg; // how many meas use to calculate avg
 
-  
+
   void prepareFetch();
   string fetchString(unsigned int raw);
 
   MeasBuffer *buffer;
-  
+
   string name; // name of measurements
   string unit; // value is presented in unit
   unsigned char priority; // 0 - low priority, 1 - high (at this moment), used only in frontend
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
-  
+
   double coefficientLinear;
   int coefficientOffset;
-  
+
   // extensions - not needed, but can be used by external tools, like frontend
   // it's okay to ignore "spikes" - when raw is unnaturally diferent for only 1 measurement
   // change it to raw before the "spike"
-  bool extRemoveSpikes; 
+  bool extRemoveSpikes;
   // not its something to remove them in backend
   bool extBackendRemoveSpikes;
-  
+
   bool started;
   string logPrefix;
-  
+
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
 
@@ -81,9 +81,8 @@ public:
   // stats
   string statsJson(unsigned long long timeFrom, unsigned long long timeTo);
   vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
-	
+
 };
 
-#include "meas_type.cpp"
-#include "meas_type_stats.cpp"
-#endif	
+//#include "meas_type.cpp"
+#endif

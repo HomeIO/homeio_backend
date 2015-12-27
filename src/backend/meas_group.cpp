@@ -1,3 +1,5 @@
+#include "meas_group.hpp"
+
 MeasGroup::MeasGroup() {
 }
 

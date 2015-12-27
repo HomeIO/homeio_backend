@@ -27,27 +27,27 @@ using namespace std;
 class TcpServer {
 public:
   TcpServer();
-  
+
   ssize_t readLine(int sockd, size_t maxlen);
   ssize_t writeLine(int sockd);
   int createTcpServer();
   void start();
   void stop();
   int processCommand();
-  
+
   short int port;
   TcpCommand *tcpCommand;
   MeasTypeArray *measTypeArray;
-  
+
   unsigned long long usDelay;
-  
+
   bool isRunning;
   mutex shutdownMutex;
-  
+
 private:
   char c, *commandBuffer;
   string responseBuffer;
 };
 
-#include "tcp_server.cpp"
+//#include "tcp_server.cpp"
 #endif

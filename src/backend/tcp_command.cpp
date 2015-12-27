@@ -1,3 +1,5 @@
+#include "tcp_command.hpp"
+
 TcpCommand::TcpCommand() {
   bootTime = mTime();
 }
@@ -40,7 +42,7 @@ string TcpCommand::processCommand(string command) {
   if (commandName == "measStats") {
     response = processMeasStatsCommand(command);
   }
-  
+
   if (commandName == "measGroups") {
     response = processMeasGroupIndexCommand(command);
   }

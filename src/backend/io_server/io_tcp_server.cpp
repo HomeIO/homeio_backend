@@ -1,3 +1,5 @@
+#include "io_tcp_server.hpp"
+
 IoTcpServer::IoTcpServer() {
   verbose = false;
 }
@@ -13,7 +15,7 @@ int IoTcpServer::createTcpServer() {
     // allow faster restart
     int iSetOption = 1;
     setsockopt(list_s, SOL_SOCKET, SO_REUSEADDR, (char*)&iSetOption, sizeof(iSetOption));
-    
+
     /*  Set all bytes in socket address structure to
         zero, and fill in the relevant data members   */
 
@@ -37,7 +39,7 @@ int IoTcpServer::createTcpServer() {
     }
 
     logInfo("IoServer started on port " + to_string(port));
-    
+
     return list_s;
 }
 
@@ -46,19 +48,19 @@ int IoTcpServer::waitForCommand() {
     logError("IoServer ECHOSERV: Error calling accept()");
     exit(EXIT_FAILURE);
   }
-  
+
   if (verbose) {
     printf("%s IoServer accept ", currentTime() );
   }
-  
+
   return conn_s;
 }
 
 // Read line from socket
 ssize_t IoTcpServer::readTcp() {
   ssize_t n;
-  n = readLine(conn_s, buffer, MAX_LINE - 1);
-  
+  n = readLine(conn_s, buffer, IO_SERVER_MAX_LINE - 1);
+
   escapeBuffer();
   if (verbose) {
     printf("'%s'", verbose_buffer);
@@ -68,11 +70,11 @@ ssize_t IoTcpServer::readTcp() {
 
 ssize_t IoTcpServer::writeTcp() {
   ssize_t n;
-  
+
   if (verbose) {
     printf(" - '%s'\n", buffer);
   }
-  
+
   n = writeLine(conn_s, buffer, count_response);
   return n;
 }
@@ -96,7 +98,7 @@ void IoTcpServer::escapeBuffer() {
 
 // Read line from socket
 ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
-  size_t n;  
+  size_t n;
   ssize_t rc;
   char c, *buffer;
 
@@ -146,4 +148,3 @@ ssize_t IoTcpServer::writeLine(int sockd, const char *vptr, size_t n) {
 
     return n;
 }
-

@@ -1,25 +1,27 @@
+#include "meas_type.hpp"
+
 MeasType::MeasType() {
   buffer = new MeasBuffer;
-  
+
   measTypeStorage = new MeasTypeStorage;
   // default storage parameters
   minTimeDiffToStore = 1000;
   maxTimeDiffToStore = 3600000;
   valueDiffToStore = 1.0;
-  
+
   coefficientLinear = 1.0;
   coefficientOffset = 0;
-  
+
   started = false;
   priority = 0;
-  
+
   avgValue = 0.0;
   intervalAvg = 3600000; // recalculate avg every 1 hour
   windowAvg = 50000; // use this amount of measurements to calc avg
-  
+
   extRemoveSpikes = false;
   extBackendRemoveSpikes = false;
-  
+
   lastStored = mTime();
 }
 
@@ -29,11 +31,11 @@ void MeasType::resizeBuffer(unsigned long int _maxSize = 1000000) {
 
 unsigned int MeasType::fetch() {
   prepareFetch();
-  
+
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
   logInfo(fetchString(raw));
-  
+
   return raw;
 }
 
@@ -42,9 +44,9 @@ void MeasType::prepareFetch() {
     return;
   }
 
-  // mark buffer to fix spikes 
+  // mark buffer to fix spikes
   buffer->removeSpikes = extBackendRemoveSpikes;
-  
+
   logPrefix = "MeasBuffer [" + name + "] ";
   logPrefix.append(35 - logPrefix.length(), ' ');
   started = true;
@@ -53,14 +55,14 @@ void MeasType::prepareFetch() {
 string MeasType::fetchString(unsigned int raw) {
   string tmpString = "";
   string partialString = "";
-  
+
   tmpString += " raw ";
   tmpString += strColor(RESET, BLUE, BLACK);
-  
+
   partialString = to_string(raw);
   partialString.insert(0, 10 - partialString.length(), ' ');
   tmpString += partialString;
-  
+
   tmpString += strColor(RESET, GREEN, BLACK);
   tmpString += " , ";
   tmpString += strColor(RESET, BLUE, BLACK);
@@ -70,9 +72,9 @@ string MeasType::fetchString(unsigned int raw) {
   partialString = os.str();
   partialString.insert(0, 12 - partialString.length(), ' ');
   tmpString += partialString;
-  
+
   tmpString += strColor(RESET, GREEN, BLACK);
- 
+
   return logPrefix + tmpString;
 }
 
@@ -94,7 +96,7 @@ double MeasType::lastValueFor(unsigned long int i) {
   long int tmpRaw = 0;
   unsigned int j = 0;
   unsigned int count = 0;
-  
+
   for (j = 0; j < i; j++) {
     if (buffer->stored(j)) {
       tmpRaw += (long int) buffer->at(j);
@@ -102,12 +104,12 @@ double MeasType::lastValueFor(unsigned long int i) {
       count++;
     }
   }
-  
+
   if (count == 0) {
     // warning: no data
     return 0.0;
   }
-  
+
   return ((double) tmpRaw / (double) count) * coefficientLinear;
 }
 
@@ -137,7 +139,7 @@ double MeasType::valueAt(unsigned long int i) {
 
 string MeasType::toJson() {
   string json;
-  
+
   json = "{";
   json += "\"name\":\"" + name + "\",";
   json += "\"unit\":\"" + unit + "\",";
@@ -148,18 +150,18 @@ string MeasType::toJson() {
   json += "\"value\":" + to_string(lastValue()) + ",";
   json += "\"currentAvgValue\":" + to_string(currentAvgValue()) + ",";
   json += "\"raw\":" + to_string(lastRaw()) + ",";
-  
-      
+
+
   // extensions
   json += "\"options\": {";
   json += "\"removeSpikes\": " + to_string(extRemoveSpikes);
   json += "}";
-  
+
   json += "}";
-  
+
   return json;
 }
-  
+
 void MeasType::logInfo(string log) {
   logWithColor(log, GREEN);
 }
@@ -168,11 +170,11 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   if (t >= buffer->lastTime) {
     return 0; // out of range
   }
-  
+
   unsigned long long tempTime = (buffer->lastTime - t);
   unsigned long int tempIndex = (unsigned long int) (tempTime / (unsigned long long) buffer->calcInterval() );
-  
-  return tempIndex;  
+
+  return tempIndex;
 }
 
 string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {
@@ -194,14 +196,14 @@ vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, uns
   measTypeStorage->timeTo = timeTo;
   measTypeStorage->timeFrom = timeFrom;
   measTypeStorage->interval = buffer->calcInterval();
-  
+
   // less important, used for details in json
   measTypeStorage->indexFrom = timeToIndex(timeFrom);
   measTypeStorage->indexTo = timeToIndex(timeTo);
   measTypeStorage->count = buffer->count;
   measTypeStorage->lastTime = buffer->lastTime;
   measTypeStorage->firstTime = buffer->firstTime;
-  
+
   double tmpValue;
   measTypeStorage->clearBuffer();
   for (unsigned long int i = measTypeStorage->indexFrom; i > measTypeStorage->indexTo; i--) {
@@ -215,7 +217,7 @@ vector < StorageHash > MeasType::storageArray(unsigned long long timeFrom, unsig
   storageMutex.lock();
   vector < StorageHash > tmp = prepareStorage(timeFrom, timeTo);
   storageMutex.unlock();
-  
+
   return tmp;
 }
 
@@ -225,33 +227,33 @@ string MeasType::storageJson(unsigned long long timeFrom, unsigned long long tim
   prepareStorage(timeFrom, timeTo);
   tmp = measTypeStorage->storageFullJson();
   storageMutex.unlock();
-  
+
   return tmp;
 }
 
 vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
   vector < MeasTrend > result;
-  
+
   vector < unsigned int > rawBuffer = buffer->getFromBuffer(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
-  
+
   // no meas
   if (rawBuffer.size() == 0) {
     return result;
   }
-  
+
   unsigned long long tempInterval = buffer->calcInterval();
   long int tmpDeviation = 0;
   long int maxDeviation = 4;
   bool createNew = false;
   unsigned char newType = MeasTrend::typeStable;
-  
+
   MeasTrend *tempTrend = new MeasTrend;
   tempTrend->tmpType = 0; // default equal
   tempTrend->rawFrom = rawBuffer[0];
   tempTrend->rawTo = rawBuffer[0];
   tempTrend->timeFrom = timeFrom;
   tempTrend->timeTo = timeFrom;
-  
+
   for(std::vector<unsigned int>::iterator it = rawBuffer.begin(); it != rawBuffer.end(); ++it) {
     tmpDeviation = (long int) *it - (long int) tempTrend->rawFrom;
     if (labs(tmpDeviation) < maxDeviation) {
@@ -278,12 +280,12 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
         newType = MeasTrend::typeDescend;
       }
     }
-    
+
     if (createNew) {
       tempTrend->rawTo = *it;
       tempTrend->valueTo = rawToValue(tempTrend->rawTo);
       tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
-      
+
       if (tempTrend->timeDiff() > 0) {
         result.push_back(*tempTrend);
       }
@@ -293,34 +295,34 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
       tempTrend->rawFrom = *it;
       tempTrend->valueFrom = rawToValue(tempTrend->rawFrom);
       tempTrend->timeFrom = timeFrom + tempInterval * (it - rawBuffer.begin() );
-      
+
       createNew = false;
     }
-    
+
     tempTrend->rawTo = *it;
     tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
-    
+
     // set to current
   }
-  
+
   // add last element
   result.push_back(*tempTrend);
-  
+
   return result;
 }
 
 string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeTo) {
   vector < MeasTrend > result = getTrendsBetween(timeFrom, timeTo);
-  
+
   string trendString = "[";
-  
+
   for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
     trendString += "{";
     trendString += "\"type\":" + to_string(it->type()) + ",";
     trendString += "\"timeDiff\":" + to_string(it->timeDiff() ) + ",";
     trendString += "\"valueDiff\":" + to_string(it->valueDiff() ) + ",";
     trendString += "\"trend\":" + to_string(it->trend() ) + ",";
-    
+
     trendString += "\"rawFrom\":" + to_string(it->rawFrom) + ",";
     trendString += "\"rawTo\":" + to_string(it->rawTo) + ",";
     trendString += "\"valueFrom\":" + to_string(it->valueFrom) + ",";
@@ -335,11 +337,11 @@ string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeT
   if (trendString[trendString.size() - 1] == ',') {
     trendString.resize(trendString.size() - 1);
   }
-  
+
   trendString += "]";
-  
+
   string responseString = "{";
   responseString += "\"trends\":" + trendString + "}";
-  
+
   return responseString;
 }

@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <mutex>
 
+#include "helpers.hpp"
+
 using namespace std;
 
 class IoProxy {
@@ -22,17 +24,17 @@ public:
   mutex tcpMutex;
 
   unsigned int fetch(char commandChar, unsigned char responseSize);
-  
+
   unsigned int prepareSocket();
   int connectSocket();
   int disconnectSocket();
-  
+
 private:
   int sock;
   struct sockaddr_in server;
   char buffer[16];
-     
+
 };
 
-#include "io_proxy.cpp"
+//#include "io_proxy.cpp"
 #endif

@@ -19,17 +19,17 @@ public:
   void stop();
   Overseer *byName(string s);
   void logInfo(string log); // overwritten color
-  
+
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
   std::vector <Overseer> overseers;
   unsigned long int cycleInterval;
-  
+
   unsigned long long usDelay;
-  
+
   bool isRunning;
   mutex shutdownMutex;
 };
 
-#include "overseer_array.cpp"
+//#include "overseer_array.cpp"
 #endif

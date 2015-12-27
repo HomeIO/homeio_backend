@@ -1,3 +1,5 @@
+#include "rs.hpp"
+
 RS::RS() {
   // initialize RS232
   tio.c_iflag = 0;
@@ -24,14 +26,14 @@ int RS::openRS() {
 unsigned char RS::send() {
   count_command = buffer[0];
   count_response = buffer[1];
-  
+
   openRS();
-  
+
   for (i=0; i<count_command; i++) {
     tmp_char = buffer[2 + i];
     write(ttyFileDescriptor, &tmp_char, 1);
   }
-  
+
   // receive from uC
   unsigned long int tmp = 0;
   for (i=0; i<count_response; i++) {
@@ -44,9 +46,9 @@ unsigned char RS::send() {
     tmp += (unsigned long int) tmp_char;
   }
   buffer[count_response] = 0;
-  
+
   closeRS();
-  
+
   return count_response;
 }
 
@@ -54,4 +56,3 @@ unsigned char RS::send() {
 void RS::closeRS() {
     close(ttyFileDescriptor);
 }
-

@@ -1,3 +1,5 @@
+#include "wind_turbine_stats_addon.hpp"
+
 WindTurbineStatsAddon::WindTurbineStatsAddon() {
   name = "WindTurbineStats";
   lastTime = 0;
@@ -157,7 +159,7 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   outfile << s.resistorTime << "; ";
   outfile << s.maxBattCurrent << "; ";
   outfile << s.maxBattVoltage << "; ";
-  outfile << s.maxCoilVoltage << "; ";    
+  outfile << s.maxCoilVoltage << "; ";
   outfile << endl;
   outfile.close();
 

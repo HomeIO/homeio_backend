@@ -6,12 +6,12 @@
 class StorageHash {
 public:
   StorageHash(unsigned long long tF, unsigned long long tT, double v);
-  
+
   unsigned long long timeFrom, timeTo;
   double value;
-  
+
   string toJson();
 };
 
-#include "storage_hash.cpp"
-#endif	
+//#include "storage_hash.cpp"
+#endif

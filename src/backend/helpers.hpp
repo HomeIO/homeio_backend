@@ -41,7 +41,7 @@ unsigned int onlyMiliseconds();
 #define BLINK           4
 #define REVERSE         7
 #define HIDDEN          8
- 
+
 #define BLACK           0
 #define RED             1
 #define GREEN           2
@@ -52,6 +52,9 @@ unsigned int onlyMiliseconds();
 #define WHITE           7
 
 char colorCommand[13];
+
+char* currentDateSafe();
+
 void txtColor(int attr, int fg, int bg);
 char* strColor(int attr, int fg, int bg);
 void resetColor();
@@ -60,8 +63,9 @@ void logWithColor(string log, unsigned char color);
 void logError(string log);
 void logInfo(string log);
 
-
 void processMemUsage(double& vm_usage, double& resident_set);
 
-#include "helpers.cpp"
+void longSleep(unsigned long int interval);
+
+//#include "helpers.cpp"
 #endif

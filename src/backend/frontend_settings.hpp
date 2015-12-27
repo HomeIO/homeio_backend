@@ -4,12 +4,11 @@
 class FrontendSettings {
 public:
   FrontendSettings();
-  
+
   unsigned long int intervalCurrent;
   unsigned long int intervalHistory;
   double currentCoeff;
 };
 
-#include "frontend_settings.cpp"
+//#include "frontend_settings.cpp"
 #endif
-

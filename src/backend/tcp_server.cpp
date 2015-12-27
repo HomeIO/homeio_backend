@@ -1,6 +1,8 @@
+#include "tcp_server.hpp"
+
 TcpServer::TcpServer() {
   usDelay = 2000000;
-  
+
   isRunning = true;
 }
 
@@ -8,45 +10,45 @@ void TcpServer::start() {
   longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
-  
+
   port = 2005;
   commandBuffer = (char*)malloc(COMMAND_BUFFER_SIZE*sizeof(char));
-  
+
   int conn_s; // connection socket
   int list_s = createTcpServer();
-  
+
   logInfo("TCP Server started on " + to_string(port));
-  
+
   while (isRunning) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
       logError("TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
-    
+
     shutdownMutex.lock();
-    
+
     // Retrieve command
     readLine(conn_s, MAX_LINE - 1);
-    
+
     // command and response char count
     //char command = commandBuffer[0];
     //char count_response = 1;
-    
+
     processCommand();
 
     writeLine(conn_s);
 
-    
+
     shutdownMutex.unlock();
-    
+
     // Close the connected socket
     if (close(conn_s) < 0) {
       logError("TcpServer::start(): Error calling close()");
       exit(EXIT_FAILURE);
     }
   }
-  
+
 }
 
 void TcpServer::stop() {
@@ -58,13 +60,13 @@ int TcpServer::processCommand() {
   string command;
   command = (string) commandBuffer;
   responseBuffer = tcpCommand->processCommand(command);
-    
+
   return 0;
 }
 
 // Read line from socket
 ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
-  size_t n;  
+  size_t n;
   ssize_t rc;
 
     //MAX_LINE
@@ -100,8 +102,8 @@ ssize_t TcpServer::writeLine(int sockd) {
         else
             return -1;
     }
-    
-  return 0;  
+
+  return 0;
 }
 
 // Create TCP listening socket
@@ -109,7 +111,7 @@ int TcpServer::createTcpServer() {
     // start TCP server
     int list_s; /*  listening socket          */
     struct sockaddr_in servaddr; /*  socket address structure  */
-    
+
     //char *endptr;
 
     /*  Create the listening socket  */
@@ -147,6 +149,6 @@ int TcpServer::createTcpServer() {
     }
 
     logInfo("TCP Server prepared");
-    
+
     return list_s;
 }

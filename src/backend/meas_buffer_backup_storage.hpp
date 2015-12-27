@@ -9,6 +9,7 @@
 
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
+#include "meas_buffer.hpp"
 
 using namespace std;
 
@@ -16,23 +17,22 @@ class MeasBufferBackupStorage {
 public:
   MeasBufferBackupStorage();
   void start();
-  void stop();  
+  void stop();
   void performDump();
   void performRestore();
-    
+
   string pathForMeasType(MeasType *measType);
 
   string path;
   unsigned long long cycleInterval;
   unsigned long long thresholdTimeRange;
   unsigned long long usDelay;
- 
+
   bool isRunning;
   mutex shutdownMutex;
-  
+
   MeasTypeArray *measTypeArray;
 };
 
-#include "meas_buffer_backup_storage.cpp"
+//#include "meas_buffer_backup_storage.cpp"
 #endif
-

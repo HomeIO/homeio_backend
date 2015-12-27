@@ -1,3 +1,5 @@
+#include "sample_addon.hpp"
+
 SampleAddon::SampleAddon() {
   name = "SampleAddon";
 }

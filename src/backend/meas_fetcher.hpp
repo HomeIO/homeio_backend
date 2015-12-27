@@ -13,17 +13,17 @@ public:
   MeasFetcher();
   void start();
   void stop();
-  
+
   MeasTypeArray *measTypeArray;
   IoProxy *ioProxy;
-  
+
   unsigned long int betweenMeasInterval; // 5000
   unsigned long int cycleInterval; // 20000
   unsigned long int maxBufferSize; // 1000000
-  
+
   bool isRunning;
   mutex shutdownMutex;
 };
 
-#include "meas_fetcher.cpp"
+//#include "meas_fetcher.cpp"
 #endif

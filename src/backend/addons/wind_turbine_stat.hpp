@@ -18,5 +18,5 @@ public:
   double maxBattVoltage;
 } ;
 
-#include "wind_turbine_stat.cpp"
+//#include "wind_turbine_stat.cpp"
 #endif
