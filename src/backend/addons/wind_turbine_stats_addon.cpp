@@ -156,6 +156,8 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   outfile << s.battCurrentTime << "; ";
   outfile << s.resistorTime << "; ";
   outfile << s.maxBattCurrent << "; ";
+  outfile << s.maxBattVoltage << "; ";
+  outfile << s.maxCoilVoltage << "; ";    
   outfile << endl;
   outfile.close();
 
