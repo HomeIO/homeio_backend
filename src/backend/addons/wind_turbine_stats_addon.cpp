@@ -54,6 +54,8 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   unsigned long int battCurrentTime = 0;
   unsigned long int resistorTime = 0;
   double maxBattCurrent = 0.0;
+  double maxCoilVoltage = 0.0;
+  double maxBattVoltage = 0.0;
 
   // work
   MeasType *u = measTypeArray->byName(measNameU);
@@ -80,6 +82,12 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
         w += doubleTmp;
     }
 
+    // max battery voltage
+    doubleTmp = u->rawToValue( uRaw.at(j) );
+    if (maxBattVoltage < doubleTmp) {
+      maxBattVoltage = doubleTmp;
+    }
+
     // battery current time
     doubleTmp = i->rawToValue( iRaw.at(j) );
     if (doubleTmp >= batteryThresholdCurrent ) {
@@ -101,8 +109,14 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   for (j = 0; j < coilRaw.size(); j++ ) {
     doubleTmp = coil->rawToValue( coilRaw.at(j) );
 
+    // coil time
     if (doubleTmp >= coilThresholdVoltage ) {
       coilTime += intervalInt;
+    }
+
+    // max coil voltage
+    if (maxCoilVoltage < doubleTmp) {
+      maxCoilVoltage = doubleTmp;
     }
   }
 
@@ -121,6 +135,8 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   s.battCurrentTime = battCurrentTime;
   s.resistorTime = resistorTime;
   s.maxBattCurrent = maxBattCurrent;
+  s.maxCoilVoltage = maxCoilVoltage;
+  s.maxBattVoltage = maxBattVoltage;
 
   return s;
 }

@@ -9,4 +9,6 @@ WindTurbineStat::WindTurbineStat() {
   resistorTime = 0;
 
   maxBattCurrent = 0.0;
+  maxCoilVoltage = 0.0;
+  maxBattVoltage = 0.0;
 }

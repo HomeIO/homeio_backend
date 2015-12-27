@@ -14,6 +14,8 @@ public:
   unsigned long int resistorTime;
 
   double maxBattCurrent;
+  double maxCoilVoltage;
+  double maxBattVoltage;
 } ;
 
 #include "wind_turbine_stat.cpp"
