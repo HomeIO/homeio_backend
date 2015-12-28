@@ -34,7 +34,7 @@ unsigned int MeasType::fetch() {
 
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
-  logInfo(fetchString(raw));
+  Helper::logInfo(fetchString(raw));
 
   return raw;
 }
@@ -120,12 +120,12 @@ double MeasType::currentAvgValue() {
 
 void MeasType::recalculateAvg() {
   if ( (Helper::mTime() - lastAvgTime) > intervalAvg) {
-    logInfo("recalculateAvg() start");
+    Helper::logInfo("recalculateAvg() start");
 
     avgValue = lastValueFor(windowAvg);
     lastAvgTime = Helper::mTime();
 
-    logInfo("recalculateAvg() finish");
+    Helper::logInfo("recalculateAvg() finish");
   }
 }
 

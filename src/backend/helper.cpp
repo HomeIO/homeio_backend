@@ -3,34 +3,37 @@
 
 #include "helper.hpp"
 
-char* Helper::currentDateSafe() {
+std::mutex Helper::logMutex;
+std::mutex Helper::storageMutex;
+
+std::string Helper::currentDateSafe() {
   time_t currentTimeObject;
   struct tm * currentTimeInfo;
-  //char currentTimeBuffer[20];
+  char currentTimeBuffer[20];
 
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
 
-  strftime (Helper::currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
+  strftime (currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
 
-  return Helper::currentTimeBuffer;
+  return std::string(currentTimeBuffer);
 }
 
-char* Helper::currentTime() {
+std::string Helper::currentTime() {
   time_t currentTimeObject;
   struct tm * currentTimeInfo;
-  //char currentTimeBuffer[20];
+  char currentTimeBuffer[20];
 
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
 
-  strftime (Helper::currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
+  strftime (currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
 
-  return Helper::currentTimeBuffer;
+  return std::string(currentTimeBuffer);
 }
 
 std::string Helper::detailCurrentTime() {
-  std::string t = (std::string) currentTime();
+  std::string t = currentTime();
   t += ".";
 
   std::ostringstream os;
@@ -56,14 +59,14 @@ unsigned int Helper::onlyMiliseconds() {
 }
 
 
-char *Helper::strColor(int attr, int fg, int bg) {
+std::string Helper::strColor(int attr, int fg, int bg) {
+  char colorCommand[13];
   sprintf(colorCommand, "%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
-  return colorCommand;
+  return std::string(colorCommand);
 }
 
 void Helper::txtColor(int attr, int fg, int bg) {
-  strColor(attr, fg, bg);
-  printf("%s", colorCommand);
+  printf("%s", strColor(attr, fg, bg).c_str() );
 }
 
 void Helper::resetColor() {

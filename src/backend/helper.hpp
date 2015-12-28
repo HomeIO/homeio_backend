@@ -40,22 +40,20 @@ class Helper {
 public:
   //static time_t currentTimeObject;
   //static struct tm * currentTimeInfo;
-  static char currentTimeBuffer[20];
+  //static char currentTimeBuffer[20];
 
   static std::mutex logMutex;
   static std::mutex storageMutex;
-  static char colorCommand[13];
 
-  static char* currentTime();
+  static std::string currentTime();
   static std::string detailCurrentTime();
+  static std::string currentDateSafe();
   static unsigned long long uTime();
   static unsigned long long mTime();
   static unsigned int onlyMiliseconds();
 
-  static char* currentDateSafe();
-
   static void txtColor(int attr, int fg, int bg);
-  static char* strColor(int attr, int fg, int bg);
+  static std::string strColor(int attr, int fg, int bg);
   static void resetColor();
   static void redColor();
   static void logWithColor(std::string log, unsigned char color);

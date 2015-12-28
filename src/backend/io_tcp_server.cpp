@@ -50,7 +50,7 @@ int IoTcpServer::waitForCommand() {
   }
 
   if (verbose) {
-    printf("%s IoServer accept ", Helper::currentTime() );
+    printf("%s IoServer accept ", Helper::currentTime().c_str() );
   }
 
   return conn_s;
