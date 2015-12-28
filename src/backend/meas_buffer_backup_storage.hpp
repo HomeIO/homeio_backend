@@ -11,8 +11,6 @@
 #include "meas_type.hpp"
 #include "meas_buffer.hpp"
 
-using namespace std;
-
 class MeasBufferBackupStorage {
 public:
   MeasBufferBackupStorage();
@@ -21,15 +19,15 @@ public:
   void performDump();
   void performRestore();
 
-  string pathForMeasType(MeasType *measType);
+  std::string pathForMeasType(MeasType *measType);
 
-  string path;
+  std::string path;
   unsigned long long cycleInterval;
   unsigned long long thresholdTimeRange;
   unsigned long long usDelay;
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 
   MeasTypeArray *measTypeArray;
 };

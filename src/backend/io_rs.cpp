@@ -1,6 +1,6 @@
-#include "rs.hpp"
+#include "io_rs.hpp"
 
-RS::RS() {
+IoRS::IoRS() {
   // initialize RS232
   tio.c_iflag = 0;
   tio.c_oflag = 0;
@@ -12,7 +12,7 @@ RS::RS() {
 }
 
 // Open RS port and set all parameters. Parameters are stored in config.h
-int RS::openRS() {
+int IoRS::openRS() {
     ttyFileDescriptor = open(port.c_str(), O_RDWR);
 
     cfsetospeed(&tio, RS_SPEED);
@@ -23,7 +23,7 @@ int RS::openRS() {
     return ttyFileDescriptor;
 }
 
-unsigned char RS::send() {
+unsigned char IoRS::send() {
   count_command = buffer[0];
   count_response = buffer[1];
 
@@ -53,6 +53,6 @@ unsigned char RS::send() {
 }
 
 // Close RS port
-void RS::closeRS() {
+void IoRS::closeRS() {
     close(ttyFileDescriptor);
 }

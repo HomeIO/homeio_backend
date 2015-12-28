@@ -1,8 +1,6 @@
 #ifndef MEAS_TREND_H
 #define MEAS_TREND_H
 
-using namespace std;
-
 class MeasTrend {
 public:
   static const int typeStable = 0;

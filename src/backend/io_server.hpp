@@ -1,13 +1,11 @@
 #ifndef IO_SERVER_HPP
 #define	IO_SERVER_HPP
 
-using namespace std;
-
 #include <mutex>
 
-#include "config.hpp"
+#include "io_config.hpp"
 #include "io_tcp_server.hpp"
-#include "rs.hpp"
+#include "io_rs.hpp"
 
 class IoServer {
 public:
@@ -16,7 +14,7 @@ public:
   void stop();
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 
   // temporary char used for sending command (loop)
   unsigned char tmp_char, i;
@@ -25,11 +23,11 @@ public:
   // count of command response
   unsigned char count_response;
   // RS device
-  string port;
+  std::string port;
   // is ready
   bool ready;
 
-  RS *rs;
+  IoRS *rs;
   IoTcpServer *tcp;
 
 };

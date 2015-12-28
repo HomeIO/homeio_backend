@@ -7,7 +7,7 @@ AddonsArray::AddonsArray() {
 }
 
 void AddonsArray::start() {
-  logInfo("AddonsArray - start");
+  Helper::logInfo("AddonsArray - start");
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
       (*itr)->measTypeArray = measTypeArray;
       (*itr)->setup();
@@ -18,10 +18,10 @@ void AddonsArray::start() {
         (*itr)->perform();
     }
 
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   }
 }
 
 void AddonsArray::stop() {
-  logInfo("AddonsArray - stop");
+  Helper::logInfo("AddonsArray - stop");
 }

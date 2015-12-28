@@ -1,18 +1,18 @@
 #include "tcp_command.hpp"
 
 TcpCommand::TcpCommand() {
-  bootTime = mTime();
+  bootTime = Helper::mTime();
 }
 
-void TcpCommand::logInfo(string log) {
-  logWithColor(log, CYAN);
+void TcpCommand::logInfo(std::string log) {
+  Helper::logWithColor(log, CYAN);
 }
 
 // sample command: "meas;batt_u;0;100;"
-string TcpCommand::processCommand(string command) {
-  logInfo("TCP command: " + command);
+std::string TcpCommand::processCommand(string command) {
+  Helper::logInfo("TCP command: " + command);
 
-  string commandName, response;
+  std::string commandName, response;
   response = "{}";
 
   commandName = command.substr(0, command.find(";"));
@@ -72,16 +72,16 @@ string TcpCommand::processCommand(string command) {
     response = processStatsCommand(command);
   }
 
-  logInfo("TCP response: " + response);
+  Helper::logInfo("TCP response: " + response);
 
   return response;
 }
 
 // meas#index
-string TcpCommand::processMeasIndexCommand(string command) {
+std::string TcpCommand::processMeasIndexCommand(string command) {
   UNUSED(command);
 
-  string response, detailsResponse;
+  std::string response, detailsResponse;
 
   response = "{\"status\":0,\"array\":[";
 
@@ -100,9 +100,9 @@ string TcpCommand::processMeasIndexCommand(string command) {
 }
 
 // meas#name_list
-string TcpCommand::processMeasNameListCommand(string command) {
+std::string TcpCommand::processMeasNameListCommand(string command) {
   UNUSED(command);
-  string response;
+  std::string response;
 
   response = "{\"status\":0,\"array\":[";
 
@@ -120,8 +120,8 @@ string TcpCommand::processMeasNameListCommand(string command) {
 }
 
 // meas#show
-string TcpCommand::processMeasShowCommand(string command) {
-  string response, measName;
+std::string TcpCommand::processMeasShowCommand(string command) {
+  std::string response, measName;
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   MeasType *foundMeasType = measTypeArray->byName(measName);
@@ -137,8 +137,8 @@ string TcpCommand::processMeasShowCommand(string command) {
 }
 
 // meas#raw_for_time
-string TcpCommand::processMeasRawForTimeCommand(string command) {
-  string measName, fromString, toString, response;
+std::string TcpCommand::processMeasRawForTimeCommand(string command) {
+  std::string measName, fromString, toString, response;
   unsigned long long tFrom, tTo;
 
   measName = command.substr(0, command.find(";"));
@@ -156,18 +156,18 @@ string TcpCommand::processMeasRawForTimeCommand(string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    logInfo("TCP command: processMeasRawForTimeCommand(" + measName + ", " + to_string(tFrom) + ", " + to_string(tTo) + ")" );
+    Helper::logInfo("TCP command: processMeasRawForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ")" );
 
     string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
-    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
-    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
-    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
-    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
+    response += ",\"interval\":" + std::to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"count\":" + std::to_string( foundMeasType->buffer->count );
     response += ",\"usingMiliSeconds\":1";
     response += ",\"data\": " + bufferString;
-    response += ",\"fromTime\":" + to_string( tFrom );
-    response += ",\"toTime\":" + to_string( tTo );
+    response += ",\"fromTime\":" + std::to_string( tFrom );
+    response += ",\"toTime\":" + std::to_string( tTo );
     response += "}";
   }
   else {
@@ -178,8 +178,8 @@ string TcpCommand::processMeasRawForTimeCommand(string command) {
 }
 
 // meas#raw_for_time
-string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
-  string measName, fromString, toString, maxSizeString, response;
+std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command) {
+  std::string measName, fromString, toString, maxSizeString, response;
   unsigned long long tFrom, tTo;
   unsigned long int maxSize = 1;
 
@@ -202,20 +202,20 @@ string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    logInfo("TCP command: processMeasRawHistoryForTimeCommand(" + measName + ", " + to_string(tFrom) + ", " + to_string(tTo) + ", " + to_string(maxSize) + ")" );
+    Helper::logInfo("TCP command: processMeasRawHistoryForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ", " + std::to_string(maxSize) + ")" );
 
     string bufferString = foundMeasType->rawHistoryForTimeJson(tFrom, tTo, maxSize);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
-    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
-    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
-    response += ",\"originalInterval\":" + to_string( foundMeasType->buffer->calcInterval() );
-    response += ",\"responseIndexInterval\":" + to_string( foundMeasType->buffer->responseIndexInterval );
-    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() * foundMeasType->buffer->responseIndexInterval );
-    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
+    response += ",\"originalInterval\":" + std::to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"responseIndexInterval\":" + std::to_string( foundMeasType->buffer->responseIndexInterval );
+    response += ",\"interval\":" + std::to_string( foundMeasType->buffer->calcInterval() * foundMeasType->buffer->responseIndexInterval );
+    response += ",\"count\":" + std::to_string( foundMeasType->buffer->count );
     response += ",\"usingMiliSeconds\":1";
     response += ",\"data\": " + bufferString;
-    response += ",\"fromTime\":" + to_string( tFrom );
-    response += ",\"toTime\":" + to_string( tTo );
+    response += ",\"fromTime\":" + std::to_string( tFrom );
+    response += ",\"toTime\":" + std::to_string( tTo );
     response += "}";
   }
   else {
@@ -227,8 +227,8 @@ string TcpCommand::processMeasRawHistoryForTimeCommand(string command) {
 
 
 // meas#raw_for_index
-string TcpCommand::processMeasRawForIndexCommand(string command) {
-  string measName, fromString, toString, response;
+std::string TcpCommand::processMeasRawForIndexCommand(std::string command) {
+  std::string measName, fromString, toString, response;
   unsigned long int iFrom, iTo;
 
   measName = command.substr(0, command.find(";"));
@@ -246,18 +246,18 @@ string TcpCommand::processMeasRawForIndexCommand(string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    logInfo("TCP command: processMeasRawForIndexCommand(" + measName + ", " + to_string(iFrom) + ", " + to_string(iTo) + ")" );
+    Helper::logInfo("TCP command: processMeasRawForIndexCommand(" + measName + ", " + std::to_string(iFrom) + ", " + std::to_string(iTo) + ")" );
 
-    string bufferString = foundMeasType->rawForIndexJson(iFrom, iTo);
+    std::string bufferString = foundMeasType->rawForIndexJson(iFrom, iTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
-    response += ",\"lastTime\":" + to_string( foundMeasType->buffer->lastTime );
-    response += ",\"firstTime\":" + to_string( foundMeasType->buffer->firstTime );
-    response += ",\"interval\":" + to_string( foundMeasType->buffer->calcInterval() );
-    response += ",\"count\":" + to_string( foundMeasType->buffer->count );
+    response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
+    response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
+    response += ",\"interval\":" + std::to_string( foundMeasType->buffer->calcInterval() );
+    response += ",\"count\":" + std::to_string( foundMeasType->buffer->count );
     response += ",\"usingMiliSeconds\":1";
     response += ",\"data\": " + bufferString;
-    response += ",\"fromIndex\":" + to_string( iFrom );
-    response += ",\"toIndex\":" + to_string( iTo );
+    response += ",\"fromIndex\":" + std::to_string( iFrom );
+    response += ",\"toIndex\":" + std::to_string( iTo );
     response += "}";
   }
   else {
@@ -268,8 +268,8 @@ string TcpCommand::processMeasRawForIndexCommand(string command) {
 }
 
 // meas#storage
-string TcpCommand::processMeasStorageCommand(string command) {
-  string measName, fromString, toString, response;
+std::string TcpCommand::processMeasStorageCommand(std::string command) {
+  std::string measName, fromString, toString, response;
   unsigned long long from, to;
 
   measName = command.substr(0, command.find(";"));
@@ -299,8 +299,8 @@ string TcpCommand::processMeasStorageCommand(string command) {
 }
 
 // meas#stats
-string TcpCommand::processMeasStatsCommand(string command) {
-  string measName, fromString, toString, response;
+std::string TcpCommand::processMeasStatsCommand(std::string command) {
+  std::string measName, fromString, toString, response;
   unsigned long long from, to;
 
   measName = command.substr(0, command.find(";"));
@@ -331,10 +331,10 @@ string TcpCommand::processMeasStatsCommand(string command) {
 
 
 // meas_groups#index
-string TcpCommand::processMeasGroupIndexCommand(string command) {
+std::string TcpCommand::processMeasGroupIndexCommand(std::string command) {
   UNUSED(command);
 
-  string response, detailsResponse;
+  std::string response, detailsResponse;
 
   response = "{\"status\":0,\"array\":";
   response += measGroup->toJson() + "}";
@@ -344,9 +344,9 @@ string TcpCommand::processMeasGroupIndexCommand(string command) {
 
 
 // actions#index
-string TcpCommand::processActionIndexCommand(string command) {
+std::string TcpCommand::processActionIndexCommand(std::string command) {
   UNUSED(command);
-  string response, detailsResponse;
+  std::string response, detailsResponse;
 
   response = "{\"status\":0,\"array\":[";
 
@@ -365,8 +365,8 @@ string TcpCommand::processActionIndexCommand(string command) {
 }
 
 // action#show
-string TcpCommand::processActionShowCommand(string command) {
-  string response, actionName;
+std::string TcpCommand::processActionShowCommand(std::string command) {
+  std::string response, actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   ActionType *foundActionType = actionTypeArray->byName(actionName);
@@ -382,8 +382,8 @@ string TcpCommand::processActionShowCommand(string command) {
 }
 
 // action#execute
-string TcpCommand::processActionExecuteCommand(string command) {
-  string actionName;
+std::string TcpCommand::processActionExecuteCommand(std::string command) {
+  std::string actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
@@ -403,8 +403,8 @@ string TcpCommand::processActionExecuteCommand(string command) {
 }
 
 // action#history
-string TcpCommand::processActionHistoryCommand(string command) {
-  string actionName;
+std::string TcpCommand::processActionHistoryCommand(std::string command) {
+  std::string actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
@@ -424,7 +424,7 @@ string TcpCommand::processActionHistoryCommand(string command) {
 
 
 // overseers#index
-string TcpCommand::processOverseerIndexCommand(string command) {
+string TcpCommand::processOverseerIndexCommand(std::string command) {
   UNUSED(command);
   string response, detailsResponse;
 
@@ -445,8 +445,8 @@ string TcpCommand::processOverseerIndexCommand(string command) {
 }
 
 // overseers#show
-string TcpCommand::processOverseerShowCommand(string command) {
-  string response, overseerName;
+std::string TcpCommand::processOverseerShowCommand(std::string command) {
+  std::string response, overseerName;
   overseerName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
   Overseer *foundOverseer = overseerArray->byName(overseerName);
@@ -462,19 +462,19 @@ string TcpCommand::processOverseerShowCommand(string command) {
 }
 
 // settings
-string TcpCommand::processSettingsCommand(string command) {
+std::string TcpCommand::processSettingsCommand(std::string command) {
   UNUSED(command);
-  string response, measResponse, frontendResponse;
+  std::string response, measResponse, frontendResponse;
 
   measResponse = "{";
-  measResponse += "\"betweenMeasInterval\":" + to_string(measFetcher->betweenMeasInterval / 1000) + ",";
-  measResponse += "\"cycleInterval\":" + to_string(measFetcher->cycleInterval / 1000);
+  measResponse += "\"betweenMeasInterval\":" + std::to_string(measFetcher->betweenMeasInterval / 1000) + ",";
+  measResponse += "\"cycleInterval\":" + std::to_string(measFetcher->cycleInterval / 1000);
   measResponse += "}";
 
   frontendResponse = "{";
-  frontendResponse += "\"intervalCurrent\":" + to_string(frontendSettings->intervalCurrent ) + ",";
-  frontendResponse += "\"currentCoeff\":" + to_string(frontendSettings->currentCoeff ) + ",";
-  frontendResponse += "\"intervalHistory\":" + to_string(frontendSettings->intervalHistory);
+  frontendResponse += "\"intervalCurrent\":" + std::to_string(frontendSettings->intervalCurrent ) + ",";
+  frontendResponse += "\"currentCoeff\":" + std::to_string(frontendSettings->currentCoeff ) + ",";
+  frontendResponse += "\"intervalHistory\":" + std::to_string(frontendSettings->intervalHistory);
   frontendResponse += "}";
 
   response = "{\"status\":0,\"object\":{";
@@ -487,24 +487,24 @@ string TcpCommand::processSettingsCommand(string command) {
 }
 
 // stats
-string TcpCommand::processStatsCommand(string command) {
+std::string TcpCommand::processStatsCommand(std::string command) {
   UNUSED(command);
-  string response, timeResponse, resourceResponse;
+  std::string response, timeResponse, resourceResponse;
 
   timeResponse = "{";
-  timeResponse += "\"bootTime\":" + to_string(bootTime) + ",";
-  timeResponse += "\"time\":" + to_string(mTime()) + ",";
-  timeResponse += "\"uptime\":" + to_string(mTime() - bootTime);
+  timeResponse += "\"bootTime\":" + std::to_string(bootTime) + ",";
+  timeResponse += "\"time\":" + std::to_string(Helper::mTime()) + ",";
+  timeResponse += "\"uptime\":" + std::to_string(Helper::mTime() - bootTime);
   timeResponse += "}";
 
   // http://stackoverflow.com/questions/669438/how-to-get-memory-usage-at-run-time-in-c
   double vmUsage;
   double residentSet;
-  processMemUsage(vmUsage, residentSet);
+  Helper::processMemUsage(vmUsage, residentSet);
 
   resourceResponse = "{";
-  resourceResponse += "\"vmUsage\":" + to_string(vmUsage) + ",";
-  resourceResponse += "\"residentSet\":" + to_string(residentSet);
+  resourceResponse += "\"vmUsage\":" + std::to_string(vmUsage) + ",";
+  resourceResponse += "\"residentSet\":" + std::to_string(residentSet);
   resourceResponse += "}";
 
   response = "{\"status\":0,\"object\":{";

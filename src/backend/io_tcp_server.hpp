@@ -1,8 +1,6 @@
 #ifndef IO_TCP_SERVER_HPP
 #define	IO_TCP_SERVER_HPP
 
-using namespace std;
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -18,8 +16,8 @@ using namespace std;
 #include <errno.h>
 #include <time.h>
 
-#include "config.hpp"
-#include "../helpers.hpp" // TODO
+#include "io_config.hpp"
+#include "helper.hpp"
 
 #define IO_SERVER_LISTENQ (1024) // Backlog for listen()
 #define IO_SERVER_MAX_LINE (1000)

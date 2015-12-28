@@ -11,8 +11,8 @@ Overseer::Overseer() {
 
 }
 
-void Overseer::logInfo(string log) {
-  logWithColor(log, MAGENTA);
+void Overseer::logInfo(std::string log) {
+  Helper::logWithColor(log, MAGENTA);
 }
 
 bool Overseer::check() {
@@ -20,7 +20,7 @@ bool Overseer::check() {
     return false;
   }
 
-  logInfo("OverseerArray [" + name + "] check");
+  Helper::logInfo("OverseerArray [" + name + "] check");
 
   double value = currentValue();
   bool result = false;
@@ -36,10 +36,10 @@ bool Overseer::check() {
     }
   }
 
-  logInfo("OverseerArray [" + name + "] value=" + to_string(value));
-  logInfo("OverseerArray [" + name + "] windowSize=" + to_string(windowSize));
-  logInfo("OverseerArray [" + name + "] thresholdValue=" + to_string(thresholdValue));
-  logInfo("OverseerArray [" + name + "] result=" + to_string(result));
+  Helper::logInfo("OverseerArray [" + name + "] value=" + std::to_string(value));
+  Helper::logInfo("OverseerArray [" + name + "] windowSize=" + std::to_string(windowSize));
+  Helper::logInfo("OverseerArray [" + name + "] thresholdValue=" + std::to_string(thresholdValue));
+  Helper::logInfo("OverseerArray [" + name + "] result=" + std::to_string(result));
 
   if (result) {
     execute();
@@ -48,34 +48,34 @@ bool Overseer::check() {
   return result;
 }
 
-string Overseer::toJson() {
-  string json, timeBufferString;
+std::string Overseer::toJson() {
+  std::string json, timeBufferString;
 
   json = "{";
   json += "\"name\":\"" + name + "\",";
   json += "\"actionName\":\"" + actionName + "\",";
   json += "\"measName\":\"" + measName + "\",";
 
-  json += "\"isMax\":" + to_string(isMax) + ",";
-  json += "\"windowSize\":" + to_string(windowSize) + ",";
-  json += "\"thresholdValue\":" + to_string(thresholdValue) + ",";
+  json += "\"isMax\":" + std::to_string(isMax) + ",";
+  json += "\"windowSize\":" + std::to_string(windowSize) + ",";
+  json += "\"thresholdValue\":" + std::to_string(thresholdValue) + ",";
 
-  json += "\"minExecInterval\":" + to_string(minExecInterval) + ",";
-  json += "\"checkLastExecutionTime\":" + to_string(checkLastExecutionTime()) + ",";
+  json += "\"minExecInterval\":" + std::to_string(minExecInterval) + ",";
+  json += "\"checkLastExecutionTime\":" + std::to_string(checkLastExecutionTime()) + ",";
 
-  json += "\"currentValue\":" + to_string(currentValue()) + ",";
-  json += "\"currentAvgValue\":" + to_string(meas->currentAvgValue());
+  json += "\"currentValue\":" + std::to_string(currentValue()) + ",";
+  json += "\"currentAvgValue\":" + std::to_string(meas->currentAvgValue());
 
   json += "}";
 
   return json;
 }
 
-string Overseer::timeBufferToJson() {
-  string timeBufferString;
+std::string Overseer::timeBufferToJson() {
+  std::string timeBufferString;
 
   for(std::vector<unsigned long long>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
-    timeBufferString += to_string(*it) + ",";
+    timeBufferString += std::to_string(*it) + ",";
   }
 
   // remove last coma
@@ -93,7 +93,7 @@ double Overseer::currentValue() {
 }
 
 unsigned int Overseer::execute() {
-  logInfo("OverseerArray [" + name + "] execute now");
+  Helper::logInfo("OverseerArray [" + name + "] execute now");
 
   unsigned int result;
   result = action->execute();
@@ -127,7 +127,7 @@ bool Overseer::checkLastExecutionTime()
     return true;
   }
 
-  if ( ( (unsigned long long) mTime() - lastExecuteTime() ) >= minExecInterval ) {
+  if ( ( (unsigned long long) Helper::mTime() - lastExecuteTime() ) >= minExecInterval ) {
     return true;
   } else {
     return false;

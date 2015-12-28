@@ -15,20 +15,18 @@
 #include <curlpp/Options.hpp>
 #include <curlpp/Exception.hpp>
 
-using namespace std;
-
 class Spy {
 public:
   Spy();
   void start();
   void stop();
   void announceAll();
-  unsigned char annouceMeas(string name, double value);
+  unsigned char annouceMeas(std::string name, double value);
 
-  string hiveHost;
-  string siteName;
-  string urlPath;
-  string url;
+  std::string hiveHost;
+  std::string siteName;
+  std::string urlPath;
+  std::string url;
 
   MeasTypeArray *measTypeArray;
 
@@ -40,7 +38,7 @@ public:
   bool enabled;
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 };
 
 //#include "spy.cpp"

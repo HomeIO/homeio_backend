@@ -1,5 +1,5 @@
-#ifndef IO_SERVER_CONFIG
-#define	IO_SERVER_CONFIG
+#ifndef IO_CONFIG
+#define	IO_CONFIG
 
 
 // 8e1, see termios.h for more information

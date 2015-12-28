@@ -14,8 +14,6 @@
 #include "meas_type_storage.hpp"
 #include "meas_trend.hpp"
 
-using namespace std;
-
 class MeasType {
 public:
   MeasType();
@@ -27,11 +25,11 @@ public:
   unsigned int lastRaw();
   double lastValue();
   double lastValueFor(unsigned long int);
-  string toJson();
-  string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);
-  string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
-  string rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize);
-  void logInfo(string log); // overwritten color
+  std::string toJson();
+  std::string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);
+  std::string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
+  std::string rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize);
+  void logInfo(std::string log); // overwritten color
 
   unsigned long int minTimeDiffToStore;
   unsigned long int maxTimeDiffToStore;
@@ -46,12 +44,12 @@ public:
 
 
   void prepareFetch();
-  string fetchString(unsigned int raw);
+  std::string fetchString(unsigned int raw);
 
   MeasBuffer *buffer;
 
-  string name; // name of measurements
-  string unit; // value is presented in unit
+  std::string name; // name of measurements
+  std::string unit; // value is presented in unit
   unsigned char priority; // 0 - low priority, 1 - high (at this moment), used only in frontend
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
@@ -67,20 +65,20 @@ public:
   bool extBackendRemoveSpikes;
 
   bool started;
-  string logPrefix;
+  std::string logPrefix;
 
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
 
   unsigned long int timeToIndex(unsigned long long t);
-  vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
-  vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
-  string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
+  std::string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
   unsigned long long lastStored;
 
   // stats
-  string statsJson(unsigned long long timeFrom, unsigned long long timeTo);
-  vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
+  std::string statsJson(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
 
 };
 

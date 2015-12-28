@@ -8,17 +8,17 @@ OverseerArray::OverseerArray() {
   isRunning = true;
 }
 
-void OverseerArray::logInfo(string log) {
-  logWithColor(log, MAGENTA);
+void OverseerArray::logInfo(std::string log) {
+  Helper::logWithColor(log, MAGENTA);
 }
 
 unsigned int OverseerArray::add(Overseer *o) {
   overseers.push_back(*o);
-  logInfo("Overseer added: '" + o->name + "' (" + to_string(overseers.size()) + " total overseers)");
+  Helper::logInfo("Overseer added: '" + o->name + "' (" + std::to_string(overseers.size()) + " total overseers)");
   return 0;
 }
 
-Overseer *OverseerArray::byName(string s) {
+Overseer *OverseerArray::byName(std::string s) {
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     if (it->name == s) {
       return &*it;
@@ -28,12 +28,12 @@ Overseer *OverseerArray::byName(string s) {
 }
 
 void OverseerArray::start() {
-  longSleep(usDelay);
+  Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
 
 
-  logInfo("OverseerArray start");
+  Helper::logInfo("OverseerArray start");
 
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     it->meas = measTypeArray->byName(it->measName);
@@ -43,21 +43,21 @@ void OverseerArray::start() {
 
   while(isRunning) {
     shutdownMutex.lock();
-    logInfo("OverseerArray loop start");
+    Helper::logInfo("OverseerArray loop start");
 
     for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
       it->check();
     }
 
-    logInfo("OverseerArray loop end");
+    Helper::logInfo("OverseerArray loop end");
     shutdownMutex.unlock();
 
     // check overseers every next X useconds
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   }
 }
 
 void OverseerArray::stop() {
   shutdownMutex.lock();
-  logInfo("OverseerArray - stop");
+  Helper::logInfo("OverseerArray - stop");
 }

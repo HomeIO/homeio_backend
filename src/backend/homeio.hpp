@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <vector>
 
-#include "helpers.hpp"
+#include "helper.hpp"
 #include "meas_type_array.hpp"
 #include "meas_fetcher.hpp"
 #include "io_proxy.hpp"
@@ -19,13 +19,11 @@
 #include "spy.hpp"
 #include "addons_array.hpp"
 
-#include "io_server/io_server.hpp"
+#include "io_server.hpp"
 
-#include "addons/abstract_addon.hpp"
-#include "addons/sample_addon.hpp"
-#include "addons/wind_turbine_stats_addon.hpp"
-
-using namespace std;
+#include "abstract_addon.hpp"
+#include "sample_addon.hpp"
+#include "wind_turbine_stats_addon.hpp"
 
 class HomeIO {
 public:

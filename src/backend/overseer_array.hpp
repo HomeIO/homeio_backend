@@ -9,16 +9,14 @@
 #include "action_type_array.hpp"
 #include "meas_type_array.hpp"
 
-using namespace std;
-
 class OverseerArray {
 public:
   OverseerArray();
   unsigned int add(Overseer *m);
   void start();
   void stop();
-  Overseer *byName(string s);
-  void logInfo(string log); // overwritten color
+  Overseer *byName(std::string s);
+  void logInfo(std::string log); // overwritten color
 
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
@@ -28,7 +26,7 @@ public:
   unsigned long long usDelay;
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 };
 
 //#include "overseer_array.cpp"

@@ -22,7 +22,7 @@ MeasType::MeasType() {
   extRemoveSpikes = false;
   extBackendRemoveSpikes = false;
 
-  lastStored = mTime();
+  lastStored = Helper::mTime();
 }
 
 void MeasType::resizeBuffer(unsigned long int _maxSize = 1000000) {
@@ -52,28 +52,28 @@ void MeasType::prepareFetch() {
   started = true;
 }
 
-string MeasType::fetchString(unsigned int raw) {
-  string tmpString = "";
-  string partialString = "";
+std::string MeasType::fetchString(unsigned int raw) {
+  std::string tmpString = "";
+  std::string partialString = "";
 
   tmpString += " raw ";
-  tmpString += strColor(RESET, BLUE, BLACK);
+  tmpString += Helper::strColor(RESET, BLUE, BLACK);
 
-  partialString = to_string(raw);
+  partialString = std::to_string(raw);
   partialString.insert(0, 10 - partialString.length(), ' ');
   tmpString += partialString;
 
-  tmpString += strColor(RESET, GREEN, BLACK);
+  tmpString += Helper::strColor(RESET, GREEN, BLACK);
   tmpString += " , ";
-  tmpString += strColor(RESET, BLUE, BLACK);
+  tmpString += Helper::strColor(RESET, BLUE, BLACK);
 
-  ostringstream os;
-  os << setprecision(5) << rawToValue(raw);
+  std::ostringstream os;
+  os << std::setprecision(5) << rawToValue(raw);
   partialString = os.str();
   partialString.insert(0, 12 - partialString.length(), ' ');
   tmpString += partialString;
 
-  tmpString += strColor(RESET, GREEN, BLACK);
+  tmpString += Helper::strColor(RESET, GREEN, BLACK);
 
   return logPrefix + tmpString;
 }
@@ -119,11 +119,11 @@ double MeasType::currentAvgValue() {
 }
 
 void MeasType::recalculateAvg() {
-  if ( (mTime() - lastAvgTime) > intervalAvg) {
+  if ( (Helper::mTime() - lastAvgTime) > intervalAvg) {
     logInfo("recalculateAvg() start");
 
     avgValue = lastValueFor(windowAvg);
-    lastAvgTime = mTime();
+    lastAvgTime = Helper::mTime();
 
     logInfo("recalculateAvg() finish");
   }
@@ -137,24 +137,24 @@ double MeasType::valueAt(unsigned long int i) {
   return rawToValue(buffer->at(i));
 }
 
-string MeasType::toJson() {
-  string json;
+std::string MeasType::toJson() {
+  std::string json;
 
   json = "{";
   json += "\"name\":\"" + name + "\",";
   json += "\"unit\":\"" + unit + "\",";
-  json += "\"priority\":\"" + to_string(priority) + "\",";
+  json += "\"priority\":\"" + std::to_string(priority) + "\",";
   json += "\"buffer\":" + buffer->toJson() + ",";
-  json += "\"coefficientLinear\":" + to_string(coefficientLinear) + ",";
-  json += "\"coefficientOffset\":" + to_string(coefficientOffset) + ",";
-  json += "\"value\":" + to_string(lastValue()) + ",";
-  json += "\"currentAvgValue\":" + to_string(currentAvgValue()) + ",";
-  json += "\"raw\":" + to_string(lastRaw()) + ",";
+  json += "\"coefficientLinear\":" + std::to_string(coefficientLinear) + ",";
+  json += "\"coefficientOffset\":" + std::to_string(coefficientOffset) + ",";
+  json += "\"value\":" + std::to_string(lastValue()) + ",";
+  json += "\"currentAvgValue\":" + std::to_string(currentAvgValue()) + ",";
+  json += "\"raw\":" + std::to_string(lastRaw()) + ",";
 
 
   // extensions
   json += "\"options\": {";
-  json += "\"removeSpikes\": " + to_string(extRemoveSpikes);
+  json += "\"removeSpikes\": " + std::to_string(extRemoveSpikes);
   json += "}";
 
   json += "}";
@@ -162,8 +162,8 @@ string MeasType::toJson() {
   return json;
 }
 
-void MeasType::logInfo(string log) {
-  logWithColor(log, GREEN);
+void logInfo(std::string log) {
+  Helper::logWithColor(log, GREEN);
 }
 
 unsigned long int MeasType::timeToIndex(unsigned long long t) {
@@ -177,19 +177,19 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   return tempIndex;
 }
 
-string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {
+std::string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {
   return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
 }
 
-string MeasType::rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize) {
+std::string MeasType::rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize) {
   return buffer->jsonArray(timeToIndex(timeFrom), timeToIndex(timeTo), responseMaxSize);
 }
 
-string MeasType::rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo) {
+std::string MeasType::rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo) {
   return buffer->jsonArray(indexFrom, indexTo, 0);
 }
 
-vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {
+std::vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {
   measTypeStorage->minTimeDiffToStore = minTimeDiffToStore;
   measTypeStorage->maxTimeDiffToStore = maxTimeDiffToStore;
   measTypeStorage->valueDiffToStore = valueDiffToStore;
@@ -213,28 +213,28 @@ vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, uns
   return measTypeStorage->prepareStorageBuffer();
 }
 
-vector < StorageHash > MeasType::storageArray(unsigned long long timeFrom, unsigned long long timeTo) {
-  storageMutex.lock();
-  vector < StorageHash > tmp = prepareStorage(timeFrom, timeTo);
-  storageMutex.unlock();
+std::vector < StorageHash > MeasType::storageArray(unsigned long long timeFrom, unsigned long long timeTo) {
+  Helper::storageMutex.lock();
+  std::vector < StorageHash > tmp = prepareStorage(timeFrom, timeTo);
+  Helper::storageMutex.unlock();
 
   return tmp;
 }
 
-string MeasType::storageJson(unsigned long long timeFrom, unsigned long long timeTo) {
-  storageMutex.lock();
-  string tmp;
+std::string MeasType::storageJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  Helper::storageMutex.lock();
+  std::string tmp;
   prepareStorage(timeFrom, timeTo);
   tmp = measTypeStorage->storageFullJson();
-  storageMutex.unlock();
+  Helper::storageMutex.unlock();
 
   return tmp;
 }
 
-vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
-  vector < MeasTrend > result;
+std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
+  std::vector < MeasTrend > result;
 
-  vector < unsigned int > rawBuffer = buffer->getFromBuffer(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
+  std::vector < unsigned int > rawBuffer = buffer->getFromBuffer(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
 
   // no meas
   if (rawBuffer.size() == 0) {
@@ -311,24 +311,24 @@ vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, uns
   return result;
 }
 
-string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeTo) {
-  vector < MeasTrend > result = getTrendsBetween(timeFrom, timeTo);
+std::string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeTo) {
+  std::vector < MeasTrend > result = getTrendsBetween(timeFrom, timeTo);
 
-  string trendString = "[";
+  std::string trendString = "[";
 
-  for(vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
+  for(std::vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
     trendString += "{";
-    trendString += "\"type\":" + to_string(it->type()) + ",";
-    trendString += "\"timeDiff\":" + to_string(it->timeDiff() ) + ",";
-    trendString += "\"valueDiff\":" + to_string(it->valueDiff() ) + ",";
-    trendString += "\"trend\":" + to_string(it->trend() ) + ",";
+    trendString += "\"type\":" + std::to_string(it->type()) + ",";
+    trendString += "\"timeDiff\":" + std::to_string(it->timeDiff() ) + ",";
+    trendString += "\"valueDiff\":" + std::to_string(it->valueDiff() ) + ",";
+    trendString += "\"trend\":" + std::to_string(it->trend() ) + ",";
 
-    trendString += "\"rawFrom\":" + to_string(it->rawFrom) + ",";
-    trendString += "\"rawTo\":" + to_string(it->rawTo) + ",";
-    trendString += "\"valueFrom\":" + to_string(it->valueFrom) + ",";
-    trendString += "\"valueTo\":" + to_string(it->valueTo) + ",";
-    trendString += "\"timeFrom\":" + to_string(it->timeFrom) + ",";
-    trendString += "\"timeTo\":" + to_string(it->timeTo);
+    trendString += "\"rawFrom\":" + std::to_string(it->rawFrom) + ",";
+    trendString += "\"rawTo\":" + std::to_string(it->rawTo) + ",";
+    trendString += "\"valueFrom\":" + std::to_string(it->valueFrom) + ",";
+    trendString += "\"valueTo\":" + std::to_string(it->valueTo) + ",";
+    trendString += "\"timeFrom\":" + std::to_string(it->timeFrom) + ",";
+    trendString += "\"timeTo\":" + std::to_string(it->timeTo);
 
     trendString += "},";
   }
@@ -340,7 +340,7 @@ string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeT
 
   trendString += "]";
 
-  string responseString = "{";
+  std::string responseString = "{";
   responseString += "\"trends\":" + trendString + "}";
 
   return responseString;

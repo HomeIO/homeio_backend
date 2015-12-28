@@ -7,13 +7,11 @@
 #include "action_type.hpp"
 #include "meas_type.hpp"
 
-using namespace std;
-
 class Overseer {
 public:
-  string name; // name of overseer
-  string actionName; // name of action which execute when conditions are met
-  string measName; // name of measurements which should observe
+  std::string name; // name of overseer
+  std::string actionName; // name of action which execute when conditions are met
+  std::string measName; // name of measurements which should observe
 
   double thresholdValue; // execute if value is higher than this
   bool isMax; // when true execute only if higher
@@ -23,7 +21,7 @@ public:
   // related to execution time buffer
   unsigned long long minExecInterval; // allow execution only when X mili seconds passed since previous execution
   unsigned int maxTimeBufferSize; // how many execution times should be stored in
-  vector < unsigned long long > timeBuffer;
+  std::vector < unsigned long long > timeBuffer;
   unsigned long long lastExecuteTime();
   void markExecutionTime();
   bool checkLastExecutionTime();
@@ -35,10 +33,10 @@ public:
   bool check();
   double currentValue();
   unsigned int execute();
-  string toJson();
-  string timeBufferToJson();
+  std::string toJson();
+  std::string timeBufferToJson();
 
-  void logInfo(string log); // overwritten color
+  void logInfo(std::string log); // overwritten color
 
 
 private:

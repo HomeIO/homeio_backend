@@ -12,7 +12,7 @@ class MeasTypeArray {
 public:
   MeasTypeArray();
   unsigned int add(MeasType *m);
-  MeasType *byName(string s);
+  MeasType *byName(std::string s);
 
   vector <MeasType> measTypes;
   IoProxy *ioProxy;

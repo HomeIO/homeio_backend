@@ -6,13 +6,11 @@
 #include "action_type.hpp"
 #include "io_proxy.hpp"
 
-using namespace std;
-
 class ActionTypeArray {
 public:
   ActionTypeArray();
   unsigned int add(ActionType *m);
-  ActionType *byName(string s);
+  ActionType *byName(std::string s);
 
   std::vector <ActionType> actionTypes;
   IoProxy *ioProxy;

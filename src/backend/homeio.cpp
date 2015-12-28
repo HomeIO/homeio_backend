@@ -52,7 +52,7 @@ unsigned char HomeIO::startFetch() {
   for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
     m->resizeBuffer( measFetcher->maxBufferSize );
   }
-  logInfo("MeasFetcher: resize buffer size to " + to_string(measFetcher->maxBufferSize) );
+  Helper::logInfo("MeasFetcher: resize buffer size to " + std::to_string(measFetcher->maxBufferSize) );
 
   // restore buffer before restart
   measBufferBackupStorage->performRestore();
@@ -117,7 +117,7 @@ unsigned char HomeIO::startAddons() {
 
 void *measStartThread(void *argument)
 {
-  logInfo("Thread: startFetch() - meas fetching");
+  Helper::logInfo("Thread: startFetch() - meas fetching");
 
   HomeIO *h = (HomeIO *) argument;
   h->startFetch();
@@ -127,7 +127,7 @@ void *measStartThread(void *argument)
 
 void *tcpServerThread(void *argument)
 {
-  logInfo("Thread: startServer() - TCP commands");
+  Helper::logInfo("Thread: startServer() - TCP commands");
 
   HomeIO *h = (HomeIO *) argument;
   h->startServer();
@@ -137,7 +137,7 @@ void *tcpServerThread(void *argument)
 
 void *ioServerThread(void *argument)
 {
-  logInfo("Thread: startIoServer() - IoServer - hardware-TCP bridge");
+  Helper::logInfo("Thread: startIoServer() - IoServer - hardware-TCP bridge");
 
   HomeIO *h = (HomeIO *) argument;
   h->startIoServer();
@@ -147,7 +147,7 @@ void *ioServerThread(void *argument)
 
 void *ioOverseerThread(void *argument)
 {
-  logInfo("Thread: ioOverseerThread() - low level overseeers");
+  Helper::logInfo("Thread: ioOverseerThread() - low level overseeers");
 
   HomeIO *h = (HomeIO *) argument;
   h->startOverseer();
@@ -157,7 +157,7 @@ void *ioOverseerThread(void *argument)
 
 void *fileStorageThread(void *argument)
 {
-  logInfo("Thread: fileStorageThread() - store measurement in files");
+  Helper::logInfo("Thread: fileStorageThread() - store measurement in files");
 
   HomeIO *h = (HomeIO *) argument;
   h->startFileStorage();
@@ -167,7 +167,7 @@ void *fileStorageThread(void *argument)
 
 void *fileBufferBackupThread(void *argument)
 {
-  logInfo("Thread: fileBufferBackupThread() - store measurement buffer backup");
+  Helper::logInfo("Thread: fileBufferBackupThread() - store measurement buffer backup");
 
   HomeIO *h = (HomeIO *) argument;
   h->startBufferBackupStorage();
@@ -177,7 +177,7 @@ void *fileBufferBackupThread(void *argument)
 
 void *spyThread(void *argument)
 {
-  logInfo("Thread: spyThread() - announce measurements to central server");
+  Helper::logInfo("Thread: spyThread() - announce measurements to central server");
 
   HomeIO *h = (HomeIO *) argument;
   h->startSpy();
@@ -187,7 +187,7 @@ void *spyThread(void *argument)
 
 void *addonsThread(void *argument)
 {
-  logInfo("Thread: addonsThread() - execute addon modules");
+  Helper::logInfo("Thread: addonsThread() - execute addon modules");
 
   HomeIO *h = (HomeIO *) argument;
   h->startAddons();
@@ -233,16 +233,16 @@ unsigned char HomeIO::start() {
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
       pthread_join(threads[i], NULL);
-      logError("In main: thread " + to_string(i) + " is complete");
+      Helper::logError("In main: thread " + std::to_string(i) + " is complete");
    }
 
-   logError("In main: All threads completed successfully");
+   Helper::logError("In main: All threads completed successfully");
    exit(EXIT_SUCCESS);
 }
 
 unsigned char HomeIO::stop() {
   cout << endl << endl;
-  logInfo("Shutdown initialized");
+  Helper::logInfo("Shutdown initialized");
 
   measBufferBackupStorage->stop();
   fileStorage->stop();
@@ -253,6 +253,6 @@ unsigned char HomeIO::stop() {
   ioServer->stop();
   addonsArray->stop();
 
-  logInfo("Shutdown completed");
+  Helper::logInfo("Shutdown completed");
   return 0;
 }

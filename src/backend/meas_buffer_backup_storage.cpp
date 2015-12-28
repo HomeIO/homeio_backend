@@ -11,7 +11,7 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
 
 void MeasBufferBackupStorage::start()
 {
-  longSleep(usDelay);
+  Helper::longSleep(usDelay);
 
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH
@@ -26,31 +26,31 @@ void MeasBufferBackupStorage::start()
   while(isRunning) {
     performDump();
     performRestore();
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   };
   */
 
   while(isRunning) {
     performDump();
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   };
 }
 
 void MeasBufferBackupStorage::stop() {
   isRunning = false;
   shutdownMutex.lock();
-  logInfo("MeasBufferBackupStorage - stop");
+  Helper::logInfo("MeasBufferBackupStorage - stop");
 
   // reset mutex
   shutdownMutex.unlock();
   // perform the last storage before exiting
   performDump();
-  logInfo("MeasBufferBackupStorage - terminal storage done");
+  Helper::logInfo("MeasBufferBackupStorage - terminal storage done");
 }
 
 
-string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
-  string filename = path + "/buffer_" + measType->name + ".txt";
+std::string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
+  std::string filename = path + "/buffer_" + measType->name + ".txt";
   return filename;
 }
 
@@ -58,74 +58,74 @@ void MeasBufferBackupStorage::performDump() {
   shutdownMutex.lock();
 
   unsigned long int i = 0;
-  logInfo("MeasBufferBackupStorage - start");
+  Helper::logInfo("MeasBufferBackupStorage - start");
 
   for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     ofstream outfile;
     string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
 
-    logInfo("MeasBufferBackupStorage DUMP [" + it->name + "] path " + filename);
+    Helper::logInfo("MeasBufferBackupStorage DUMP [" + it->name + "] path " + filename);
 
     outfile.open(filename, ios_base::out);
 
-    outfile << to_string(mTime()) << "\n";
-    outfile << to_string(measBuffer->maxSize) << "\n";
-    outfile << to_string(measBuffer->count) << "\n";
-    outfile << to_string(measBuffer->offset) << "\n";
-    outfile << to_string(measBuffer->lastTimeForCount) << "\n";
-    outfile << to_string(measBuffer->firstTime) << "\n";
-    outfile << to_string(measBuffer->calcInterval()) << "\n";
+    outfile << std::to_string(Helper::mTime()) << "\n";
+    outfile << std::to_string(measBuffer->maxSize) << "\n";
+    outfile << std::to_string(measBuffer->count) << "\n";
+    outfile << std::to_string(measBuffer->offset) << "\n";
+    outfile << std::to_string(measBuffer->lastTimeForCount) << "\n";
+    outfile << std::to_string(measBuffer->firstTime) << "\n";
+    outfile << std::to_string(measBuffer->calcInterval()) << "\n";
 
     outfile << "\n\n";
 
     for(i = measBuffer->count; i > 0; i--) {
-      outfile << to_string(measBuffer->at(i)) << "\n";
+      outfile << std::to_string(measBuffer->at(i)) << "\n";
     }
 
     outfile.close();
   }
 
-  logInfo("MeasBufferBackupStorage - end");
+  Helper::logInfo("MeasBufferBackupStorage - end");
   shutdownMutex.unlock();
 }
 
 void MeasBufferBackupStorage::performRestore() {
   unsigned long int i = 0;
-  string line;
+  std::string line;
   unsigned int tmpRaw;
   unsigned long long storeTime, count, interval;
   //struct stat sBuffer;
 
-  logInfo("MeasBufferBackupStorage - start");
+  Helper::logInfo("MeasBufferBackupStorage - start");
 
   for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     ifstream infile;
-    string filename = pathForMeasType(&*it);
+    std::string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
 
     infile.open(filename, ios_base::in);
 
     if (infile.good()) {
       // buffer file exists
-      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] path " + filename);
-      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE interval " + to_string(measBuffer->calcInterval()));
-      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE count " + to_string(measBuffer->count));
+      Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] path " + filename);
+      Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE interval " + std::to_string(measBuffer->calcInterval()));
+      Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] PRE count " + std::to_string(measBuffer->count));
 
       // time of dump
       infile >> storeTime;
 
-      if (thresholdTimeRange > (mTime() - storeTime) ) {
+      if (thresholdTimeRange > (Helper::mTime() - storeTime) ) {
         // fresh enough
 
         infile >> measBuffer->maxSize;
         // resize buffer
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] updated max size " + to_string(measBuffer->maxSize));
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] updated max size " + std::to_string(measBuffer->maxSize));
         measBuffer->clearAndResize(measBuffer->maxSize);
 
         // count
         infile >> count;
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] count " + to_string(count));
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] count " + std::to_string(count));
 
         // offset - not used now
         infile >> line;
@@ -146,38 +146,38 @@ void MeasBufferBackupStorage::performRestore() {
           infile >> tmpRaw;
           measBuffer->add(tmpRaw);
         }
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded");
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded");
 
         // modify times
-        measBuffer->lastTimeForCount = mTime();
+        measBuffer->lastTimeForCount = Helper::mTime();
         measBuffer->firstTime = measBuffer->lastTimeForCount - count * interval;
 
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded interval " + to_string(interval));
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST interval " + to_string(measBuffer->calcInterval()));
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST count " + to_string(measBuffer->count));
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] loaded interval " + std::to_string(interval));
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST interval " + std::to_string(measBuffer->calcInterval()));
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] POST count " + std::to_string(measBuffer->count));
 
         // extension - backend remove spikes
         if (it->extBackendRemoveSpikes) {
           measBuffer->removeSpikes = it->extBackendRemoveSpikes;
           measBuffer->filterStoredSpikes();
-          logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] removed spikes");
+          Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] removed spikes");
         }
 
       }
       else {
-        logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] buffer is too old");
+        Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] buffer is too old");
       }
 
 
     }
     else {
       // buffer file not exists
-      logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] file not exists " + filename);
+      Helper::logInfo("MeasBufferBackupStorage RESTORE [" + it->name + "] file not exists " + filename);
     }
 
   infile.close();
 
   }
 
-  logInfo("MeasBufferBackupStorage - end");
+  Helper::logInfo("MeasBufferBackupStorage - end");
 }

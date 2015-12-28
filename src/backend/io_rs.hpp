@@ -1,7 +1,5 @@
-#ifndef RS_HPP
-#define	RS_HPP
-
-using namespace std;
+#ifndef IO_RS_HPP
+#define	IO_RS_HPP
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,11 +8,11 @@ using namespace std;
 #include <string>
 
 #include <termios.h>
-#include "config.hpp"
+#include "io_config.hpp"
 
-class RS {
+class IoRS {
 public:
-  RS();
+  IoRS();
 
   // Open RS port and set all parameters
   // Parameters are stored in config.h
@@ -27,7 +25,7 @@ public:
   struct termios tio;
   int ttyFileDescriptor;
 
-  string port;
+  std::string port;
   unsigned char i, tmp_char;
 
   char *buffer;

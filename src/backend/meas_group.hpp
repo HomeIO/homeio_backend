@@ -7,16 +7,14 @@
 
 #include "meas_type_array.hpp"
 
-using namespace std;
-
 class MeasGroup {
 public:
   MeasGroup();
-  void addGroup(string groupName, string groupMeasTypesString);
-  string toJson();
+  void addGroup(std::string groupName, std::string groupMeasTypesString);
+  std::string toJson();
 
-  vector <string> groupNames;
-  vector <string> groupMeasTypes;
+  std::vector <string> groupNames;
+  std::vector <string> groupMeasTypes;
 
   MeasTypeArray *measTypeArray;
 };

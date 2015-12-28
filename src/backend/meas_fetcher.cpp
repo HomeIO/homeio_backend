@@ -18,7 +18,7 @@ void MeasFetcher::start() {
       m->fetch();
       shutdownMutex.unlock();
 
-      longSleep(betweenMeasInterval);
+      Helper::longSleep(betweenMeasInterval);
 
       // if there is more than 2 measurements after fetching
       // other utils (overseer, storage, ...) can be started
@@ -27,11 +27,11 @@ void MeasFetcher::start() {
       }
     }
 
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   }
 }
 
 void MeasFetcher::stop() {
   shutdownMutex.lock();
-  logInfo("MeasFetcher - stop");
+  Helper::logInfo("MeasFetcher - stop");
 }

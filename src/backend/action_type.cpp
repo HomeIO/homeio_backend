@@ -6,8 +6,8 @@ ActionType::ActionType() {
   maxTimeBufferSize = 100;
 }
 
-void ActionType::logInfo(string log) {
-  logWithColor(log, YELLOW);
+void ActionType::logInfo(std::string log) {
+  Helper::logWithColor(log, YELLOW);
 }
 
 unsigned int ActionType::execute() {
@@ -16,13 +16,13 @@ unsigned int ActionType::execute() {
   if (raw == responseOkay) {
     executionCount++;
     markExecutionTime();
-    logInfo("ActionType [" + name + "] executed");
+    Helper::logInfo("ActionType [" + name + "] executed");
 
     return 0;
   }
   else {
     failedCount++;
-    logError("ActionType [" + name + "] FAILED, result=" + to_string(raw) + ",command=" + to_string(command) + ",responseSize=" + to_string(responseSize) );
+    Helper::logError("ActionType [" + name + "] FAILED, result=" + std::to_string(raw) + ",command=" + std::to_string(command) + ",responseSize=" + std::to_string(responseSize) );
 
     return 1;
   }
@@ -42,32 +42,32 @@ bool ActionType::wasExecuted() {
   }
 }
 
-string ActionType::toJson() {
-  string json;
+std::string ActionType::toJson() {
+  std::string json;
 
   json = "{";
   json += "\"name\":\"" + name + "\",";
 
   if (wasExecuted()) {
-    json += "\"lastExecutedAt\":" + to_string(lastExecutedAt()) + ",";
+    json += "\"lastExecutedAt\":" + std::to_string(lastExecutedAt()) + ",";
   }
   else {
     json += "\"lastExecutedAt\":null,";
   }
 
-  json += "\"executionCount\":" + to_string(executionCount) + ",";
-  json += "\"failedCount\":" + to_string(failedCount);
+  json += "\"executionCount\":" + std::to_string(executionCount) + ",";
+  json += "\"failedCount\":" + std::to_string(failedCount);
 
   json += "}";
 
   return json;
 }
 
-string ActionType::historyToJson() {
-  string json, timeBufferString;
+std::string ActionType::historyToJson() {
+  std::string json, timeBufferString;
 
   for(std::vector<unsigned long long>::iterator it = timeBuffer.begin(); it != timeBuffer.end(); ++it) {
-    timeBufferString += to_string(*it) + ",";
+    timeBufferString += std::to_string(*it) + ",";
   }
 
   // remove last coma
@@ -90,5 +90,5 @@ void ActionType::markExecutionTime() {
     timeBuffer.erase(timeBuffer.begin());
   }
 
-  timeBuffer.push_back( mTime() );
+  timeBuffer.push_back( Helper::mTime() );
 }

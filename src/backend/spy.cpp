@@ -3,7 +3,7 @@
 Spy::Spy() {
   cycleInterval = 30*60*1000*1000;
   usDelay = 10*1000*1000; // wait to warm up - get enough measurements
-  lastTime = mTime();
+  lastTime = Helper::mTime();
 
   hiveHost = "http://localhost:3000";
   urlPath = "/meas_payloads/announce.json";
@@ -18,7 +18,7 @@ Spy::Spy() {
 
 void Spy::start()
 {
-  longSleep(usDelay);
+  Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
 
@@ -27,13 +27,13 @@ void Spy::start()
       announceAll();
     }
 
-    longSleep(cycleInterval);
+    Helper::longSleep(cycleInterval);
   };
 }
 
 void Spy::stop() {
   shutdownMutex.lock();
-  logInfo("Spy - stop");
+  Helper::logInfo("Spy - stop");
 }
 
 
@@ -46,11 +46,11 @@ void Spy::announceAll(){
     shutdownMutex.unlock();
   }
 
-  logInfo("Spy - announce completed");
-  lastTime = mTime();
+  Helper::logInfo("Spy - announce completed");
+  lastTime = Helper::mTime();
 }
 
-unsigned char Spy::annouceMeas(string name, double value) {
+unsigned char Spy::annouceMeas(std::string name, double value) {
   try {
     curlpp::Cleanup cleaner;
     curlpp::Easy request;
@@ -64,8 +64,8 @@ unsigned char Spy::annouceMeas(string name, double value) {
 
     request.setOpt(new curlpp::options::HttpHeader(header));
 
-    string command;
-    command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + to_string(value) + "\"}}";
+    std::string command;
+    command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + std::to_string(value) + "\"}}";
 
     request.setOpt(new curlpp::options::PostFields(command));
     request.setOpt(new curlpp::options::PostFieldSize(command.length()));
@@ -76,11 +76,11 @@ unsigned char Spy::annouceMeas(string name, double value) {
 
   }
   catch ( curlpp::LogicError & e ) {
-    logError(e.what());
+    Helper::logError(e.what());
     return 1;
   }
   catch ( curlpp::RuntimeError & e ) {
-    logError(e.what());
+    Helper::logError(e.what());
     return 1;
   }
 

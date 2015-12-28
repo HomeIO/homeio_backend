@@ -1,88 +1,99 @@
-#include "helpers.hpp"
+#ifndef HELPERS_CPP
+#define	HELPERS_CPP
 
-char* currentDateSafe() {
+#include "helper.hpp"
+
+char* Helper::currentDateSafe() {
+  time_t currentTimeObject;
+  struct tm * currentTimeInfo;
+  //char currentTimeBuffer[20];
+
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
 
-  strftime (currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
+  strftime (Helper::currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
 
-  return currentTimeBuffer;
+  return Helper::currentTimeBuffer;
 }
 
-char* currentTime() {
+char* Helper::currentTime() {
+  time_t currentTimeObject;
+  struct tm * currentTimeInfo;
+  //char currentTimeBuffer[20];
+
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
 
-  strftime (currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
+  strftime (Helper::currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
 
-  return currentTimeBuffer;
+  return Helper::currentTimeBuffer;
 }
 
-string detailCurrentTime() {
-  string t = (string) currentTime();
+std::string Helper::detailCurrentTime() {
+  std::string t = (std::string) currentTime();
   t += ".";
 
-  ostringstream os;
-  os << setfill('0') << setw(3) << to_string(onlyMiliseconds());
+  std::ostringstream os;
+  os << std::setfill('0') << std::setw(3) << std::to_string(onlyMiliseconds());
   t += os.str();
 
   return t;
 }
 
-unsigned long long uTime() {
+unsigned long long Helper::uTime() {
   unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1) ;
   return ut;
 }
 
-unsigned long long mTime() {
+unsigned long long Helper::mTime() {
   unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::milliseconds(1) ;
   return ut;
 }
 
-unsigned int onlyMiliseconds() {
-  unsigned long long ut = mTime() % 1000;
+unsigned int Helper::onlyMiliseconds() {
+  unsigned long long ut = Helper::mTime() % 1000;
   return (unsigned int)ut;
 }
 
 
-char *strColor(int attr, int fg, int bg) {
+char *Helper::strColor(int attr, int fg, int bg) {
   sprintf(colorCommand, "%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
   return colorCommand;
 }
 
-void txtColor(int attr, int fg, int bg) {
+void Helper::txtColor(int attr, int fg, int bg) {
   strColor(attr, fg, bg);
   printf("%s", colorCommand);
 }
 
-void resetColor() {
+void Helper::resetColor() {
   txtColor(RESET, WHITE, BLACK);
 }
 
-void redColor() {
+void Helper::redColor() {
   txtColor(RESET, RED, BLACK);
 }
 
-void logWithColor(string log, unsigned char color) {
+void Helper::logWithColor(std::string log, unsigned char color) {
   logMutex.lock();
 
   txtColor(RESET, color, BLACK);
-  cout << detailCurrentTime() << " " << log << endl;
+  std::cout << detailCurrentTime() << " " << log << std::endl;
   resetColor();
 
   logMutex.unlock();
 }
 
-void logError(string log) {
+void Helper::logError(std::string log) {
   logWithColor(log, RED);
 }
 
-void logInfo(string log) {
+void Helper::logInfo(std::string log) {
   logWithColor(log, WHITE);
 }
 
 
-void processMemUsage(double& vm_usage, double& resident_set)
+void Helper::processMemUsage(double& vm_usage, double& resident_set)
 {
     vm_usage     = 0.0;
     resident_set = 0.0;
@@ -103,12 +114,14 @@ void processMemUsage(double& vm_usage, double& resident_set)
     resident_set = (double) (rss * page_size_kb);
 }
 
-void longSleep(unsigned long int interval) {
-  unsigned long int counts = interval / numeric_limits<unsigned long int>::max();
-  unsigned int rest = (unsigned int) (interval % numeric_limits<unsigned long int>::max() );
+void Helper::longSleep(unsigned long int interval) {
+  unsigned long int counts = interval / std::numeric_limits<unsigned long int>::max();
+  unsigned int rest = (unsigned int) (interval % std::numeric_limits<unsigned long int>::max() );
 
   for (unsigned long int i = 0; i < counts; i++) {
-    usleep( numeric_limits<int>::max() );
+    usleep( std::numeric_limits<int>::max() );
   }
   usleep( rest );
 }
+
+#endif

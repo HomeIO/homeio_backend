@@ -3,7 +3,7 @@
 IoServer::IoServer() {
   ready = false;
 
-  rs = new RS;
+  rs = new IoRS;
   tcp = new IoTcpServer;
 
   tmp_char = 0;
@@ -40,5 +40,5 @@ void IoServer::start() {
 
 void IoServer::stop() {
   shutdownMutex.lock();
-  logInfo("IoServer - stop");
+  Helper::logInfo("IoServer - stop");
 }

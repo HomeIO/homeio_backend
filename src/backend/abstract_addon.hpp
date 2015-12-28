@@ -2,9 +2,7 @@
 #define	ABSTRACT_ADDON_HPP
 
 #include <string>
-#include "../meas_type_array.hpp"
-
-using namespace std;
+#include "meas_type_array.hpp"
 
 class AbstractAddon {
 public:
@@ -12,7 +10,7 @@ public:
   virtual void perform();
 
   MeasTypeArray *measTypeArray;
-  string name;
+  std::string name;
 };
 
 //#include "abstract_addon.cpp"

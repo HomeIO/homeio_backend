@@ -7,7 +7,7 @@ TcpServer::TcpServer() {
 }
 
 void TcpServer::start() {
-  longSleep(usDelay);
+  Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
 
@@ -17,12 +17,12 @@ void TcpServer::start() {
   int conn_s; // connection socket
   int list_s = createTcpServer();
 
-  logInfo("TCP Server started on " + to_string(port));
+  Helper::logInfo("TCP Server started on " + to_string(port));
 
   while (isRunning) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-      logError("TcpServer::start(): Error calling accept()");
+      Helper::logError("TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
 
@@ -44,7 +44,7 @@ void TcpServer::start() {
 
     // Close the connected socket
     if (close(conn_s) < 0) {
-      logError("TcpServer::start(): Error calling close()");
+      Helper::logError("TcpServer::start(): Error calling close()");
       exit(EXIT_FAILURE);
     }
   }
@@ -53,7 +53,7 @@ void TcpServer::start() {
 
 void TcpServer::stop() {
   shutdownMutex.lock();
-  logInfo("TcpServer - stop");
+  Helper::logInfo("TcpServer - stop");
 }
 
 int TcpServer::processCommand() {
@@ -116,7 +116,7 @@ int TcpServer::createTcpServer() {
 
     /*  Create the listening socket  */
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        logError("TcpServer::createTcpServer(): Error creating listening socket.");
+        Helper::logError("TcpServer::createTcpServer(): Error creating listening socket.");
         exit(EXIT_FAILURE);
     }
 
@@ -139,16 +139,16 @@ int TcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        logError("TcpServer::createTcpServer(): Error calling bind()");
+        Helper::logError("TcpServer::createTcpServer(): Error calling bind()");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, LISTENQ) < 0) {
-        logError("TcpServer::createTcpServer(): Error calling listen()");
+        Helper::logError("TcpServer::createTcpServer(): Error calling listen()");
         exit(EXIT_FAILURE);
     }
 
-    logInfo("TCP Server prepared");
+    Helper::logInfo("TCP Server prepared");
 
     return list_s;
 }

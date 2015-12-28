@@ -6,22 +6,20 @@
 #include <vector>
 #include <time.h>
 
-#include "helpers.hpp"
+#include "helper.hpp"
 #include "io_proxy.hpp"
-
-using namespace std;
 
 class ActionType {
 public:
   ActionType();
   unsigned int execute();
-  string toJson();
-  string historyToJson();
-  void logInfo(string log); // overwritten color
+  std::string toJson();
+  std::string historyToJson();
+  void logInfo(std::string log); // overwritten color
   unsigned long long lastExecutedAt();
   bool wasExecuted();
 
-  string name; // name of action
+  std::string name; // name of action
   char command; // at this moment only 1 byte commands
   char responseSize; // amount of bytes returned from uC, normally 1 or 2
   unsigned int responseOkay; // value returned from uC when everything is okay
@@ -31,7 +29,7 @@ public:
 
   // time buffer
   unsigned int maxTimeBufferSize; // how many execution times should be stored in
-  vector < unsigned long long > timeBuffer;
+  std::vector < unsigned long long > timeBuffer;
   void markExecutionTime();
 
   IoProxy *ioProxy;

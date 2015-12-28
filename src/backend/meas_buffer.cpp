@@ -46,12 +46,12 @@ unsigned long int MeasBuffer::add(unsigned int raw) {
   }
   if (offset > count) {
     count = offset;
-    lastTimeForCount = mTime();
+    lastTimeForCount = Helper::mTime();
   }
   if (firstTime == 0) {
-    firstTime = mTime();
+    firstTime = Helper::mTime();
   }
-  lastTime = mTime();
+  lastTime = Helper::mTime();
 
   buffer[offset] = raw;
 
@@ -79,7 +79,7 @@ bool MeasBuffer::isSpike(unsigned int a, unsigned int b, unsigned int c) {
   int absB = abs( (int) a - (int) b );
 
   if (absB > 10 * (absA + 1) ) {
-    logInfo("MeasBuffer: found SPIKE " + to_string(a) + " - " + to_string(b) + " - " + to_string(c) );
+    Helper::logInfo("MeasBuffer: found SPIKE " + std::to_string(a) + " - " + std::to_string(b) + " - " + std::to_string(c) );
     return true;
   } else {
     return false;
@@ -157,9 +157,9 @@ unsigned long int MeasBuffer::calculateIndexInterval(unsigned long int lower, un
   }
 }
 
-vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
+std::vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
   unsigned long int i;
-  vector < unsigned int > result;
+  std::vector < unsigned int > result;
 
   if (from <= to) {
     // safety
@@ -167,7 +167,7 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
       to = maxSize - 1;
     }
 
-    logInfo("MeasBuffer: UP getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
+    Helper::logInfo("MeasBuffer: UP getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
 
     responseIndexInterval = calculateIndexInterval(from, to, responseMaxSize);
     for (i = from; i <= to; i += responseIndexInterval) {
@@ -182,7 +182,7 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
       from = maxSize - 1;
     }
 
-    logInfo("MeasBuffer: DOWN getFromBuffer(" + to_string(from) + ", " + to_string(to) + ", " + to_string(responseMaxSize) + ")");
+    Helper::logInfo("MeasBuffer: DOWN getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
 
     responseIndexInterval = calculateIndexInterval(to, from, responseMaxSize);
     for (i = from; (i > to) && (i >= responseIndexInterval); i -= responseIndexInterval) {
@@ -195,11 +195,11 @@ vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, unsign
   }
 }
 
-string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
-  string s = "[";
-  vector < unsigned int > tmp = getFromBuffer(from, to, responseMaxSize);
-  for(vector<unsigned int>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-    s += to_string(*it);
+std::string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize) {
+  std::string s = "[";
+  std::vector < unsigned int > tmp = getFromBuffer(from, to, responseMaxSize);
+  for(std::vector<unsigned int>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+    s += std::to_string(*it);
     s += ",";
   }
 
@@ -213,15 +213,15 @@ string MeasBuffer::jsonArray(unsigned long int from, unsigned long int to, unsig
   return s;
 }
 
-string MeasBuffer::toJson() {
-  string response;
+std::string MeasBuffer::toJson() {
+  std::string response;
   response = "{";
-  response += "\"interval\":" + to_string(calcInterval()) + ",";
-  response += "\"count\":" + to_string(count) + ",";
-  response += "\"offset\":" + to_string(offset) + ",";
-  response += "\"maxSize\":" + to_string(maxSize) + ",";
-  response += "\"lastTime\":" + to_string(lastTime) + ",";
-  response += "\"firstTime\":" + to_string(firstTime); //+ ",";
+  response += "\"interval\":" + std::to_string(calcInterval()) + ",";
+  response += "\"count\":" + std::to_string(count) + ",";
+  response += "\"offset\":" + std::to_string(offset) + ",";
+  response += "\"maxSize\":" + std::to_string(maxSize) + ",";
+  response += "\"lastTime\":" + std::to_string(lastTime) + ",";
+  response += "\"firstTime\":" + std::to_string(firstTime); //+ ",";
   //response += "\"earliestTime\":" + to_string(earliestTime());
   response += "}";
   return response;

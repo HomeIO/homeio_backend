@@ -22,8 +22,6 @@
 #define MAX_LINE (5000)
 #define COMMAND_BUFFER_SIZE 2000
 
-using namespace std;
-
 class TcpServer {
 public:
   TcpServer();
@@ -42,11 +40,11 @@ public:
   unsigned long long usDelay;
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 
 private:
   char c, *commandBuffer;
-  string responseBuffer;
+  std::string responseBuffer;
 };
 
 //#include "tcp_server.cpp"

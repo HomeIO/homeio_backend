@@ -3,14 +3,14 @@
 MeasGroup::MeasGroup() {
 }
 
-void MeasGroup::addGroup(string groupName, string groupMeasTypesString) {
+void MeasGroup::addGroup(std::string groupName, std::string groupMeasTypesString) {
   groupNames.push_back(groupName);
   groupMeasTypes.push_back(groupMeasTypesString);
 }
 
-string MeasGroup::toJson() {
-  string response = "[";
-  string tok;
+std::string MeasGroup::toJson() {
+  std::string response = "[";
+  std::string tok;
   char delim = ',';
 
   for(unsigned int i=0; i < groupNames.size(); i++) {

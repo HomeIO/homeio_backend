@@ -31,7 +31,7 @@ void WindTurbineStatsAddon::perform() {
 }
 
 unsigned long long WindTurbineStatsAddon::calculateTimeFrom() {
-  unsigned long long t = mTime();
+  unsigned long long t = Helper::Helper::mTime();
   t = t - hour; // calculate for previous hour only
   t = t - (t % hour);
   return t;
@@ -145,10 +145,10 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
 
 void WindTurbineStatsAddon::store(WindTurbineStat s) {
   ofstream outfile;
-  string currentDate( currentDateSafe() );
+  string currentDate = Helper::currentDateSafe();
   string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
 
-  logInfo("WindTurbineStats store path " + filename);
+  Helper::logInfo("WindTurbineStats store path " + filename);
 
   outfile.open(filename, ios_base::app);
   outfile << s.time << "; ";
@@ -163,5 +163,5 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   outfile << endl;
   outfile.close();
 
-  logInfo("WindTurbineStats stored");
+  Helper::logInfo("WindTurbineStats stored");
 }

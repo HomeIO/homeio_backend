@@ -11,9 +11,7 @@
 #include <unistd.h>
 #include <mutex>
 
-#include "helpers.hpp"
-
-using namespace std;
+#include "helper.hpp"
 
 class IoProxy {
 public:
@@ -21,7 +19,7 @@ public:
   std::string address;
   uint16_t port;
   bool verbose;
-  mutex tcpMutex;
+  std::mutex tcpMutex;
 
   unsigned int fetch(char commandChar, unsigned char responseSize);
 

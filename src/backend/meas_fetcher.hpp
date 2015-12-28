@@ -6,8 +6,6 @@
 #include "meas_type_array.hpp"
 #include "io_proxy.hpp"
 
-using namespace std;
-
 class MeasFetcher {
 public:
   MeasFetcher();
@@ -22,7 +20,7 @@ public:
   unsigned long int maxBufferSize; // 1000000
 
   bool isRunning;
-  mutex shutdownMutex;
+  std::mutex shutdownMutex;
 };
 
 //#include "meas_fetcher.cpp"
