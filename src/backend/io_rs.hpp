@@ -28,7 +28,7 @@ public:
   std::string port;
   unsigned char i, tmp_char;
 
-  char *buffer;
+  unsigned char *buffer;
   unsigned char count_command;
   unsigned char count_response;
 };

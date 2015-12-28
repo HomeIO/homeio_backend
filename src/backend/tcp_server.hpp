@@ -33,7 +33,7 @@ public:
   void stop();
   int processCommand();
 
-  short int port;
+  unsigned short int port;
   TcpCommand *tcpCommand;
   MeasTypeArray *measTypeArray;
 

@@ -8,7 +8,7 @@ IoProxy::IoProxy()
   verbose = false;
 }
 
-unsigned int IoProxy::fetch(char commandChar, unsigned char responseSize)
+unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSize)
 {
   tcpMutex.lock();
   // after mutex
@@ -17,8 +17,8 @@ unsigned int IoProxy::fetch(char commandChar, unsigned char responseSize)
 
   char commandArray[4];
   commandArray[0] = 1; // size of command
-  commandArray[1] = responseSize; // size of response
-  commandArray[2] = commandChar; // command
+  commandArray[1] = (char) responseSize; // size of response
+  commandArray[2] = (char) commandChar; // command
   commandArray[3] = '\n'; // end, it's needed
 
   if( send(sock, commandArray, sizeof(commandArray), 0) < 0)

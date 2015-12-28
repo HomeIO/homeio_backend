@@ -21,7 +21,7 @@ public:
   bool verbose;
   std::mutex tcpMutex;
 
-  unsigned int fetch(char commandChar, unsigned char responseSize);
+  unsigned int fetch(unsigned char commandChar, unsigned char responseSize);
 
   unsigned int prepareSocket();
   int connectSocket();
@@ -30,7 +30,7 @@ public:
 private:
   int sock;
   struct sockaddr_in server;
-  char buffer[16];
+  unsigned char buffer[16];
 
 };
 

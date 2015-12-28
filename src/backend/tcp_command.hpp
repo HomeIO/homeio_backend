@@ -43,7 +43,7 @@ public:
   string processSettingsCommand(string command);
   string processStatsCommand(string command);
 
-  long long int bootTime;
+  unsigned long long int bootTime;
 
   void logInfo(string log); // overwritten color
 

@@ -59,7 +59,7 @@ int IoTcpServer::waitForCommand() {
 // Read line from socket
 ssize_t IoTcpServer::readTcp() {
   ssize_t n;
-  n = readLine(conn_s, buffer, IO_SERVER_MAX_LINE - 1);
+  n = readLine(conn_s, (char *) buffer, IO_SERVER_MAX_LINE - 1);
 
   escapeBuffer();
   if (verbose) {
@@ -75,7 +75,7 @@ ssize_t IoTcpServer::writeTcp() {
     printf(" - '%s'\n", buffer);
   }
 
-  n = writeLine(conn_s, buffer, count_response);
+  n = writeLine(conn_s, (char *) buffer, count_response);
   return n;
 }
 
@@ -87,7 +87,7 @@ void IoTcpServer::closeSocket() {
 }
 
 void IoTcpServer::escapeBuffer() {
-  strcpy(verbose_buffer, buffer);
+  std::strcpy(verbose_buffer, (char*) buffer);
   size_t n;
   for (n=0; n<strlen(verbose_buffer); n++) {
     if (verbose_buffer[n] == '\n') {
@@ -98,13 +98,13 @@ void IoTcpServer::escapeBuffer() {
 
 // Read line from socket
 ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
-  size_t n;
+  ssize_t n;
   ssize_t rc;
   char c, *buffer;
 
   buffer = vptr;
 
-    for (n = 1; n < maxlen; n++) {
+    for (n = 1; n < (ssize_t) maxlen; n++) {
 
         if ((rc = read(sockd, &c, 1)) == 1) {
             *buffer++ = c;
@@ -142,9 +142,9 @@ ssize_t IoTcpServer::writeLine(int sockd, const char *vptr, size_t n) {
             else
                 return -1;
         }
-        nleft -= nwritten;
+        nleft = nleft - (size_t) nwritten;
         buffer += nwritten;
     }
 
-    return n;
+    return (ssize_t) n;
 }

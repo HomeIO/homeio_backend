@@ -25,7 +25,7 @@
 class IoTcpServer {
 public:
   // port number
-  short int port;
+  unsigned short port;
   // listening socket
   int list_s;
   // socket address structure
@@ -35,7 +35,7 @@ public:
   // connection socket
   int conn_s;
   // TCP buffer
-  char buffer[IO_SERVER_MAX_LINE];
+  unsigned char buffer[IO_SERVER_MAX_LINE];
   // count of response bytes
   unsigned char count_response = 0;
   // just for logging

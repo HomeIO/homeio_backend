@@ -90,20 +90,20 @@ ssize_t TcpServer::readLine(int sockd, size_t maxlen) {
 
     commandBuffer[n] = 0;
 
-    return n;
+    return (ssize_t) n;
 }
 
 // Write line to socket
 ssize_t TcpServer::writeLine(int sockd) {
-  size_t nwritten;
+  ssize_t nwritten;
   if ((nwritten = write(sockd, responseBuffer.c_str(), responseBuffer.length())) <= 0) {
         if (errno == EINTR)
-            return nwritten;
+            return (ssize_t) nwritten;
         else
-            return -1;
+            return (ssize_t) -1;
     }
 
-  return 0;
+  return (ssize_t) 0;
 }
 
 // Create TCP listening socket

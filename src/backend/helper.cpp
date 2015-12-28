@@ -44,12 +44,12 @@ std::string Helper::detailCurrentTime() {
 }
 
 unsigned long long Helper::uTime() {
-  unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1) ;
+  unsigned long long ut = (unsigned long long) (std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1)) ;
   return ut;
 }
 
 unsigned long long Helper::mTime() {
-  unsigned long long ut = std::chrono::system_clock::now().time_since_epoch()  / std::chrono::milliseconds(1) ;
+  unsigned long long ut = (unsigned long long) (std::chrono::system_clock::now().time_since_epoch()  / std::chrono::milliseconds(1)) ;
   return ut;
 }
 

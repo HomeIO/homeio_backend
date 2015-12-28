@@ -123,9 +123,9 @@ unsigned int MeasBuffer::last() {
 }
 
 unsigned long int MeasBuffer::index(unsigned long int i) {
-  long int tmpI = offset - i;
+  long int tmpI = (long int) offset - (long int) i;
   if (tmpI >= 0) {
-    return tmpI;
+    return (unsigned long int) tmpI;
   } else {
     return maxSize + offset - i;
   }

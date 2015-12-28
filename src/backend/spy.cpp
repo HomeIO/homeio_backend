@@ -68,7 +68,7 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
     command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + std::to_string(value) + "\"}}";
 
     request.setOpt(new curlpp::options::PostFields(command));
-    request.setOpt(new curlpp::options::PostFieldSize(command.length()));
+    request.setOpt(new curlpp::options::PostFieldSize( (const long) command.length() ));
 
     request.perform();
 

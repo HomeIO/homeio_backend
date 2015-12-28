@@ -284,7 +284,8 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
     if (createNew) {
       tempTrend->rawTo = *it;
       tempTrend->valueTo = rawToValue(tempTrend->rawTo);
-      tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
+      //tempTrend->timeTo = timeFrom + tempInterval * ( (unsigned long long) it - (unsigned long long) rawBuffer.begin() );
+      tempTrend->timeTo = timeFrom + tempInterval * ( *it - *rawBuffer.begin() );
 
       if (tempTrend->timeDiff() > 0) {
         result.push_back(*tempTrend);
@@ -294,13 +295,13 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
       tempTrend->tmpType = newType; // default equal
       tempTrend->rawFrom = *it;
       tempTrend->valueFrom = rawToValue(tempTrend->rawFrom);
-      tempTrend->timeFrom = timeFrom + tempInterval * (it - rawBuffer.begin() );
+      tempTrend->timeFrom = timeFrom + tempInterval * (*it - *rawBuffer.begin() );
 
       createNew = false;
     }
 
     tempTrend->rawTo = *it;
-    tempTrend->timeTo = timeFrom + tempInterval * (it - rawBuffer.begin() );
+    tempTrend->timeTo = timeFrom + tempInterval * (*it - *rawBuffer.begin() );
 
     // set to current
   }

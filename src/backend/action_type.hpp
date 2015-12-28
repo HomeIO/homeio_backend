@@ -20,8 +20,8 @@ public:
   bool wasExecuted();
 
   std::string name; // name of action
-  char command; // at this moment only 1 byte commands
-  char responseSize; // amount of bytes returned from uC, normally 1 or 2
+  unsigned char command; // at this moment only 1 byte commands
+  unsigned char responseSize; // amount of bytes returned from uC, normally 1 or 2
   unsigned int responseOkay; // value returned from uC when everything is okay
 
   unsigned long int executionCount;

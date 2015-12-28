@@ -51,8 +51,8 @@ public:
   std::string name; // name of measurements
   std::string unit; // value is presented in unit
   unsigned char priority; // 0 - low priority, 1 - high (at this moment), used only in frontend
-  char command; // at this moment only 1 byte commands
-  char responseSize; // amount of bytes returned from uC, normally 1 or 2
+  unsigned char command; // at this moment only 1 byte commands
+  unsigned char responseSize; // amount of bytes returned from uC, normally 1 or 2
 
   double coefficientLinear;
   int coefficientOffset;
