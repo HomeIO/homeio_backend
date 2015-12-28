@@ -1,5 +1,5 @@
-#COMPILER = clang++
-COMPILER = g++
+COMPILER = clang++
+#COMPILER = g++
 OPTIM_FLAG = -O3
 WARNING_FLAG = -Wall
 FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion

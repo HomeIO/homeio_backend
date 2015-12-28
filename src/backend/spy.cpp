@@ -58,11 +58,13 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
     request.setOpt(new curlpp::options::Url(url));
     request.setOpt(new curlpp::options::Verbose(quiet == false));
 
-    std::list<std::string> header;
-    header.push_back("Content-Type: application/json");
-    header.push_back("Accept: application/json");
-
-    request.setOpt(new curlpp::options::HttpHeader(header));
+    // there is problem with curlpp and clang, sorry
+    #if not defined(__clang_version__)
+      std::list<std::string> header;
+      header.push_back( std::string("Content-Type: application/json") );
+      header.push_back( std::string("Accept: application/json") );
+      request.setOpt(new curlpp::options::HttpHeader(header));
+    #endif
 
     std::string command;
     command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + std::to_string(value) + "\"}}";
