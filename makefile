@@ -1,12 +1,12 @@
-COMPILER = clang++
-#COMPILER = g++
+COMPILER ?= g++
+#COMPILER ?= clang++
 OPTIM_FLAG = -O3
 WARNING_FLAG = -Wall
 FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion
 FULL_WARNING_FLAG_GCC = -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings
 POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations   -Wshadow -Wsign-promo  -Wsign-conversion
-CPP_PATHS = src/backend/*.cpp
+CPP_PATHS = src/backend/*.cpp src/backend/addons/*.cpp src/backend/io/*.cpp
 
 hello: ;
 	@echo Hello

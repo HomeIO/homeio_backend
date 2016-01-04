@@ -8,7 +8,6 @@
 #include "helper.hpp"
 #include "meas_type_array.hpp"
 #include "meas_fetcher.hpp"
-#include "io_proxy.hpp"
 #include "tcp_server.hpp"
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
@@ -19,11 +18,10 @@
 #include "spy.hpp"
 #include "addons_array.hpp"
 
-#include "io_server.hpp"
+#include "io/io_proxy.hpp"
+#include "io/io_server.hpp"
 
-#include "abstract_addon.hpp"
-#include "sample_addon.hpp"
-#include "wind_turbine_stats_addon.hpp"
+#include "addons/all_addons.hpp"
 
 class HomeIO {
 public:

@@ -2,7 +2,7 @@
 #define	ABSTRACT_ADDON_HPP
 
 #include <string>
-#include "meas_type_array.hpp"
+#include "../meas_type_array.hpp"
 
 class AbstractAddon {
 public:

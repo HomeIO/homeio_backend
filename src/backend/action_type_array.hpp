@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "action_type.hpp"
-#include "io_proxy.hpp"
+#include "io/io_proxy.hpp"
 
 class ActionTypeArray {
 public:

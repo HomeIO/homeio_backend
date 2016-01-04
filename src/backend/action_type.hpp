@@ -7,7 +7,7 @@
 #include <time.h>
 
 #include "helper.hpp"
-#include "io_proxy.hpp"
+#include "io/io_proxy.hpp"
 
 class ActionType {
 public:

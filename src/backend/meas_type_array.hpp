@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "meas_type.hpp"
-#include "io_proxy.hpp"
+#include "io/io_proxy.hpp"
 
 using namespace std;
 

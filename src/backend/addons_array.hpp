@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "helper.hpp"
-#include "abstract_addon.hpp"
+#include "./addons/abstract_addon.hpp"
 #include "meas_type_array.hpp"
 
 class AddonsArray {

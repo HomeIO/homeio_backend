@@ -4,7 +4,7 @@
 #include <mutex>
 
 #include "meas_type_array.hpp"
-#include "io_proxy.hpp"
+#include "io/io_proxy.hpp"
 
 class MeasFetcher {
 public:

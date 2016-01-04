@@ -9,7 +9,7 @@
 #include <vector>
 #include <time.h>
 
-#include "io_proxy.hpp"
+#include "io/io_proxy.hpp"
 #include "meas_buffer.hpp"
 #include "meas_type_storage.hpp"
 #include "meas_trend.hpp"
