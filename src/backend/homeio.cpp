@@ -115,6 +115,12 @@ unsigned char HomeIO::startAddons() {
   return 0;
 }
 
+unsigned char HomeIO::startNcurses() {
+  ncursesUI->start();
+
+  return 0;
+}
+
 void *measStartThread(void *argument)
 {
   Helper::logInfo("Thread: startFetch() - meas fetching");
@@ -193,8 +199,18 @@ void *addonsThread(void *argument)
   h->startAddons();
 
   return NULL;
-
 }
+
+void *ncursesThread(void *argument)
+{
+  Helper::logInfo("Ncurses: addonsThread() - interface");
+
+  HomeIO *h = (HomeIO *) argument;
+  h->startNcurses();
+
+  return NULL;
+}
+
 
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
@@ -207,7 +223,7 @@ void HomeIO::copyInternalDelays() {
 unsigned char HomeIO::start() {
   copyInternalDelays();
 
-  const char NUM_THREADS = 7;
+  const char NUM_THREADS = 8;
   pthread_t threads[NUM_THREADS];
   int i;
 
@@ -228,6 +244,7 @@ unsigned char HomeIO::start() {
   pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
   pthread_create(&threads[6], NULL, spyThread, (void *) h);
   pthread_create(&threads[7], NULL, addonsThread, (void *) h);
+  pthread_create(&threads[8], NULL, ncursesThread, (void *) h);
 
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
@@ -252,6 +269,7 @@ unsigned char HomeIO::stop() {
   measFetcher->stop();
   ioServer->stop();
   addonsArray->stop();
+  ncursesUI->stop();
 
   Helper::logInfo("Shutdown completed");
   return 0;

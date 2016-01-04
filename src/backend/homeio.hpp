@@ -23,6 +23,8 @@
 
 #include "addons/all_addons.hpp"
 
+#include "ncurses/ncurses_ui.hpp"
+
 class HomeIO {
 public:
   HomeIO();
@@ -34,6 +36,7 @@ public:
   unsigned char startBufferBackupStorage();
   unsigned char startSpy();
   unsigned char startAddons();
+  unsigned char startNcurses();
   unsigned char start();
 
   unsigned char stop();
@@ -55,6 +58,7 @@ public:
   Spy *spy;
   MeasGroup *measGroup;
   AddonsArray *addonsArray;
+  NcursesUI *ncursesUI;
 
   bool ioServerReady;
 };
