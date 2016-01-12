@@ -8,7 +8,7 @@ FULL_WARNING_FLAG_GCC = -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings
 POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations   -Wshadow -Wsign-promo  -Wsign-conversion
 CPP_PATHS = src/backend/*.cpp src/backend/addons/*.cpp src/backend/io/*.cpp src/backend/ncurses/*.cpp
-LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses
+LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses -lmenu
 
 hello: ;
 	@echo Hello

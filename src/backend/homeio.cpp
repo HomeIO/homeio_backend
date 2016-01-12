@@ -237,13 +237,13 @@ unsigned char HomeIO::start() {
     usleep(50000);
   }
 
-  pthread_create(&threads[1], NULL, measStartThread, (void *) h);
-  pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
-  pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
-  pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
-  pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
-  pthread_create(&threads[6], NULL, spyThread, (void *) h);
-  pthread_create(&threads[7], NULL, addonsThread, (void *) h);
+  //pthread_create(&threads[1], NULL, measStartThread, (void *) h);
+  //pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
+  //pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
+  //pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
+  //pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
+  //pthread_create(&threads[6], NULL, spyThread, (void *) h);
+  //pthread_create(&threads[7], NULL, addonsThread, (void *) h);
   pthread_create(&threads[8], NULL, ncursesThread, (void *) h);
 
    // wait for each thread to complete
@@ -253,8 +253,8 @@ unsigned char HomeIO::start() {
       Helper::logError("In main: thread " + std::to_string(i) + " is complete");
    }
 
-   Helper::logError("In main: All threads completed successfully");
-   exit(EXIT_SUCCESS);
+   //stop(); // TODO
+   return 0;
 }
 
 unsigned char HomeIO::stop() {
@@ -272,5 +272,5 @@ unsigned char HomeIO::stop() {
   ncursesUI->stop();
 
   Helper::logInfo("Shutdown completed");
-  return 0;
+  exit(EXIT_SUCCESS);
 }
