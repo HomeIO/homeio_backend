@@ -23,7 +23,8 @@ void NcursesUI::start() {
   noecho();
   cbreak();
   keypad(stdscr, TRUE);
-  //printw("Press F1 to exit");
+  timeout(500); // milliseconds
+  curs_set(0);
   refresh();
 
   // content window
@@ -75,7 +76,7 @@ void NcursesUI::start() {
           local_win = redrawWindow(local_win, my_menu);
 				  break;
         default:
-          /* DO NOTHING */
+          local_win = redrawWindow(local_win, my_menu);
           break;
 		}
 	}
@@ -103,12 +104,17 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
 
   local_win = newwin(LINES - 1, COLS, 1, 0);
 
-  if ( item_index(current_item(my_menu)) == 0) {
-    //meas->render(local_win);
-    fillWindow(local_win);
+  switch(item_index(current_item(my_menu)))
+  {
+    case NC_MENU_HOME:
+      windowHome(local_win);
+      break;
+    case NC_MENU_MEAS:
+      meas->render(w);
+      break;
+    default:
+      break;
   }
-
-  //fillWindow(local_win);
 
   box(local_win, 0 , 0);
   wrefresh(local_win);
@@ -116,7 +122,7 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   return local_win;
 }
 
-void NcursesUI::fillWindow(WINDOW *w) {
-  mvwprintw(w, 10, 10, std::to_string(1).c_str() );
-  mvwprintw(w, 11, 11, "a" );
+void NcursesUI::windowHome(WINDOW *w) {
+  mvwprintw(w, 1, 1, "Hello, current time is:" );
+  mvwprintw(w, 2, 1, Helper::detailCurrentTime().c_str() );
 }

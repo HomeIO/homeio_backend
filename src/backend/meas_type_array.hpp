@@ -16,6 +16,7 @@ public:
 
   vector <MeasType> measTypes;
   IoProxy *ioProxy;
+  unsigned int i;
 
   // used by other utils like overseers, storage, to
   // delay them

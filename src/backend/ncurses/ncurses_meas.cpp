@@ -1,11 +1,44 @@
 #include "ncurses_meas.hpp"
 
+#define NC_MEAS_NAME 0
+#define NC_MEAS_VALUE NC_MEAS_NAME + 30
+#define NC_MEAS_RAW NC_MEAS_VALUE + 26
+#define NC_MEAS_OFFSET NC_MEAS_VALUE + 20
+
+
 NcursesMeas::NcursesMeas() {
 }
 
-WINDOW *NcursesMeas::render(WINDOW *w) {
-  //mvwprintw(w, 10, 10, std::to_string(1).c_str() );
-  //mvwprintw(w, 11, 11, "a" );
+void NcursesMeas::render(WINDOW *w) {
+  mvwprintw(w, 1, 1 + NC_MEAS_NAME, "Name" );
+  mvwprintw(w, 1, 1 + NC_MEAS_VALUE, "Value" );
+  mvwprintw(w, 1, 1 + NC_MEAS_RAW, "Raw" );
+  mvwprintw(w, 1, 1 + NC_MEAS_OFFSET, "Offset" );
 
-  return w;
+  unsigned char i=0;
+
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    renderMeas(w, &*it);
+  }
+}
+
+void NcursesMeas::renderMeas(WINDOW *w, MeasType *m) {
+  std::string valueString = "";
+
+  std::ostringstream os;
+  os << std::setprecision(5) << m->lastValue();
+  valueString += os.str();;
+  valueString += " ";
+  valueString += m->unit;
+
+  std::string rawString = "";
+  rawString += to_string(m->lastRaw());
+
+  string offsetString = "";
+  offsetString += to_string(m->buffer->offset);
+
+  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_NAME, m->name.c_str() );
+  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_VALUE, valueString.c_str());
+  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_RAW, rawString.c_str());
+  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_OFFSET, offsetString.c_str());
 }

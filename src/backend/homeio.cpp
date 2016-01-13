@@ -17,6 +17,7 @@ HomeIO::HomeIO() {
   spy = new Spy;
   measGroup = new MeasGroup;
   addonsArray = new AddonsArray;
+  ncursesUI = new NcursesUI;
 
   ioServerReady = false;
 
@@ -32,6 +33,8 @@ HomeIO::HomeIO() {
   tcpCommand->overseerArray = overseerArray;
   tcpCommand->frontendSettings = frontendSettings;
   tcpCommand->measGroup = measGroup;
+
+  ncursesUI->meas->measTypeArray = measTypeArray;
 
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
@@ -237,13 +240,13 @@ unsigned char HomeIO::start() {
     usleep(50000);
   }
 
-  //pthread_create(&threads[1], NULL, measStartThread, (void *) h);
-  //pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
-  //pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
-  //pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
-  //pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
-  //pthread_create(&threads[6], NULL, spyThread, (void *) h);
-  //pthread_create(&threads[7], NULL, addonsThread, (void *) h);
+  pthread_create(&threads[1], NULL, measStartThread, (void *) h);
+  pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
+  pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
+  pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
+  pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
+  pthread_create(&threads[6], NULL, spyThread, (void *) h);
+  pthread_create(&threads[7], NULL, addonsThread, (void *) h);
   pthread_create(&threads[8], NULL, ncursesThread, (void *) h);
 
    // wait for each thread to complete

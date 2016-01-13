@@ -3,10 +3,13 @@
 MeasTypeArray::MeasTypeArray() {
   std::vector <MeasType> measTypes;
   isReady = false;
+  i = 0;
 }
 
 unsigned int MeasTypeArray::add(MeasType *m) {
+  m->index = i;
   measTypes.push_back(*m);
+  i++;
   Helper::logInfo("MeasType added: '" + m->name + "' (" + std::to_string(measTypes.size()) + " total meas types)");
   return 0;
 }

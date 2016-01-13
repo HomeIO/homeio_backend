@@ -14,6 +14,7 @@ MeasType::MeasType() {
 
   started = false;
   priority = 0;
+  index = 0;
 
   avgValue = 0.0;
   intervalAvg = 3600000; // recalculate avg every 1 hour

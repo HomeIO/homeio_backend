@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 
+#include "../helper.hpp"
 #include "ncurses_menu.hpp"
 #include "ncurses_meas.hpp"
 
@@ -19,7 +20,7 @@ public:
   void stop();
   void clearContent();
   WINDOW *redrawWindow(WINDOW *w, MENU *my_menu);
-  void fillWindow(WINDOW *w);
+  void windowHome(WINDOW *w);
 
   NcursesMeas *meas;
 };

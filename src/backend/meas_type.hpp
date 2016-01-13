@@ -50,6 +50,7 @@ public:
 
   std::string name; // name of measurements
   std::string unit; // value is presented in unit
+  unsigned int index; // from 0 up
   unsigned char priority; // 0 - low priority, 1 - high (at this moment), used only in frontend
   unsigned char command; // at this moment only 1 byte commands
   unsigned char responseSize; // amount of bytes returned from uC, normally 1 or 2
