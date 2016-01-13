@@ -6,12 +6,10 @@
 #include <iostream>
 #include <string>
 
-#include "../helper.hpp"
-#include "ncurses_menu.hpp"
 #include "ncurses_meas.hpp"
+#include "ncurses_home.hpp"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
-#define CTRLD 	4
 
 class NcursesUI {
 public:
@@ -20,8 +18,8 @@ public:
   void stop();
   void clearContent();
   WINDOW *redrawWindow(WINDOW *w, MENU *my_menu);
-  void windowHome(WINDOW *w);
 
+  NcursesHome *home;
   NcursesMeas *meas;
 };
 

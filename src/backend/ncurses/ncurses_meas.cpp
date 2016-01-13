@@ -2,8 +2,8 @@
 
 #define NC_MEAS_NAME 0
 #define NC_MEAS_VALUE NC_MEAS_NAME + 30
-#define NC_MEAS_RAW NC_MEAS_VALUE + 26
-#define NC_MEAS_OFFSET NC_MEAS_VALUE + 20
+#define NC_MEAS_RAW NC_MEAS_VALUE + 28
+#define NC_MEAS_OFFSET NC_MEAS_RAW + 20
 
 
 NcursesMeas::NcursesMeas() {

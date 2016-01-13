@@ -13,6 +13,7 @@
 
 NcursesUI::NcursesUI() {
   meas = new NcursesMeas;
+  home = new NcursesHome;
 }
 
 void NcursesUI::start() {
@@ -107,10 +108,10 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   switch(item_index(current_item(my_menu)))
   {
     case NC_MENU_HOME:
-      windowHome(local_win);
+      home->render(local_win);
       break;
     case NC_MENU_MEAS:
-      meas->render(w);
+      meas->render(local_win);
       break;
     default:
       break;
@@ -120,9 +121,4 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   wrefresh(local_win);
 
   return local_win;
-}
-
-void NcursesUI::windowHome(WINDOW *w) {
-  mvwprintw(w, 1, 1, "Hello, current time is:" );
-  mvwprintw(w, 2, 1, Helper::detailCurrentTime().c_str() );
 }
