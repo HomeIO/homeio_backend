@@ -8,6 +8,7 @@
 
 #include "../meas_type_array.hpp"
 #include "../meas_type.hpp"
+#include "ncurses_colors.hpp"
 
 class NcursesMeas {
 public:

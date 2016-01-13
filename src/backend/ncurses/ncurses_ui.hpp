@@ -19,6 +19,7 @@ public:
   void clearContent();
   WINDOW *redrawWindow(WINDOW *w, MENU *my_menu);
 
+  unsigned int interval;
   NcursesHome *home;
   NcursesMeas *meas;
 };

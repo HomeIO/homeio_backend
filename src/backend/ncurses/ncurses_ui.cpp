@@ -11,7 +11,11 @@
 #define NC_MENU_STATS 5
 #define NC_MENU_LAST 6
 
+
+
 NcursesUI::NcursesUI() {
+  interval = 400;
+
   meas = new NcursesMeas;
   home = new NcursesHome;
 }
@@ -21,11 +25,19 @@ void NcursesUI::start() {
   w = newwin(LINES - 1, COLS, 1, 0);
 
   initscr();
+  start_color();
   noecho();
   cbreak();
   keypad(stdscr, TRUE);
-  timeout(500); // milliseconds
+  timeout(interval); // milliseconds
   curs_set(0);
+
+  // colors
+  init_pair(NC_COLOR_PAIR_VALUE, NC_COLOR_PAIR_VALUE_COLOR, COLOR_BLACK);
+  init_pair(NC_COLOR_PAIR_NAME, NC_COLOR_PAIR_NAME_COLOR, COLOR_BLACK);
+  init_pair(NC_COLOR_PAIR_ERROR, NC_COLOR_PAIR_ERROR_COLOR, COLOR_BLACK);
+  init_pair(NC_COLOR_PAIR_LESSER, NC_COLOR_PAIR_LESSER_COLOR, COLOR_BLACK);
+
   refresh();
 
   // content window
@@ -96,8 +108,8 @@ void NcursesUI::stop() {
 
 WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   // del
-  wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
-  wrefresh(w);
+  //wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+  //wrefresh(w);
   delwin(w);
 
   // new
@@ -108,6 +120,8 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   switch(item_index(current_item(my_menu)))
   {
     case NC_MENU_HOME:
+      home->log("test");
+      home->logError("test");
       home->render(local_win);
       break;
     case NC_MENU_MEAS:
@@ -118,6 +132,8 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   }
 
   box(local_win, 0 , 0);
+
+  refresh();
   wrefresh(local_win);
 
   return local_win;
