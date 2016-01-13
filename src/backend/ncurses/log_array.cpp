@@ -9,8 +9,19 @@ void LogArray::log(std::string c) {
   addLogItem(*li);
 }
 
+void LogArray::log(std::string m, std::string c) {
+  LogItem *li = new LogItem(m, c);
+  addLogItem(*li);
+}
+
 void LogArray::logError(std::string c) {
   LogItem *li = new LogItem(c);
+  li->error = true;
+  addLogItem(*li);
+}
+
+void LogArray::logError(std::string m, std::string c) {
+  LogItem *li = new LogItem(m, c);
   li->error = true;
   addLogItem(*li);
 }

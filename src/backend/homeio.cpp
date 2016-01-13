@@ -43,6 +43,8 @@ HomeIO::HomeIO() {
   measBufferBackupStorage->measTypeArray = measTypeArray;
   spy->measTypeArray = measTypeArray;
   addonsArray->measTypeArray = measTypeArray;
+
+  tcpServer->logArray = ncursesUI->home->logArray;
 }
 
 unsigned char HomeIO::startFetch() {

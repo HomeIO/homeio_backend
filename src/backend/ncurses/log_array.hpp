@@ -10,7 +10,9 @@ class LogArray {
 public:
   LogArray();
   void log(std::string c);
+  void log(std::string m, std::string c);
   void logError(std::string c);
+  void logError(std::string m, std::string c);
   void addLogItem(LogItem li);
   void limit(unsigned int maxLines);
 

@@ -17,12 +17,12 @@ void TcpServer::start() {
   int conn_s; // connection socket
   int list_s = createTcpServer();
 
-  Helper::logInfo("TCP Server started on " + to_string(port));
+  logArray->log("TCP", "started on " + to_string(port));
 
   while (isRunning) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-      Helper::logError("TcpServer::start(): Error calling accept()");
+      logArray->logError("TCP", "TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
 
@@ -31,20 +31,14 @@ void TcpServer::start() {
     // Retrieve command
     readLine(conn_s, MAX_LINE - 1);
 
-    // command and response char count
-    //char command = commandBuffer[0];
-    //char count_response = 1;
-
     processCommand();
-
     writeLine(conn_s);
-
 
     shutdownMutex.unlock();
 
     // Close the connected socket
     if (close(conn_s) < 0) {
-      Helper::logError("TcpServer::start(): Error calling close()");
+      logArray->logError("TCP", "TcpServer::start(): Error calling close()");
       exit(EXIT_FAILURE);
     }
   }
@@ -53,7 +47,7 @@ void TcpServer::start() {
 
 void TcpServer::stop() {
   shutdownMutex.lock();
-  Helper::logInfo("TcpServer - stop");
+  logArray->log("TCP", "stop");
 }
 
 int TcpServer::processCommand() {
@@ -116,7 +110,7 @@ int TcpServer::createTcpServer() {
 
     /*  Create the listening socket  */
     if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        Helper::logError("TcpServer::createTcpServer(): Error creating listening socket.");
+        logArray->logError("TCP", "TcpServer::createTcpServer(): Error creating listening socket.");
         exit(EXIT_FAILURE);
     }
 
@@ -139,16 +133,16 @@ int TcpServer::createTcpServer() {
         listening socket, and call listen()  */
 
     if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-        Helper::logError("TcpServer::createTcpServer(): Error calling bind()");
+        logArray->logError("TCP", "TcpServer::createTcpServer(): Error calling bind()");
         exit(EXIT_FAILURE);
     }
 
     if (listen(list_s, LISTENQ) < 0) {
-        Helper::logError("TcpServer::createTcpServer(): Error calling listen()");
+        logArray->logError("TCP", "TcpServer::createTcpServer(): Error calling listen()");
         exit(EXIT_FAILURE);
     }
 
-    Helper::logInfo("TCP Server prepared");
+    logArray->log("TCP", "server prepared");
 
     return list_s;
 }

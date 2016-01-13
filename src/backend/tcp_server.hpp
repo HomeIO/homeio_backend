@@ -17,6 +17,7 @@
 
 #include "tcp_command.hpp"
 #include "meas_type_array.hpp"
+#include "ncurses/log_array.hpp"
 
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)
@@ -36,6 +37,7 @@ public:
   unsigned short int port;
   TcpCommand *tcpCommand;
   MeasTypeArray *measTypeArray;
+  LogArray *logArray;
 
   unsigned long long usDelay;
 
