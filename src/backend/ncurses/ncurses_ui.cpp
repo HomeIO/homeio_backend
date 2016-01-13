@@ -120,8 +120,8 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   switch(item_index(current_item(my_menu)))
   {
     case NC_MENU_HOME:
-      home->log("test");
-      home->logError("test");
+      home->logArray->log("test");
+      home->logArray->logError("test");
       home->render(local_win);
       break;
     case NC_MENU_MEAS:
