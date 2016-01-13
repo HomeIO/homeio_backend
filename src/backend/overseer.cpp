@@ -11,16 +11,10 @@ Overseer::Overseer() {
 
 }
 
-void Overseer::logInfo(std::string log) {
-  Helper::logWithColor(log, MAGENTA);
-}
-
 bool Overseer::check() {
   if (checkLastExecutionTime() == false) {
     return false;
   }
-
-  Helper::logInfo("OverseerArray [" + name + "] check");
 
   double value = currentValue();
   bool result = false;
@@ -36,10 +30,7 @@ bool Overseer::check() {
     }
   }
 
-  Helper::logInfo("OverseerArray [" + name + "] value=" + std::to_string(value));
-  Helper::logInfo("OverseerArray [" + name + "] windowSize=" + std::to_string(windowSize));
-  Helper::logInfo("OverseerArray [" + name + "] thresholdValue=" + std::to_string(thresholdValue));
-  Helper::logInfo("OverseerArray [" + name + "] result=" + std::to_string(result));
+  logArray->log("Overseer", "[" + name + "] value=" + std::to_string(value) + ",windowSize=" + std::to_string(windowSize) + ",thresholdValue=" + std::to_string(thresholdValue) + "," + "result=" + std::to_string(result));
 
   if (result) {
     execute();
@@ -93,7 +84,7 @@ double Overseer::currentValue() {
 }
 
 unsigned int Overseer::execute() {
-  Helper::logInfo("OverseerArray [" + name + "] execute now");
+  //logArray->log("Overseer", "[" + name + "] execute now");
 
   unsigned int result;
   result = action->execute();

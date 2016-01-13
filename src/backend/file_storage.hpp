@@ -11,6 +11,7 @@
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
 #include "storage_hash.hpp"
+#include "log/log_array.hpp"
 
 class FileStorage {
 public:
@@ -31,6 +32,7 @@ public:
   std::mutex shutdownMutex;
 
   MeasTypeArray *measTypeArray;
+  LogArray *logArray;
 };
 
 //#include "file_storage.cpp"

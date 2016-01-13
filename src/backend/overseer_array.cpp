@@ -38,6 +38,7 @@ void OverseerArray::start() {
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     it->meas = measTypeArray->byName(it->measName);
     it->action = actionTypeArray->byName(it->actionName);
+    it->logArray = logArray;
     it->check();
   }
 

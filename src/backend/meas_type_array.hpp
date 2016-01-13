@@ -5,6 +5,7 @@
 #include <vector>
 #include "meas_type.hpp"
 #include "io/io_proxy.hpp"
+#include "log/log_array.hpp"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ public:
 
   vector <MeasType> measTypes;
   IoProxy *ioProxy;
+  LogArray *logArray;
   unsigned int i;
 
   // used by other utils like overseers, storage, to

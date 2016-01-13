@@ -23,7 +23,7 @@ void FileStorage::start()
 
   while(isRunning) {
     performMeasStore();
-    Helper::logInfo("FileStorage");
+    logArray->log("FileStorage", "done");
 
     Helper::longSleep(cycleInterval);
   };
@@ -33,13 +33,13 @@ void FileStorage::stop() {
   isRunning = false;
   // wait for end storage
   shutdownMutex.lock();
-  Helper::logInfo("FileStorage - stop");
+  logArray->log("FileStorage", "stop initiated");
 
   // reset mutex
   shutdownMutex.unlock();
   // perform the last storage before exiting
   performMeasStore();
-  Helper::logInfo("FileStorage - terminal storage done");
+  logArray->log("FileStorage", "stop");
 }
 
 void FileStorage::performMeasStore() {
@@ -47,20 +47,20 @@ void FileStorage::performMeasStore() {
 
   currentTime = Helper::mTime();
 
-  Helper::logInfo("FileStorage - start meas file storage");
+  logArray->log("FileStorage", "start meas file storage");
 
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     storeMeasArray(&*it, it->storageArray(it->lastStored, currentTime));
   }
 
-  Helper::logInfo("FileStorage - end meas file storage");
+  logArray->log("FileStorage", "finish meas file storage");
 
   shutdownMutex.unlock();
 }
 
 void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storageVector) {
   if (storageVector.size() == 0) {
-    Helper::logInfo("FileStorage [" + measType->name + "] no data to store");
+    logArray->log("FileStorage", "[" + measType->name + "] no data to store");
     return;
   }
   else {
@@ -73,7 +73,7 @@ void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storag
   std::string currentDate = Helper::currentDateSafe();
   std::string filename = path + "/" + measType->name + "_" + currentDate + ".csv";
 
-  Helper::logInfo("FileStorage [" + measType->name + "] path " + filename);
+  logArray->log("FileStorage", "[" + measType->name + "] path: " + filename);
 
   outfile.open(filename, ios_base::app);
   for(std::vector<StorageHash>::iterator it = storageVector.begin(); it != storageVector.end(); ++it) {
@@ -86,5 +86,5 @@ void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storag
   }
   outfile.close();
 
-  Helper::logInfo("FileStorage [" + measType->name + "] stored " + std::to_string(measCount));
+  logArray->log("FileStorage", "[" + measType->name + "] stored with " + std::to_string(measCount) + " meas");
 }

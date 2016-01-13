@@ -6,6 +6,7 @@
 
 #include "action_type.hpp"
 #include "meas_type.hpp"
+#include "log/log_array.hpp"
 
 class Overseer {
 public:
@@ -28,6 +29,7 @@ public:
 
   MeasType *meas;
   ActionType *action;
+  LogArray *logArray;
 
   Overseer();
   bool check();
@@ -35,9 +37,6 @@ public:
   unsigned int execute();
   std::string toJson();
   std::string timeBufferToJson();
-
-  void logInfo(std::string log); // overwritten color
-
 
 private:
 };

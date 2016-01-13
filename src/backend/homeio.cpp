@@ -49,6 +49,8 @@ HomeIO::HomeIO() {
   tcpCommand->logArray = logArray;
   spy->logArray = logArray;
   overseerArray->logArray = logArray;
+  measTypeArray->logArray = logArray;
+  fileStorage->logArray = logArray;
 
 }
 

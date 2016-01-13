@@ -10,7 +10,7 @@ unsigned int MeasTypeArray::add(MeasType *m) {
   m->index = i;
   measTypes.push_back(*m);
   i++;
-  Helper::logInfo("MeasType added: '" + m->name + "' (" + std::to_string(measTypes.size()) + " total meas types)");
+  logArray->log("Meas", "[" + m->name + "] added: (" + std::to_string(measTypes.size()) + " total meas types)");
   return 0;
 }
 
