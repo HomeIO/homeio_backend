@@ -6,6 +6,7 @@
 #include <mutex>
 
 #include "meas_type_array.hpp"
+#include "log/log_array.hpp"
 
 #include <cstdlib>
 #include <cerrno>
@@ -29,6 +30,7 @@ public:
   std::string url;
 
   MeasTypeArray *measTypeArray;
+  LogArray *logArray;
 
   unsigned long int cycleInterval;
   unsigned long long lastTime;

@@ -33,7 +33,7 @@ void Spy::start()
 
 void Spy::stop() {
   shutdownMutex.lock();
-  Helper::logInfo("Spy - stop");
+  logArray->log("Spy", "stop");
 }
 
 
@@ -46,8 +46,8 @@ void Spy::announceAll(){
     shutdownMutex.unlock();
   }
 
-  Helper::logInfo("Spy - announce completed");
   lastTime = Helper::mTime();
+  logArray->log("Spy", "announce completed");
 }
 
 unsigned char Spy::annouceMeas(std::string name, double value) {
@@ -78,11 +78,11 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
 
   }
   catch ( curlpp::LogicError & e ) {
-    Helper::logError(e.what());
+    logArray->logError("Spy", e.what());
     return 1;
   }
   catch ( curlpp::RuntimeError & e ) {
-    Helper::logError(e.what());
+    logArray->logError("Spy", e.what());
     return 1;
   }
 

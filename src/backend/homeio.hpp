@@ -23,6 +23,7 @@
 
 #include "addons/all_addons.hpp"
 
+#include "log/log_array.hpp"
 #include "ncurses/ncurses_ui.hpp"
 
 class HomeIO {
@@ -59,6 +60,7 @@ public:
   MeasGroup *measGroup;
   AddonsArray *addonsArray;
   NcursesUI *ncursesUI;
+  LogArray *logArray;
 
   bool ioServerReady;
 };

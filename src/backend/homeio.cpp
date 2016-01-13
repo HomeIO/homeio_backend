@@ -44,7 +44,12 @@ HomeIO::HomeIO() {
   spy->measTypeArray = measTypeArray;
   addonsArray->measTypeArray = measTypeArray;
 
-  tcpServer->logArray = ncursesUI->home->logArray;
+  logArray = ncursesUI->home->logArray;
+  tcpServer->logArray = logArray;
+  tcpCommand->logArray = logArray;
+  spy->logArray = logArray;
+  overseerArray->logArray = logArray;
+
 }
 
 unsigned char HomeIO::startFetch() {

@@ -17,7 +17,7 @@
 
 #include "tcp_command.hpp"
 #include "meas_type_array.hpp"
-#include "ncurses/log_array.hpp"
+#include "log/log_array.hpp"
 
 #define LISTENQ (1024) // Backlog for listen()
 #define MAX_LINE (5000)

@@ -14,7 +14,7 @@ void OverseerArray::logInfo(std::string log) {
 
 unsigned int OverseerArray::add(Overseer *o) {
   overseers.push_back(*o);
-  Helper::logInfo("Overseer added: '" + o->name + "' (" + std::to_string(overseers.size()) + " total overseers)");
+  logArray->log("Overseer", "added: '" + o->name + "' (" + std::to_string(overseers.size()) + " total overseers)");
   return 0;
 }
 
@@ -33,7 +33,7 @@ void OverseerArray::start() {
   measTypeArray->delayTillReady();
 
 
-  Helper::logInfo("OverseerArray start");
+  logArray->log("Overseer", "start");
 
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     it->meas = measTypeArray->byName(it->measName);
@@ -43,13 +43,13 @@ void OverseerArray::start() {
 
   while(isRunning) {
     shutdownMutex.lock();
-    Helper::logInfo("OverseerArray loop start");
+    logArray->log("Overseer", "loop start");
 
     for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
       it->check();
     }
 
-    Helper::logInfo("OverseerArray loop end");
+    logArray->log("Overseer", "loop end");
     shutdownMutex.unlock();
 
     // check overseers every next X useconds
@@ -59,5 +59,5 @@ void OverseerArray::start() {
 
 void OverseerArray::stop() {
   shutdownMutex.lock();
-  Helper::logInfo("OverseerArray - stop");
+  logArray->log("Overseer", "stop");
 }

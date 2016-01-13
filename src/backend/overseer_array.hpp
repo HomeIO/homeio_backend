@@ -8,6 +8,7 @@
 #include "overseer.hpp"
 #include "action_type_array.hpp"
 #include "meas_type_array.hpp"
+#include "log/log_array.hpp"
 
 class OverseerArray {
 public:
@@ -20,6 +21,7 @@ public:
 
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
+  LogArray *logArray;
   std::vector <Overseer> overseers;
   unsigned long int cycleInterval;
 

@@ -4,13 +4,9 @@ TcpCommand::TcpCommand() {
   bootTime = Helper::mTime();
 }
 
-void TcpCommand::logInfo(std::string log) {
-  Helper::logWithColor(log, CYAN);
-}
-
 // sample command: "meas;batt_u;0;100;"
 std::string TcpCommand::processCommand(string command) {
-  Helper::logInfo("TCP command: " + command);
+  logArray->log("TcpCommand", command);
 
   std::string commandName, response;
   response = "{}";
@@ -72,7 +68,8 @@ std::string TcpCommand::processCommand(string command) {
     response = processStatsCommand(command);
   }
 
-  Helper::logInfo("TCP response: " + response);
+  // TODO large amount of text
+  //logArray->log("TcpCommand", "response: " + response);
 
   return response;
 }
@@ -156,7 +153,7 @@ std::string TcpCommand::processMeasRawForTimeCommand(string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    Helper::logInfo("TCP command: processMeasRawForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ")" );
+    logArray->log("TcpCommand", "processMeasRawForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ")" );
 
     string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
@@ -202,7 +199,7 @@ std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command)
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    Helper::logInfo("TCP command: processMeasRawHistoryForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ", " + std::to_string(maxSize) + ")" );
+    logArray->log("TcpCommand", "processMeasRawHistoryForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ", " + std::to_string(maxSize) + ")" );
 
     string bufferString = foundMeasType->rawHistoryForTimeJson(tFrom, tTo, maxSize);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
@@ -246,7 +243,7 @@ std::string TcpCommand::processMeasRawForIndexCommand(std::string command) {
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    Helper::logInfo("TCP command: processMeasRawForIndexCommand(" + measName + ", " + std::to_string(iFrom) + ", " + std::to_string(iTo) + ")" );
+    logArray->log("TcpCommand", "processMeasRawForIndexCommand(" + measName + ", " + std::to_string(iFrom) + ", " + std::to_string(iTo) + ")" );
 
     std::string bufferString = foundMeasType->rawForIndexJson(iFrom, iTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";

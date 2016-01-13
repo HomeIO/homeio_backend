@@ -12,6 +12,7 @@
 #include "meas_fetcher.hpp"
 #include "frontend_settings.hpp"
 #include "meas_group.hpp"
+#include "log/log_array.hpp"
 
 using namespace std;
 
@@ -45,14 +46,13 @@ public:
 
   unsigned long long int bootTime;
 
-  void logInfo(string log); // overwritten color
-
   MeasTypeArray *measTypeArray;
   MeasFetcher *measFetcher;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FrontendSettings *frontendSettings;
   MeasGroup *measGroup;
+  LogArray *logArray;
 
 };
 

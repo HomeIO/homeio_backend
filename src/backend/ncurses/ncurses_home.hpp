@@ -9,7 +9,7 @@
 
 #include "../helper.hpp"
 #include "ncurses_colors.hpp"
-#include "log_array.hpp"
+#include "../log/log_array.hpp"
 
 class NcursesHome {
 public:
