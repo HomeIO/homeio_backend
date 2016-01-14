@@ -37,15 +37,15 @@ void NcursesMeas::renderMeas(WINDOW *w, MeasType *m) {
   offsetString += to_string(m->buffer->offset);
 
   wattron(w, NC_COLOR_PAIR_NAME_SET);
-  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_NAME, m->name.c_str() );
+  mvwprintw(w, (int) (3 + m->index), 1 + NC_MEAS_NAME, m->name.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_SET);
 
   wattron(w, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_VALUE, valueString.c_str());
+  mvwprintw(w, (int) (3 + m->index), 1 + NC_MEAS_VALUE, valueString.c_str());
   wattroff(w, NC_COLOR_PAIR_VALUE_SET);
 
   wattron(w, NC_COLOR_PAIR_LESSER_SET);
-  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_RAW, rawString.c_str());
-  mvwprintw(w, 3 + m->index, 1 + NC_MEAS_OFFSET, offsetString.c_str());
+  mvwprintw(w, (int) (3 + m->index), 1 + NC_MEAS_RAW, rawString.c_str());
+  mvwprintw(w, (int) (3 + m->index), 1 + NC_MEAS_OFFSET, offsetString.c_str());
   wattroff(w, NC_COLOR_PAIR_LESSER_SET);
 }

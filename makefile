@@ -8,7 +8,10 @@ FULL_WARNING_FLAG_GCC = -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings
 POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations   -Wshadow -Wsign-promo  -Wsign-conversion
 CPP_PATHS = src/backend/*.cpp src/backend/addons/*.cpp src/backend/io/*.cpp src/backend/ncurses/*.cpp src/backend/log/*.cpp
+EXTRA_LINK_FLAG = -static-libstdc++
 LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses -lmenu
+#STANDARD_FLAG = -std=gnu++11
+STANDARD_FLAG = -std=gnu++14
 
 hello: ;
 	@echo Hello
@@ -23,13 +26,13 @@ prepare-dir:
 	[ -d data ] || mkdir data
 
 build: ;
-	$(COMPILER) $(WARNING_FLAG) $(OPTIM_FLAG) -std=gnu++11 -I /usr/include $(LINK_FLAG) src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
+	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-warning:
-	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) -std=gnu++11 -I /usr/include $(LINK_FLAG) src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
+	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) -std=gnu++11 -g -oterm -I /usr/include $(LINK_FLAG) src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
+	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) -g -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 exec: ;
 	sudo bin/homeio_main_${SITE}
@@ -38,7 +41,8 @@ exec-debug: ;
 	gdb bin/homeio_main_${SITE}
 
 debian-deps: ;
-	sudo apt-get install libcurl4-openssl-dev git g++-4.9 cpp-4.9 libcurlpp0 libcurlpp-dev
+	echo "g++ at least 4.9 is needed"
+	sudo apt-get install libcurl4-openssl-dev git g++ libcurlpp0 libcurlpp-dev
 
 clean: ;
 	[ -e bin ] || rm -v ./bin/*

@@ -80,9 +80,9 @@ void Helper::redColor() {
 void Helper::logWithColor(std::string log, unsigned char color) {
   logMutex.lock();
 
-  //txtColor(RESET, color, BLACK);
-  //std::cout << detailCurrentTime() << " " << log << std::endl;
-  //resetColor();
+  txtColor(RESET, color, BLACK);
+  std::cout << detailCurrentTime() << " " << log << std::endl;
+  resetColor();
 
   logMutex.unlock();
 }

@@ -17,12 +17,12 @@ void NcursesHome::render(WINDOW *w) {
     if (it->error) {
       wattron(w, NC_COLOR_PAIR_ERROR_SET);
     }
-    mvwprintw(w, i, 1, it->line().c_str() );
+    mvwprintw(w, (int) i, 1, it->line().c_str() );
     if (it->error) {
       wattroff(w, NC_COLOR_PAIR_ERROR_SET);
     }
 
     i--;
   }
-  
+
 }
