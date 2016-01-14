@@ -4,8 +4,8 @@
 #include <mutex>
 
 #include "meas_type_array.hpp"
-#include "io/io_proxy.hpp"
-#include "log/log_array.hpp"
+#include "../io/io_proxy.hpp"
+#include "../log/log_array.hpp"
 
 class MeasFetcher {
 public:

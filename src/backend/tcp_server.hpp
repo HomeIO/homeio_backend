@@ -16,7 +16,7 @@
 #include <errno.h>
 
 #include "tcp_command.hpp"
-#include "meas_type_array.hpp"
+#include "meas/meas_type_array.hpp"
 #include "log/log_array.hpp"
 
 #define LISTENQ (1024) // Backlog for listen()

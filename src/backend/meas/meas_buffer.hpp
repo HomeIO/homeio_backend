@@ -6,8 +6,8 @@
 #include <math.h>
 #include <vector>
 #include <string>
-#include "helper.hpp"
-#include "log/log_array.hpp"
+#include "../helper.hpp"
+#include "../log/log_array.hpp"
 
 class MeasBuffer {
 public:

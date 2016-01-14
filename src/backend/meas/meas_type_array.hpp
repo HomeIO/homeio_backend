@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "meas_type.hpp"
-#include "io/io_proxy.hpp"
-#include "log/log_array.hpp"
+#include "../io/io_proxy.hpp"
+#include "../log/log_array.hpp"
 
 using namespace std;
 

@@ -7,11 +7,11 @@
 #include <vector>
 #include <mutex>
 
-#include "helper.hpp"
+#include "../helper.hpp"
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
 #include "storage_hash.hpp"
-#include "log/log_array.hpp"
+#include "../log/log_array.hpp"
 
 class FileStorage {
 public:

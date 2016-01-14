@@ -6,7 +6,7 @@
 
 #include "helper.hpp"
 #include "./addons/abstract_addon.hpp"
-#include "meas_type_array.hpp"
+#include "meas/meas_type_array.hpp"
 #include "log/log_array.hpp"
 
 class AddonsArray {

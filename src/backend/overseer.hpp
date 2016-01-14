@@ -5,7 +5,7 @@
 #include <ctime>
 
 #include "action_type.hpp"
-#include "meas_type.hpp"
+#include "meas/meas_type.hpp"
 #include "log/log_array.hpp"
 
 class Overseer {

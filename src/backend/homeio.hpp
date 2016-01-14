@@ -6,14 +6,16 @@
 #include <vector>
 
 #include "helper.hpp"
-#include "meas_type_array.hpp"
-#include "meas_fetcher.hpp"
+
+#include "meas/meas_type_array.hpp"
+#include "meas/meas_fetcher.hpp"
+#include "meas/meas_buffer_backup_storage.hpp"
+#include "meas/meas_group.hpp"
+#include "meas/file_storage.hpp"
+
 #include "tcp_server.hpp"
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
-#include "file_storage.hpp"
-#include "meas_buffer_backup_storage.hpp"
-#include "meas_group.hpp"
 #include "frontend_settings.hpp"
 #include "spy.hpp"
 #include "addons_array.hpp"

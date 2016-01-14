@@ -10,7 +10,7 @@
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
 #include "meas_buffer.hpp"
-#include "log/log_array.hpp"
+#include "../log/log_array.hpp"
 
 class MeasBufferBackupStorage {
 public:

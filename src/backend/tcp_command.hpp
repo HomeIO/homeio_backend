@@ -6,12 +6,14 @@
 #include <string>
 #include <cstdio>
 
-#include "meas_type_array.hpp"
+#include "meas/meas_type_array.hpp"
+#include "meas/meas_fetcher.hpp"
+#include "meas/meas_group.hpp"
+
 #include "action_type_array.hpp"
 #include "overseer_array.hpp"
-#include "meas_fetcher.hpp"
 #include "frontend_settings.hpp"
-#include "meas_group.hpp"
+
 #include "log/log_array.hpp"
 
 using namespace std;
