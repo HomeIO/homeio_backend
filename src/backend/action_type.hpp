@@ -16,7 +16,6 @@ public:
   unsigned int execute();
   std::string toJson();
   std::string historyToJson();
-  void logInfo(std::string log); // overwritten color
   unsigned long long lastExecutedAt();
   bool wasExecuted();
 

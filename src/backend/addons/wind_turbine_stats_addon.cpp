@@ -148,7 +148,7 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   string currentDate = Helper::currentDateSafe();
   string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
 
-  Helper::logInfo("WindTurbineStats store path " + filename);
+  logArray->log("WindTurbineStats", "store path " + filename);
 
   outfile.open(filename, ios_base::app);
   outfile << s.time << "; ";
@@ -163,5 +163,5 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   outfile << endl;
   outfile.close();
 
-  Helper::logInfo("WindTurbineStats stored");
+  logArray->log("WindTurbineStats", "stored");
 }

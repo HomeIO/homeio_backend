@@ -3,6 +3,7 @@
 
 #include <string>
 #include "../meas_type_array.hpp"
+#include "../log/log_array.hpp"
 
 class AbstractAddon {
 public:
@@ -10,6 +11,7 @@ public:
   virtual void perform();
 
   MeasTypeArray *measTypeArray;
+  LogArray *logArray;
   std::string name;
 };
 

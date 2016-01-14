@@ -5,6 +5,5 @@ SampleAddon::SampleAddon() {
 }
 
 void SampleAddon::perform() {
-  //  + std::to_string( measTypeArray->byName("int_temperature")->lastValue() )
-  Helper::logInfo("It's sample addon ");
+  logArray->log("Addon", "It's sample addon ");
 }
