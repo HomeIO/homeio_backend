@@ -6,6 +6,7 @@
 #include "io_config.hpp"
 #include "io_tcp_server.hpp"
 #include "io_rs.hpp"
+#include "../log/log_array.hpp"
 
 class IoServer {
 public:
@@ -29,6 +30,7 @@ public:
 
   IoRS *rs;
   IoTcpServer *tcp;
+  LogArray *logArray;
 
 };
 

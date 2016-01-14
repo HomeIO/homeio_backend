@@ -55,6 +55,9 @@ HomeIO::HomeIO() {
   addonsArray->logArray = logArray;
   measBufferBackupStorage->logArray = logArray;
   measFetcher->logArray = logArray;
+  ioProxy->logArray = logArray;
+  ioServer->logArray = logArray;
+  ioServer->tcp->logArray = logArray;
 }
 
 unsigned char HomeIO::startFetch() {
@@ -67,7 +70,7 @@ unsigned char HomeIO::startFetch() {
   for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
     m->resizeBuffer( measFetcher->maxBufferSize );
   }
-  Helper::logInfo("MeasFetcher: resize buffer size to " + std::to_string(measFetcher->maxBufferSize) );
+  logArray->log("MeasFetcher", "resize buffer size to " + std::to_string(measFetcher->maxBufferSize) );
 
   // restore buffer before restart
   measBufferBackupStorage->performRestore();
@@ -138,9 +141,8 @@ unsigned char HomeIO::startNcurses() {
 
 void *measStartThread(void *argument)
 {
-  Helper::logInfo("Thread: startFetch() - meas fetching");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: startFetch() - meas fetching");
   h->startFetch();
 
   return NULL;
@@ -148,9 +150,8 @@ void *measStartThread(void *argument)
 
 void *tcpServerThread(void *argument)
 {
-  Helper::logInfo("Thread: startServer() - TCP commands");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: startServer() - TCP commands");
   h->startServer();
 
   return NULL;
@@ -158,9 +159,8 @@ void *tcpServerThread(void *argument)
 
 void *ioServerThread(void *argument)
 {
-  Helper::logInfo("Thread: startIoServer() - IoServer - hardware-TCP bridge");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: startIoServer() - IoServer - hardware-TCP bridge");
   h->startIoServer();
 
   return NULL;
@@ -168,9 +168,8 @@ void *ioServerThread(void *argument)
 
 void *ioOverseerThread(void *argument)
 {
-  Helper::logInfo("Thread: ioOverseerThread() - low level overseeers");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: ioOverseerThread() - low level overseeers");
   h->startOverseer();
 
   return NULL;
@@ -178,9 +177,8 @@ void *ioOverseerThread(void *argument)
 
 void *fileStorageThread(void *argument)
 {
-  Helper::logInfo("Thread: fileStorageThread() - store measurement in files");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: fileStorageThread() - store measurement in files");
   h->startFileStorage();
 
   return NULL;
@@ -188,9 +186,8 @@ void *fileStorageThread(void *argument)
 
 void *fileBufferBackupThread(void *argument)
 {
-  Helper::logInfo("Thread: fileBufferBackupThread() - store measurement buffer backup");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: fileBufferBackupThread() - store measurement buffer backup");
   h->startBufferBackupStorage();
 
   return NULL;
@@ -198,9 +195,8 @@ void *fileBufferBackupThread(void *argument)
 
 void *spyThread(void *argument)
 {
-  Helper::logInfo("Thread: spyThread() - announce measurements to central server");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: spyThread() - announce measurements to central server");
   h->startSpy();
 
   return NULL;
@@ -208,9 +204,8 @@ void *spyThread(void *argument)
 
 void *addonsThread(void *argument)
 {
-  Helper::logInfo("Thread: addonsThread() - execute addon modules");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: addonsThread() - execute addon modules");
   h->startAddons();
 
   return NULL;
@@ -218,9 +213,8 @@ void *addonsThread(void *argument)
 
 void *ncursesThread(void *argument)
 {
-  Helper::logInfo("Ncurses: addonsThread() - interface");
-
   HomeIO *h = (HomeIO *) argument;
+  h->logArray->log("HomeIO", "Thread: addonsThread() - interface");
   h->startNcurses();
 
   return NULL;
@@ -252,14 +246,14 @@ unsigned char HomeIO::start() {
     usleep(50000);
   }
 
-  pthread_create(&threads[1], NULL, measStartThread, (void *) h);
-  pthread_create(&threads[2], NULL, tcpServerThread, (void *) h);
-  pthread_create(&threads[3], NULL, ioOverseerThread, (void *) h);
-  pthread_create(&threads[4], NULL, fileStorageThread, (void *) h);
-  pthread_create(&threads[5], NULL, fileBufferBackupThread, (void *) h);
-  pthread_create(&threads[6], NULL, spyThread, (void *) h);
-  pthread_create(&threads[7], NULL, addonsThread, (void *) h);
-  pthread_create(&threads[8], NULL, ncursesThread, (void *) h);
+  pthread_create(&threads[1], NULL, ncursesThread, (void *) h);
+  pthread_create(&threads[2], NULL, measStartThread, (void *) h);
+  pthread_create(&threads[3], NULL, tcpServerThread, (void *) h);
+  pthread_create(&threads[4], NULL, ioOverseerThread, (void *) h);
+  pthread_create(&threads[5], NULL, fileStorageThread, (void *) h);
+  pthread_create(&threads[6], NULL, fileBufferBackupThread, (void *) h);
+  pthread_create(&threads[7], NULL, spyThread, (void *) h);
+  pthread_create(&threads[8], NULL, addonsThread, (void *) h);
 
    // wait for each thread to complete
    for (i=0; i<NUM_THREADS; ++i) {
@@ -274,7 +268,7 @@ unsigned char HomeIO::start() {
 
 unsigned char HomeIO::stop() {
   cout << endl << endl;
-  Helper::logInfo("Shutdown initialized");
+  logArray->log("HomeIO", "Shutdown initialized");
 
   measBufferBackupStorage->stop();
   fileStorage->stop();
@@ -286,6 +280,7 @@ unsigned char HomeIO::stop() {
   addonsArray->stop();
   ncursesUI->stop();
 
-  Helper::logInfo("Shutdown completed");
+  logArray->log("HomeIO", "Shutdown completed");
+
   exit(EXIT_SUCCESS);
 }

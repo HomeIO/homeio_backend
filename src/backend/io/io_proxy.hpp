@@ -12,6 +12,7 @@
 #include <mutex>
 
 #include "../helper.hpp"
+#include "../log/log_array.hpp"
 
 class IoProxy {
 public:
@@ -20,6 +21,7 @@ public:
   uint16_t port;
   bool verbose;
   std::mutex tcpMutex;
+  LogArray *logArray;
 
   unsigned int fetch(unsigned char commandChar, unsigned char responseSize);
 

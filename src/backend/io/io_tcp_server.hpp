@@ -18,6 +18,7 @@
 
 #include "io_config.hpp"
 #include "../helper.hpp"
+#include "../log/log_array.hpp"
 
 #define IO_SERVER_LISTENQ (1024) // Backlog for listen()
 #define IO_SERVER_MAX_LINE (1000)
@@ -43,6 +44,8 @@ public:
   time_t rawtime;
   struct tm * timeinfo;
   bool verbose;
+
+  LogArray *logArray;
 
   IoTcpServer();
   int createTcpServer();
