@@ -79,7 +79,7 @@ bool MeasBuffer::isSpike(unsigned int a, unsigned int b, unsigned int c) {
   int absB = abs( (int) a - (int) b );
 
   if (absB > 10 * (absA + 1) ) {
-    Helper::logInfo("MeasBuffer: found SPIKE " + std::to_string(a) + " - " + std::to_string(b) + " - " + std::to_string(c) );
+    logArray->log("MeasBuffer", "found SPIKE " + std::to_string(a) + " - " + std::to_string(b) + " - " + std::to_string(c) );
     return true;
   } else {
     return false;
@@ -167,7 +167,7 @@ std::vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, u
       to = maxSize - 1;
     }
 
-    Helper::logInfo("MeasBuffer: UP getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
+    logArray->log("MeasBuffer", "UP getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
 
     responseIndexInterval = calculateIndexInterval(from, to, responseMaxSize);
     for (i = from; i <= to; i += responseIndexInterval) {
@@ -182,7 +182,7 @@ std::vector < unsigned int > MeasBuffer::getFromBuffer(unsigned long int from, u
       from = maxSize - 1;
     }
 
-    Helper::logInfo("MeasBuffer: DOWN getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
+    logArray->log("MeasBuffer", "DOWN getFromBuffer(" + std::to_string(from) + ", " + std::to_string(to) + ", " + std::to_string(responseMaxSize) + ")");
 
     responseIndexInterval = calculateIndexInterval(to, from, responseMaxSize);
     for (i = from; (i > to) && (i >= responseIndexInterval); i -= responseIndexInterval) {

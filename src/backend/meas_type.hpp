@@ -13,6 +13,7 @@
 #include "meas_buffer.hpp"
 #include "meas_type_storage.hpp"
 #include "meas_trend.hpp"
+#include "log/log_array.hpp"
 
 class MeasType {
 public:
@@ -65,10 +66,10 @@ public:
   bool extBackendRemoveSpikes;
 
   bool started;
-  std::string logPrefix;
 
   IoProxy *ioProxy;
   MeasTypeStorage *measTypeStorage;
+  LogArray *logArray;
 
   unsigned long int timeToIndex(unsigned long long t);
   std::vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);

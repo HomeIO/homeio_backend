@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "helper.hpp"
+#include "log/log_array.hpp"
 
 class MeasBuffer {
 public:
@@ -53,6 +54,7 @@ public:
   // it's not very accurate
   unsigned long long earliestTime();
 
+  LogArray *logArray;
 
 private:
   std::vector < meas_buffer_elemt > buffer;

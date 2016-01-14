@@ -35,7 +35,6 @@ unsigned int MeasType::fetch() {
 
   unsigned int raw = ioProxy->fetch(command, responseSize);
   addRaw(raw);
-  Helper::logInfo(fetchString(raw));
 
   return raw;
 }
@@ -48,11 +47,14 @@ void MeasType::prepareFetch() {
   // mark buffer to fix spikes
   buffer->removeSpikes = extBackendRemoveSpikes;
 
-  logPrefix = "MeasBuffer [" + name + "] ";
-  logPrefix.append(35 - logPrefix.length(), ' ');
+  // deprecated
+  //logPrefix = "MeasBuffer [" + name + "] ";
+  //logPrefix.append(35 - logPrefix.length(), ' ');
   started = true;
 }
 
+// deprecated
+// used in old meas fetched log output
 std::string MeasType::fetchString(unsigned int raw) {
   std::string tmpString = "";
   std::string partialString = "";
@@ -76,7 +78,7 @@ std::string MeasType::fetchString(unsigned int raw) {
 
   tmpString += Helper::strColor(RESET, GREEN, BLACK);
 
-  return logPrefix + tmpString;
+  return "MeasBuffer [" + name + "] " + tmpString;
 }
 
 unsigned int MeasType::addRaw(unsigned int _raw) {
@@ -121,12 +123,12 @@ double MeasType::currentAvgValue() {
 
 void MeasType::recalculateAvg() {
   if ( (Helper::mTime() - lastAvgTime) > intervalAvg) {
-    Helper::logInfo("recalculateAvg() start");
+    logArray->log("Meas", "[" + name + "] recalculateAvg() start");
 
     avgValue = lastValueFor(windowAvg);
     lastAvgTime = Helper::mTime();
 
-    Helper::logInfo("recalculateAvg() finish");
+    logArray->log("Meas", "[" + name + "] recalculateAvg() finish - " + std::to_string(avgValue));
   }
 }
 
@@ -161,10 +163,6 @@ std::string MeasType::toJson() {
   json += "}";
 
   return json;
-}
-
-void logInfo(std::string log) {
-  Helper::logWithColor(log, GREEN);
 }
 
 unsigned long int MeasType::timeToIndex(unsigned long long t) {

@@ -5,6 +5,7 @@
 
 #include "meas_type_array.hpp"
 #include "io/io_proxy.hpp"
+#include "log/log_array.hpp"
 
 class MeasFetcher {
 public:
@@ -14,6 +15,7 @@ public:
 
   MeasTypeArray *measTypeArray;
   IoProxy *ioProxy;
+  LogArray *logArray;
 
   unsigned long int betweenMeasInterval; // 5000
   unsigned long int cycleInterval; // 20000

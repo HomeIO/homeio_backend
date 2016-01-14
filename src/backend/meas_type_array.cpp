@@ -8,6 +8,9 @@ MeasTypeArray::MeasTypeArray() {
 
 unsigned int MeasTypeArray::add(MeasType *m) {
   m->index = i;
+  m->logArray = logArray;
+  m->buffer->logArray = logArray;
+
   measTypes.push_back(*m);
   i++;
   logArray->log("Meas", "[" + m->name + "] added: (" + std::to_string(measTypes.size()) + " total meas types)");

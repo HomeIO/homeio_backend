@@ -54,6 +54,7 @@ HomeIO::HomeIO() {
   actionTypeArray->logArray = logArray;
   addonsArray->logArray = logArray;
   measBufferBackupStorage->logArray = logArray;
+  measFetcher->logArray = logArray;
 }
 
 unsigned char HomeIO::startFetch() {

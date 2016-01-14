@@ -11,6 +11,7 @@ MeasFetcher::MeasFetcher() {
 
 void MeasFetcher::start() {
   ioProxy->prepareSocket();
+  logArray->log("MeasFetcher", "start");
 
   while(isRunning) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
@@ -33,5 +34,5 @@ void MeasFetcher::start() {
 
 void MeasFetcher::stop() {
   shutdownMutex.lock();
-  Helper::logInfo("MeasFetcher - stop");
+  logArray->log("MeasFetcher", "stop");
 }
