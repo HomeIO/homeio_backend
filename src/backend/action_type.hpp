@@ -8,6 +8,7 @@
 
 #include "helper.hpp"
 #include "io/io_proxy.hpp"
+#include "log/log_array.hpp"
 
 class ActionType {
 public:
@@ -33,6 +34,7 @@ public:
   void markExecutionTime();
 
   IoProxy *ioProxy;
+  LogArray *logArray;
 
 };
 

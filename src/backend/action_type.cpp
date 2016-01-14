@@ -6,23 +6,19 @@ ActionType::ActionType() {
   maxTimeBufferSize = 100;
 }
 
-void ActionType::logInfo(std::string log) {
-  Helper::logWithColor(log, YELLOW);
-}
-
 unsigned int ActionType::execute() {
   unsigned int raw = ioProxy->fetch(command, responseSize);
 
   if (raw == responseOkay) {
     executionCount++;
     markExecutionTime();
-    Helper::logInfo("ActionType [" + name + "] executed");
+    logArray->log("ActionType", "[" + name + "] executed");
 
     return 0;
   }
   else {
     failedCount++;
-    Helper::logError("ActionType [" + name + "] FAILED, result=" + std::to_string(raw) + ",command=" + std::to_string(command) + ",responseSize=" + std::to_string(responseSize) );
+    logArray->logError("ActionType", "[" + name + "] FAILED, result=" + std::to_string(raw) + ",command=" + std::to_string(command) + ",responseSize=" + std::to_string(responseSize) );
 
     return 1;
   }

@@ -10,6 +10,7 @@
 #include "meas_type_array.hpp"
 #include "meas_type.hpp"
 #include "meas_buffer.hpp"
+#include "log/log_array.hpp"
 
 class MeasBufferBackupStorage {
 public:
@@ -30,6 +31,7 @@ public:
   std::mutex shutdownMutex;
 
   MeasTypeArray *measTypeArray;
+  LogArray *logArray;
 };
 
 //#include "meas_buffer_backup_storage.cpp"

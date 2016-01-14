@@ -5,8 +5,9 @@ ActionTypeArray::ActionTypeArray() {
 }
 
 unsigned int ActionTypeArray::add(ActionType *a) {
+  a->logArray = logArray;
   actionTypes.push_back(*a);
-  Helper::logInfo("ActionType added: '" + a->name + "' (" + std::to_string(actionTypes.size()) + " total action types)");
+  logArray->log("ActionType", "[" + a->name + "] added (" + std::to_string(actionTypes.size()) + " total action types)");
   return 0;
 }
 

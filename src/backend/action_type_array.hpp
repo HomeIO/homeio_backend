@@ -5,6 +5,7 @@
 #include <vector>
 #include "action_type.hpp"
 #include "io/io_proxy.hpp"
+#include "log/log_array.hpp"
 
 class ActionTypeArray {
 public:
@@ -14,6 +15,7 @@ public:
 
   std::vector <ActionType> actionTypes;
   IoProxy *ioProxy;
+  LogArray *logArray;
 };
 
 //#include "action_type_array.cpp"

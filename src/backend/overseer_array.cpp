@@ -8,10 +8,6 @@ OverseerArray::OverseerArray() {
   isRunning = true;
 }
 
-void OverseerArray::logInfo(std::string log) {
-  Helper::logWithColor(log, MAGENTA);
-}
-
 unsigned int OverseerArray::add(Overseer *o) {
   overseers.push_back(*o);
   logArray->log("Overseer", "added: '" + o->name + "' (" + std::to_string(overseers.size()) + " total overseers)");

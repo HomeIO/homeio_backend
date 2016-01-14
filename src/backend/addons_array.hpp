@@ -7,6 +7,7 @@
 #include "helper.hpp"
 #include "./addons/abstract_addon.hpp"
 #include "meas_type_array.hpp"
+#include "log/log_array.hpp"
 
 class AddonsArray {
 public:
@@ -21,6 +22,7 @@ public:
   std::mutex shutdownMutex;
 
   MeasTypeArray* measTypeArray;
+  LogArray *logArray;
 };
 
 //#include "addons_array.cpp"

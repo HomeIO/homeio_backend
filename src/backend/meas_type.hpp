@@ -29,7 +29,6 @@ public:
   std::string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);
   std::string rawForIndexJson(unsigned long int indexFrom, unsigned long long indexTo);
   std::string rawHistoryForTimeJson(unsigned long long timeFrom, unsigned long long timeTo, unsigned long int responseMaxSize);
-  void logInfo(std::string log); // overwritten color
 
   unsigned long int minTimeDiffToStore;
   unsigned long int maxTimeDiffToStore;

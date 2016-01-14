@@ -17,7 +17,6 @@ public:
   void start();
   void stop();
   Overseer *byName(std::string s);
-  void logInfo(std::string log); // overwritten color
 
   MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
