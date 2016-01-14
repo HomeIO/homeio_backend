@@ -4,9 +4,9 @@
 #include <string>
 #include <ctime>
 
-#include "action/action_type.hpp"
-#include "meas/meas_type.hpp"
-#include "log/log_array.hpp"
+#include "../action/action_type.hpp"
+#include "../meas/meas_type.hpp"
+#include "../log/log_array.hpp"
 
 class Overseer {
 public:

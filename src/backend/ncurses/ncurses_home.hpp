@@ -7,7 +7,7 @@
 #include <string>
 
 
-#include "../helper.hpp"
+#include "../utils/helper.hpp"
 #include "ncurses_colors.hpp"
 #include "../log/log_array.hpp"
 

@@ -5,8 +5,8 @@
 #include <vector>
 #include <mutex>
 
-#include "meas/meas_type_array.hpp"
-#include "log/log_array.hpp"
+#include "../meas/meas_type_array.hpp"
+#include "../log/log_array.hpp"
 
 #include <cstdlib>
 #include <cerrno>

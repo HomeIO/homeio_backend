@@ -4,10 +4,10 @@
 #include <vector>
 #include <mutex>
 
-#include "helper.hpp"
-#include "./addons/abstract_addon.hpp"
-#include "meas/meas_type_array.hpp"
-#include "log/log_array.hpp"
+#include "../utils/helper.hpp"
+#include "abstract_addon.hpp"
+#include "../meas/meas_type_array.hpp"
+#include "../log/log_array.hpp"
 
 class AddonsArray {
 public:

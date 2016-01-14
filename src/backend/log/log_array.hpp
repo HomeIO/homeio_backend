@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "../helper.hpp"
+#include "../utils/helper.hpp"
 #include "log_item.hpp"
 
 class LogArray {

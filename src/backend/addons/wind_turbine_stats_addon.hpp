@@ -7,7 +7,7 @@
 
 #include "abstract_addon.hpp"
 #include "wind_turbine_stat.hpp"
-#include "../helper.hpp"
+#include "../utils/helper.hpp"
 
 using namespace std;
 

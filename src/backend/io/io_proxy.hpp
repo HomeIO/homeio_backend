@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <mutex>
 
-#include "../helper.hpp"
+#include "../utils/helper.hpp"
 #include "../log/log_array.hpp"
 
 class IoProxy {

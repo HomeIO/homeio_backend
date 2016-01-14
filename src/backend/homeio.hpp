@@ -5,8 +5,6 @@
 #include <signal.h>
 #include <vector>
 
-#include "helper.hpp"
-
 #include "meas/meas_type_array.hpp"
 #include "meas/meas_fetcher.hpp"
 #include "meas/meas_buffer_backup_storage.hpp"
@@ -15,18 +13,22 @@
 
 #include "action/action_type_array.hpp"
 
-#include "tcp_server.hpp"
-#include "overseer_array.hpp"
-#include "frontend_settings.hpp"
-#include "spy.hpp"
-#include "addons_array.hpp"
+#include "overseer/overseer_array.hpp"
+
+#include "tcp/tcp_server.hpp"
+
+#include "utils/helper.hpp"
+#include "utils/frontend_settings.hpp"
+#include "utils/spy.hpp"
 
 #include "io/io_proxy.hpp"
 #include "io/io_server.hpp"
 
+#include "addons/addons_array.hpp"
 #include "addons/all_addons.hpp"
 
 #include "log/log_array.hpp"
+
 #include "ncurses/ncurses_ui.hpp"
 
 class HomeIO {

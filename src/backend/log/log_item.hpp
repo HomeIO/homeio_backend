@@ -2,7 +2,7 @@
 #define	LOG_ITEM_HPP
 
 #include <string>
-#include "../helper.hpp"
+#include "../utils/helper.hpp"
 
 class LogItem {
 public:
