@@ -10,7 +10,7 @@
 #include "meas/meas_fetcher.hpp"
 #include "meas/meas_group.hpp"
 
-#include "action_type_array.hpp"
+#include "action/action_type_array.hpp"
 #include "overseer_array.hpp"
 #include "frontend_settings.hpp"
 

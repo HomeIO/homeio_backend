@@ -6,9 +6,9 @@
 #include <vector>
 #include <time.h>
 
-#include "helper.hpp"
-#include "io/io_proxy.hpp"
-#include "log/log_array.hpp"
+#include "../helper.hpp"
+#include "../io/io_proxy.hpp"
+#include "../log/log_array.hpp"
 
 class ActionType {
 public:

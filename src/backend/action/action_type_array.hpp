@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include <vector>
+
 #include "action_type.hpp"
-#include "io/io_proxy.hpp"
-#include "log/log_array.hpp"
+#include "../io/io_proxy.hpp"
+#include "../log/log_array.hpp"
 
 class ActionTypeArray {
 public:

@@ -13,8 +13,9 @@
 #include "meas/meas_group.hpp"
 #include "meas/file_storage.hpp"
 
+#include "action/action_type_array.hpp"
+
 #include "tcp_server.hpp"
-#include "action_type_array.hpp"
 #include "overseer_array.hpp"
 #include "frontend_settings.hpp"
 #include "spy.hpp"
