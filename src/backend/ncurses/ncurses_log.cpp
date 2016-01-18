@@ -4,6 +4,7 @@ NcursesLog::NcursesLog() {
   logArray = new LogArray;
   page = 0;
   perPage = 1;
+  maxPage = 1;
 }
 
 unsigned int NcursesLog::setPage(unsigned int p) {

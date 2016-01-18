@@ -14,10 +14,13 @@ class NcursesMeas {
 public:
   NcursesMeas();
   void render(WINDOW *w);
-  void renderMeas(WINDOW *w, MeasType *m);
+  void renderPage(WINDOW *w);
+  void renderMeas(WINDOW *w, MeasType *m, int i);
+  unsigned int setPage(unsigned int p);
 
   unsigned int page;
   unsigned int perPage;
+  unsigned int maxPage;
 
   MeasTypeArray *measTypeArray;
 };

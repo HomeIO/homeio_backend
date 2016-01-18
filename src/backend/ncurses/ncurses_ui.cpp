@@ -151,6 +151,7 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
       break;
 
     case NC_MENU_MEAS:
+      page = meas->setPage(page);
       meas->render(local_win);
       break;
 
