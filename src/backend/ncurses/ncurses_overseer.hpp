@@ -1,4 +1,3 @@
-/*
 #ifndef NCURSES_OVERSEER_HPP
 #define	NCURSES_OVERSEER_HPP
 
@@ -27,4 +26,3 @@ public:
 };
 
 #endif
-*/

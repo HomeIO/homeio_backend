@@ -21,7 +21,7 @@ NcursesUI::NcursesUI() {
   meas = new NcursesMeas;
   home = new NcursesHome;
   log = new NcursesLog;
-  //overseer = new NcursesOverseer;
+  overseer = new NcursesOverseer;
 }
 
 void NcursesUI::start() {
@@ -156,12 +156,10 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
       meas->render(local_win);
       break;
 
-    /*
     case NC_MENU_OVERSEER:
-      //page = overseer->setPage(page);
-      //overseer->render(local_win);
+      page = overseer->setPage(page);
+      overseer->render(local_win);
       break;
-      */
 
     default:
       break;

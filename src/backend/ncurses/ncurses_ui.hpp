@@ -9,7 +9,7 @@
 #include "ncurses_meas.hpp"
 #include "ncurses_home.hpp"
 #include "ncurses_log.hpp"
-//#include "ncurses_overseer.hpp"
+#include "ncurses_overseer.hpp"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
@@ -27,7 +27,7 @@ public:
   NcursesHome *home;
   NcursesMeas *meas;
   NcursesLog *log;
-  //NcursesOverseer *overseer;
+  NcursesOverseer *overseer;
 };
 
 #endif

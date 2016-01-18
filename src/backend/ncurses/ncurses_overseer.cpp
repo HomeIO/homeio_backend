@@ -1,7 +1,7 @@
-/*
 #include "ncurses_overseer.hpp"
 
 #define NC_OVERSEER_NAME 0
+#define NC_OVERSEER_LINE_SIZE 4
 
 NcursesOverseer::NcursesOverseer() {
   page = 0;
@@ -10,8 +10,7 @@ NcursesOverseer::NcursesOverseer() {
 }
 
 unsigned int NcursesOverseer::setPage(unsigned int p) {
-  //perPage = (unsigned int) ( (LINES - 8) / 3 );
-  perPage = (unsigned int) (LINES - 8);
+  perPage = (unsigned int) ( (LINES - 8) / NC_OVERSEER_LINE_SIZE );
   maxPage = (unsigned int) ( ceil( (float) (overseerArray->overseers.size()) / (float) (perPage) ) );
 
   // disable clipping
@@ -42,7 +41,7 @@ void NcursesOverseer::render(WINDOW *w) {
     j = (perPage * page) + i;
     if (j < overseerArray->overseers.size()) {
       element = &overseerArray->overseers.at(j) ;
-      renderOverseer(w, element, (i * 3) + 3);
+      renderOverseer(w, element, (i * NC_OVERSEER_LINE_SIZE) + 3);
     }
   }
 }
@@ -52,4 +51,3 @@ void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
   mvwprintw(w, i, 1 + NC_OVERSEER_NAME, o->name.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_SET);
 }
-*/
