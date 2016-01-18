@@ -44,7 +44,7 @@ HomeIO::HomeIO() {
   spy->measTypeArray = measTypeArray;
   addonsArray->measTypeArray = measTypeArray;
 
-  logArray = ncursesUI->home->logArray;
+  logArray = ncursesUI->log->logArray;
   tcpServer->logArray = logArray;
   tcpCommand->logArray = logArray;
   spy->logArray = logArray;

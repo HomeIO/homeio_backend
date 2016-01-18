@@ -1,7 +1,7 @@
 #include "log_array.hpp"
 
 LogArray::LogArray() {
-  maxHistory = 40;
+  maxHistory = 200;
 }
 
 void LogArray::log(std::string c) {
@@ -27,7 +27,7 @@ void LogArray::logError(std::string m, std::string c) {
 }
 
 void LogArray::addLogItem(LogItem li) {
-  if (logBuffer.size() >= maxHistory) {
+  if ( (unsigned int) logBuffer.size() >= (unsigned int) maxHistory ) {
     logBuffer.erase( logBuffer.begin() );
   }
 

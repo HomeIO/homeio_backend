@@ -4,20 +4,23 @@
 // http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/awordwindows.html
 
 #define NC_MENU_HOME 0
-#define NC_MENU_MEAS 1
-#define NC_MENU_ACTION 2
-#define NC_MENU_OVERSEER 3
-#define NC_MENU_ADDONS 4
-#define NC_MENU_STATS 5
-#define NC_MENU_LAST 6
-
+#define NC_MENU_LOG 1
+#define NC_MENU_MEAS 2
+#define NC_MENU_ACTION 3
+#define NC_MENU_OVERSEER 4
+#define NC_MENU_ADDONS 5
+#define NC_MENU_STATS 6
+#define NC_MENU_LAST 7
 
 
 NcursesUI::NcursesUI() {
   interval = 400;
 
+  page = 0;
+
   meas = new NcursesMeas;
   home = new NcursesHome;
+  log = new NcursesLog;
 }
 
 void NcursesUI::start() {
@@ -59,6 +62,7 @@ void NcursesUI::start() {
 
   // menu items
   my_items[NC_MENU_HOME] = new_item("Home", "Home");
+  my_items[NC_MENU_LOG] = new_item("Log", "Log");
   my_items[NC_MENU_MEAS] = new_item("Meas", "Meas");
   my_items[NC_MENU_ACTION] = new_item("Action", "Action");
   my_items[NC_MENU_OVERSEER] = new_item("Overseer", "Overseer");
@@ -82,12 +86,30 @@ void NcursesUI::start() {
 	    {
         case KEY_LEFT:
 		      menu_driver(my_menu, REQ_LEFT_ITEM);
+          page = 0;
           local_win = redrawWindow(local_win, my_menu);
 				  break;
+
 			  case KEY_RIGHT:
 				  menu_driver(my_menu, REQ_RIGHT_ITEM);
+          page = 0;
           local_win = redrawWindow(local_win, my_menu);
 				  break;
+
+        case KEY_UP:
+          if (page < 100) {
+            page++;
+          }
+          local_win = redrawWindow(local_win, my_menu);
+          break;
+
+        case KEY_DOWN:
+          if (page >= 1) {
+            page--;
+          }
+          local_win = redrawWindow(local_win, my_menu);
+          break;
+
         default:
           local_win = redrawWindow(local_win, my_menu);
           break;
@@ -122,9 +144,16 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
     case NC_MENU_HOME:
       home->render(local_win);
       break;
+
+    case NC_MENU_LOG:
+      log->page = page;
+      log->render(local_win);
+      break;
+
     case NC_MENU_MEAS:
       meas->render(local_win);
       break;
+
     default:
       break;
   }
