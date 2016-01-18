@@ -96,14 +96,14 @@ void NcursesUI::start() {
           local_win = redrawWindow(local_win, my_menu);
 				  break;
 
-        case KEY_UP:
+        case KEY_DOWN:
           if (page < 100) {
             page++;
           }
           local_win = redrawWindow(local_win, my_menu);
           break;
 
-        case KEY_DOWN:
+        case KEY_UP:
           if (page >= 1) {
             page--;
           }

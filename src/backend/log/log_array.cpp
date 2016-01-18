@@ -1,7 +1,7 @@
 #include "log_array.hpp"
 
 LogArray::LogArray() {
-  maxHistory = 200;
+  maxHistory = 500;
 }
 
 void LogArray::log(std::string c) {

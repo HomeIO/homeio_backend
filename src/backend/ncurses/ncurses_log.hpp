@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <cmath>
 
 #include "../utils/helper.hpp"
 #include "ncurses_colors.hpp"
@@ -17,6 +17,7 @@ public:
   void render(WINDOW *w);
 
   unsigned int page;
+  unsigned int perPage;
 
   LogArray *logArray;
 };
