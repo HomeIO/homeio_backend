@@ -16,6 +16,9 @@ public:
   void render(WINDOW *w);
   void renderMeas(WINDOW *w, MeasType *m);
 
+  unsigned int page;
+  unsigned int perPage;
+
   MeasTypeArray *measTypeArray;
 };
 

@@ -15,9 +15,12 @@ class NcursesLog {
 public:
   NcursesLog();
   void render(WINDOW *w);
+  void renderPage(WINDOW *w);
+  unsigned int setPage(unsigned int p);
 
   unsigned int page;
   unsigned int perPage;
+  unsigned int maxPage;
 
   LogArray *logArray;
 };
