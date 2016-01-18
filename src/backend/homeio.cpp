@@ -35,6 +35,7 @@ HomeIO::HomeIO() {
   tcpCommand->measGroup = measGroup;
 
   ncursesUI->meas->measTypeArray = measTypeArray;
+  //ncursesUI->overseer->overseerArray = overseerArray;
 
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
