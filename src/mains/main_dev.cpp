@@ -37,9 +37,7 @@ int main()
   m->responseSize = 1;
   h->measTypeArray->add(m);
 
-  IoServer *io = new IoServer();
-  io->port = "/dev/ttyUSB0";
-  h->ioServer = io;
+  h->ioServer->port = "/dev/ttyUSB0";
 
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 50000;

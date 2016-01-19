@@ -22,8 +22,10 @@ public:
   WINDOW *redrawWindow(WINDOW *w, MENU *my_menu);
 
   unsigned int page;
-
   unsigned int interval;
+
+  bool ready;
+
   NcursesHome *home;
   NcursesMeas *meas;
   NcursesLog *log;

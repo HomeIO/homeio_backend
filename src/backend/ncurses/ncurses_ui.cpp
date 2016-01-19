@@ -14,6 +14,8 @@
 
 
 NcursesUI::NcursesUI() {
+  ready = false;
+
   interval = 400;
 
   page = 0;
@@ -81,7 +83,10 @@ void NcursesUI::start() {
 	post_menu(my_menu);
 	refresh();
 
-	while((c = getch()) != KEY_F(1))
+  ready = true;
+
+  // TODO move loop to other method
+  while((c = getch()) != KEY_F(1))
 	{
     switch(c)
 	    {
@@ -117,6 +122,7 @@ void NcursesUI::start() {
 		}
 	}
 
+  // TODO move to stop
   for (int i=0; i <= NC_MENU_LAST; i++) {
     free_item(my_items[i]);
   }

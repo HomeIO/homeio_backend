@@ -1,6 +1,8 @@
 #include "meas_fetcher.hpp"
 
 MeasFetcher::MeasFetcher() {
+  ready = false;
+
   // default intervals
   betweenMeasInterval = 5000;
   cycleInterval = 20000;
@@ -12,6 +14,8 @@ MeasFetcher::MeasFetcher() {
 void MeasFetcher::start() {
   ioProxy->prepareSocket();
   logArray->log("MeasFetcher", "start");
+
+  ready = true;
 
   while(isRunning) {
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {

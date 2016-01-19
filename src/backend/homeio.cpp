@@ -3,6 +3,7 @@
 HomeIO::HomeIO() {
   //HomeIO::running = true;
 
+  logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
   measFetcher = new MeasFetcher;
   ioProxy = new IoProxy;
@@ -36,6 +37,7 @@ HomeIO::HomeIO() {
 
   ncursesUI->meas->measTypeArray = measTypeArray;
   ncursesUI->overseer->overseerArray = overseerArray;
+  ncursesUI->log->logArray = logArray;
 
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
@@ -45,7 +47,6 @@ HomeIO::HomeIO() {
   spy->measTypeArray = measTypeArray;
   addonsArray->measTypeArray = measTypeArray;
 
-  logArray = ncursesUI->log->logArray;
   tcpServer->logArray = logArray;
   tcpCommand->logArray = logArray;
   spy->logArray = logArray;
@@ -59,6 +60,7 @@ HomeIO::HomeIO() {
   ioProxy->logArray = logArray;
   ioServer->logArray = logArray;
   ioServer->tcp->logArray = logArray;
+
 }
 
 unsigned char HomeIO::startFetch() {
@@ -80,19 +82,16 @@ unsigned char HomeIO::startFetch() {
   // to clear buffer or
   // restored buffer
   measFetcher->start();
-
   return 0;
 }
 
 unsigned char HomeIO::startServer() {
   tcpServer->start();
-
   return 0;
 }
 
 unsigned char HomeIO::startIoServer() {
   ioServer->start();
-
   return 0;
 }
 
@@ -215,7 +214,7 @@ void *addonsThread(void *argument)
 void *ncursesThread(void *argument)
 {
   HomeIO *h = (HomeIO *) argument;
-  h->logArray->log("HomeIO", "Thread: addonsThread() - interface");
+  h->logArray->log("HomeIO", "Thread: ncursesThread() - interface");
   h->startNcurses();
 
   return NULL;
@@ -239,16 +238,25 @@ unsigned char HomeIO::start() {
 
   HomeIO *h = this;
 
-  pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
+  // TODO ioserver write some messy thing
 
-  // wait for IoServer
-
-  while (ioServer->ready == false) {
-    usleep(50000);
+  // ncurses
+  pthread_create(&threads[0], NULL, ncursesThread, (void *) h);
+  while (ncursesUI->ready == false) {
+    usleep(5000);
   }
 
-  pthread_create(&threads[1], NULL, ncursesThread, (void *) h);
+  // io server
+  pthread_create(&threads[0], NULL, ioServerThread,  (void *) h);
+  while (ioServer->ready == false) {
+    usleep(5000);
+  }
+
   pthread_create(&threads[2], NULL, measStartThread, (void *) h);
+  while (measFetcher->ready == false) {
+    usleep(5000);
+  }
+
   pthread_create(&threads[3], NULL, tcpServerThread, (void *) h);
   pthread_create(&threads[4], NULL, ioOverseerThread, (void *) h);
   pthread_create(&threads[5], NULL, fileStorageThread, (void *) h);
@@ -260,7 +268,7 @@ unsigned char HomeIO::start() {
    for (i=0; i<NUM_THREADS; ++i) {
       // block until thread i completes
       pthread_join(threads[i], NULL);
-      Helper::logError("In main: thread " + std::to_string(i) + " is complete");
+      logArray->logError("HomeIO", "In main: thread " + std::to_string(i) + " is complete");
    }
 
    //stop(); // TODO

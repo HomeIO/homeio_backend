@@ -19,11 +19,13 @@ IoServer::IoServer() {
 
 void IoServer::start() {
   rs->port = port;
-
   rs->openRS();
   tcp->createTcpServer();
 
   ready = true;
+
+  usleep(10000);
+  logArray->log("IoServer", "start");
 
   while(isRunning) {
     // Retrieve command
@@ -40,5 +42,5 @@ void IoServer::start() {
 
 void IoServer::stop() {
   shutdownMutex.lock();
-  Helper::logInfo("IoServer - stop");
+  logArray->log("IoServer", "stop");
 }

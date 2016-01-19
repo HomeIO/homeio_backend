@@ -23,7 +23,7 @@ unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSiz
 
   if( send(sock, commandArray, sizeof(commandArray), 0) < 0)
   {
-    Helper::logError("IoProxy: Send failed");
+    logArray->logError("IoProxy", "Send failed: " + std::to_string( (unsigned int) commandChar ));
     tcpMutex.unlock(); // end of mutex
     return 1;
   }
@@ -31,7 +31,7 @@ unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSiz
   //Receive a reply from the server
   if( recv(sock, buffer, responseSize, 0) < 0)
   {
-    Helper::logError("IoProxy: recv failed");
+    logArray->logError("IoProxy", "recv failed");
   }
 
   disconnectSocket();
@@ -45,10 +45,6 @@ unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSiz
     part_raw = buffer[i];
     raw *= 256;
     raw += part_raw;
-  }
-
-  if (verbose) {
-    Helper::logInfo("IoProxy: Data received" + std::to_string(raw));
   }
 
   return raw;
@@ -71,7 +67,7 @@ unsigned int IoProxy::prepareSocket()
     //resolve the hostname, its not an ip address
     if ( (he = gethostbyname( address.c_str() ) ) == NULL)
     {
-      Helper::logError("IoProxy: Failed to resolve hostname " + address);
+      logArray->logError("IoProxy", "Failed to resolve hostname " + address);
 
       return false;
     }
@@ -104,13 +100,13 @@ int IoProxy::connectSocket()
   sock = socket(AF_INET , SOCK_STREAM , 0);
   if (sock == -1)
   {
-    Helper::logError("IoProxy: could not create socket");
+    logArray->logError("IoProxy", "could not create socket");
   }
 
   //Connect to remote server
   if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
   {
-    Helper::logError("IoProxy: connect failed. Error");
+    logArray->logError("IoProxy", "connect failed. Error");
     return 1;
   }
 

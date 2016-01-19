@@ -21,7 +21,8 @@ public:
   unsigned long int cycleInterval; // 20000
   unsigned long int maxBufferSize; // 1000000
 
-  bool isRunning;
+  bool ready;
+  bool isRunning; // TODO remove id
   std::mutex shutdownMutex;
 };
 

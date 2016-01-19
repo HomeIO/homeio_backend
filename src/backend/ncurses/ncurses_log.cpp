@@ -1,7 +1,6 @@
 #include "ncurses_log.hpp"
 
 NcursesLog::NcursesLog() {
-  logArray = new LogArray;
   page = 0;
   perPage = 1;
   maxPage = 1;

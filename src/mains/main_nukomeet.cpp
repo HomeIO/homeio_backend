@@ -31,10 +31,7 @@ int main()
   m->priority = 1;
   h->measTypeArray->add(m);
 
-
-  IoServer *io = new IoServer();
-  io->port = "/dev/ttyACM0";
-  h->ioServer = io;
+  h->ioServer->port = "/dev/ttyACM0";
 
   h->measFetcher->betweenMeasInterval = 10000;
   h->measFetcher->cycleInterval = 1000000; //50000;

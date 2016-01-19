@@ -161,11 +161,8 @@ int main()
 
   // end measurements here
 
-  IoServer *io = new IoServer();
-  // port device connect to
   // example: "/dev/ttyUSB0", "/dev/ttyS0"
-  io->port = "/dev/ttyUSB0";
-  h->ioServer = io;
+  h->ioServer->port = "/dev/ttyUSB0";
 
   // meas fetcher intervals
   h->measFetcher->betweenMeasInterval = 10000;
@@ -331,7 +328,7 @@ int main()
 
   // WARNING
   // this announce measurements to global server used for statistics and uptime
-  h->spy->enabled = true;
+  h->spy->enabled = false;
   h->spy->cycleInterval = 10*60*1000*1000; // 10 minutes
   h->spy->hiveHost = "http://hive.homeio.org.pl";
   h->spy->siteName = "lakie_dev";

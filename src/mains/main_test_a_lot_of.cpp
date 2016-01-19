@@ -49,11 +49,7 @@ int main()
     h->measTypeArray->add(m);
   }
 
-  IoServer *io = new IoServer();
-  // port device connect to
-  // example: "/dev/ttyUSB0", "/dev/ttyS0"
-  io->port = "/dev/ttyUSB0";
-  h->ioServer = io;
+  h->ioServer->port = "/dev/ttyUSB0";
 
   // meas fetcher intervals
   h->measFetcher->betweenMeasInterval = 10000;
