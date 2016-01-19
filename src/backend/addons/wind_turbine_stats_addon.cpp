@@ -81,7 +81,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
     // you need to divide 3600*1000 if you want to have kWh
     doubleTmp = ( u->rawToValue( uRaw.at(j) ) ) * ( i->rawToValue( iRaw.at(j) ) ) * intervalDouble / 1000.0;
     if (doubleTmp > 0.0) {
-        w += doubleTmp;
+      w += doubleTmp;
     }
 
     // max battery voltage
@@ -128,7 +128,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   intervalInt = resistor->buffer->calcInterval();
 
   for (j = 0; j < resistorRaw.size(); j++ ) {
-    if ( resistorRaw.at(j) > 0 ){
+    if ( resistorRaw.at(j) > 0 ) {
       resistorTime += intervalInt;
     }
   }

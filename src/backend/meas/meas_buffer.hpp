@@ -10,7 +10,7 @@
 #include "../log/log_array.hpp"
 
 class MeasBuffer {
-public:
+ public:
   MeasBuffer();
   MeasBuffer(unsigned long int _maxSize);
 
@@ -56,7 +56,7 @@ public:
 
   LogArray *logArray;
 
-private:
+ private:
   std::vector < meas_buffer_elemt > buffer;
 
 };

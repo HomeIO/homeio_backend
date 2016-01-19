@@ -15,7 +15,7 @@
 #include "../log/log_array.hpp"
 
 class IoProxy {
-public:
+ public:
   IoProxy();
   std::string address;
   uint16_t port;
@@ -29,7 +29,7 @@ public:
   int connectSocket();
   int disconnectSocket();
 
-private:
+ private:
   int sock;
   struct sockaddr_in server;
   unsigned char buffer[16];

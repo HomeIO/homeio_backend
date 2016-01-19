@@ -13,7 +13,7 @@
 #include "../log/log_array.hpp"
 
 class MeasBufferBackupStorage {
-public:
+ public:
   MeasBufferBackupStorage();
   void start();
   void stop();

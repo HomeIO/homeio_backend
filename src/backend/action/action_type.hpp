@@ -11,7 +11,7 @@
 #include "../log/log_array.hpp"
 
 class ActionType {
-public:
+ public:
   ActionType();
   unsigned int execute();
   std::string toJson();

@@ -10,7 +10,7 @@
 #include "../log/log_array.hpp"
 
 class AddonsArray {
-public:
+ public:
   AddonsArray();
   void start();
   void stop();

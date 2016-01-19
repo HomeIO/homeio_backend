@@ -125,8 +125,7 @@ std::string TcpCommand::processMeasShowCommand(string command) {
 
   if (foundMeasType) {
     response = "{\"status\":0,\"object\":" + foundMeasType->toJson() + "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
 
@@ -166,8 +165,7 @@ std::string TcpCommand::processMeasRawForTimeCommand(string command) {
     response += ",\"fromTime\":" + std::to_string( tFrom );
     response += ",\"toTime\":" + std::to_string( tTo );
     response += "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
 
@@ -214,8 +212,7 @@ std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command)
     response += ",\"fromTime\":" + std::to_string( tFrom );
     response += ",\"toTime\":" + std::to_string( tTo );
     response += "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
 
@@ -256,8 +253,7 @@ std::string TcpCommand::processMeasRawForIndexCommand(std::string command) {
     response += ",\"fromIndex\":" + std::to_string( iFrom );
     response += ",\"toIndex\":" + std::to_string( iTo );
     response += "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
 
@@ -288,8 +284,7 @@ std::string TcpCommand::processMeasStorageCommand(std::string command) {
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
     response +=  "\"data\":" + bufferString;
     response += "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
   return response;
@@ -319,8 +314,7 @@ std::string TcpCommand::processMeasStatsCommand(std::string command) {
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
     response +=  "\"data\":" + statsString;
     response += "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"meas_type\":\"" + measName + "\",\"reason\":\"meas_not_found\"}";
   }
   return response;
@@ -370,8 +364,7 @@ std::string TcpCommand::processActionShowCommand(std::string command) {
 
   if (foundActionType) {
     response = "{\"status\":0,\"object\":" + foundActionType->toJson() + "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"action_type\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
 
@@ -391,8 +384,7 @@ std::string TcpCommand::processActionExecuteCommand(std::string command) {
   if (foundActionType) {
     foundActionType->execute();
     response = "{\"status\":0,\"action\":" + foundActionType->toJson() + "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
 
@@ -411,8 +403,7 @@ std::string TcpCommand::processActionHistoryCommand(std::string command) {
 
   if (foundActionType) {
     response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"action\":\"" + actionName + "\",\"reason\":\"action_not_found\"}";
   }
 
@@ -450,8 +441,7 @@ std::string TcpCommand::processOverseerShowCommand(std::string command) {
 
   if (foundOverseer) {
     response = "{\"status\":0,\"object\":" + foundOverseer->toJson() + "}";
-  }
-  else {
+  } else {
     response = "{\"status\":1,\"overseer\":\"" + overseerName + "\",\"reason\":\"overseer_not_found\"}";
   }
 

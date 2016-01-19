@@ -7,7 +7,7 @@
 #include "log_item.hpp"
 
 class LogArray {
-public:
+ public:
   LogArray();
   void log(std::string c);
   void log(std::string m, std::string c);

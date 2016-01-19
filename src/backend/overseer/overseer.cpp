@@ -19,12 +19,11 @@ bool Overseer::check() {
   double value = currentValue();
   bool result = false;
 
-   if (isMax) {
+  if (isMax) {
     if (currentValue() > thresholdValue) {
       result = true;
     }
-  }
-  else {
+  } else {
     if (currentValue() < thresholdValue) {
       result = true;
     }
@@ -92,8 +91,7 @@ unsigned int Overseer::execute() {
   if (result == 0) {
     markExecutionTime();
     return 0;
-  }
-  else {
+  } else {
     return 1;
   }
 }
@@ -111,8 +109,7 @@ unsigned long long Overseer::lastExecuteTime() {
   return timeBuffer.back();
 }
 
-bool Overseer::checkLastExecutionTime()
-{
+bool Overseer::checkLastExecutionTime() {
   // empty list
   if ( timeBuffer.size() == 0 ) {
     return true;

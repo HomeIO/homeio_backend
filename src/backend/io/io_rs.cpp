@@ -13,14 +13,14 @@ IoRS::IoRS() {
 
 // Open RS port and set all parameters. Parameters are stored in config.h
 int IoRS::openRS() {
-    ttyFileDescriptor = open(port.c_str(), O_RDWR);
+  ttyFileDescriptor = open(port.c_str(), O_RDWR);
 
-    cfsetospeed(&tio, RS_SPEED);
-    cfsetispeed(&tio, RS_SPEED);
+  cfsetospeed(&tio, RS_SPEED);
+  cfsetispeed(&tio, RS_SPEED);
 
-    tcsetattr(ttyFileDescriptor, TCSANOW, &tio);
+  tcsetattr(ttyFileDescriptor, TCSANOW, &tio);
 
-    return ttyFileDescriptor;
+  return ttyFileDescriptor;
 }
 
 unsigned char IoRS::send() {
@@ -54,5 +54,5 @@ unsigned char IoRS::send() {
 
 // Close RS port
 void IoRS::closeRS() {
-    close(ttyFileDescriptor);
+  close(ttyFileDescriptor);
 }

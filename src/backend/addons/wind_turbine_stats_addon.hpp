@@ -12,7 +12,7 @@
 using namespace std;
 
 class WindTurbineStatsAddon : public AbstractAddon {
-public:
+ public:
   WindTurbineStatsAddon();
   ~WindTurbineStatsAddon();
 

@@ -2,7 +2,7 @@
 #define FRONTEND_SETTINGS_H
 
 class FrontendSettings {
-public:
+ public:
   FrontendSettings();
 
   unsigned long int intervalCurrent;

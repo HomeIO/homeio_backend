@@ -24,7 +24,7 @@
 #define COMMAND_BUFFER_SIZE 2000
 
 class TcpServer {
-public:
+ public:
   TcpServer();
 
   ssize_t readLine(int sockd, size_t maxlen);
@@ -44,7 +44,7 @@ public:
   bool isRunning;
   std::mutex shutdownMutex;
 
-private:
+ private:
   char c, *commandBuffer;
   std::string responseBuffer;
 };

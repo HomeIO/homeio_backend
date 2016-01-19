@@ -2,7 +2,7 @@
 #define MEAS_TREND_H
 
 class MeasTrend {
-public:
+ public:
   static const int typeStable = 0;
   static const int typeAscend = 10;
   static const int typeDescend = 20;

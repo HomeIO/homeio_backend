@@ -11,7 +11,7 @@
 #include "ncurses_colors.hpp"
 
 class NcursesMeas {
-public:
+ public:
   NcursesMeas();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);

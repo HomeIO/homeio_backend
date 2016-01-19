@@ -8,7 +8,7 @@
 #include "meas_type_array.hpp"
 
 class MeasGroup {
-public:
+ public:
   MeasGroup();
   void addGroup(std::string groupName, std::string groupMeasTypesString);
   std::string toJson();

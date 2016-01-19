@@ -16,7 +16,7 @@
 #include "../log/log_array.hpp"
 
 class MeasType {
-public:
+ public:
   MeasType();
   void resizeBuffer(unsigned long int);
   unsigned int fetch();

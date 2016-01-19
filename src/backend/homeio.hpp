@@ -32,7 +32,7 @@
 #include "ncurses/ncurses_ui.hpp"
 
 class HomeIO {
-public:
+ public:
   HomeIO();
   unsigned char startFetch();
   unsigned char startServer();

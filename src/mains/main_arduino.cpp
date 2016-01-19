@@ -8,8 +8,7 @@ void handleSignal(int s) {
   exit(1);
 }
 
-int main()
-{
+int main() {
   h = new HomeIO();
   signal(SIGINT, handleSignal);
 

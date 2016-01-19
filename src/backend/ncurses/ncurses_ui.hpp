@@ -14,7 +14,7 @@
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 class NcursesUI {
-public:
+ public:
   NcursesUI();
   void start();
   void stop();

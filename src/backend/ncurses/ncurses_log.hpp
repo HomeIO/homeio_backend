@@ -12,7 +12,7 @@
 #include "../log/log_array.hpp"
 
 class NcursesLog {
-public:
+ public:
   NcursesLog();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);

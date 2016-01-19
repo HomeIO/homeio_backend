@@ -2,7 +2,7 @@
 #define	WIND_TURBINE_STATS_HPP
 
 class WindTurbineStat {
-public:
+ public:
   WindTurbineStat();
 
   unsigned long long time;

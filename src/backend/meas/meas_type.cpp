@@ -262,16 +262,14 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
         createNew = true;
         newType = MeasTrend::typeStable;
       }
-    }
-    else if (tmpDeviation > maxDeviation) {
+    } else if (tmpDeviation > maxDeviation) {
       // ascending
       if (tempTrend->tmpType != MeasTrend::typeAscend) {
         // was stable/desc, now is asc
         createNew = true;
         newType = MeasTrend::typeAscend;
       }
-    }
-    else {
+    } else {
       // descening
       if (tempTrend->tmpType != MeasTrend::typeDescend) {
         // was stable/asc, now is asc

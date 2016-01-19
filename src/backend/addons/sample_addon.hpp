@@ -6,7 +6,7 @@
 using namespace std;
 
 class SampleAddon : public AbstractAddon {
-public:
+ public:
   SampleAddon();
   void perform();
 };

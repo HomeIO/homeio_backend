@@ -9,7 +9,7 @@
 #include "../log/log_array.hpp"
 
 class Overseer {
-public:
+ public:
   std::string name; // name of overseer
   std::string actionName; // name of action which execute when conditions are met
   std::string measName; // name of measurements which should observe
@@ -38,7 +38,7 @@ public:
   std::string toJson();
   std::string timeBufferToJson();
 
-private:
+ private:
 };
 
 //#include "overseer.cpp"

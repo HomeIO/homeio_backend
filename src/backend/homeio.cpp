@@ -139,8 +139,7 @@ unsigned char HomeIO::startNcurses() {
   return 0;
 }
 
-void *measStartThread(void *argument)
-{
+void *measStartThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: startFetch() - meas fetching");
   h->startFetch();
@@ -148,8 +147,7 @@ void *measStartThread(void *argument)
   return NULL;
 }
 
-void *tcpServerThread(void *argument)
-{
+void *tcpServerThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: startServer() - TCP commands");
   h->startServer();
@@ -157,8 +155,7 @@ void *tcpServerThread(void *argument)
   return NULL;
 }
 
-void *ioServerThread(void *argument)
-{
+void *ioServerThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: startIoServer() - IoServer - hardware-TCP bridge");
   h->startIoServer();
@@ -166,8 +163,7 @@ void *ioServerThread(void *argument)
   return NULL;
 }
 
-void *ioOverseerThread(void *argument)
-{
+void *ioOverseerThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: ioOverseerThread() - low level overseeers");
   h->startOverseer();
@@ -175,8 +171,7 @@ void *ioOverseerThread(void *argument)
   return NULL;
 }
 
-void *fileStorageThread(void *argument)
-{
+void *fileStorageThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: fileStorageThread() - store measurement in files");
   h->startFileStorage();
@@ -184,8 +179,7 @@ void *fileStorageThread(void *argument)
   return NULL;
 }
 
-void *fileBufferBackupThread(void *argument)
-{
+void *fileBufferBackupThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: fileBufferBackupThread() - store measurement buffer backup");
   h->startBufferBackupStorage();
@@ -193,8 +187,7 @@ void *fileBufferBackupThread(void *argument)
   return NULL;
 }
 
-void *spyThread(void *argument)
-{
+void *spyThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: spyThread() - announce measurements to central server");
   h->startSpy();
@@ -202,8 +195,7 @@ void *spyThread(void *argument)
   return NULL;
 }
 
-void *addonsThread(void *argument)
-{
+void *addonsThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: addonsThread() - execute addon modules");
   h->startAddons();
@@ -211,8 +203,7 @@ void *addonsThread(void *argument)
   return NULL;
 }
 
-void *ncursesThread(void *argument)
-{
+void *ncursesThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   h->logArray->log("HomeIO", "Thread: ncursesThread() - interface");
   h->startNcurses();
@@ -264,15 +255,15 @@ unsigned char HomeIO::start() {
   pthread_create(&threads[7], NULL, spyThread, (void *) h);
   pthread_create(&threads[8], NULL, addonsThread, (void *) h);
 
-   // wait for each thread to complete
-   for (i=0; i<NUM_THREADS; ++i) {
-      // block until thread i completes
-      pthread_join(threads[i], NULL);
-      logArray->logError("HomeIO", "In main: thread " + std::to_string(i) + " is complete");
-   }
+  // wait for each thread to complete
+  for (i=0; i<NUM_THREADS; ++i) {
+    // block until thread i completes
+    pthread_join(threads[i], NULL);
+    logArray->logError("HomeIO", "In main: thread " + std::to_string(i) + " is complete");
+  }
 
-   //stop(); // TODO
-   return 0;
+  //stop(); // TODO
+  return 0;
 }
 
 unsigned char HomeIO::stop() {

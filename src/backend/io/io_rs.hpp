@@ -11,7 +11,7 @@
 #include "io_config.hpp"
 
 class IoRS {
-public:
+ public:
   IoRS();
 
   // Open RS port and set all parameters

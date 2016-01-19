@@ -55,13 +55,13 @@ void NcursesUI::start() {
 
   // menu
   ITEM **my_items;
-	int c;
-	MENU *my_menu;
-	int n_choices;
-	ITEM *cur_item;
+  int c;
+  MENU *my_menu;
+  int n_choices;
+  ITEM *cur_item;
 
   // menu items - max amount
-	my_items = (ITEM **)calloc(NC_MENU_LAST + 1, sizeof(ITEM *));
+  my_items = (ITEM **)calloc(NC_MENU_LAST + 1, sizeof(ITEM *));
 
   // menu items
   my_items[NC_MENU_HOME] = new_item("Home", "Home");
@@ -72,61 +72,59 @@ void NcursesUI::start() {
   my_items[NC_MENU_ADDONS] = new_item("Addons", "Addons");
   my_items[NC_MENU_STATS] = new_item("Stats", "Stats");
   my_items[NC_MENU_OVERSEER] = new_item("Overseer", "Overseer");
-	my_items[NC_MENU_LAST] = (ITEM *)NULL;
+  my_items[NC_MENU_LAST] = (ITEM *)NULL;
 
-	my_menu = new_menu((ITEM **)my_items);
+  my_menu = new_menu((ITEM **)my_items);
 
   menu_opts_off(my_menu, O_SHOWDESC);
   set_menu_format(my_menu, 1, 5);
   set_menu_mark(my_menu, " * ");
 
-	post_menu(my_menu);
-	refresh();
+  post_menu(my_menu);
+  refresh();
 
   ready = true;
 
   // TODO move loop to other method
-  while((c = getch()) != KEY_F(1))
-	{
-    switch(c)
-	    {
-        case KEY_LEFT:
-		      menu_driver(my_menu, REQ_LEFT_ITEM);
-          page = 0;
-          local_win = redrawWindow(local_win, my_menu);
-				  break;
+  while((c = getch()) != KEY_F(1)) {
+    switch(c) {
+    case KEY_LEFT:
+      menu_driver(my_menu, REQ_LEFT_ITEM);
+      page = 0;
+      local_win = redrawWindow(local_win, my_menu);
+      break;
 
-			  case KEY_RIGHT:
-				  menu_driver(my_menu, REQ_RIGHT_ITEM);
-          page = 0;
-          local_win = redrawWindow(local_win, my_menu);
-				  break;
+    case KEY_RIGHT:
+      menu_driver(my_menu, REQ_RIGHT_ITEM);
+      page = 0;
+      local_win = redrawWindow(local_win, my_menu);
+      break;
 
-        case KEY_DOWN:
-          if (page < 100) {
-            page++;
-          }
-          local_win = redrawWindow(local_win, my_menu);
-          break;
+    case KEY_DOWN:
+      if (page < 100) {
+        page++;
+      }
+      local_win = redrawWindow(local_win, my_menu);
+      break;
 
-        case KEY_UP:
-          if (page >= 1) {
-            page--;
-          }
-          local_win = redrawWindow(local_win, my_menu);
-          break;
+    case KEY_UP:
+      if (page >= 1) {
+        page--;
+      }
+      local_win = redrawWindow(local_win, my_menu);
+      break;
 
-        default:
-          local_win = redrawWindow(local_win, my_menu);
-          break;
-		}
-	}
+    default:
+      local_win = redrawWindow(local_win, my_menu);
+      break;
+    }
+  }
 
   // TODO move to stop
   for (int i=0; i <= NC_MENU_LAST; i++) {
     free_item(my_items[i]);
   }
-	free_menu(my_menu);
+  free_menu(my_menu);
   endwin();
 }
 
@@ -146,29 +144,28 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
 
   local_win = newwin(LINES - 1, COLS, 1, 0);
 
-  switch(item_index(current_item(my_menu)))
-  {
-    case NC_MENU_HOME:
-      home->render(local_win);
-      break;
+  switch(item_index(current_item(my_menu))) {
+  case NC_MENU_HOME:
+    home->render(local_win);
+    break;
 
-    case NC_MENU_LOG:
-      page = log->setPage(page);
-      log->render(local_win);
-      break;
+  case NC_MENU_LOG:
+    page = log->setPage(page);
+    log->render(local_win);
+    break;
 
-    case NC_MENU_MEAS:
-      page = meas->setPage(page);
-      meas->render(local_win);
-      break;
+  case NC_MENU_MEAS:
+    page = meas->setPage(page);
+    meas->render(local_win);
+    break;
 
-    case NC_MENU_OVERSEER:
-      page = overseer->setPage(page);
-      overseer->render(local_win);
-      break;
+  case NC_MENU_OVERSEER:
+    page = overseer->setPage(page);
+    overseer->render(local_win);
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 
   box(local_win, 0 , 0);

@@ -11,7 +11,7 @@
 #include "../log/log_array.hpp"
 
 class OverseerArray {
-public:
+ public:
   OverseerArray();
   unsigned int add(Overseer *m);
   void start();

@@ -5,7 +5,7 @@
 #include "../utils/helper.hpp"
 
 class LogItem {
-public:
+ public:
   LogItem();
   LogItem(std::string c);
   LogItem(std::string m, std::string c);

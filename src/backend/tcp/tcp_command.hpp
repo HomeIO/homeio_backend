@@ -21,7 +21,7 @@
 using namespace std;
 
 class TcpCommand {
-public:
+ public:
   TcpCommand();
   string processCommand(string command);
 

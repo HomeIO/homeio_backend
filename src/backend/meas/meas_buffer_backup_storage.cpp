@@ -9,8 +9,7 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
   isRunning = true;
 }
 
-void MeasBufferBackupStorage::start()
-{
+void MeasBufferBackupStorage::start() {
   Helper::longSleep(usDelay);
 
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
@@ -159,19 +158,17 @@ void MeasBufferBackupStorage::performRestore() {
           logArray->log("MeasBufferBackupStorage", "[" + it->name + "] RESTORE removed spikes");
         }
 
-      }
-      else {
+      } else {
         logArray->log("MeasBufferBackupStorage", "[" + it->name + "] RESTORE buffer is too old");
       }
 
 
-    }
-    else {
+    } else {
       // buffer file not exists
       logArray->log("MeasBufferBackupStorage", "[" + it->name + "] RESTORE file not exists " + filename);
     }
 
-  infile.close();
+    infile.close();
 
   }
 

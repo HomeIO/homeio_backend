@@ -44,5 +44,8 @@ debian-deps: ;
 	echo "g++ at least 4.9 is needed"
 	sudo apt-get install libcurl4-openssl-dev git g++ libcurlpp0 libcurlpp-dev
 
+format: ;
+	astyle --style=google --indent=spaces=2 --suffix=none --verbose --recursive *.?pp
+
 clean: ;
 	[ -e bin ] || rm -v ./bin/*

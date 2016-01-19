@@ -8,7 +8,7 @@
 #include "storage_hash.hpp"
 
 class MeasTypeStorage {
-public:
+ public:
   MeasTypeStorage();
 
   unsigned long long timeFrom, timeTo;

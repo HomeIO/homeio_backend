@@ -9,7 +9,7 @@
 #include "../log/log_array.hpp"
 
 class ActionTypeArray {
-public:
+ public:
   ActionTypeArray();
   unsigned int add(ActionType *m);
   ActionType *byName(std::string s);

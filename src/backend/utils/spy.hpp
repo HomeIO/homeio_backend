@@ -17,7 +17,7 @@
 #include <curlpp/Exception.hpp>
 
 class Spy {
-public:
+ public:
   Spy();
   void start();
   void stop();

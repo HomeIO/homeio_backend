@@ -19,11 +19,9 @@ MeasTrend::MeasTrend() {
 unsigned char MeasTrend::type() {
   if (valueFrom > valueTo) {
     return typeDescend;
-  }
-  else if (valueFrom < valueTo) {
+  } else if (valueFrom < valueTo) {
     return typeAscend;
-  }
-  else {
+  } else {
     return typeStable;
   }
 }
@@ -39,8 +37,7 @@ double MeasTrend::valueDiff() {
 double MeasTrend::trend() {
   if (timeDiff() > 0) {
     return (double) valueDiff() / (double) timeDiff();
-  }
-  else {
+  } else {
     return 0.0;
   }
 }

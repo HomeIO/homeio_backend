@@ -6,7 +6,7 @@
 #include "../log/log_array.hpp"
 
 class AbstractAddon {
-public:
+ public:
   virtual void setup();
   virtual void perform();
 

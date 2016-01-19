@@ -14,7 +14,7 @@
 #include "../log/log_array.hpp"
 
 class FileStorage {
-public:
+ public:
   FileStorage();
   void start();
   void stop();

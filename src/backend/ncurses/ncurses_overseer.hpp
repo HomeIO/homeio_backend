@@ -11,7 +11,7 @@
 #include "ncurses_colors.hpp"
 
 class NcursesOverseer {
-public:
+ public:
   NcursesOverseer();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);

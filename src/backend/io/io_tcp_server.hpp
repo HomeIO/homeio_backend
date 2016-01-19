@@ -24,7 +24,7 @@
 #define IO_SERVER_MAX_LINE (1000)
 
 class IoTcpServer {
-public:
+ public:
   // port number
   unsigned short port;
   // listening socket

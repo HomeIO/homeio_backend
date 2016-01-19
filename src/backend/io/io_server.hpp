@@ -9,7 +9,7 @@
 #include "../log/log_array.hpp"
 
 class IoServer {
-public:
+ public:
   IoServer();
   void start();
   void stop();

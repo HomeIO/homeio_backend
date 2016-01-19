@@ -37,7 +37,7 @@
 #define WHITE           7
 
 class Helper {
-public:
+ public:
   //static time_t currentTimeObject;
   //static struct tm * currentTimeInfo;
   //static char currentTimeBuffer[20];

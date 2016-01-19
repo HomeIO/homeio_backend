@@ -10,14 +10,14 @@ void AddonsArray::start() {
   logArray->log("AddonsArray", "start");
 
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
-      (*itr)->measTypeArray = measTypeArray;
-      (*itr)->logArray = logArray;
-      (*itr)->setup();
+    (*itr)->measTypeArray = measTypeArray;
+    (*itr)->logArray = logArray;
+    (*itr)->setup();
   }
 
   while(isRunning) {
     for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
-        (*itr)->perform();
+      (*itr)->perform();
     }
 
     Helper::longSleep(cycleInterval);

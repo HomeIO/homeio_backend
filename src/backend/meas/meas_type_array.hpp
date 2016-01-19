@@ -10,7 +10,7 @@
 using namespace std;
 
 class MeasTypeArray {
-public:
+ public:
   MeasTypeArray();
   unsigned int add(MeasType *m);
   MeasType *byName(std::string s);

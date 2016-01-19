@@ -15,8 +15,7 @@ unsigned int ActionType::execute() {
     logArray->log("ActionType", "[" + name + "] executed");
 
     return 0;
-  }
-  else {
+  } else {
     failedCount++;
     logArray->logError("ActionType", "[" + name + "] FAILED, result=" + std::to_string(raw) + ",command=" + std::to_string(command) + ",responseSize=" + std::to_string(responseSize) );
 
@@ -32,8 +31,7 @@ unsigned long long ActionType::lastExecutedAt() {
 bool ActionType::wasExecuted() {
   if (timeBuffer.size() > 0) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
@@ -46,8 +44,7 @@ std::string ActionType::toJson() {
 
   if (wasExecuted()) {
     json += "\"lastExecutedAt\":" + std::to_string(lastExecutedAt()) + ",";
-  }
-  else {
+  } else {
     json += "\"lastExecutedAt\":null,";
   }
 

@@ -16,8 +16,7 @@ Spy::Spy() {
 }
 
 
-void Spy::start()
-{
+void Spy::start() {
   Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -37,7 +36,7 @@ void Spy::stop() {
 }
 
 
-void Spy::announceAll(){
+void Spy::announceAll() {
   url = hiveHost + urlPath;
 
   for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
@@ -59,12 +58,12 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
     request.setOpt(new curlpp::options::Verbose(quiet == false));
 
     // there is problem with curlpp and clang, sorry
-    #if not defined(__clang_version__)
-      std::list<std::string> header;
-      header.push_back( std::string("Content-Type: application/json") );
-      header.push_back( std::string("Accept: application/json") );
-      request.setOpt(new curlpp::options::HttpHeader(header));
-    #endif
+#if not defined(__clang_version__)
+    std::list<std::string> header;
+    header.push_back( std::string("Content-Type: application/json") );
+    header.push_back( std::string("Accept: application/json") );
+    request.setOpt(new curlpp::options::HttpHeader(header));
+#endif
 
     std::string command;
     command = "{\"meas_payload\": {\"site\": \"" + siteName + "\", \"name\": \"" + name + "\", \"value\": \"" + std::to_string(value) + "\"}}";
@@ -76,12 +75,10 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
 
     return 0;
 
-  }
-  catch ( curlpp::LogicError & e ) {
+  } catch ( curlpp::LogicError & e ) {
     logArray->logError("Spy", e.what());
     return 1;
-  }
-  catch ( curlpp::RuntimeError & e ) {
+  } catch ( curlpp::RuntimeError & e ) {
     logArray->logError("Spy", e.what());
     return 1;
   }

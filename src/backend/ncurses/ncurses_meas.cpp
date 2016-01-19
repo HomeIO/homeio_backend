@@ -18,8 +18,7 @@ unsigned int NcursesMeas::setPage(unsigned int p) {
   // disable clipping
   if (p >= maxPage) {
     page = maxPage - 1;
-  }
-  else {
+  } else {
     page = p;
   }
 

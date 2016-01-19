@@ -8,7 +8,7 @@
 #include "../log/log_array.hpp"
 
 class MeasFetcher {
-public:
+ public:
   MeasFetcher();
   void start();
   void stop();

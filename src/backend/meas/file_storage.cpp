@@ -9,8 +9,7 @@ FileStorage::FileStorage() {
   isRunning = true;
 }
 
-void FileStorage::start()
-{
+void FileStorage::start() {
   // create path at start, no wait
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH
@@ -62,8 +61,7 @@ void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storag
   if (storageVector.size() == 0) {
     logArray->log("FileStorage", "[" + measType->name + "] no data to store");
     return;
-  }
-  else {
+  } else {
     // mark last time stored
     measType->lastStored = storageVector.back().timeTo;
   }

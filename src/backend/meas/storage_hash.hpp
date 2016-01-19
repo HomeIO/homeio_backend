@@ -4,7 +4,7 @@
 #include <string>
 
 class StorageHash {
-public:
+ public:
   StorageHash(unsigned long long tF, unsigned long long tT, double v);
 
   unsigned long long timeFrom, timeTo;
