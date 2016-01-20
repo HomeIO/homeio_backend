@@ -24,6 +24,7 @@ NcursesUI::NcursesUI() {
   home = new NcursesHome;
   log = new NcursesLog;
   overseer = new NcursesOverseer;
+  action = new NcursesAction;
 }
 
 void NcursesUI::start() {
@@ -80,8 +81,8 @@ void NcursesUI::start() {
   my_menu = new_menu((ITEM **)my_items);
 
   menu_opts_off(my_menu, O_SHOWDESC);
-  set_menu_format(my_menu, 1, 5);
-  set_menu_mark(my_menu, " * ");
+  set_menu_format(my_menu, 1, NC_MENU_LAST);
+  set_menu_mark(my_menu, ">>");
 
   post_menu(my_menu);
   refresh();
@@ -166,6 +167,11 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
     page = overseer->setPage(page);
     overseer->render(local_win);
     break;
+
+    case NC_MENU_ACTION:
+      page = action->setPage(page);
+      action->render(local_win);
+      break;
 
   default:
     break;

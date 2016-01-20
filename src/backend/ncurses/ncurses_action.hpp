@@ -1,5 +1,5 @@
-#ifndef NCURSES_OVERSEER_HPP
-#define	NCURSES_OVERSEER_HPP
+#ifndef NCURSES_ACTION_HPP
+#define	NCURSES_ACTION_HPP
 
 #include <ncurses.h>
 #include <iostream>
@@ -7,23 +7,23 @@
 #include <string>
 #include <cmath>
 
-#include "../overseer/overseer_array.hpp"
-#include "../overseer/overseer.hpp"
+#include "../action/action_type_array.hpp"
+#include "../action/action_type.hpp"
 #include "ncurses_colors.hpp"
 
-class NcursesOverseer {
+class NcursesAction {
  public:
-  NcursesOverseer();
+  NcursesAction();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);
-  void renderOverseer(WINDOW *w, Overseer *o, int i);
+  void renderAction(WINDOW *w, ActionType *a, int i);
   unsigned int setPage(unsigned int p);
 
   unsigned int page;
   unsigned int perPage;
   unsigned int maxPage;
 
-  OverseerArray *overseerArray;
+  ActionTypeArray *actionTypeArray;
 };
 
 #endif

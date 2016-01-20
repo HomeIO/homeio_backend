@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cmath>
 
 #include "../meas/meas_type_array.hpp"
 #include "../meas/meas_type.hpp"
