@@ -181,10 +181,10 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
     overseer->render(local_win);
     break;
 
-    case NC_MENU_ACTION:
-      page = action->setPage(page);
-      action->render(local_win);
-      break;
+  case NC_MENU_ACTION:
+    page = action->setPage(page);
+    action->render(local_win);
+    break;
 
   default:
     break;
