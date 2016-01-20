@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <mutex>
+#include <memory>
 
 #include "../utils/helper.hpp"
 #include "abstract_addon.hpp"
