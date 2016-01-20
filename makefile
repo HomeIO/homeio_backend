@@ -20,6 +20,7 @@ hello: ;
 
 run: prepare-dir clean build exec;
 run-dev: prepare-dir clean build-warning exec;
+run-fast: prepare-dir clean build-no-warning exec;
 debug: prepare-dir clean build-debug exec-debug;
 setup: debian-deps prepare-dir;
 
@@ -32,6 +33,9 @@ build: ;
 
 build-warning:
 	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+
+build-no-warning:
+	$(COMPILER) $(NO_OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
 	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -g -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
