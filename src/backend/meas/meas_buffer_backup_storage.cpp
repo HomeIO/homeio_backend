@@ -7,6 +7,7 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
   path = "data";
 
   isRunning = true;
+  ready = false;
 }
 
 void MeasBufferBackupStorage::start() {
@@ -15,6 +16,9 @@ void MeasBufferBackupStorage::start() {
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
+
+  // not need to wait, because other modules can be run
+  ready = true;
 
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -30,7 +34,9 @@ void MeasBufferBackupStorage::start() {
   */
 
   while(isRunning) {
+    shutdownMutex.lock();
     performDump();
+    shutdownMutex.unlock();
     Helper::longSleep(cycleInterval);
   };
 }
@@ -38,12 +44,9 @@ void MeasBufferBackupStorage::start() {
 void MeasBufferBackupStorage::stop() {
   isRunning = false;
   shutdownMutex.lock();
-  logArray->log("MeasBufferBackupStorage", "stop initiated");
-
-  // reset mutex
-  shutdownMutex.unlock();
   // perform the last storage before exiting
   performDump();
+  shutdownMutex.unlock();
   logArray->log("MeasBufferBackupStorage", "stop");
 }
 
@@ -54,8 +57,6 @@ std::string MeasBufferBackupStorage::pathForMeasType(MeasType *measType) {
 }
 
 void MeasBufferBackupStorage::performDump() {
-  shutdownMutex.lock();
-
   unsigned long int i = 0;
   logArray->log("MeasBufferBackupStorage", "start");
 
@@ -86,7 +87,6 @@ void MeasBufferBackupStorage::performDump() {
   }
 
   logArray->log("MeasBufferBackupStorage", "end");
-  shutdownMutex.unlock();
 }
 
 void MeasBufferBackupStorage::performRestore() {

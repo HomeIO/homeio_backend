@@ -40,6 +40,7 @@ class Spy {
   bool enabled;
 
   bool isRunning;
+  bool ready;
   std::mutex shutdownMutex;
 };
 

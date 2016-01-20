@@ -19,6 +19,7 @@ class AddonsArray {
   std::vector <std::unique_ptr<AbstractAddon>> addons;
   unsigned long int cycleInterval;
   bool isRunning;
+  bool ready;
   std::mutex shutdownMutex;
 
   MeasTypeArray* measTypeArray;

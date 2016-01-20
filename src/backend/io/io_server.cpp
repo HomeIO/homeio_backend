@@ -41,6 +41,8 @@ void IoServer::start() {
 }
 
 void IoServer::stop() {
+  isRunning = false;
   shutdownMutex.lock();
+  shutdownMutex.unlock();
   logArray->log("IoServer", "stop");
 }

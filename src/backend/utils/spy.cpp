@@ -13,13 +13,12 @@ Spy::Spy() {
   enabled = false; // disabled by default
 
   isRunning = true;
+  ready = false;
 }
 
 
 void Spy::start() {
-  Helper::longSleep(usDelay);
-  // wait for enough measurements
-  measTypeArray->delayTillReady();
+  ready = true;
 
   while(isRunning) {
     if (enabled) {
@@ -31,7 +30,10 @@ void Spy::start() {
 }
 
 void Spy::stop() {
+  isRunning = false;
   shutdownMutex.lock();
+  shutdownMutex.unlock();
+
   logArray->log("Spy", "stop");
 }
 

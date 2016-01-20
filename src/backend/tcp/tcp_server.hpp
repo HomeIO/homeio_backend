@@ -42,6 +42,7 @@ class TcpServer {
   unsigned long long usDelay;
 
   bool isRunning;
+  bool ready;
   std::mutex shutdownMutex;
 
  private:

@@ -18,10 +18,10 @@ void MeasFetcher::start() {
   ready = true;
 
   while(isRunning) {
+    shutdownMutex.lock();
+
     for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
-      shutdownMutex.lock();
       m->fetch();
-      shutdownMutex.unlock();
 
       Helper::longSleep(betweenMeasInterval);
 
@@ -31,12 +31,15 @@ void MeasFetcher::start() {
         measTypeArray->isReady = true;
       }
     }
+    shutdownMutex.unlock();
 
     Helper::longSleep(cycleInterval);
   }
 }
 
 void MeasFetcher::stop() {
+  isRunning = false;
   shutdownMutex.lock();
+  shutdownMutex.unlock();
   logArray->log("MeasFetcher", "stop");
 }

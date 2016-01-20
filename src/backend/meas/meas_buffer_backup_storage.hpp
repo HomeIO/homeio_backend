@@ -28,6 +28,7 @@ class MeasBufferBackupStorage {
   unsigned long long usDelay;
 
   bool isRunning;
+  bool ready;
   std::mutex shutdownMutex;
 
   MeasTypeArray *measTypeArray;

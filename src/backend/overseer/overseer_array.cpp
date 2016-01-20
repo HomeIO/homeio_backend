@@ -6,6 +6,7 @@ OverseerArray::OverseerArray() {
   usDelay = 200000; // wait 2s to warm up
 
   isRunning = true;
+  ready = false;
 }
 
 unsigned int OverseerArray::add(Overseer *o) {
@@ -28,7 +29,6 @@ void OverseerArray::start() {
   // wait for enough measurements
   measTypeArray->delayTillReady();
 
-
   logArray->log("Overseer", "start");
 
   for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
@@ -37,6 +37,8 @@ void OverseerArray::start() {
     it->logArray = logArray;
     it->check();
   }
+
+  ready = true;
 
   while(isRunning) {
     shutdownMutex.lock();
@@ -55,6 +57,8 @@ void OverseerArray::start() {
 }
 
 void OverseerArray::stop() {
+  isRunning = false;
   shutdownMutex.lock();
+  shutdownMutex.unlock();
   logArray->log("Overseer", "stop");
 }

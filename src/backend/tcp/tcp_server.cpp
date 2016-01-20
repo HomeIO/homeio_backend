@@ -4,6 +4,7 @@ TcpServer::TcpServer() {
   usDelay = 2000000;
 
   isRunning = true;
+  ready = false;
 }
 
 void TcpServer::start() {
@@ -18,6 +19,8 @@ void TcpServer::start() {
   int list_s = createTcpServer();
 
   logArray->log("TCP", "started on " + to_string(port));
+
+  ready = true;
 
   while (isRunning) {
     // Wait for a connection, then accept() it
@@ -46,7 +49,9 @@ void TcpServer::start() {
 }
 
 void TcpServer::stop() {
+  isRunning = false;
   shutdownMutex.lock();
+  shutdownMutex.unlock();
   logArray->log("TCP", "stop");
 }
 

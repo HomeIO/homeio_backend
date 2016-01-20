@@ -27,6 +27,7 @@ class OverseerArray {
   unsigned long long usDelay;
 
   bool isRunning;
+  bool ready;
   std::mutex shutdownMutex;
 };
 

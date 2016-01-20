@@ -164,9 +164,9 @@ void *ioServerThread(void *argument) {
   return NULL;
 }
 
-void *ioOverseerThread(void *argument) {
+void *overseerThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
-  h->logArray->log("HomeIO", "Thread: ioOverseerThread() - low level overseeers");
+  h->logArray->log("HomeIO", "Thread: overseerThread() - low level overseeers");
   h->startOverseer();
 
   return NULL;
@@ -244,17 +244,47 @@ unsigned char HomeIO::start() {
     usleep(5000);
   }
 
+  // meas
   pthread_create(&threads[2], NULL, measStartThread, (void *) h);
   while (measFetcher->ready == false) {
     usleep(5000);
   }
 
-  pthread_create(&threads[3], NULL, tcpServerThread, (void *) h);
-  pthread_create(&threads[4], NULL, ioOverseerThread, (void *) h);
+  // overseers
+  pthread_create(&threads[3], NULL, overseerThread, (void *) h);
+  while (overseerArray->ready == false) {
+    usleep(5000);
+  }
+
+  // tcp server
+  pthread_create(&threads[4], NULL, tcpServerThread, (void *) h);
+  while (tcpServer->ready == false) {
+    usleep(5000);
+  }
+
+  // file storage - meas time_from;time_to;value
   pthread_create(&threads[5], NULL, fileStorageThread, (void *) h);
+  while (fileStorage->ready == false) {
+    usleep(5000);
+  }
+
+  // meas buffer storage - raws
   pthread_create(&threads[6], NULL, fileBufferBackupThread, (void *) h);
-  pthread_create(&threads[7], NULL, spyThread, (void *) h);
-  pthread_create(&threads[8], NULL, addonsThread, (void *) h);
+  while (measBufferBackupStorage->ready == false) {
+    usleep(5000);
+  }
+
+  // addons
+  pthread_create(&threads[7], NULL, addonsThread, (void *) h);
+  while (addonsArray->ready == false) {
+    usleep(5000);
+  }
+
+  // spy
+  pthread_create(&threads[8], NULL, spyThread, (void *) h);
+  while (spy->ready == false) {
+    usleep(5000);
+  }
 
   // wait for each thread to complete
   for (i=0; i<NUM_THREADS; ++i) {
@@ -271,14 +301,15 @@ unsigned char HomeIO::stop() {
   cout << endl << endl;
   logArray->log("HomeIO", "Shutdown initialized");
 
+  spy->stop();
+  addonsArray->stop();
   measBufferBackupStorage->stop();
   fileStorage->stop();
   tcpServer->stop();
-  spy->stop();
   overseerArray->stop();
   measFetcher->stop();
   ioServer->stop();
-  addonsArray->stop();
+
   ncursesUI->stop();
 
   logArray->log("HomeIO", "Shutdown completed");

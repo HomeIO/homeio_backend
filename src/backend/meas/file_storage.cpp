@@ -7,6 +7,7 @@ FileStorage::FileStorage() {
   path = "data";
 
   isRunning = true;
+  ready = false;
 }
 
 void FileStorage::start() {
@@ -16,6 +17,9 @@ void FileStorage::start() {
   // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
 
   Helper::longSleep(usDelay);
+
+  // not need to wait, because other modules can be run
+  ready = true;
 
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -30,14 +34,11 @@ void FileStorage::start() {
 
 void FileStorage::stop() {
   isRunning = false;
-  // wait for end storage
   shutdownMutex.lock();
-  logArray->log("FileStorage", "stop initiated");
-
-  // reset mutex
-  shutdownMutex.unlock();
   // perform the last storage before exiting
   performMeasStore();
+  shutdownMutex.unlock();
+
   logArray->log("FileStorage", "stop");
 }
 
