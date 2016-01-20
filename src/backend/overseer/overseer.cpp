@@ -102,11 +102,31 @@ void Overseer::markExecutionTime() {
     timeBuffer.erase(timeBuffer.begin());
   }
 
-  timeBuffer.push_back( (unsigned long int) time(0) );
+  timeBuffer.push_back( currentTime() );
+}
+
+unsigned long long Overseer::currentTime() {
+  return (unsigned long int) time(0);
 }
 
 unsigned long long Overseer::lastExecuteTime() {
-  return timeBuffer.back();
+  if (wasExecutedAtLeastOnce()) {
+    return timeBuffer.back();
+  } else {
+    return currentTime();
+  }
+}
+
+unsigned long long Overseer::secondsTillLastExec() {
+  return currentTime() - lastExecuteTime();
+}
+
+bool Overseer::wasExecutedAtLeastOnce() {
+  if (timeBuffer.size() > 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 bool Overseer::checkLastExecutionTime() {

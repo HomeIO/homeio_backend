@@ -12,6 +12,8 @@
 
 #define NC_OVERSEER_3 2
 #define NC_OVERSEER_3_ACTION_NAME 0
+#define NC_OVERSEER_3_ACTION_SECONDS_AGO NC_OVERSEER_3_ACTION_NAME + 22
+#define NC_OVERSEER_3_ACTION_HITS NC_OVERSEER_3_ACTION_SECONDS_AGO + 20 + 2
 
 #define NC_OVERSEER_LINE_SIZE 4
 
@@ -99,7 +101,7 @@ void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
 
   wattron(w, NC_COLOR_PAIR_SYMBOL_SET);
   if (o->tempResult) {
-    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "OK" );
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "HIT" );
   } else {
     mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "-" );
   }
@@ -109,5 +111,20 @@ void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
   wattron(w, NC_COLOR_PAIR_NAME_LESSER_SET);
   mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_NAME, o->actionName.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  if (o->wasExecutedAtLeastOnce()) {
+    wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_SECONDS_AGO, std::to_string( o->secondsTillLastExec() ).c_str() );
+    wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  } else {
+    wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_SECONDS_AGO, "-" );
+    wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+  }
+
+  wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_HITS, std::to_string( o->hitCount ).c_str() );
+  wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
 
 }

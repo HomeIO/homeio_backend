@@ -22,11 +22,16 @@ class Overseer {
   double tempValue; // last calculated value
   bool tempResult; // last checked result
 
+  unsigned long long hitCount; // how many it was executed
+
   // related to execution time buffer
   unsigned long long minExecInterval; // allow execution only when X mili seconds passed since previous execution
   unsigned int maxTimeBufferSize; // how many execution times should be stored in
   std::vector < unsigned long long > timeBuffer;
   unsigned long long lastExecuteTime();
+  unsigned long long currentTime();
+  unsigned long long secondsTillLastExec();
+  bool wasExecutedAtLeastOnce();
   void markExecutionTime();
   bool checkLastExecutionTime();
 
