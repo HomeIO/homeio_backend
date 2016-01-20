@@ -25,7 +25,9 @@ void FileStorage::start() {
   measTypeArray->delayTillReady();
 
   while(isRunning) {
+    shutdownMutex.lock();
     performMeasStore();
+    shutdownMutex.unlock();
     logArray->log("FileStorage", "done");
 
     Helper::longSleep(cycleInterval);
@@ -43,8 +45,6 @@ void FileStorage::stop() {
 }
 
 void FileStorage::performMeasStore() {
-  shutdownMutex.lock();
-
   currentTime = Helper::mTime();
 
   logArray->log("FileStorage", "start meas file storage");
@@ -54,8 +54,6 @@ void FileStorage::performMeasStore() {
   }
 
   logArray->log("FileStorage", "finish meas file storage");
-
-  shutdownMutex.unlock();
 }
 
 void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storageVector) {

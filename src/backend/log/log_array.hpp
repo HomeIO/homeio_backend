@@ -15,6 +15,7 @@ class LogArray {
   void logError(std::string m, std::string c);
   void addLogItem(LogItem li);
   void limit(unsigned int maxLines);
+  void consoleOutput();
 
   unsigned int maxHistory;
   std::vector <LogItem> logBuffer;

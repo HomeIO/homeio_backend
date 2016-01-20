@@ -39,3 +39,11 @@ void LogArray::limit(unsigned int maxLines) {
     maxHistory = maxLines;
   }
 }
+
+void LogArray::consoleOutput() {
+  LogItem *li;
+  for (unsigned int i = 0; i < (unsigned int) logBuffer.size(); i++) {
+    li = &logBuffer.at(i);
+    std::cout << li->line() << std::endl;
+  }
+}

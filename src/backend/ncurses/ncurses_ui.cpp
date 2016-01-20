@@ -14,7 +14,9 @@
 
 
 NcursesUI::NcursesUI() {
+  isRunning = true;
   ready = false;
+  beginShutdown = false;
 
   interval = 400;
 
@@ -58,11 +60,7 @@ void NcursesUI::start() {
   wrefresh(local_win);
 
   // menu
-  ITEM **my_items;
-  int c;
-  MENU *my_menu;
-  int n_choices;
-  ITEM *cur_item;
+
 
   // menu items - max amount
   my_items = (ITEM **)calloc(NC_MENU_LAST + 1, sizeof(ITEM *));
@@ -90,7 +88,8 @@ void NcursesUI::start() {
   ready = true;
 
   // TODO move loop to other method
-  while((c = getch()) != KEY_F(1)) {
+  //  != KEY_F(1)
+  while((isRunning) && (c = getch())) {
     switch(c) {
     case KEY_LEFT:
       menu_driver(my_menu, REQ_LEFT_ITEM);
@@ -118,23 +117,37 @@ void NcursesUI::start() {
       local_win = redrawWindow(local_win, my_menu);
       break;
 
+    /*
+    case KEY_F(1):
+      // move to logs
+      return;
+      menu_driver(my_menu, REQ_FIRST_ITEM);
+      menu_driver(my_menu, REQ_RIGHT_ITEM);
+      page = 0;
+      beginShutdown = true;
+      // show shutdown logs
+      while((isRunning) && (c = getch())) {
+        local_win = redrawWindow(local_win, my_menu);
+      }
+      break;
+      */
+
+
     default:
       local_win = redrawWindow(local_win, my_menu);
       break;
     }
   }
 
+}
+
+void NcursesUI::stop() {
   // TODO move to stop
   for (int i=0; i <= NC_MENU_LAST; i++) {
     free_item(my_items[i]);
   }
   free_menu(my_menu);
   endwin();
-}
-
-void NcursesUI::stop() {
-  // TODO
-  //endwin();
 }
 
 WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {

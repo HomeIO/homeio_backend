@@ -212,6 +212,15 @@ void *ncursesThread(void *argument) {
   return NULL;
 }
 
+void *shutdownWatchThread(void *argument) {
+  HomeIO *h = (HomeIO *) argument;
+  while (h->ncursesUI->beginShutdown == false) {
+    usleep(20000);
+  }
+  h->stop();
+
+  return NULL;
+}
 
 void HomeIO::copyInternalDelays() {
   fileStorage->usDelay += measFetcher->cycleInterval * 4;
@@ -224,7 +233,7 @@ void HomeIO::copyInternalDelays() {
 unsigned char HomeIO::start() {
   copyInternalDelays();
 
-  const char NUM_THREADS = 8;
+  const char NUM_THREADS = 9;
   pthread_t threads[NUM_THREADS];
   int i;
 
@@ -286,6 +295,9 @@ unsigned char HomeIO::start() {
     usleep(5000);
   }
 
+  // shutdown watch
+  pthread_create(&threads[9], NULL, shutdownWatchThread, (void *) h);
+
   // wait for each thread to complete
   for (i=0; i<NUM_THREADS; ++i) {
     // block until thread i completes
@@ -301,6 +313,7 @@ unsigned char HomeIO::stop() {
   cout << endl << endl;
   logArray->log("HomeIO", "Shutdown initialized");
 
+  int i = 0;
   spy->stop();
   addonsArray->stop();
   measBufferBackupStorage->stop();
@@ -309,10 +322,10 @@ unsigned char HomeIO::stop() {
   overseerArray->stop();
   measFetcher->stop();
   ioServer->stop();
-
   ncursesUI->stop();
 
-  logArray->log("HomeIO", "Shutdown completed");
+  logArray->log("HomeIO", "Shutdown finished");
+  logArray->consoleOutput();
 
   exit(EXIT_SUCCESS);
 }

@@ -25,13 +25,21 @@ class NcursesUI {
   unsigned int page;
   unsigned int interval;
 
+  bool isRunning;
   bool ready;
+  bool beginShutdown;
 
   NcursesHome *home;
   NcursesMeas *meas;
   NcursesLog *log;
   NcursesOverseer *overseer;
   NcursesAction *action;
+
+  ITEM **my_items;
+  int c;
+  MENU *my_menu;
+  int n_choices;
+  ITEM *cur_item;
 };
 
 #endif
