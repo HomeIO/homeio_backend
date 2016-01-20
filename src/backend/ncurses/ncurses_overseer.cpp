@@ -1,6 +1,18 @@
 #include "ncurses_overseer.hpp"
 
-#define NC_OVERSEER_NAME 0
+#define NC_OVERSEER_1 0
+#define NC_OVERSEER_1_NAME 0
+
+#define NC_OVERSEER_2 1
+#define NC_OVERSEER_2_MEAS_NAME 0
+#define NC_OVERSEER_2_MEAS_VALUE NC_OVERSEER_2_MEAS_NAME + 22
+#define NC_OVERSEER_2_MEAS_IS_MAX NC_OVERSEER_2_MEAS_VALUE + 20
+#define NC_OVERSEER_2_MEAS_THRESHOLD NC_OVERSEER_2_MEAS_IS_MAX + 2
+#define NC_OVERSEER_2_MEAS_RESULT NC_OVERSEER_2_MEAS_THRESHOLD + 16
+
+#define NC_OVERSEER_3 2
+#define NC_OVERSEER_3_ACTION_NAME 0
+
 #define NC_OVERSEER_LINE_SIZE 4
 
 NcursesOverseer::NcursesOverseer() {
@@ -30,7 +42,7 @@ void NcursesOverseer::renderPage(WINDOW *w) {
 void NcursesOverseer::render(WINDOW *w) {
   renderPage(w);
 
-  mvwprintw(w, 1, 1 + NC_OVERSEER_NAME, "Name" );
+  mvwprintw(w, 1, 1 + NC_OVERSEER_1_NAME, "Name" );
 
   unsigned int i;
   long unsigned int j;
@@ -47,6 +59,55 @@ void NcursesOverseer::render(WINDOW *w) {
 
 void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
   wattron(w, NC_COLOR_PAIR_NAME_SET);
-  mvwprintw(w, i, 1 + NC_OVERSEER_NAME, o->name.c_str() );
+  mvwprintw(w, i + NC_OVERSEER_1, 1 + NC_OVERSEER_1_NAME, o->name.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_SET);
+
+  // meas
+  wattron(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_NAME, o->measName.c_str() );
+  wattroff(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  std::string valueString = "";
+  std::ostringstream os;
+  os << std::setprecision(5) << o->tempValue;
+  valueString += os.str();;
+  valueString += " ";
+  valueString += o->meas->unit;
+
+  wattron(w, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_VALUE, valueString.c_str() );
+  wattroff(w, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(w, NC_COLOR_PAIR_SYMBOL_SET);
+  if (o->isMax) {
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_IS_MAX, ">" );
+  } else {
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_IS_MAX, "<" );
+  }
+  wattroff(w, NC_COLOR_PAIR_SYMBOL_SET);
+
+  valueString = "";
+  std::ostringstream osThreshold;
+  osThreshold << std::setprecision(5) << o->thresholdValue;
+  valueString += osThreshold.str();;
+  valueString += " ";
+  valueString += o->meas->unit;
+
+  wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_THRESHOLD, valueString.c_str() );
+  wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+  wattron(w, NC_COLOR_PAIR_SYMBOL_SET);
+  if (o->tempResult) {
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "OK" );
+  } else {
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "-" );
+  }
+  wattroff(w, NC_COLOR_PAIR_SYMBOL_SET);
+
+  // action
+  wattron(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_NAME, o->actionName.c_str() );
+  wattroff(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+
 }

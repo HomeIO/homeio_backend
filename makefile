@@ -12,6 +12,7 @@ EXTRA_LINK_FLAG = -static-libstdc++
 LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses -lmenu
 #STANDARD_FLAG = -std=gnu++11
 STANDARD_FLAG = -std=gnu++14
+MULTICORE_FLAG = -pipe
 
 hello: ;
 	@echo Hello
@@ -26,13 +27,13 @@ prepare-dir:
 	[ -d data ] || mkdir data
 
 build: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-warning:
-	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) -g -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -g -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 exec: ;
 	sudo bin/homeio_main_${SITE}

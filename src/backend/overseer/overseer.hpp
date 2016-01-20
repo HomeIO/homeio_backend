@@ -19,6 +19,9 @@ class Overseer {
   unsigned long int windowSize; // use average of measurements
   unsigned char priority; // used in frontend
 
+  double tempValue; // last calculated value
+  bool tempResult; // last checked result
+
   // related to execution time buffer
   unsigned long long minExecInterval; // allow execution only when X mili seconds passed since previous execution
   unsigned int maxTimeBufferSize; // how many execution times should be stored in

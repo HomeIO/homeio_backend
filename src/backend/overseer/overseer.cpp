@@ -16,26 +16,26 @@ bool Overseer::check() {
     return false;
   }
 
-  double value = currentValue();
-  bool result = false;
+  tempValue = currentValue();
+  tempResult = false;
 
   if (isMax) {
-    if (currentValue() > thresholdValue) {
-      result = true;
+    if (tempValue > thresholdValue) {
+      tempResult = true;
     }
   } else {
-    if (currentValue() < thresholdValue) {
-      result = true;
+    if (tempValue < thresholdValue) {
+      tempResult = true;
     }
   }
 
-  logArray->log("Overseer", "[" + name + "] value=" + std::to_string(value) + ",windowSize=" + std::to_string(windowSize) + ",thresholdValue=" + std::to_string(thresholdValue) + "," + "result=" + std::to_string(result));
+  logArray->log("Overseer", "[" + name + "] value=" + std::to_string(tempValue) + ",windowSize=" + std::to_string(windowSize) + ",thresholdValue=" + std::to_string(thresholdValue) + "," + "result=" + std::to_string(tempResult));
 
-  if (result) {
+  if (tempResult) {
     execute();
   }
 
-  return result;
+  return tempResult;
 }
 
 std::string Overseer::toJson() {
