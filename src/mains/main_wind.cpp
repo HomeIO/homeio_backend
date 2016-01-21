@@ -349,6 +349,9 @@ int main() {
   wts->measResistor = "res_pwm_avg";
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(wts));
 
+  // UI
+  h->ncursesUI->interval = 1000;
+
   // Now you can run everything of parts of backend.
   // TODO: way to disable IoServer
   h->start();

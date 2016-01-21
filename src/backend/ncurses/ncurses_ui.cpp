@@ -152,8 +152,8 @@ void NcursesUI::stop() {
 
 WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
   // del
-  //wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
-  //wrefresh(w);
+  wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+  wrefresh(w);
   delwin(w);
 
   // new

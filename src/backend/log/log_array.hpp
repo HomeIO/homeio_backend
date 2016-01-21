@@ -13,12 +13,12 @@ class LogArray {
   void log(std::string m, std::string c);
   void logError(std::string c);
   void logError(std::string m, std::string c);
-  void addLogItem(LogItem li);
+  void addLogItem(LogItem *li);
   void limit(unsigned int maxLines);
   void consoleOutput();
 
   unsigned int maxHistory;
-  std::vector <LogItem> logBuffer;
+  std::vector <LogItem*> logBuffer;
 };
 
 

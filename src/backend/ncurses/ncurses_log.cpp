@@ -33,13 +33,13 @@ void NcursesLog::render(WINDOW *w) {
   for (i = 0; i < perPage; i++) {
     j = logArray->logBuffer.size() - 1 - (perPage * page) - i;
     if (j < logArray->logBuffer.size()) {
-      LogItem li = logArray->logBuffer.at(j) ;
+      LogItem *li = logArray->logBuffer.at(j) ;
 
-      if (li.error) {
+      if (li->error) {
         wattron(w, NC_COLOR_PAIR_ERROR_SET);
       }
-      mvwprintw(w, (int) i, 1, li.line().c_str() );
-      if (li.error) {
+      mvwprintw(w, (int) i, 1, li->line().c_str() );
+      if (li->error) {
         wattroff(w, NC_COLOR_PAIR_ERROR_SET);
       }
 
