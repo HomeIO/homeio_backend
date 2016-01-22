@@ -159,7 +159,6 @@ int main() {
   h->spy->cycleInterval = 30*60*1000*1000; // 10 minutes
   h->spy->hiveHost = "http://hive.homeio.org.pl";
   h->spy->siteName = "poznan_dev";
-  h->spy->enabled = true;
 
   h->measGroup->addGroup("soil_moisture", "moisture_shadow,moisture_external,moisture_top");
   h->measGroup->addGroup("temperature", "int_temperature,ext_temperature");

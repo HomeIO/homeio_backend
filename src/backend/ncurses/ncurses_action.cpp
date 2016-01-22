@@ -39,7 +39,7 @@ void NcursesAction::render(WINDOW *w) {
     j = (perPage * page) + i;
     if (j < actionTypeArray->actionTypes.size()) {
       element = &actionTypeArray->actionTypes.at(j) ;
-      renderAction(w, element, i + 3);
+      renderAction(w, element, (int) (i + 3));
     }
   }
 }

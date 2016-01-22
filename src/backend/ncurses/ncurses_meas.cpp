@@ -45,7 +45,7 @@ void NcursesMeas::render(WINDOW *w) {
     j = (perPage * page) + i;
     if (j < measTypeArray->measTypes.size()) {
       element = &measTypeArray->measTypes.at(j) ;
-      renderMeas(w, element, i + 3);
+      renderMeas(w, element, (int) (i + 3) );
     }
   }
 }

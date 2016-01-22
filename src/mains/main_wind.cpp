@@ -331,7 +331,6 @@ int main() {
   h->spy->cycleInterval = 10*60*1000*1000; // 10 minutes
   h->spy->hiveHost = "http://hive.homeio.org.pl";
   h->spy->siteName = "lakie_dev";
-  h->spy->enabled = true;
 
   // buffer storage
   h->measBufferBackupStorage->cycleInterval = (long) 10*60*1000*1000; // 10 minutes

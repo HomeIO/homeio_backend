@@ -54,7 +54,7 @@ void NcursesOverseer::render(WINDOW *w) {
     j = (perPage * page) + i;
     if (j < overseerArray->overseers.size()) {
       element = &overseerArray->overseers.at(j) ;
-      renderOverseer(w, element, (i * NC_OVERSEER_LINE_SIZE) + 3);
+      renderOverseer(w, element, (int) ((i * NC_OVERSEER_LINE_SIZE) + 3) );
     }
   }
 }
