@@ -313,7 +313,6 @@ unsigned char HomeIO::stop() {
   cout << endl << endl;
   logArray->log("HomeIO", "Shutdown initialized");
 
-  int i = 0;
   spy->stop();
   addonsArray->stop();
   measBufferBackupStorage->stop();

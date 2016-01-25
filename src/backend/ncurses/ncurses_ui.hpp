@@ -20,10 +20,10 @@ class NcursesUI {
   void start();
   void stop();
   void clearContent();
-  WINDOW *redrawWindow(WINDOW *w);
+  void redrawWindow();
 
   unsigned int page;
-  unsigned int interval;
+  int interval; // int because of ncurses
 
   bool isRunning;
   bool ready;
@@ -34,6 +34,8 @@ class NcursesUI {
   NcursesLog *log;
   NcursesOverseer *overseer;
   NcursesAction *action;
+
+  WINDOW *local_win;
 
   ITEM **my_items;
   int c;

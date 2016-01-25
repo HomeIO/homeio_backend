@@ -6,15 +6,15 @@ OPTIM_FLAG = -O2
 NO_OPTIM_FLAG = -O0
 WARNING_FLAG = -Wall
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings
-POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations -Wsign-promo  -Wsign-conversion
+POSSIBLE_TODO_WARNING_FLAG = -Wsign-promo -Waggregate-return
 FULL_WARNING_FLAG_GCC = -Wno-unknown-warning-option -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
-FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=2 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion -Wlogical-op $(FULL_WARNING_FLAG_GCC)
-FULL_WARNING_FLAG_STRICT = -Wshadow
+BASIC_WARNING_FLAG = -Wall -Wextra -pedantic -ansi
+FULL_WARNING_FLAG = $(BASIC_WARNING_FLAG) -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=2 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion -Wlogical-op -Wshadow -Wmissing-declarations -Wsign-conversion $(FULL_WARNING_FLAG_GCC)
 CPP_PATHS = src/backend/*.cpp src/backend/addons/*.cpp src/backend/io/*.cpp src/backend/ncurses/*.cpp src/backend/log/*.cpp src/backend/meas/*.cpp src/backend/action/*.cpp src/backend/overseer/*.cpp src/backend/tcp/*.cpp src/backend/utils/*.cpp
 EXTRA_LINK_FLAG = -static-libstdc++
 LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses -lmenu
-#STANDARD_FLAG = -std=gnu++11
-STANDARD_FLAG = -std=gnu++14
+#STANDARD_FLAG ?= -std=gnu++11
+STANDARD_FLAG ?= -std=gnu++14
 MULTICORE_FLAG = -pipe
 DEBUG_FLAGS = -d3 -fvar-tracking
 
@@ -33,23 +33,23 @@ prepare-dir:
 	[ -d data ] || mkdir data
 
 build: ;
-	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(BASIC_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(LINK_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
 
 build-warning:
-	$(COMPILER) $(ARCHITECTURE_FLAG) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG) $(NO_OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(LINK_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
 
 build-strict:
-	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG_STRICT) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(LINK_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE}
 
 build-no-warning:
 	$(COMPILER) $(ARCHITECTURE_FLAG) $(NO_OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
+# no worky
 build-arm:
-	# $(FULL_WARNING_FLAG)
 	$(ARM_CROSS_COMPILER) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(DEBUG_FLAGS) -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(DEBUG_FLAGS) -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 exec: ;
 	sudo bin/homeio_main_${SITE}

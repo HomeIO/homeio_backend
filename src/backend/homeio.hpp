@@ -70,5 +70,15 @@ class HomeIO {
   bool ioServerReady;
 };
 
-//#include "homeio.cpp"
+void* measStartThread(void*);
+void* tcpServerThread(void*);
+void* ioServerThread(void*);
+void* overseerThread(void*);
+void* fileStorageThread(void*);
+void* fileBufferBackupThread(void*);
+void* spyThread(void*);
+void* addonsThread(void*);
+void* ncursesThread(void*);
+void* shutdownWatchThread(void*);
+
 #endif

@@ -30,9 +30,6 @@ NcursesUI::NcursesUI() {
 }
 
 void NcursesUI::start() {
-  WINDOW *w;
-  w = newwin(LINES - 1, COLS, 1, 0);
-
   initscr();
   start_color();
   noecho();
@@ -52,15 +49,11 @@ void NcursesUI::start() {
 
   refresh();
 
-  // content window
-  WINDOW *local_win;
-
   local_win = newwin(LINES - 1, COLS, 1, 0);
   box(local_win, 0 , 0);
   wrefresh(local_win);
 
   // menu
-
 
   // menu items - max amount
   my_items = (ITEM **)calloc(NC_MENU_LAST + 1, sizeof(ITEM *));
@@ -94,47 +87,32 @@ void NcursesUI::start() {
     case KEY_LEFT:
       menu_driver(menu, REQ_LEFT_ITEM);
       page = 0;
-      local_win = redrawWindow(local_win);
+      redrawWindow();
       break;
 
     case KEY_RIGHT:
       menu_driver(menu, REQ_RIGHT_ITEM);
       page = 0;
-      local_win = redrawWindow(local_win);
+      redrawWindow();
       break;
 
     case KEY_DOWN:
       if (page < 100) {
         page++;
       }
-      local_win = redrawWindow(local_win);
+      redrawWindow();
       break;
 
     case KEY_UP:
       if (page >= 1) {
         page--;
       }
-      local_win = redrawWindow(local_win);
+      redrawWindow();
       break;
-
-    /*
-    case KEY_F(1):
-      // move to logs
-      return;
-      menu_driver(my_menu, REQ_FIRST_ITEM);
-      menu_driver(my_menu, REQ_RIGHT_ITEM);
-      page = 0;
-      beginShutdown = true;
-      // show shutdown logs
-      while((isRunning) && (c = getch())) {
-        local_win = redrawWindow(local_win, my_menu);
-      }
-      break;
-      */
 
 
     default:
-      local_win = redrawWindow(local_win);
+      redrawWindow();
       break;
     }
   }
@@ -150,15 +128,14 @@ void NcursesUI::stop() {
   endwin();
 }
 
-WINDOW *NcursesUI::redrawWindow(WINDOW *w) {
+void NcursesUI::redrawWindow() {
   // del
   //wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
-  wrefresh(w);
-  delwin(w);
+  wrefresh(local_win);
+  delwin(local_win);
+  //delete local_win; // TODO
 
   // new
-  WINDOW *local_win;
-
   local_win = newwin(LINES - 1, COLS, 1, 0);
 
   switch(item_index(current_item(menu))) {
@@ -194,6 +171,4 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w) {
 
   refresh();
   wrefresh(local_win);
-
-  return local_win;
 }
