@@ -1,12 +1,4 @@
-#include "../backend/homeio.hpp"
-
-HomeIO *h;
-
-void handleSignal(int s) {
-  UNUSED(s);
-  h->stop();
-  exit(1);
-}
+#include "../backend/main.hpp"
 
 int main() {
   h = new HomeIO();
@@ -46,11 +38,10 @@ int main() {
 
   // WARNING
   // this announce measurements to global server used for statistics and uptime
-  h->spy->enabled = true;
+  h->spy->enabled = false;
   h->spy->cycleInterval = 5*60*1000*1000; // 10 minutes
   h->spy->hiveHost = "http://hive.homeio.org.pl/";
   h->spy->siteName = "nukomeet";
-  h->spy->enabled = true;
 
   // buffer storage
   h->measBufferBackupStorage->cycleInterval = (long) 20*60*1000*1000; // 20 minutes

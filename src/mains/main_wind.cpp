@@ -1,12 +1,4 @@
-#include "../backend/homeio.hpp"
-
-HomeIO *h;
-
-void handleSignal(int s) {
-  UNUSED(s);
-  h->stop();
-  exit(1);
-}
+#include "../backend/main.hpp"
 
 int main() {
   h = new HomeIO();
