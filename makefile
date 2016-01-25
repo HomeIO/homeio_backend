@@ -1,26 +1,30 @@
 COMPILER ?= g++
 #COMPILER ?= clang++
+ARM_CROSS_COMPILER = arm-linux-gnueabi-g++-5
 ARCHITECTURE_FLAG = -march=native
-OPTIM_FLAG = -O2 $(ARCHITECTURE_FLAG)
-NO_OPTIM_FLAG = -O0 $(ARCHITECTURE_FLAG)
+OPTIM_FLAG = -O2
+NO_OPTIM_FLAG = -O0
 WARNING_FLAG = -Wall
-FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion
-FULL_WARNING_FLAG_GCC = -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
 # http://stackoverflow.com/questions/5088460/flags-to-enable-thorough-and-verbose-g-warnings
-POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations   -Wshadow -Wsign-promo  -Wsign-conversion
+POSSIBLE_TODO_WARNING_FLAG = -Waggregate-return -Wmissing-declarations -Wsign-promo  -Wsign-conversion
+FULL_WARNING_FLAG_GCC = -Wno-unknown-warning-option -Wlogical-op -Wnoexcept -Wstrict-null-sentinel
+FULL_WARNING_FLAG = -Wall -Wextra -pedantic -ansi -Wabi -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs  -Woverloaded-virtual -Wredundant-decls  -Wstrict-overflow=2 -Wswitch-default -Wundef -Werror -Wno-unused -Wconversion -Wlogical-op $(FULL_WARNING_FLAG_GCC)
+FULL_WARNING_FLAG_STRICT = -Wshadow
 CPP_PATHS = src/backend/*.cpp src/backend/addons/*.cpp src/backend/io/*.cpp src/backend/ncurses/*.cpp src/backend/log/*.cpp src/backend/meas/*.cpp src/backend/action/*.cpp src/backend/overseer/*.cpp src/backend/tcp/*.cpp src/backend/utils/*.cpp
 EXTRA_LINK_FLAG = -static-libstdc++
 LINK_FLAG = -lpthread -lcurlpp -lcurl -lncurses -lmenu
 #STANDARD_FLAG = -std=gnu++11
 STANDARD_FLAG = -std=gnu++14
 MULTICORE_FLAG = -pipe
+DEBUG_FLAGS = -d3 -fvar-tracking
 
 hello: ;
 	@echo Hello
 
 run: prepare-dir clean build exec;
 run-dev: prepare-dir clean build-warning exec;
-run-fast: prepare-dir clean build-no-warning exec;
+run-strict: prepare-dir clean build-strict exec;
+run-no-warning: prepare-dir clean build-no-warning exec;
 debug: prepare-dir clean build-debug exec-debug;
 setup: debian-deps prepare-dir;
 
@@ -29,16 +33,23 @@ prepare-dir:
 	[ -d data ] || mkdir data
 
 build: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-warning:
-	$(COMPILER) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+
+build-strict:
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(FULL_WARNING_FLAG_STRICT) $(NO_OPTIM_FLAG) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-no-warning:
-	$(COMPILER) $(NO_OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(ARCHITECTURE_FLAG) $(NO_OPTIM_FLAG) $(STANDARD_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+
+build-arm:
+	# $(FULL_WARNING_FLAG)
+	$(ARM_CROSS_COMPILER) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -g -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(FULL_WARNING_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(DEBUG_FLAGS) -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 exec: ;
 	sudo bin/homeio_main_${SITE}

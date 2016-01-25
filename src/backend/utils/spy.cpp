@@ -52,6 +52,8 @@ void Spy::announceAll() {
 }
 
 unsigned char Spy::annouceMeas(std::string name, double value) {
+// TODO there is problem cross compiling it to arm
+#ifndef __arm__
   try {
     curlpp::Cleanup cleaner;
     curlpp::Easy request;
@@ -84,5 +86,5 @@ unsigned char Spy::annouceMeas(std::string name, double value) {
     logArray->logError("Spy", e.what());
     return 1;
   }
-
+#endif
 }

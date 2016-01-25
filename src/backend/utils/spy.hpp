@@ -11,10 +11,12 @@
 #include <cstdlib>
 #include <cerrno>
 
+#ifndef __arm__
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/Exception.hpp>
+#endif
 
 class Spy {
  public:

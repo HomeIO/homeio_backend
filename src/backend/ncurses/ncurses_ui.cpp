@@ -76,13 +76,13 @@ void NcursesUI::start() {
   my_items[NC_MENU_OVERSEER] = new_item("Overseer", "Overseer");
   my_items[NC_MENU_LAST] = (ITEM *)NULL;
 
-  my_menu = new_menu((ITEM **)my_items);
+  menu = new_menu((ITEM **)my_items);
 
-  menu_opts_off(my_menu, O_SHOWDESC);
-  set_menu_format(my_menu, 1, NC_MENU_LAST);
-  set_menu_mark(my_menu, ">>");
+  menu_opts_off(menu, O_SHOWDESC);
+  set_menu_format(menu, 1, NC_MENU_LAST);
+  set_menu_mark(menu, ">>");
 
-  post_menu(my_menu);
+  post_menu(menu);
   refresh();
 
   ready = true;
@@ -92,29 +92,29 @@ void NcursesUI::start() {
   while((isRunning) && (c = getch())) {
     switch(c) {
     case KEY_LEFT:
-      menu_driver(my_menu, REQ_LEFT_ITEM);
+      menu_driver(menu, REQ_LEFT_ITEM);
       page = 0;
-      local_win = redrawWindow(local_win, my_menu);
+      local_win = redrawWindow(local_win);
       break;
 
     case KEY_RIGHT:
-      menu_driver(my_menu, REQ_RIGHT_ITEM);
+      menu_driver(menu, REQ_RIGHT_ITEM);
       page = 0;
-      local_win = redrawWindow(local_win, my_menu);
+      local_win = redrawWindow(local_win);
       break;
 
     case KEY_DOWN:
       if (page < 100) {
         page++;
       }
-      local_win = redrawWindow(local_win, my_menu);
+      local_win = redrawWindow(local_win);
       break;
 
     case KEY_UP:
       if (page >= 1) {
         page--;
       }
-      local_win = redrawWindow(local_win, my_menu);
+      local_win = redrawWindow(local_win);
       break;
 
     /*
@@ -134,7 +134,7 @@ void NcursesUI::start() {
 
 
     default:
-      local_win = redrawWindow(local_win, my_menu);
+      local_win = redrawWindow(local_win);
       break;
     }
   }
@@ -146,11 +146,11 @@ void NcursesUI::stop() {
   for (int i=0; i <= NC_MENU_LAST; i++) {
     free_item(my_items[i]);
   }
-  free_menu(my_menu);
+  free_menu(menu);
   endwin();
 }
 
-WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
+WINDOW *NcursesUI::redrawWindow(WINDOW *w) {
   // del
   //wborder(w, ' ', ' ', ' ',' ',' ',' ',' ',' ');
   wrefresh(w);
@@ -161,7 +161,7 @@ WINDOW *NcursesUI::redrawWindow(WINDOW *w, MENU *my_menu) {
 
   local_win = newwin(LINES - 1, COLS, 1, 0);
 
-  switch(item_index(current_item(my_menu))) {
+  switch(item_index(current_item(menu))) {
   case NC_MENU_HOME:
     home->render(local_win);
     break;

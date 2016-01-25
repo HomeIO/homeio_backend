@@ -1,7 +1,6 @@
 #include "action_type_array.hpp"
 
 ActionTypeArray::ActionTypeArray() {
-  std::vector <ActionType> actionTypes;
 }
 
 unsigned int ActionTypeArray::add(ActionType *a) {

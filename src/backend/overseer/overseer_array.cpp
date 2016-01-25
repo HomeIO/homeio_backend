@@ -1,7 +1,6 @@
 #include "overseer_array.hpp"
 
 OverseerArray::OverseerArray() {
-  std::vector <Overseer> overseers;
   cycleInterval = 1000000;
   usDelay = 200000; // wait 2s to warm up
 

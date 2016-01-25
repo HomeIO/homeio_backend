@@ -96,14 +96,14 @@ void IoTcpServer::escapeBuffer() {
 ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
   ssize_t n;
   ssize_t rc;
-  char c, *buffer;
+  char c, *bufferLocal;
 
-  buffer = vptr;
+  bufferLocal = vptr;
 
   for (n = 1; n < (ssize_t) maxlen; n++) {
 
     if ((rc = read(sockd, &c, 1)) == 1) {
-      *buffer++ = c;
+      *bufferLocal++ = c;
       if (c == '\n')
         break;
     } else if (rc == 0) {
@@ -118,7 +118,7 @@ ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
     }
   }
 
-  *buffer = 0;
+  *bufferLocal = 0;
   return n;
 }
 
@@ -126,9 +126,9 @@ ssize_t IoTcpServer::readLine(int sockd, char *vptr, size_t maxlen) {
 ssize_t IoTcpServer::writeLine(int sockd, const char *vptr, size_t n) {
   size_t nleft;
   ssize_t nwritten;
-  const char *buffer;
+  const char *bufferLocal;
 
-  buffer = vptr;
+  bufferLocal = vptr;
   nleft = n;
 
   while (nleft > 0) {
@@ -139,7 +139,7 @@ ssize_t IoTcpServer::writeLine(int sockd, const char *vptr, size_t n) {
         return -1;
     }
     nleft = nleft - (size_t) nwritten;
-    buffer += nwritten;
+    bufferLocal += nwritten;
   }
 
   return (ssize_t) n;

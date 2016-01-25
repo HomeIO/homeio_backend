@@ -20,7 +20,7 @@ class NcursesUI {
   void start();
   void stop();
   void clearContent();
-  WINDOW *redrawWindow(WINDOW *w, MENU *my_menu);
+  WINDOW *redrawWindow(WINDOW *w);
 
   unsigned int page;
   unsigned int interval;
@@ -37,7 +37,7 @@ class NcursesUI {
 
   ITEM **my_items;
   int c;
-  MENU *my_menu;
+  MENU *menu;
   int n_choices;
   ITEM *cur_item;
 };
