@@ -38,6 +38,7 @@ HomeIO::HomeIO() {
   ncursesUI->meas->measTypeArray = measTypeArray;
   ncursesUI->action->actionTypeArray = actionTypeArray;
   ncursesUI->overseer->overseerArray = overseerArray;
+  ncursesUI->addon->addonsArray = addonsArray;
   ncursesUI->log->logArray = logArray;
 
   tcpServer->tcpCommand = tcpCommand;

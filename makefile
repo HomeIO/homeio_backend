@@ -49,7 +49,7 @@ build-arm:
 	$(ARM_CROSS_COMPILER) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 build-debug: ;
-	$(COMPILER) $(FULL_WARNING_FLAG) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(DEBUG_FLAGS) -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
+	$(COMPILER) $(OPTIM_FLAG) $(STANDARD_FLAG) $(MULTICORE_FLAG) $(DEBUG_FLAGS) -oterm -I /usr/include src/mains/main_${SITE}.cpp ${CPP_PATHS} -o bin/homeio_main_${SITE} $(LINK_FLAG)
 
 exec: ;
 	sudo bin/homeio_main_${SITE}

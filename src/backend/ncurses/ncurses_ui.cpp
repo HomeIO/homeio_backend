@@ -27,6 +27,7 @@ NcursesUI::NcursesUI() {
   log = new NcursesLog;
   overseer = new NcursesOverseer;
   action = new NcursesAction;
+  addon = new NcursesAddon;
 }
 
 void NcursesUI::start() {
@@ -161,6 +162,11 @@ void NcursesUI::redrawWindow() {
   case NC_MENU_ACTION:
     page = action->setPage(page);
     action->render(local_win);
+    break;
+
+  case NC_MENU_ADDONS:
+    page = addon->setPage(page);
+    addon->render(local_win);
     break;
 
   default:
