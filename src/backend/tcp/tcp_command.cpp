@@ -5,7 +5,7 @@ TcpCommand::TcpCommand() {
 }
 
 // sample command: "meas;batt_u;0;100;"
-std::string TcpCommand::processCommand(string command) {
+std::string TcpCommand::processCommand(std::string command) {
   logArray->log("TcpCommand", command);
 
   std::string commandName, response;
@@ -75,7 +75,7 @@ std::string TcpCommand::processCommand(string command) {
 }
 
 // meas#index
-std::string TcpCommand::processMeasIndexCommand(string command) {
+std::string TcpCommand::processMeasIndexCommand(std::string command) {
   UNUSED(command);
 
   std::string response, detailsResponse;
@@ -97,7 +97,7 @@ std::string TcpCommand::processMeasIndexCommand(string command) {
 }
 
 // meas#name_list
-std::string TcpCommand::processMeasNameListCommand(string command) {
+std::string TcpCommand::processMeasNameListCommand(std::string command) {
   UNUSED(command);
   std::string response;
 
@@ -117,7 +117,7 @@ std::string TcpCommand::processMeasNameListCommand(string command) {
 }
 
 // meas#show
-std::string TcpCommand::processMeasShowCommand(string command) {
+std::string TcpCommand::processMeasShowCommand(std::string command) {
   std::string response, measName;
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
@@ -133,7 +133,7 @@ std::string TcpCommand::processMeasShowCommand(string command) {
 }
 
 // meas#raw_for_time
-std::string TcpCommand::processMeasRawForTimeCommand(string command) {
+std::string TcpCommand::processMeasRawForTimeCommand(std::string command) {
   std::string measName, fromString, toString, response;
   unsigned long long tFrom, tTo;
 
@@ -146,15 +146,15 @@ std::string TcpCommand::processMeasRawForTimeCommand(string command) {
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  stringstream(fromString) >> tFrom;
-  stringstream(toString) >> tTo;
+  std::stringstream(fromString) >> tFrom;
+  std::stringstream(toString) >> tTo;
 
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     logArray->log("TcpCommand", "processMeasRawForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ")" );
 
-    string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
+    std::string bufferString = foundMeasType->rawForTimeJson(tFrom, tTo);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
     response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
     response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
@@ -190,16 +190,16 @@ std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command)
   maxSizeString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  stringstream(fromString) >> tFrom;
-  stringstream(toString) >> tTo;
-  stringstream(maxSizeString) >> maxSize;
+  std::stringstream(fromString) >> tFrom;
+  std::stringstream(toString) >> tTo;
+  std::stringstream(maxSizeString) >> maxSize;
 
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     logArray->log("TcpCommand", "processMeasRawHistoryForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ", " + std::to_string(maxSize) + ")" );
 
-    string bufferString = foundMeasType->rawHistoryForTimeJson(tFrom, tTo, maxSize);
+    std::string bufferString = foundMeasType->rawHistoryForTimeJson(tFrom, tTo, maxSize);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\"";
     response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
     response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
@@ -234,8 +234,8 @@ std::string TcpCommand::processMeasRawForIndexCommand(std::string command) {
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  stringstream(fromString) >> iFrom;
-  stringstream(toString) >> iTo;
+  std::stringstream(fromString) >> iFrom;
+  std::stringstream(toString) >> iTo;
 
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
@@ -274,13 +274,13 @@ std::string TcpCommand::processMeasStorageCommand(std::string command) {
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  stringstream(fromString) >> from;
-  stringstream(toString) >> to;
+  std::stringstream(fromString) >> from;
+  std::stringstream(toString) >> to;
 
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    string bufferString = foundMeasType->storageJson(from, to);
+    std::string bufferString = foundMeasType->storageJson(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
     response +=  "\"data\":" + bufferString;
     response += "}";
@@ -304,13 +304,13 @@ std::string TcpCommand::processMeasStatsCommand(std::string command) {
   toString = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  stringstream(fromString) >> from;
-  stringstream(toString) >> to;
+  std::stringstream(fromString) >> from;
+  std::stringstream(toString) >> to;
 
   MeasType *foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
-    string statsString = foundMeasType->statsJson(from, to);
+    std::string statsString = foundMeasType->statsJson(from, to);
     response = "{\"status\":0,\"meas_type\":\"" + measName + "\",";
     response +=  "\"data\":" + statsString;
     response += "}";
@@ -377,7 +377,7 @@ std::string TcpCommand::processActionExecuteCommand(std::string command) {
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  string response;
+  std::string response;
 
   ActionType *foundActionType = actionTypeArray->byName(actionName);
 
@@ -397,7 +397,7 @@ std::string TcpCommand::processActionHistoryCommand(std::string command) {
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
 
-  string response;
+  std::string response;
 
   ActionType *foundActionType = actionTypeArray->byName(actionName);
 
@@ -412,9 +412,9 @@ std::string TcpCommand::processActionHistoryCommand(std::string command) {
 
 
 // overseers#index
-string TcpCommand::processOverseerIndexCommand(std::string command) {
+std::string TcpCommand::processOverseerIndexCommand(std::string command) {
   UNUSED(command);
-  string response, detailsResponse;
+  std::string response, detailsResponse;
 
   response = "{\"status\":0,\"array\":[";
 

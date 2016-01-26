@@ -18,35 +18,33 @@
 
 #include "../log/log_array.hpp"
 
-using namespace std;
-
 class TcpCommand {
  public:
   TcpCommand();
-  string processCommand(string command);
+  std::string processCommand(std::string command);
 
   // name standarization done
-  string processMeasIndexCommand(string command);
-  string processMeasNameListCommand(string command);
-  string processMeasShowCommand(string command);
-  string processMeasRawForTimeCommand(string command);
-  string processMeasRawForIndexCommand(string command);
-  string processMeasRawHistoryForTimeCommand(string command);
-  string processMeasStorageCommand(string command);
-  string processMeasStatsCommand(string command);
+  std::string processMeasIndexCommand(std::string command);
+  std::string processMeasNameListCommand(std::string command);
+  std::string processMeasShowCommand(std::string command);
+  std::string processMeasRawForTimeCommand(std::string command);
+  std::string processMeasRawForIndexCommand(std::string command);
+  std::string processMeasRawHistoryForTimeCommand(std::string command);
+  std::string processMeasStorageCommand(std::string command);
+  std::string processMeasStatsCommand(std::string command);
 
-  string processMeasGroupIndexCommand(string command);
+  std::string processMeasGroupIndexCommand(std::string command);
 
-  string processActionIndexCommand(string command);
-  string processActionShowCommand(string command);
-  string processActionExecuteCommand(string command);
-  string processActionHistoryCommand(string command);
+  std::string processActionIndexCommand(std::string command);
+  std::string processActionShowCommand(std::string command);
+  std::string processActionExecuteCommand(std::string command);
+  std::string processActionHistoryCommand(std::string command);
 
-  string processOverseerIndexCommand(string command);
-  string processOverseerShowCommand(string command);
+  std::string processOverseerIndexCommand(std::string command);
+  std::string processOverseerShowCommand(std::string command);
 
-  string processSettingsCommand(string command);
-  string processStatsCommand(string command);
+  std::string processSettingsCommand(std::string command);
+  std::string processStatsCommand(std::string command);
 
   unsigned long long int bootTime;
 

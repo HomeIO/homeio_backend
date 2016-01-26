@@ -316,7 +316,7 @@ unsigned char HomeIO::start() {
 }
 
 unsigned char HomeIO::stop() {
-  cout << endl << endl;
+  std::cout << std::endl << std::endl;
   logArray->log("HomeIO", "Shutdown initialized");
 
   spy->stop();

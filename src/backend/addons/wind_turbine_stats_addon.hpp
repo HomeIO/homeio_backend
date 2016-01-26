@@ -9,8 +9,6 @@
 #include "wind_turbine_stat.hpp"
 #include "../utils/helper.hpp"
 
-using namespace std;
-
 class WindTurbineStatsAddon : public AbstractAddon {
  public:
   WindTurbineStatsAddon();
@@ -20,10 +18,10 @@ class WindTurbineStatsAddon : public AbstractAddon {
   void perform();
   void render();
 
-  string measNameU;
-  string measNameI;
-  string measCoil;
-  string measResistor;
+  std::string measNameU;
+  std::string measNameI;
+  std::string measCoil;
+  std::string measResistor;
 
   WindTurbineStat s, prevS;
 
@@ -32,7 +30,7 @@ class WindTurbineStatsAddon : public AbstractAddon {
 
   static constexpr unsigned long long hour = 3600000;
 
-  string path;
+  std::string path;
   unsigned long long lastTime;
 
   unsigned long long calculateTimeFrom();
@@ -40,5 +38,4 @@ class WindTurbineStatsAddon : public AbstractAddon {
   void store();
 };
 
-//#include "wind_turbine_stats_addon.cpp"
 #endif

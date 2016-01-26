@@ -18,7 +18,7 @@ void TcpServer::start() {
   int conn_s; // connection socket
   int list_s = createTcpServer();
 
-  logArray->log("TCP", "started on " + to_string(port));
+  logArray->log("TCP", "started on " + std::to_string(port));
 
   ready = true;
 
@@ -56,8 +56,8 @@ void TcpServer::stop() {
 }
 
 int TcpServer::processCommand() {
-  string command;
-  command = (string) commandBuffer;
+  std::string command;
+  command = (std::string) commandBuffer;
   responseBuffer = tcpCommand->processCommand(command);
 
   return 0;

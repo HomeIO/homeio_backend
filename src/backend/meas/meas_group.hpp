@@ -13,8 +13,8 @@ class MeasGroup {
   void addGroup(std::string groupName, std::string groupMeasTypesString);
   std::string toJson();
 
-  std::vector <string> groupNames;
-  std::vector <string> groupMeasTypes;
+  std::vector <std::string> groupNames;
+  std::vector <std::string> groupMeasTypes;
 
   MeasTypeArray *measTypeArray;
 };

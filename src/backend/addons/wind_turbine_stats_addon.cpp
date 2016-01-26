@@ -68,8 +68,8 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   MeasType *u = measTypeArray->byName(measNameU);
   MeasType *i = measTypeArray->byName(measNameI);
 
-  vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(t), u->timeToIndex(t + hour), 0);
-  vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(t), i->timeToIndex(t + hour), 0);
+  std::vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(t), u->timeToIndex(t + hour), 0);
+  std::vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(t), i->timeToIndex(t + hour), 0);
 
   intervalDouble = (double) u->buffer->calcInterval();
   intervalInt = i->buffer->calcInterval();
@@ -110,7 +110,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
 
   // coil time
   MeasType *coil = measTypeArray->byName(measCoil);
-  vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(t), coil->timeToIndex(t + hour), 0);
+  std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(t), coil->timeToIndex(t + hour), 0);
   intervalInt = coil->buffer->calcInterval();
 
   for (j = 0; j < coilRaw.size(); j++ ) {
@@ -129,7 +129,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
 
   // resistor time
   MeasType *resistor = measTypeArray->byName(measResistor);
-  vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(t), resistor->timeToIndex(t + hour), 0);
+  std::vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(t), resistor->timeToIndex(t + hour), 0);
   intervalInt = resistor->buffer->calcInterval();
 
   for (j = 0; j < resistorRaw.size(); j++ ) {
@@ -149,13 +149,13 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
 }
 
 void WindTurbineStatsAddon::store() {
-  ofstream outfile;
-  string currentDate = Helper::currentDateSafe();
-  string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
+  std::ofstream outfile;
+  std::string currentDate = Helper::currentDateSafe();
+  std::string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
 
   logArray->log("WindTurbineStats", "store path " + filename);
 
-  outfile.open(filename, ios_base::app);
+  outfile.open(filename, std::ios_base::app);
   outfile << s.time << "; ";
   outfile << s.work << "; ";
   outfile << s.timeLength << "; ";
@@ -165,7 +165,7 @@ void WindTurbineStatsAddon::store() {
   outfile << s.maxBattCurrent << "; ";
   outfile << s.maxBattVoltage << "; ";
   outfile << s.maxCoilVoltage << "; ";
-  outfile << endl;
+  outfile << std::endl;
   outfile.close();
 
   logArray->log("WindTurbineStats", "stored");

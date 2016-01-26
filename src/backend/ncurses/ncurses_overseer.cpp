@@ -47,7 +47,7 @@ void NcursesOverseer::renderPage(WINDOW *w) {
 
 void NcursesOverseer::render(WINDOW *w) {
   if (ready() == false) {
-      mvwprintw(w, 1, 1, "Initializing" );
+    mvwprintw(w, 1, 1, "Initializing" );
     return;
   }
 

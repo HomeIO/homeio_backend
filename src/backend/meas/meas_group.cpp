@@ -23,7 +23,7 @@ std::string MeasGroup::toJson() {
     response += "\"measTypes\": [";
 
     // split string
-    stringstream ss( groupMeasTypes.at(i) ); // Turn the string into a stream.
+    std::stringstream ss( groupMeasTypes.at(i) ); // Turn the string into a stream.
     while(getline(ss, tok, delim)) {
       response += "\"" + tok + "\",";
     }

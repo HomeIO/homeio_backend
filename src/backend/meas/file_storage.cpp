@@ -51,7 +51,7 @@ void FileStorage::performMeasStore() {
   logArray->log("FileStorage", "finish meas file storage");
 }
 
-void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storageVector) {
+void FileStorage::storeMeasArray(MeasType* measType, std::vector <StorageHash> storageVector) {
   if (storageVector.size() == 0) {
     logArray->log("FileStorage", "[" + measType->name + "] no data to store");
     return;
@@ -61,18 +61,18 @@ void FileStorage::storeMeasArray(MeasType* measType, vector <StorageHash> storag
   }
 
   unsigned long int measCount = 0;
-  ofstream outfile;
+  std::ofstream outfile;
   std::string currentDate = Helper::currentDateSafe();
   std::string filename = path + "/" + measType->name + "_" + currentDate + ".csv";
 
   logArray->log("FileStorage", "[" + measType->name + "] path: " + filename);
 
-  outfile.open(filename, ios_base::app);
+  outfile.open(filename, std::ios_base::app);
   for(std::vector<StorageHash>::iterator it = storageVector.begin(); it != storageVector.end(); ++it) {
     outfile << measType->name << "; ";
     outfile << std::to_string(it->timeFrom) << "; ";
     outfile << std::to_string(it->timeTo) << "; ";
-    outfile << std::to_string(it->value) << endl;
+    outfile << std::to_string(it->value) << std::endl;
 
     measCount++;
   }

@@ -17,7 +17,7 @@ class FileStorage {
   void start();
   void stop();
   void performMeasStore();
-  void storeMeasArray(MeasType* measType, vector <StorageHash> storageVector);
+  void storeMeasArray(MeasType* measType, std::vector <StorageHash> storageVector);
 
   std::string path;
   std::string measPrefix;

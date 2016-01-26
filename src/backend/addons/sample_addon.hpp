@@ -3,8 +3,6 @@
 
 #include "abstract_addon.hpp"
 
-using namespace std;
-
 class SampleAddon : public AbstractAddon {
  public:
   SampleAddon();

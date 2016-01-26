@@ -60,14 +60,14 @@ void MeasBufferBackupStorage::performDump() {
   unsigned long int i = 0;
   logArray->log("MeasBufferBackupStorage", "start");
 
-  for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    ofstream outfile;
-    string filename = pathForMeasType(&*it);
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::ofstream outfile;
+    std::string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
 
     logArray->log("MeasBufferBackupStorage", "[" + it->name + "] DUMP path " + filename);
 
-    outfile.open(filename, ios_base::out);
+    outfile.open(filename, std::ios_base::out);
 
     outfile << std::to_string(Helper::mTime()) << "\n";
     outfile << std::to_string(measBuffer->maxSize) << "\n";
@@ -98,12 +98,12 @@ void MeasBufferBackupStorage::performRestore() {
 
   logArray->log("MeasBufferBackupStorage", "start");
 
-  for(vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    ifstream infile;
+  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::ifstream infile;
     std::string filename = pathForMeasType(&*it);
     MeasBuffer *measBuffer = it->buffer;
 
-    infile.open(filename, ios_base::in);
+    infile.open(filename, std::ios_base::in);
 
     if (infile.good()) {
       // buffer file exists

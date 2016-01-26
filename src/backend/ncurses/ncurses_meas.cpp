@@ -60,10 +60,10 @@ void NcursesMeas::renderMeas(WINDOW *w, MeasType *m, int i) {
   valueString += m->unit;
 
   std::string rawString = "";
-  rawString += to_string(m->lastRaw());
+  rawString += std::to_string(m->lastRaw());
 
-  string offsetString = "";
-  offsetString += to_string(m->buffer->offset);
+  std::string offsetString = "";
+  offsetString += std::to_string(m->buffer->offset);
 
   wattron(w, NC_COLOR_PAIR_NAME_SET);
   mvwprintw(w, i, 1 + NC_MEAS_NAME, m->name.c_str() );
