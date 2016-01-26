@@ -22,7 +22,7 @@ void PlantMonitorAddon::setup() {
 void PlantMonitorAddon::perform() {
   // first run
   // so it won't calculate and write
-  if ((lastTime == 0) || (lastTime <= (Helper::mTime() - 10*60*3600))){
+  if ((lastTime == 0) || (lastTime <= (Helper::mTime() - 10*60*3600))) {
     calculateStats();
     lastTime = Helper::mTime();
   }
