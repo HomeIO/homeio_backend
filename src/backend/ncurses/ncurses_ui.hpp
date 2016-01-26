@@ -12,6 +12,7 @@
 #include "ncurses_overseer.hpp"
 #include "ncurses_action.hpp"
 #include "ncurses_addon.hpp"
+#include "ncurses_stats.hpp"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
@@ -36,6 +37,7 @@ class NcursesUI {
   NcursesOverseer *overseer;
   NcursesAction *action;
   NcursesAddon *addon;
+  NcursesStats *stats;
 
   WINDOW *local_win;
 
