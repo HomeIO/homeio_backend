@@ -1,8 +1,8 @@
 #include "file_storage.hpp"
 
 FileStorage::FileStorage() {
-  cycleInterval = 20000000; // 10000000
-  usDelay = 1000000; // wait 10s to warm up - get enough measurements
+  cycleInterval = 20000000;
+  usDelay = 10000;
   lastTime = Helper::mTime();
   path = "data";
 

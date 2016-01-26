@@ -3,7 +3,7 @@
 MeasBufferBackupStorage::MeasBufferBackupStorage() {
   cycleInterval = 10*60*1000*1000;
   thresholdTimeRange = cycleInterval * 2;
-  usDelay = 30*1000*1000;
+  usDelay = 10000;
   path = "data";
 
   isRunning = true;

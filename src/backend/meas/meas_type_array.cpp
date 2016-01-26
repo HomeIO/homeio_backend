@@ -27,6 +27,6 @@ MeasType *MeasTypeArray::byName(std::string s) {
 
 void MeasTypeArray::delayTillReady() {
   while(isReady == false) {
-    usleep(100000);
+    usleep(10000);
   }
 }

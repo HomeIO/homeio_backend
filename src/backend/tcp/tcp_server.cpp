@@ -1,7 +1,7 @@
 #include "tcp_server.hpp"
 
 TcpServer::TcpServer() {
-  usDelay = 2000000;
+  usDelay = 10000;
 
   isRunning = true;
   ready = false;

@@ -2,7 +2,7 @@
 
 OverseerArray::OverseerArray() {
   cycleInterval = 1000000;
-  usDelay = 200000; // wait 2s to warm up
+  usDelay = 10000;
 
   isRunning = true;
   ready = false;
