@@ -20,8 +20,6 @@ HomeIO::HomeIO() {
   addonsArray = new AddonsArray;
   ncursesUI = new NcursesUI;
 
-  ioServerReady = false;
-
   // setup some variables
   measFetcher->measTypeArray = measTypeArray;
   measFetcher->ioProxy = ioProxy;
@@ -40,6 +38,15 @@ HomeIO::HomeIO() {
   ncursesUI->overseer->overseerArray = overseerArray;
   ncursesUI->addon->addonsArray = addonsArray;
   ncursesUI->log->logArray = logArray;
+
+  ncursesUI->home->ioServer = ioServer;
+  ncursesUI->home->measFetcher = measFetcher;
+  ncursesUI->home->overseerArray = overseerArray;
+  ncursesUI->home->tcpServer = tcpServer;
+  ncursesUI->home->fileStorage = fileStorage;
+  ncursesUI->home->measBufferBackupStorage = measBufferBackupStorage;
+  ncursesUI->home->addonsArray = addonsArray;
+  ncursesUI->home->spy = spy;
 
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
@@ -221,7 +228,7 @@ void *ncursesThread(void *argument) {
 void *shutdownWatchThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
   while (h->ncursesUI->beginShutdown == false) {
-    usleep(20000);
+    usleep(40000);
   }
   h->stop();
 

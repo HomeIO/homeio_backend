@@ -67,8 +67,6 @@ class HomeIO {
   AddonsArray *addonsArray;
   NcursesUI *ncursesUI;
   LogArray *logArray;
-
-  bool ioServerReady;
 };
 
 void* measStartThread(void*);

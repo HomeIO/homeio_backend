@@ -6,6 +6,10 @@ NcursesAddon::NcursesAddon() {
   maxPage = 0;
 }
 
+bool NcursesAddon::ready() {
+  return addonsArray->ready;
+}
+
 unsigned int NcursesAddon::setPage(unsigned int p) {
   maxPage = (unsigned int) addonsArray->addons.size();
 
@@ -20,9 +24,16 @@ unsigned int NcursesAddon::setPage(unsigned int p) {
 }
 
 void NcursesAddon::renderPage(WINDOW *w) {
+  if (ready() == false) {
+    mvwprintw(w, 1, 1, "Initializing..." );
+    return;
+  }
+
   // if there is no addon we can't render anything
   if (maxPage > 0) {
     mvwprintw(w, LINES - 3, 1, ("Page " + std::to_string(page + 1) + "/" + std::to_string(maxPage) ).c_str());
+  } else {
+    mvwprintw(w, 1, 1, "0 addons" );
   }
 }
 

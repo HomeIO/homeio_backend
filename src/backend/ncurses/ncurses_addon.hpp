@@ -18,6 +18,8 @@ class NcursesAddon {
   void renderPage(WINDOW *w);
   unsigned int setPage(unsigned int p);
 
+  bool ready();
+
   unsigned int page;
   unsigned int perPage;
   unsigned int maxPage;
