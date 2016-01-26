@@ -166,6 +166,13 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000;
 
   // addons
+  PlantMonitorAddon *pma = new PlantMonitorAddon;
+  pma->plantMeasNames.push_back("moisture_shadow");
+  pma->plantMeasNames.push_back("moisture_external");
+  pma->plantMeasNames.push_back("moisture_external");
+  h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
+
+  // addons
   //SampleAddon *sa = new SampleAddon;
   //h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(sa));
 
