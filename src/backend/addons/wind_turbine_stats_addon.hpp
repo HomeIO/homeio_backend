@@ -18,11 +18,14 @@ class WindTurbineStatsAddon : public AbstractAddon {
 
   void setup();
   void perform();
+  void render();
 
   string measNameU;
   string measNameI;
   string measCoil;
   string measResistor;
+
+  WindTurbineStat s, prevS;
 
   double coilThresholdVoltage;
   double batteryThresholdCurrent;
@@ -34,7 +37,7 @@ class WindTurbineStatsAddon : public AbstractAddon {
 
   unsigned long long calculateTimeFrom();
   WindTurbineStat calculateStats(unsigned long long t);
-  void store(WindTurbineStat s);
+  void store();
 };
 
 //#include "wind_turbine_stats_addon.cpp"

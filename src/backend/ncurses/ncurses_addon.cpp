@@ -28,11 +28,7 @@ void NcursesAddon::renderPage(WINDOW *w) {
 
 void NcursesAddon::render(WINDOW *w) {
   renderPage(w);
-
-  mvwprintw(w, 1, 1, "Name" );
   auto *element = &addonsArray->addons.at(page) ;
-
-  wattron(w, NC_COLOR_PAIR_NAME_SET);
-  mvwprintw(w, 3, 1, (*element)->name.c_str() );
-  wattroff(w, NC_COLOR_PAIR_NAME_SET);
+  (*element)->window = w;
+  (*element)->render();
 }

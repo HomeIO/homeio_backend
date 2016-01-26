@@ -1,5 +1,9 @@
 #include "wind_turbine_stats_addon.hpp"
 
+#define NC_WS_ADDON_NAME 0
+#define NC_WS_ADDON_VALUE 23
+#define NC_WS_ADDON_PREV 45
+
 WindTurbineStatsAddon::WindTurbineStatsAddon() {
   name = "WindTurbineStats";
   lastTime = 0;
@@ -25,8 +29,8 @@ void WindTurbineStatsAddon::perform() {
     // calculate now
 
     lastTime = calculateTimeFrom();
-    WindTurbineStat s = calculateStats(lastTime);
-    store(s);
+    s = calculateStats(lastTime);
+    store();
   }
 }
 
@@ -38,7 +42,8 @@ unsigned long long WindTurbineStatsAddon::calculateTimeFrom() {
 }
 
 WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
-  WindTurbineStat s;
+  prevS = s;
+
   s.time = t;
   s.timeLength = hour;
 
@@ -143,7 +148,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   return s;
 }
 
-void WindTurbineStatsAddon::store(WindTurbineStat s) {
+void WindTurbineStatsAddon::store() {
   ofstream outfile;
   string currentDate = Helper::currentDateSafe();
   string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
@@ -164,4 +169,154 @@ void WindTurbineStatsAddon::store(WindTurbineStat s) {
   outfile.close();
 
   logArray->log("WindTurbineStats", "stored");
+}
+
+void WindTurbineStatsAddon::render() {
+  wattron(window, NC_COLOR_PAIR_NAME_SET);
+  mvwprintw(window, 1, 1, "Wind Turbine Addon" );
+  wattroff(window, NC_COLOR_PAIR_NAME_SET);
+
+  int i = 3;
+
+  // time
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "time" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.time).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.time).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+  i++;
+
+  // work time
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "work" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.work).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.work).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // timeLength
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "timeLength" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.timeLength).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.timeLength).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // coilTime
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "coilTime" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.coilTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.coilTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // battCurrentTime
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "battCurrentTime" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.battCurrentTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.battCurrentTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // resistorTime
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "resistorTime" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.resistorTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.resistorTime).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // maxBattCurrent
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxBattCurrent" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxBattCurrent).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxBattCurrent).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // maxBattVoltage
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxBattVoltage" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxBattVoltage).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxBattVoltage).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
+  i++;
+
+  // maxBattVoltage
+  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxCoilVoltage" );
+  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxCoilVoltage).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxCoilVoltage).c_str() );
+  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
+
 }
