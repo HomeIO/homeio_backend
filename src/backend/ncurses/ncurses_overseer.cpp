@@ -23,6 +23,10 @@ NcursesOverseer::NcursesOverseer() {
   maxPage = 1;
 }
 
+bool NcursesOverseer::ready() {
+  return overseerArray->ready;
+}
+
 unsigned int NcursesOverseer::setPage(unsigned int p) {
   perPage = (unsigned int) ( (LINES - 8) / NC_OVERSEER_LINE_SIZE );
   maxPage = (unsigned int) ( ceil( (float) (overseerArray->overseers.size()) / (float) (perPage) ) );
@@ -42,6 +46,11 @@ void NcursesOverseer::renderPage(WINDOW *w) {
 }
 
 void NcursesOverseer::render(WINDOW *w) {
+  if (ready() == false) {
+      mvwprintw(w, 1, 1, "Initializing" );
+    return;
+  }
+
   renderPage(w);
 
   mvwprintw(w, 1, 1 + NC_OVERSEER_1_NAME, "Name" );
@@ -68,6 +77,7 @@ void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
   wattron(w, NC_COLOR_PAIR_NAME_LESSER_SET);
   mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_NAME, o->measName.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_LESSER_SET);
+
 
   std::string valueString = "";
   std::ostringstream os;
@@ -126,5 +136,4 @@ void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
   wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
   mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_HITS, std::to_string( o->hitCount ).c_str() );
   wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
 }

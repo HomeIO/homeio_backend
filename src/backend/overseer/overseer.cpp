@@ -1,6 +1,10 @@
 #include "overseer_array.hpp"
 
 Overseer::Overseer() {
+  hitCount = 0;
+  tempValue = 0.0;
+  tempResult = false;
+
   isMax = false;
   thresholdValue = 0.0;
   minExecInterval = 1000;
@@ -89,6 +93,7 @@ unsigned int Overseer::execute() {
   result = action->execute();
 
   if (result == 0) {
+    if (hitCount < 100000) hitCount++; // TODO
     markExecutionTime();
     return 0;
   } else {

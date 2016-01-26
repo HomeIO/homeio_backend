@@ -169,9 +169,13 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   if (t >= buffer->lastTime) {
     return 0; // out of range
   }
+  unsigned long long tempInterval = buffer->calcInterval();
+  if (0 == tempInterval) {
+    return 0;
+  }
 
   unsigned long long tempTime = (buffer->lastTime - t);
-  unsigned long int tempIndex = (unsigned long int) (tempTime / (unsigned long long) buffer->calcInterval() );
+  unsigned long int tempIndex = (unsigned long int) (tempTime / tempInterval );
 
   return tempIndex;
 }

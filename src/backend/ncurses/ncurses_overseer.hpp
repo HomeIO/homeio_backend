@@ -19,6 +19,8 @@ class NcursesOverseer {
   void renderOverseer(WINDOW *w, Overseer *o, int i);
   unsigned int setPage(unsigned int p);
 
+  bool ready();
+
   unsigned int page;
   unsigned int perPage;
   unsigned int maxPage;
