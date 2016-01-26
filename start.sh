@@ -1,1 +1,0 @@
-make run SITE=wind
