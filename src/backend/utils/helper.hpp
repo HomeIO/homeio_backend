@@ -11,6 +11,8 @@
 #include <iomanip>
 #include <mutex>
 #include <limits>
+#include <fstream>
+#include <sys/stat.h>
 
 #include <unistd.h>
 #include <sys/resource.h>
@@ -63,6 +65,8 @@ class Helper {
   static void processMemUsage(double& vm_usage, double& resident_set);
 
   static void longSleep(unsigned long int interval);
+
+  static void createDir(std::string dir);
 };
 
 //#include "helpers.cpp"

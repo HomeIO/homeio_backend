@@ -34,6 +34,7 @@
 class HomeIO {
  public:
   HomeIO();
+  void prepareDirectories();
   unsigned char startFetch();
   unsigned char startServer();
   unsigned char startIoServer();

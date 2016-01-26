@@ -1,7 +1,7 @@
 #include "homeio.hpp"
 
 HomeIO::HomeIO() {
-  //HomeIO::running = true;
+  prepareDirectories();
 
   logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
@@ -63,6 +63,11 @@ HomeIO::HomeIO() {
   ioServer->logArray = logArray;
   ioServer->tcp->logArray = logArray;
 
+}
+
+void HomeIO::prepareDirectories() {
+  Helper::createDir("data");
+  Helper::createDir("stats");
 }
 
 unsigned char HomeIO::startFetch() {

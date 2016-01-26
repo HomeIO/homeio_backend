@@ -126,4 +126,10 @@ void Helper::longSleep(unsigned long int interval) {
   usleep( rest );
 }
 
+void Helper::createDir(std::string path) {
+  // create path at start, no wait
+  // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
+  mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
+}
+
 #endif

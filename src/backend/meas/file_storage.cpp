@@ -11,11 +11,6 @@ FileStorage::FileStorage() {
 }
 
 void FileStorage::start() {
-  // create path at start, no wait
-  mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
-  // TODO maybe add S_IWOTH
-  // http://pubs.opengroup.org/onlinepubs/7908799/xsh/sysstat.h.html
-
   Helper::longSleep(usDelay);
 
   // not need to wait, because other modules can be run
