@@ -28,8 +28,9 @@ void LogArray::logError(std::string m, std::string c) {
 
 void LogArray::addLogItem(LogItem *li) {
   if ( (unsigned int) logBuffer.size() >= (unsigned int) maxHistory ) {
-    delete logBuffer.at(0);
+    LogItem *d = logBuffer.at(0);
     logBuffer.erase( logBuffer.begin() );
+    delete d;
   }
   logBuffer.push_back(li);
 }
