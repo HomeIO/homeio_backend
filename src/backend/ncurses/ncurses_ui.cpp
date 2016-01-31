@@ -121,12 +121,20 @@ void NcursesUI::start() {
 }
 
 void NcursesUI::stop() {
-  // TODO move to stop
+  isRunning = false;
+
+  unpost_menu(menu);
+  free_menu(menu);
   for (int i=0; i <= NC_MENU_LAST; i++) {
     free_item(my_items[i]);
   }
-  free_menu(menu);
+
+  wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+  wrefresh(local_win);
+  delwin(local_win);
   endwin();
+
+  log->logArray->log("Ncurses", "stop");
 }
 
 void NcursesUI::redrawWindow() {

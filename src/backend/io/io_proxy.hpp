@@ -17,11 +17,14 @@
 class IoProxy {
  public:
   IoProxy();
+  ~IoProxy();
+  
   std::string address;
   uint16_t port;
   bool verbose;
   std::mutex tcpMutex;
   LogArray *logArray;
+  in_addr *tmpAddr;
 
   unsigned int fetch(unsigned char commandChar, unsigned char responseSize);
 

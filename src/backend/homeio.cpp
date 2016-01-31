@@ -73,6 +73,25 @@ HomeIO::HomeIO() {
 
 }
 
+HomeIO::~HomeIO() {
+  delete logArray;
+  delete measTypeArray;
+  delete ioProxy;
+  delete tcpServer;
+  delete tcpCommand;
+  delete ioServer;
+  delete actionTypeArray;
+  delete overseerArray;
+  delete fileStorage;
+  delete measBufferBackupStorage;
+  delete frontendSettings;
+  delete spy;
+  delete measGroup;
+  delete addonsArray;
+  delete ncursesUI;
+  delete boot;
+}
+
 void HomeIO::prepareDirectories() {
   Helper::createDir("data");
   Helper::createDir("stats");
@@ -227,12 +246,6 @@ void *ncursesThread(void *argument) {
 }
 
 void *shutdownWatchThread(void *argument) {
-  HomeIO *h = (HomeIO *) argument;
-  while (h->boot->beginShutdown == false) {
-    usleep(40000);
-  }
-  h->stop();
-
   return NULL;
 }
 
@@ -247,13 +260,11 @@ void HomeIO::copyInternalDelays() {
 unsigned char HomeIO::start() {
   copyInternalDelays();
 
-  const char NUM_THREADS = 9;
+  const char NUM_THREADS = 8;
   pthread_t threads[NUM_THREADS];
   int i;
 
   HomeIO *h = this;
-
-  // TODO ioserver write some messy thing
 
   // ncurses
   pthread_create(&threads[0], NULL, ncursesThread, (void *) h);
@@ -309,21 +320,17 @@ unsigned char HomeIO::start() {
     usleep(5000);
   }
 
-  // shutdown watch
-  pthread_create(&threads[9], NULL, shutdownWatchThread, (void *) h);
-
-  // wait for each thread to complete
-  for (i=0; i<NUM_THREADS; ++i) {
-    // block until thread i completes
-    pthread_join(threads[i], NULL);
-    logArray->logError("HomeIO", "In main: thread " + std::to_string(i) + " is complete");
+  while (h->boot->beginShutdown == false) {
+    usleep(40000);
   }
 
-  //stop(); // TODO
+  stop();
+
   return 0;
 }
 
 unsigned char HomeIO::stop() {
+  // TODO check for doubled execution
   std::cout << std::endl << std::endl;
   logArray->log("HomeIO", "Shutdown initialized");
 
@@ -340,5 +347,5 @@ unsigned char HomeIO::stop() {
   logArray->log("HomeIO", "Shutdown finished");
   logArray->consoleOutput();
 
-  exit(EXIT_SUCCESS);
+  return 0;
 }

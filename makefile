@@ -21,7 +21,7 @@ DEBUG_FLAGS = -d
 hello: ;
 	@echo Hello
 
-run: prepare-dir clean build exec;
+run: prepare-dir build clean build exec;
 run-dev: prepare-dir clean build-warning exec;
 run-strict: prepare-dir clean build-strict exec;
 run-no-warning: prepare-dir clean build-no-warning exec;
@@ -65,9 +65,11 @@ debian-dev-deps: ;
 	sudo apt-get install valgrind astyle
 
 leak-test-full:
+	bash cmake_leak_test_debug.sh
 	sudo valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrid_full.txt build/bin/homeio_leak_test
 
 leak-test-std:
+	bash cmake_leak_test_debug.sh
 	sudo valgrind --leak-check=yes --log-file=valgrid_std.txt build/bin/homeio_leak_test
 
 format: ;

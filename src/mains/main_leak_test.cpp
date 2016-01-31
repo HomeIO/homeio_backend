@@ -21,35 +21,30 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  ActionType *a;
-  a = new ActionType();
-  a->name = "inverter_A_off"; // "output_2_off";
-  a->command = 'b';
-  a->responseSize = 1;
-  a->responseOkay = 1;
-  h->actionTypeArray->add(a);
-
-  // overseers
-  Overseer *o;
-  o = new Overseer();
-  o->name = "brake_on_high_batt_voltage";
-  o->actionName = "inverter_A_off";
-  o->measName = "light";
-  o->thresholdValue = 46.5;
-  o->isMax = true;
-  o->windowSize = 300;
-  h->overseerArray->add(o);
+  m = new MeasType();
+  m->name = "batt_u";
+  m->unit = "V";
+  m->command = '3';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.0777126099706744868;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 1000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 2.0;
+  m->priority = 1;
+  h->measTypeArray->add(m);
 
   h->ioServer->port = "/dev/ttyACM0";
   h->spy->enabled = false;
 
   h->boot->beginShutdown = true;
 
+  //h->measFetcher->betweenMeasInterval = 10000;
+  //h->measFetcher->cycleInterval = 100000;
+
   h->start();
 
-  delete h;
+  //delete h;
 
   return 0;
-
-  // TODO add action, overseer and disable all objects before deletions in proper way
 }
