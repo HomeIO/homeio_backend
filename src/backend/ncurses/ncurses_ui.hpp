@@ -29,7 +29,6 @@ class NcursesUI {
 
   bool isRunning;
   bool ready;
-  bool beginShutdown;
 
   NcursesHome *home;
   NcursesMeas *meas;

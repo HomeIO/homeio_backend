@@ -3,6 +3,7 @@
 HomeIO::HomeIO() {
   prepareDirectories();
 
+  boot = new Boot;
   logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
   measFetcher = new MeasFetcher;
@@ -227,7 +228,7 @@ void *ncursesThread(void *argument) {
 
 void *shutdownWatchThread(void *argument) {
   HomeIO *h = (HomeIO *) argument;
-  while (h->ncursesUI->beginShutdown == false) {
+  while (h->boot->beginShutdown == false) {
     usleep(40000);
   }
   h->stop();

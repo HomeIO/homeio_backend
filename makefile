@@ -61,6 +61,15 @@ debian-deps: ;
 	echo "g++ at least 4.9 is needed"
 	sudo apt-get install libcurl4-openssl-dev git g++ libcurlpp0 libcurlpp-dev libncurses5-dev
 
+debian-dev-deps: ;
+	sudo apt-get install valgrind astyle
+
+leak-test-full:
+	sudo valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrid_full.txt build/bin/homeio_leak_test
+
+leak-test-std:
+	sudo valgrind --leak-check=yes --log-file=valgrid_std.txt build/bin/homeio_leak_test
+
 format: ;
 	astyle --style=google --indent=spaces=2 --suffix=none --verbose --recursive *.?pp
 

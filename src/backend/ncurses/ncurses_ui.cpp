@@ -16,7 +16,6 @@
 NcursesUI::NcursesUI() {
   isRunning = true;
   ready = false;
-  beginShutdown = false;
 
   interval = 400;
 
