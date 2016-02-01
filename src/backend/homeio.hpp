@@ -60,14 +60,14 @@ class HomeIO {
   std::shared_ptr<MeasFetcher> measFetcher;
   std::shared_ptr<TcpServer> tcpServer;
   std::shared_ptr<TcpCommand> tcpCommand;
+  std::shared_ptr<MeasBufferBackupStorage> measBufferBackupStorage;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
 
-  MeasTypeArray *measTypeArray;
   IoProxy *ioProxy;
   IoServer *ioServer;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FileStorage *fileStorage;
-  MeasBufferBackupStorage *measBufferBackupStorage;
   FrontendSettings *frontendSettings;
   MeasGroup *measGroup;
   AddonsArray *addonsArray;

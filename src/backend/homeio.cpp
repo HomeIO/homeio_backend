@@ -8,15 +8,15 @@ HomeIO::HomeIO() {
   measFetcher = std::make_shared<MeasFetcher>();
   tcpServer = std::make_shared<TcpServer>();
   tcpCommand = std::make_shared<TcpCommand>();
+  measBufferBackupStorage = std::make_shared<MeasBufferBackupStorage>();
+  measTypeArray = std::make_shared<MeasTypeArray>();
 
   logArray = new LogArray;
-  measTypeArray = new MeasTypeArray;
   ioProxy = new IoProxy;
   ioServer = new IoServer;
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
-  measBufferBackupStorage = new MeasBufferBackupStorage;
   frontendSettings = new FrontendSettings;
   measGroup = new MeasGroup;
   addonsArray = new AddonsArray;

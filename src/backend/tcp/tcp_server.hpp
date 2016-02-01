@@ -38,8 +38,8 @@ class TcpServer {
   unsigned short int port;
 
   std::shared_ptr<TcpCommand> tcpCommand;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
 
-  MeasTypeArray *measTypeArray;
   LogArray *logArray;
 
   unsigned long long usDelay;

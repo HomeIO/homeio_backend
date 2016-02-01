@@ -23,7 +23,7 @@ class NcursesMeas {
   unsigned int perPage;
   unsigned int maxPage;
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
 };
 
 #endif

@@ -31,7 +31,8 @@ class Spy {
   std::string urlPath;
   std::string url;
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
+  
   LogArray *logArray;
 
   unsigned long int cycleInterval;

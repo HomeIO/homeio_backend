@@ -14,7 +14,7 @@ class AbstractAddon {
   virtual void perform();
   virtual void render();
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
   LogArray *logArray;
 
   std::string name;

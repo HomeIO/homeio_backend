@@ -13,7 +13,8 @@ class MeasFetcher {
   void start();
   void stop();
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
+  
   IoProxy *ioProxy;
   LogArray *logArray;
 

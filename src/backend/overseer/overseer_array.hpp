@@ -18,7 +18,8 @@ class OverseerArray {
   void stop();
   Overseer *byName(std::string s);
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
+  
   ActionTypeArray *actionTypeArray;
   LogArray *logArray;
   std::vector <Overseer> overseers;

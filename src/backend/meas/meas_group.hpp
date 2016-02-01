@@ -16,7 +16,7 @@ class MeasGroup {
   std::vector <std::string> groupNames;
   std::vector <std::string> groupMeasTypes;
 
-  MeasTypeArray *measTypeArray;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
 };
 
 //#include "meas_group.cpp"

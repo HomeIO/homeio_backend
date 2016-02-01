@@ -49,8 +49,8 @@ class TcpCommand {
   unsigned long long int bootTime;
 
   std::shared_ptr<MeasFetcher> measFetcher;
+  std::shared_ptr<MeasTypeArray> measTypeArray;
 
-  MeasTypeArray *measTypeArray;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FrontendSettings *frontendSettings;
