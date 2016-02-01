@@ -14,8 +14,8 @@ class MeasFetcher {
   void stop();
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  
-  IoProxy *ioProxy;
+  std::shared_ptr<IoProxy> ioProxy;
+
   LogArray *logArray;
 
   unsigned long int betweenMeasInterval; // 5000

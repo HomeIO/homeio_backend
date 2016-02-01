@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <time.h>
+#include <memory>
 
 #include "../utils/helper.hpp"
 #include "../io/io_proxy.hpp"
@@ -32,7 +33,8 @@ class ActionType {
   std::vector < unsigned long long > timeBuffer;
   void markExecutionTime();
 
-  IoProxy *ioProxy;
+  std::shared_ptr<IoProxy> ioProxy;
+
   LogArray *logArray;
 
 };

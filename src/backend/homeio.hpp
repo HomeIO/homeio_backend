@@ -62,9 +62,9 @@ class HomeIO {
   std::shared_ptr<TcpCommand> tcpCommand;
   std::shared_ptr<MeasBufferBackupStorage> measBufferBackupStorage;
   std::shared_ptr<MeasTypeArray> measTypeArray;
+  std::shared_ptr<IoProxy> ioProxy;
+  std::shared_ptr<IoServer> ioServer;
 
-  IoProxy *ioProxy;
-  IoServer *ioServer;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FileStorage *fileStorage;

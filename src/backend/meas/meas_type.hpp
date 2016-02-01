@@ -49,6 +49,7 @@ class MeasType {
 
   std::shared_ptr<MeasBuffer> buffer;
   std::shared_ptr<MeasTypeStorage> measTypeStorage;
+  std::shared_ptr<IoProxy> ioProxy;
 
   std::string name; // name of measurements
   std::string unit; // value is presented in unit
@@ -68,8 +69,6 @@ class MeasType {
   bool extBackendRemoveSpikes;
 
   bool started;
-
-  IoProxy *ioProxy;
 
   LogArray *logArray;
 

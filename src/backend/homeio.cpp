@@ -10,10 +10,10 @@ HomeIO::HomeIO() {
   tcpCommand = std::make_shared<TcpCommand>();
   measBufferBackupStorage = std::make_shared<MeasBufferBackupStorage>();
   measTypeArray = std::make_shared<MeasTypeArray>();
+  ioProxy = std::make_shared<IoProxy>();
+  ioServer = std::make_shared<IoServer>();
 
   logArray = new LogArray;
-  ioProxy = new IoProxy;
-  ioServer = new IoServer;
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
