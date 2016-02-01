@@ -25,7 +25,6 @@ class IoProxy {
   bool verbose;
   std::mutex tcpMutex;
   std::shared_ptr<LogArray> logArray;
-  in_addr *tmpAddr;
 
   unsigned int fetch(unsigned char commandChar, unsigned char responseSize);
 

@@ -29,8 +29,8 @@ class IoServer {
   // is ready
   bool ready;
 
-  IoRS *rs;
-  IoTcpServer *tcp;
+  std::unique_ptr<IoRS> rs;
+  std::unique_ptr<IoTcpServer> tcp;
   std::shared_ptr<LogArray> logArray;
 
 };

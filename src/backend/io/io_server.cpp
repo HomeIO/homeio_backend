@@ -3,8 +3,8 @@
 IoServer::IoServer() {
   ready = false;
 
-  rs = new IoRS;
-  tcp = new IoTcpServer;
+  rs = std::make_unique<IoRS>();
+  tcp = std::make_unique<IoTcpServer>();
 
   tmp_char = 0;
   i = 0;

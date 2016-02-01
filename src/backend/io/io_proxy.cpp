@@ -5,12 +5,9 @@ IoProxy::IoProxy() {
   port = 0;
   address = "";
   verbose = false;
-
-  tmpAddr = new in_addr;
 }
 
 IoProxy::~IoProxy() {
-  delete tmpAddr;
 }
 
 unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSize) {
@@ -55,7 +52,9 @@ unsigned int IoProxy::fetch(unsigned char commandChar, unsigned char responseSiz
 unsigned int IoProxy::prepareSocket() {
   // crazy way to get rid of warning
   // it checks if address is ip or name based, like localhost
+  in_addr *tmpAddr = new in_addr;
   bool isIp = (inet_aton(address.c_str(), tmpAddr) > 0);
+  delete tmpAddr;
 
   //setup address structure
   if(isIp == false) {
