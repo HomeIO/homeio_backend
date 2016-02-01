@@ -130,8 +130,9 @@ unsigned char HomeIO::startIoServer() {
 
 unsigned char HomeIO::startOverseer() {
   // set IoProxy to actions
-  for(std::vector<ActionType>::iterator a = actionTypeArray->actionTypes.begin(); a != actionTypeArray->actionTypes.end(); ++a) {
-    a->ioProxy = ioProxy;
+  for(std::vector<std::shared_ptr<ActionType>>::iterator it = actionTypeArray->actionTypes.begin(); it != actionTypeArray->actionTypes.end(); ++it) {
+    std::shared_ptr<ActionType> actionType = *it;
+    actionType->ioProxy = ioProxy;
   }
 
   // access is needed to search for proper objects

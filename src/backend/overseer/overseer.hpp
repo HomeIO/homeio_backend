@@ -36,7 +36,7 @@ class Overseer {
   bool checkLastExecutionTime();
 
   std::shared_ptr<MeasType> meas;
-  ActionType *action;
+  std::shared_ptr<ActionType> action;
   std::shared_ptr<LogArray> logArray;
 
   Overseer();

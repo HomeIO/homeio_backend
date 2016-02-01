@@ -11,10 +11,10 @@
 class ActionTypeArray {
  public:
   ActionTypeArray();
-  unsigned int add(ActionType *m);
-  ActionType *byName(std::string s);
+  unsigned int add(std::shared_ptr<ActionType> a);
+  std::shared_ptr<ActionType> byName(std::string s);
 
-  std::vector <ActionType> actionTypes;
+  std::vector <std::shared_ptr<ActionType>> actionTypes;
   IoProxy *ioProxy;
   std::shared_ptr<LogArray> logArray;
 };

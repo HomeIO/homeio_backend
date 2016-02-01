@@ -343,8 +343,9 @@ std::string TcpCommand::processActionIndexCommand(std::string command) {
 
   response = "{\"status\":0,\"array\":[";
 
-  for(std::vector<ActionType>::iterator it = actionTypeArray->actionTypes.begin(); it != actionTypeArray->actionTypes.end(); ++it) {
-    detailsResponse += it->toJson() + ",";
+  for(std::vector<std::shared_ptr<ActionType>>::iterator it = actionTypeArray->actionTypes.begin(); it != actionTypeArray->actionTypes.end(); ++it) {
+    std::shared_ptr<ActionType> actionType = *it;
+    detailsResponse += actionType->toJson() + ",";
   }
 
   // remove last coma
@@ -362,7 +363,7 @@ std::string TcpCommand::processActionShowCommand(std::string command) {
   std::string response, actionName;
   actionName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  std::shared_ptr<ActionType> foundActionType = actionTypeArray->byName(actionName);
 
   if (foundActionType) {
     response = "{\"status\":0,\"object\":" + foundActionType->toJson() + "}";
@@ -381,7 +382,7 @@ std::string TcpCommand::processActionExecuteCommand(std::string command) {
 
   std::string response;
 
-  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  std::shared_ptr<ActionType> foundActionType = actionTypeArray->byName(actionName);
 
   if (foundActionType) {
     foundActionType->execute();
@@ -401,7 +402,7 @@ std::string TcpCommand::processActionHistoryCommand(std::string command) {
 
   std::string response;
 
-  ActionType *foundActionType = actionTypeArray->byName(actionName);
+  std::shared_ptr<ActionType> foundActionType = actionTypeArray->byName(actionName);
 
   if (foundActionType) {
     response = "{\"status\":0,\"action\":" + foundActionType->historyToJson() + "}";
@@ -420,8 +421,9 @@ std::string TcpCommand::processOverseerIndexCommand(std::string command) {
 
   response = "{\"status\":0,\"array\":[";
 
-  for(std::vector<Overseer>::iterator it = overseerArray->overseers.begin(); it != overseerArray->overseers.end(); ++it) {
-    detailsResponse += it->toJson() + ",";
+  for(std::vector<std::shared_ptr<Overseer>>::iterator it = overseerArray->overseers.begin(); it != overseerArray->overseers.end(); ++it) {
+    std::shared_ptr<Overseer> overseer = *it;
+    detailsResponse += overseer->toJson() + ",";
   }
 
   // remove last coma
@@ -439,7 +441,7 @@ std::string TcpCommand::processOverseerShowCommand(std::string command) {
   std::string response, overseerName;
   overseerName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  Overseer *foundOverseer = overseerArray->byName(overseerName);
+  std::shared_ptr<Overseer> foundOverseer = overseerArray->byName(overseerName);
 
   if (foundOverseer) {
     response = "{\"status\":0,\"object\":" + foundOverseer->toJson() + "}";

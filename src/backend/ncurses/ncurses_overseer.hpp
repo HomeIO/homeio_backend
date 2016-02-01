@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <memory>
 
 #include "../overseer/overseer_array.hpp"
 #include "../overseer/overseer.hpp"
@@ -16,7 +17,7 @@ class NcursesOverseer {
   NcursesOverseer();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);
-  void renderOverseer(WINDOW *w, Overseer *o, int i);
+  void renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int i);
   unsigned int setPage(unsigned int p);
 
   bool ready();

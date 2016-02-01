@@ -16,7 +16,7 @@ class NcursesAction {
   NcursesAction();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);
-  void renderAction(WINDOW *w, ActionType *a, int i);
+  void renderAction(WINDOW *w, std::shared_ptr<ActionType> a, int i);
   unsigned int setPage(unsigned int p);
 
   unsigned int page;

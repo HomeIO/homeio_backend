@@ -57,18 +57,18 @@ void NcursesOverseer::render(WINDOW *w) {
 
   unsigned int i;
   long unsigned int j;
-  Overseer *element;
+  std::shared_ptr<Overseer> element;
 
   for (i = 0; i < perPage; i++) {
     j = (perPage * page) + i;
     if (j < overseerArray->overseers.size()) {
-      element = &overseerArray->overseers.at(j) ;
+      element = overseerArray->overseers.at(j) ;
       renderOverseer(w, element, (int) ((i * NC_OVERSEER_LINE_SIZE) + 3) );
     }
   }
 }
 
-void NcursesOverseer::renderOverseer(WINDOW *w, Overseer *o, int i) {
+void NcursesOverseer::renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int i) {
   wattron(w, NC_COLOR_PAIR_NAME_SET);
   mvwprintw(w, i + NC_OVERSEER_1, 1 + NC_OVERSEER_1_NAME, o->name.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_SET);

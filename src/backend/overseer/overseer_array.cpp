@@ -8,16 +8,17 @@ OverseerArray::OverseerArray() {
   ready = false;
 }
 
-unsigned int OverseerArray::add(Overseer *o) {
-  overseers.push_back(*o);
+unsigned int OverseerArray::add(std::shared_ptr<Overseer> o) {
+  overseers.push_back(o);
   logArray->log("Overseer", "added: '" + o->name + "' (" + std::to_string(overseers.size()) + " total overseers)");
   return 0;
 }
 
-Overseer *OverseerArray::byName(std::string s) {
-  for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
-    if (it->name == s) {
-      return &*it;
+std::shared_ptr<Overseer> OverseerArray::byName(std::string s) {
+  for(std::vector<std::shared_ptr<Overseer>>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
+    std::shared_ptr<Overseer> overseer = *it;
+    if (overseer->name == s) {
+      return overseer;
     }
   }
   return NULL;
@@ -30,11 +31,12 @@ void OverseerArray::start() {
 
   logArray->log("Overseer", "start");
 
-  for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
-    it->meas = measTypeArray->byName(it->measName);
-    it->action = actionTypeArray->byName(it->actionName);
-    it->logArray = logArray;
-    it->check();
+  for(std::vector<std::shared_ptr<Overseer>>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
+    std::shared_ptr<Overseer> overseer = *it;
+    overseer->meas = measTypeArray->byName(overseer->measName);
+    overseer->action = actionTypeArray->byName(overseer->actionName);
+    overseer->logArray = logArray;
+    overseer->check();
   }
 
   ready = true;
@@ -43,8 +45,9 @@ void OverseerArray::start() {
     shutdownMutex.lock();
     logArray->log("Overseer", "loop start");
 
-    for(std::vector<Overseer>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
-      it->check();
+    for(std::vector<std::shared_ptr<Overseer>>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
+      std::shared_ptr<Overseer> overseer = *it;
+      overseer->check();
     }
 
     logArray->log("Overseer", "loop end");

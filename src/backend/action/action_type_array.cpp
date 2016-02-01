@@ -3,17 +3,18 @@
 ActionTypeArray::ActionTypeArray() {
 }
 
-unsigned int ActionTypeArray::add(ActionType *a) {
+unsigned int ActionTypeArray::add(std::shared_ptr<ActionType> a) {
   a->logArray = logArray;
-  actionTypes.push_back(*a);
+  actionTypes.push_back(a);
   logArray->log("ActionType", "[" + a->name + "] added (" + std::to_string(actionTypes.size()) + " total action types)");
   return 0;
 }
 
-ActionType *ActionTypeArray::byName(std::string s) {
-  for(std::vector<ActionType>::iterator it = actionTypes.begin(); it != actionTypes.end(); ++it) {
-    if (it->name == s) {
-      return &*it;
+std::shared_ptr<ActionType> ActionTypeArray::byName(std::string s) {
+  for(std::vector<std::shared_ptr<ActionType>>::iterator it = actionTypes.begin(); it != actionTypes.end(); ++it) {
+    std::shared_ptr<ActionType> actionType = *it;
+    if (actionType->name == s) {
+      return actionType;
     }
   }
   return NULL;

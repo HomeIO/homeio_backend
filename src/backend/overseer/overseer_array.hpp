@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <mutex>
+#include <memory>
 
 #include "overseer.hpp"
 #include "../action/action_type_array.hpp"
@@ -13,16 +14,16 @@
 class OverseerArray {
  public:
   OverseerArray();
-  unsigned int add(Overseer *m);
+  unsigned int add(std::shared_ptr<Overseer> o);
   void start();
   void stop();
-  Overseer *byName(std::string s);
+  std::shared_ptr<Overseer> byName(std::string s);
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<ActionTypeArray> actionTypeArray;
 
   std::shared_ptr<LogArray> logArray;
-  std::vector <Overseer> overseers;
+  std::vector <std::shared_ptr<Overseer>> overseers;
   unsigned long int cycleInterval;
 
   unsigned long long usDelay;

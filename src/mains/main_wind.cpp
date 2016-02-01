@@ -21,10 +21,10 @@ int main() {
   // Now please add type of measurements which you want backend to fetch and
   // store in RAM buffer.
 
-  MeasType *m;
+  std::shared_ptr<MeasType> m;
 
   // note: test meas is not needed
-  //m = new MeasType();
+  //m = std::make_shared<MeasType>();
   // this must be unique and will be used by frontend and overseers
   //m->name = "test_t";
   // ascii command to get measurement
@@ -51,7 +51,7 @@ int main() {
   //h->measTypeArray->add(m);
 
   // place measurement here
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "batt_u";
   m->unit = "V";
   m->command = '3';
@@ -65,7 +65,7 @@ int main() {
   h->measTypeArray->add(m);
 
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "i_gen_batt";
   m->unit = "A";
   m->command = '4';
@@ -75,7 +75,7 @@ int main() {
   m->priority = 1;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "i_gen_resist";
   m->unit = "A";
   m->command = '5';
@@ -84,7 +84,7 @@ int main() {
   m->coefficientOffset = -512;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "i_inverters";
   m->unit = "A";
   m->command = '6';
@@ -93,7 +93,7 @@ int main() {
   m->coefficientOffset = -512;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "imp_per_min";
   m->unit = "imp/min";
   m->command = 'l';
@@ -102,7 +102,7 @@ int main() {
   m->coefficientOffset = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "coil_1_u";
   m->unit = "V";
   m->command = '0';
@@ -111,7 +111,7 @@ int main() {
   m->coefficientOffset = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "coil_2_u";
   m->unit = "V";
   m->command = '1';
@@ -120,7 +120,7 @@ int main() {
   m->coefficientOffset = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "coil_3_u";
   m->unit = "V";
   m->command = '2';
@@ -129,21 +129,21 @@ int main() {
   m->coefficientOffset = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "res_pwm";
   m->unit = "pwm";
   m->command = 'p';
   m->responseSize = 2;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "res_pwm_avg";
   m->unit = "pwm";
   m->command = 'q';
   m->responseSize = 2;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "outputs";
   m->unit = "bit array";
   m->command = 'o';
@@ -162,8 +162,8 @@ int main() {
   h->fileStorage->cycleInterval = 24*3600*1000;
 
   // actions
-  ActionType *a;
-  a = new ActionType();
+  std::shared_ptr<ActionType> a;
+  a = std::make_shared<ActionType>();
   // this must be unique and will be used by frontend and overseers
   a->name = "start_total_brake";
   // ascii command to get measurement
@@ -175,7 +175,7 @@ int main() {
   // add this measuremt type to measurement which will be fetched by this server
   h->actionTypeArray->add(a);
 
-  a = new ActionType();
+  a = std::make_shared<ActionType>();
   // this must be unique and will be used by frontend and overseers
   a->name = "turn_off_brake";
   // ascii command to get measurement
@@ -188,28 +188,28 @@ int main() {
   h->actionTypeArray->add(a);
 
 
-  a = new ActionType();
+  a = std::make_shared<ActionType>();
   a->name = "inverter_A_off"; // "output_2_off";
   a->command = 'b';
   a->responseSize = 1;
   a->responseOkay = 1;
   h->actionTypeArray->add(a);
 
-  a = new ActionType();
+  a = std::make_shared<ActionType>();
   a->name = "inverter_B_off"; // "output_3_off";
   a->command = 'c';
   a->responseSize = 1;
   a->responseOkay = 2;
   h->actionTypeArray->add(a);
 
-  a = new ActionType();
+  a = std::make_shared<ActionType>();
   a->name = "inverter_A_on"; // "output_2_on";
   a->command = 'B';
   a->responseSize = 1;
   a->responseOkay = 11;
   h->actionTypeArray->add(a);
 
-  a = new ActionType();
+  a = std::make_shared<ActionType>();
   a->name = "inverter_B_on"; // "output_3_on";
   a->command = 'C';
   a->responseSize = 1;
@@ -222,8 +222,8 @@ int main() {
   h->overseerArray->cycleInterval = 2000000;
 
   // overseers
-  Overseer *o;
-  o = new Overseer();
+  std::shared_ptr<Overseer> o;
+  o = std::make_shared<Overseer>();
   // this must be unique and can be used to access overseer parameters in future
   o->name = "brake_on_high_batt_voltage";
   // string name of action
@@ -239,7 +239,7 @@ int main() {
   // add this overseer type to list
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "no_brake_on_low_batt_voltage";
   o->actionName = "turn_off_brake";
   o->measName = "batt_u";
@@ -248,7 +248,7 @@ int main() {
   o->windowSize = 100;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_on_inverter_A_on_high_coil";
   o->actionName = "inverter_A_on";
   o->measName = "coil_1_u";
@@ -257,7 +257,7 @@ int main() {
   o->windowSize = 100;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_on_inverter_A_on_high_battery";
   o->actionName = "inverter_A_on";
   o->measName = "batt_u";
@@ -266,7 +266,7 @@ int main() {
   o->windowSize = 200;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_off_inverter_A_on_low_coil";
   o->actionName = "inverter_A_off";
   o->measName = "coil_1_u";
@@ -275,7 +275,7 @@ int main() {
   o->windowSize = 50;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_off_inverter_B_on_low_coil";
   o->actionName = "inverter_B_off";
   o->measName = "coil_1_u";
@@ -284,7 +284,7 @@ int main() {
   o->windowSize = 50;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_on_inverter_B_on_high_battery";
   o->actionName = "inverter_B_on";
   o->measName = "batt_u";
@@ -293,7 +293,7 @@ int main() {
   o->windowSize = 1000;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_off_inverter_B_on_low_battery";
   o->actionName = "inverter_B_off";
   o->measName = "batt_u";
@@ -302,7 +302,7 @@ int main() {
   o->windowSize = 100;
   h->overseerArray->add(o);
 
-  o = new Overseer();
+  o = std::make_shared<Overseer>();
   o->name = "turn_off_inverter_A_on_low_battery";
   o->actionName = "inverter_A_off";
   o->measName = "batt_u";
