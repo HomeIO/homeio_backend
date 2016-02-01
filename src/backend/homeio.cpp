@@ -5,10 +5,11 @@ HomeIO::HomeIO() {
 
   boot = std::make_shared<Boot>();
   spy = std::make_shared<Spy>();
+  measFetcher = std::make_shared<MeasFetcher>();
+
 
   logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
-  measFetcher = new MeasFetcher;
   ioProxy = new IoProxy;
   tcpServer = new TcpServer;
   tcpCommand = new TcpCommand;

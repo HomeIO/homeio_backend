@@ -27,9 +27,9 @@ class NcursesHome {
   void renderStatus(WINDOW *w, unsigned char row, bool status);
 
   std::shared_ptr<Spy> spy;
+  std::shared_ptr<MeasFetcher> measFetcher;
 
   IoServer *ioServer;
-  MeasFetcher *measFetcher;
   OverseerArray *overseerArray;
   TcpServer *tcpServer;
   FileStorage *fileStorage;

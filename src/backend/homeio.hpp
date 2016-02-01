@@ -57,9 +57,9 @@ class HomeIO {
 
   std::shared_ptr<Boot> boot;
   std::shared_ptr<Spy> spy;
+  std::shared_ptr<MeasFetcher> measFetcher;
 
   MeasTypeArray *measTypeArray;
-  MeasFetcher *measFetcher;
   IoProxy *ioProxy;
   TcpServer *tcpServer;
   TcpCommand *tcpCommand;
@@ -69,7 +69,6 @@ class HomeIO {
   FileStorage *fileStorage;
   MeasBufferBackupStorage *measBufferBackupStorage;
   FrontendSettings *frontendSettings;
-
   MeasGroup *measGroup;
   AddonsArray *addonsArray;
   NcursesUI *ncursesUI;
