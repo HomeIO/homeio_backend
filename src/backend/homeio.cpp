@@ -13,9 +13,9 @@ HomeIO::HomeIO() {
   ioProxy = std::make_shared<IoProxy>();
   ioServer = std::make_shared<IoServer>();
   actionTypeArray = std::make_shared<ActionTypeArray>();
+  overseerArray = std::make_shared<OverseerArray>();
 
   logArray = new LogArray;
-  overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
   frontendSettings = new FrontendSettings;
   measGroup = new MeasGroup;

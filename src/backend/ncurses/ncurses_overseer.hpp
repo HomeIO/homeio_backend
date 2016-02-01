@@ -25,7 +25,7 @@ class NcursesOverseer {
   unsigned int perPage;
   unsigned int maxPage;
 
-  OverseerArray *overseerArray;
+  std::shared_ptr<OverseerArray> overseerArray;
 };
 
 #endif

@@ -31,8 +31,8 @@ class NcursesHome {
   std::shared_ptr<TcpServer> tcpServer;
   std::shared_ptr<MeasBufferBackupStorage> measBufferBackupStorage;
   std::shared_ptr<IoServer> ioServer;
-  
-  OverseerArray *overseerArray;
+  std::shared_ptr<OverseerArray> overseerArray;
+
   FileStorage *fileStorage;
   AddonsArray *addonsArray;
 
