@@ -20,7 +20,7 @@ class MeasBufferBackupStorage {
   void performDump();
   void performRestore();
 
-  std::string pathForMeasType(MeasType *measType);
+  std::string pathForMeasType(std::shared_ptr<MeasType> measType);
 
   std::string path;
   unsigned long long cycleInterval;

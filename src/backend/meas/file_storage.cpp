@@ -44,14 +44,15 @@ void FileStorage::performMeasStore() {
 
   logArray->log("FileStorage", "start meas file storage");
 
-  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    storeMeasArray(&*it, it->storageArray(it->lastStored, currentTime));
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::shared_ptr<MeasType> measType = *it;
+    storeMeasArray(measType, measType->storageArray(measType->lastStored, currentTime));
   }
 
   logArray->log("FileStorage", "finish meas file storage");
 }
 
-void FileStorage::storeMeasArray(MeasType* measType, std::vector <StorageHash> storageVector) {
+void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector <StorageHash> storageVector) {
   if (storageVector.size() == 0) {
     logArray->log("FileStorage", "[" + measType->name + "] no data to store");
     return;

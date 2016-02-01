@@ -44,13 +44,13 @@ void NcursesMeas::render(WINDOW *w) {
   for (i = 0; i < perPage; i++) {
     j = (perPage * page) + i;
     if (j < measTypeArray->measTypes.size()) {
-      element = &measTypeArray->measTypes.at(j) ;
-      renderMeas(w, element, (int) (i + 3) );
+      std::shared_ptr<MeasType> measType = measTypeArray->measTypes.at(j);
+      renderMeas(w, measType, (int) (i + 3) );
     }
   }
 }
 
-void NcursesMeas::renderMeas(WINDOW *w, MeasType *m, int i) {
+void NcursesMeas::renderMeas(WINDOW *w, std::shared_ptr<MeasType> m, int i) {
   std::string valueString = "";
 
   std::ostringstream os;

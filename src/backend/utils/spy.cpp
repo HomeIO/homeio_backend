@@ -41,9 +41,10 @@ void Spy::stop() {
 void Spy::announceAll() {
   url = hiveHost + urlPath;
 
-  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     shutdownMutex.lock();
-    annouceMeas(it->name, it->lastValue());
+    std::shared_ptr<MeasType> measType = *it;
+    annouceMeas(measType->name, measType->lastValue());
     shutdownMutex.unlock();
   }
 

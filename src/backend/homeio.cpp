@@ -99,12 +99,14 @@ void HomeIO::prepareDirectories() {
 
 unsigned char HomeIO::startFetch() {
   // set IoProxy to measurements
-  for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::shared_ptr<MeasType> m = *it;
     m->ioProxy = ioProxy;
   }
 
   // resize buffer to custom size
-  for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::shared_ptr<MeasType> m = *it;
     m->resizeBuffer( measFetcher->maxBufferSize );
   }
   logArray->log("MeasFetcher", "resize buffer size to " + std::to_string(measFetcher->maxBufferSize) );

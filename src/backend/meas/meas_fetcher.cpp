@@ -20,7 +20,8 @@ void MeasFetcher::start() {
   while(isRunning) {
     shutdownMutex.lock();
 
-    for(std::vector<MeasType>::iterator m = measTypeArray->measTypes.begin(); m != measTypeArray->measTypes.end(); ++m) {
+    for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+      std::shared_ptr<MeasType> m = *it;
       m->fetch();
 
       Helper::longSleep(betweenMeasInterval);

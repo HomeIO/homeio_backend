@@ -65,8 +65,8 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   double maxBattVoltage = 0.0;
 
   // work
-  MeasType *u = measTypeArray->byName(measNameU);
-  MeasType *i = measTypeArray->byName(measNameI);
+  std::shared_ptr<MeasType> u = measTypeArray->byName(measNameU);
+  std::shared_ptr<MeasType> i = measTypeArray->byName(measNameI);
 
   std::vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(t), u->timeToIndex(t + hour), 0);
   std::vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(t), i->timeToIndex(t + hour), 0);
@@ -109,7 +109,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   s.work = w;
 
   // coil time
-  MeasType *coil = measTypeArray->byName(measCoil);
+  std::shared_ptr<MeasType> coil = measTypeArray->byName(measCoil);
   std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(t), coil->timeToIndex(t + hour), 0);
   intervalInt = coil->buffer->calcInterval();
 
@@ -128,7 +128,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
   }
 
   // resistor time
-  MeasType *resistor = measTypeArray->byName(measResistor);
+  std::shared_ptr<MeasType> resistor = measTypeArray->byName(measResistor);
   std::vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(t), resistor->timeToIndex(t + hour), 0);
   intervalInt = resistor->buffer->calcInterval();
 

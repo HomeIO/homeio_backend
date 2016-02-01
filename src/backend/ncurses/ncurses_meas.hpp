@@ -16,7 +16,7 @@ class NcursesMeas {
   NcursesMeas();
   void render(WINDOW *w);
   void renderPage(WINDOW *w);
-  void renderMeas(WINDOW *w, MeasType *m, int i);
+  void renderMeas(WINDOW *w, std::shared_ptr<MeasType> m, int i);
   unsigned int setPage(unsigned int p);
 
   unsigned int page;

@@ -82,8 +82,9 @@ std::string TcpCommand::processMeasIndexCommand(std::string command) {
 
   response = "{\"status\":0,\"array\":[";
 
-  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    detailsResponse += it->toJson() + ",";
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::shared_ptr<MeasType> measType = *it;
+    detailsResponse += measType->toJson() + ",";
   }
 
   // remove last coma
@@ -103,8 +104,9 @@ std::string TcpCommand::processMeasNameListCommand(std::string command) {
 
   response = "{\"status\":0,\"array\":[";
 
-  for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
-    response += "\"" + it->name + "\",";
+  for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
+    std::shared_ptr<MeasType> measType = *it;
+    response += "\"" + measType->name + "\",";
   }
 
   // remove last coma
@@ -121,7 +123,7 @@ std::string TcpCommand::processMeasShowCommand(std::string command) {
   std::string response, measName;
   measName = command.substr(0, command.find(";"));
   command = command.substr(command.find(";") + 1);
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     response = "{\"status\":0,\"object\":" + foundMeasType->toJson() + "}";
@@ -149,7 +151,7 @@ std::string TcpCommand::processMeasRawForTimeCommand(std::string command) {
   std::stringstream(fromString) >> tFrom;
   std::stringstream(toString) >> tTo;
 
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     logArray->log("TcpCommand", "processMeasRawForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ")" );
@@ -194,7 +196,7 @@ std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command)
   std::stringstream(toString) >> tTo;
   std::stringstream(maxSizeString) >> maxSize;
 
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     logArray->log("TcpCommand", "processMeasRawHistoryForTimeCommand(" + measName + ", " + std::to_string(tFrom) + ", " + std::to_string(tTo) + ", " + std::to_string(maxSize) + ")" );
@@ -237,7 +239,7 @@ std::string TcpCommand::processMeasRawForIndexCommand(std::string command) {
   std::stringstream(fromString) >> iFrom;
   std::stringstream(toString) >> iTo;
 
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     logArray->log("TcpCommand", "processMeasRawForIndexCommand(" + measName + ", " + std::to_string(iFrom) + ", " + std::to_string(iTo) + ")" );
@@ -277,7 +279,7 @@ std::string TcpCommand::processMeasStorageCommand(std::string command) {
   std::stringstream(fromString) >> from;
   std::stringstream(toString) >> to;
 
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     std::string bufferString = foundMeasType->storageJson(from, to);
@@ -307,7 +309,7 @@ std::string TcpCommand::processMeasStatsCommand(std::string command) {
   std::stringstream(fromString) >> from;
   std::stringstream(toString) >> to;
 
-  MeasType *foundMeasType = measTypeArray->byName(measName);
+  std::shared_ptr<MeasType> foundMeasType = measTypeArray->byName(measName);
 
   if (foundMeasType) {
     std::string statsString = foundMeasType->statsJson(from, to);

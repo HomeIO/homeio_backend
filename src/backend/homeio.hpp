@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include <vector>
+#include <memory>
 
 #include "meas/meas_type_array.hpp"
 #include "meas/meas_fetcher.hpp"

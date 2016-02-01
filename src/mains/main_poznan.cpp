@@ -7,8 +7,8 @@ int main() {
   h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002;
 
-  MeasType *m;
-  m = new MeasType();
+  std::shared_ptr<MeasType> m;
+  m = std::make_shared<MeasType>();
   m->name = "light";
   m->unit = "%";
   m->command = '0';
@@ -21,7 +21,7 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "moisture_shadow";
   m->unit = "%";
   m->command = '5';
@@ -34,7 +34,7 @@ int main() {
   m->priority = 1;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "moisture_external";
   m->unit = "%";
   m->command = '4';
@@ -47,7 +47,7 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "moisture_top";
   m->unit = "%";
   m->command = '3';
@@ -62,7 +62,7 @@ int main() {
 
   /*
   // temporary not used
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "lm35_temperature";
   m->unit = "C";
   m->command = '2';
@@ -76,7 +76,7 @@ int main() {
   h->measTypeArray->add(m);
   */
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "int_temperature";
   m->unit = "C";
   m->command = 'd';
@@ -89,7 +89,7 @@ int main() {
   m->priority = 1;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "int_humidity";
   m->unit = "%";
   m->command = 'h';
@@ -102,7 +102,7 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "ext_temperature";
   m->unit = "C";
   m->command = 'D';
@@ -117,7 +117,7 @@ int main() {
   m->extBackendRemoveSpikes = true;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "ext_humidity";
   m->unit = "%";
   m->command = 'H';

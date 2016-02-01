@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
+
 #include "meas_type.hpp"
 #include "../io/io_proxy.hpp"
 #include "../log/log_array.hpp"
@@ -10,10 +12,10 @@
 class MeasTypeArray {
  public:
   MeasTypeArray();
-  unsigned int add(MeasType *m);
-  MeasType *byName(std::string s);
+  unsigned int add(std::shared_ptr<MeasType>);
+  std::shared_ptr<MeasType> byName(std::string s);
 
-  std::vector <MeasType> measTypes;
+  std::vector <std::shared_ptr<MeasType>> measTypes;
   IoProxy *ioProxy;
   LogArray *logArray;
   unsigned int i;

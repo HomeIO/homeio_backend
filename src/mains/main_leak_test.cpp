@@ -7,8 +7,8 @@ int main() {
   h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002;
 
-  MeasType *m;
-  m = new MeasType();
+  std::shared_ptr<MeasType> m;
+  m = std::make_shared<MeasType>();
   m->name = "light";
   m->unit = "%";
   m->command = '0';
@@ -21,7 +21,7 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  m = new MeasType();
+  m = std::make_shared<MeasType>();
   m->name = "batt_u";
   m->unit = "V";
   m->command = '3';
