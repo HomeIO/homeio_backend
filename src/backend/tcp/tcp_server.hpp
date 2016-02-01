@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <mutex>
+#include <memory>
 
 #include <sys/socket.h> // socket definitions
 #include <sys/types.h> // socket types
@@ -35,7 +36,9 @@ class TcpServer {
   int processCommand();
 
   unsigned short int port;
-  TcpCommand *tcpCommand;
+
+  std::shared_ptr<TcpCommand> tcpCommand;
+
   MeasTypeArray *measTypeArray;
   LogArray *logArray;
 

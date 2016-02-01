@@ -28,10 +28,10 @@ class NcursesHome {
 
   std::shared_ptr<Spy> spy;
   std::shared_ptr<MeasFetcher> measFetcher;
+  std::shared_ptr<TcpServer> tcpServer;
 
   IoServer *ioServer;
   OverseerArray *overseerArray;
-  TcpServer *tcpServer;
   FileStorage *fileStorage;
   MeasBufferBackupStorage *measBufferBackupStorage;
   AddonsArray *addonsArray;

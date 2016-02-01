@@ -58,11 +58,11 @@ class HomeIO {
   std::shared_ptr<Boot> boot;
   std::shared_ptr<Spy> spy;
   std::shared_ptr<MeasFetcher> measFetcher;
+  std::shared_ptr<TcpServer> tcpServer;
+  std::shared_ptr<TcpCommand> tcpCommand;
 
   MeasTypeArray *measTypeArray;
   IoProxy *ioProxy;
-  TcpServer *tcpServer;
-  TcpCommand *tcpCommand;
   IoServer *ioServer;
   ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;

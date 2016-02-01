@@ -6,13 +6,12 @@ HomeIO::HomeIO() {
   boot = std::make_shared<Boot>();
   spy = std::make_shared<Spy>();
   measFetcher = std::make_shared<MeasFetcher>();
-
+  tcpServer = std::make_shared<TcpServer>();
+  tcpCommand = std::make_shared<TcpCommand>();
 
   logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
   ioProxy = new IoProxy;
-  tcpServer = new TcpServer;
-  tcpCommand = new TcpCommand;
   ioServer = new IoServer;
   actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
@@ -76,20 +75,19 @@ HomeIO::HomeIO() {
 }
 
 HomeIO::~HomeIO() {
-  delete logArray;
-  delete measTypeArray;
-  delete ioProxy;
-  delete tcpServer;
-  delete tcpCommand;
-  delete ioServer;
-  delete actionTypeArray;
-  delete overseerArray;
-  delete fileStorage;
-  delete measBufferBackupStorage;
-  delete frontendSettings;
-  delete measGroup;
-  delete addonsArray;
-  delete ncursesUI;
+  // delete logArray;
+  // delete measTypeArray;
+  // delete ioProxy;
+  // delete tcpCommand;
+  // delete ioServer;
+  // delete actionTypeArray;
+  // delete overseerArray;
+  // delete fileStorage;
+  // delete measBufferBackupStorage;
+  // delete frontendSettings;
+  // delete measGroup;
+  // delete addonsArray;
+  // delete ncursesUI;
 }
 
 void HomeIO::prepareDirectories() {
