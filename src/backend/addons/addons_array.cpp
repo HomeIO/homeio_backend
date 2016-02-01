@@ -5,9 +5,12 @@ AddonsArray::AddonsArray() {
   cycleInterval = 1000000; //1s
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 void AddonsArray::start() {
+  changing = true;
+
   logArray->log("AddonsArray", "start");
 
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
@@ -17,6 +20,7 @@ void AddonsArray::start() {
   }
 
   ready = true;
+  changing = false;
 
   while(isRunning) {
     shutdownMutex.lock();
@@ -31,7 +35,12 @@ void AddonsArray::start() {
 
 void AddonsArray::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   shutdownMutex.unlock();
   logArray->log("AddonsArray", "stop");
+
+  changing = false;
+  ready = false;
 }

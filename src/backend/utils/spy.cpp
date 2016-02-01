@@ -14,6 +14,7 @@ Spy::Spy() {
 
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 

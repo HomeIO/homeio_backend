@@ -32,7 +32,7 @@ class Spy {
   std::string url;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  
+
   std::shared_ptr<LogArray> logArray;
 
   unsigned long int cycleInterval;
@@ -44,6 +44,7 @@ class Spy {
 
   bool isRunning;
   bool ready;
+  bool changing;
   std::mutex shutdownMutex;
 };
 

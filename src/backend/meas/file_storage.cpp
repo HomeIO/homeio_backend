@@ -8,13 +8,17 @@ FileStorage::FileStorage() {
 
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 void FileStorage::start() {
+  changing = true;
+
   Helper::longSleep(usDelay);
 
   // not need to wait, because other modules can be run
   ready = true;
+  changing = false;
 
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -31,12 +35,17 @@ void FileStorage::start() {
 
 void FileStorage::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   // perform the last storage before exiting
   performMeasStore();
   shutdownMutex.unlock();
 
   logArray->log("FileStorage", "stop");
+
+  changing = false;
+  ready = false;
 }
 
 void FileStorage::performMeasStore() {

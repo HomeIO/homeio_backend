@@ -6,6 +6,7 @@ OverseerArray::OverseerArray() {
 
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 unsigned int OverseerArray::add(std::shared_ptr<Overseer> o) {
@@ -25,6 +26,8 @@ std::shared_ptr<Overseer> OverseerArray::byName(std::string s) {
 }
 
 void OverseerArray::start() {
+  changing = true;
+
   Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -40,6 +43,7 @@ void OverseerArray::start() {
   }
 
   ready = true;
+  changing = false;
 
   while(isRunning) {
     shutdownMutex.lock();
@@ -60,7 +64,12 @@ void OverseerArray::start() {
 
 void OverseerArray::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   shutdownMutex.unlock();
   logArray->log("Overseer", "stop");
+
+  changing = false;
+  ready = false;
 }

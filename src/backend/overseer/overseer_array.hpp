@@ -30,6 +30,7 @@ class OverseerArray {
 
   bool isRunning;
   bool ready;
+  bool changing;
   std::mutex shutdownMutex;
 };
 

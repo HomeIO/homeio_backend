@@ -28,6 +28,7 @@ class IoServer {
   std::string port;
   // is ready
   bool ready;
+  bool changing;
 
   std::unique_ptr<IoRS> rs;
   std::unique_ptr<IoTcpServer> tcp;

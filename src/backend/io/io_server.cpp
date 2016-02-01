@@ -2,6 +2,7 @@
 
 IoServer::IoServer() {
   ready = false;
+  changing = false;
 
   rs = std::make_unique<IoRS>();
   tcp = std::make_unique<IoTcpServer>();
@@ -18,11 +19,14 @@ IoServer::IoServer() {
 }
 
 void IoServer::start() {
+  changing = true;
+
   rs->port = port;
   rs->openRS();
   tcp->createTcpServer();
 
   ready = true;
+  changing = false;
 
   usleep(10000);
   logArray->log("IoServer", "start");
@@ -42,7 +46,12 @@ void IoServer::start() {
 
 void IoServer::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   shutdownMutex.unlock();
   logArray->log("IoServer", "stop");
+
+  ready = false;
+  changing = false;
 }

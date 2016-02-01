@@ -2,6 +2,7 @@
 
 MeasFetcher::MeasFetcher() {
   ready = false;
+  changing = false;
 
   // default intervals
   betweenMeasInterval = 5000;
@@ -12,10 +13,13 @@ MeasFetcher::MeasFetcher() {
 }
 
 void MeasFetcher::start() {
+  changing = true;
+
   ioProxy->prepareSocket();
   logArray->log("MeasFetcher", "start");
 
   ready = true;
+  changing = false;
 
   while(isRunning) {
     shutdownMutex.lock();
@@ -40,7 +44,12 @@ void MeasFetcher::start() {
 
 void MeasFetcher::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   shutdownMutex.unlock();
   logArray->log("MeasFetcher", "stop");
+
+  changing = false;
+  ready = false;
 }

@@ -8,9 +8,12 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
 
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 void MeasBufferBackupStorage::start() {
+  changing = true;
+
   Helper::longSleep(usDelay);
 
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
@@ -19,6 +22,7 @@ void MeasBufferBackupStorage::start() {
 
   // not need to wait, because other modules can be run
   ready = true;
+  changing = false;
 
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -43,11 +47,16 @@ void MeasBufferBackupStorage::start() {
 
 void MeasBufferBackupStorage::stop() {
   isRunning = false;
+  changing = true;
+
   shutdownMutex.lock();
   // perform the last storage before exiting
   performDump();
   shutdownMutex.unlock();
   logArray->log("MeasBufferBackupStorage", "stop");
+
+  changing = false;
+  ready = false;
 }
 
 

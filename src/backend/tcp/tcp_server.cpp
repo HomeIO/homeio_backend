@@ -5,9 +5,12 @@ TcpServer::TcpServer() {
 
   isRunning = true;
   ready = false;
+  changing = false;
 }
 
 void TcpServer::start() {
+  changing = true;
+
   Helper::longSleep(usDelay);
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -21,6 +24,7 @@ void TcpServer::start() {
   logArray->log("TCP", "started on " + std::to_string(port));
 
   ready = true;
+  changing = false;
 
   while (isRunning) {
     // Wait for a connection, then accept() it
@@ -49,10 +53,15 @@ void TcpServer::start() {
 }
 
 void TcpServer::stop() {
+  changing = true;
   isRunning = false;
+
   shutdownMutex.lock();
   shutdownMutex.unlock();
   logArray->log("TCP", "stop");
+
+  changing = false;
+  ready = false;
 }
 
 int TcpServer::processCommand() {

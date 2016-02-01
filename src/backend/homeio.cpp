@@ -40,14 +40,16 @@ HomeIO::HomeIO() {
   ncursesUI->addon->addonsArray = addonsArray;
   ncursesUI->log->logArray = logArray;
 
-  ncursesUI->home->ioServer = ioServer;
-  ncursesUI->home->measFetcher = measFetcher;
-  ncursesUI->home->overseerArray = overseerArray;
-  ncursesUI->home->tcpServer = tcpServer;
-  ncursesUI->home->fileStorage = fileStorage;
-  ncursesUI->home->measBufferBackupStorage = measBufferBackupStorage;
-  ncursesUI->home->addonsArray = addonsArray;
-  ncursesUI->home->spy = spy;
+  ncursesUI->home->boot = boot;
+
+  boot->ioServer = ioServer;
+  boot->measFetcher = measFetcher;
+  boot->overseerArray = overseerArray;
+  boot->tcpServer = tcpServer;
+  boot->fileStorage = fileStorage;
+  boot->measBufferBackupStorage = measBufferBackupStorage;
+  boot->addonsArray = addonsArray;
+  boot->spy = spy;
 
   tcpServer->tcpCommand = tcpCommand;
   tcpServer->measTypeArray = measTypeArray;
@@ -336,11 +338,11 @@ unsigned char HomeIO::stop() {
 
   spy->stop();
   addonsArray->stop();
-  measBufferBackupStorage->stop();
-  fileStorage->stop();
   tcpServer->stop();
   overseerArray->stop();
   measFetcher->stop();
+  fileStorage->stop();
+  measBufferBackupStorage->stop();
   ioServer->stop();
   ncursesUI->stop();
 

@@ -29,10 +29,11 @@ class MeasBufferBackupStorage {
 
   bool isRunning;
   bool ready;
+  bool changing;
   std::mutex shutdownMutex;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  
+
   std::shared_ptr<LogArray> logArray;
 };
 
