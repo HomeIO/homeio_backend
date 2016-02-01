@@ -14,12 +14,12 @@ HomeIO::HomeIO() {
   ioServer = std::make_shared<IoServer>();
   actionTypeArray = std::make_shared<ActionTypeArray>();
   overseerArray = std::make_shared<OverseerArray>();
+  fileStorage = std::make_shared<FileStorage>();
+  addonsArray = std::make_shared<AddonsArray>();
+  frontendSettings = std::make_shared<FrontendSettings>();
+  measGroup = std::make_shared<MeasGroup>();
 
   logArray = new LogArray;
-  fileStorage = new FileStorage;
-  frontendSettings = new FrontendSettings;
-  measGroup = new MeasGroup;
-  addonsArray = new AddonsArray;
   ncursesUI = new NcursesUI;
 
   // setup some variables

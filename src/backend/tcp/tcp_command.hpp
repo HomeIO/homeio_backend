@@ -52,9 +52,9 @@ class TcpCommand {
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<ActionTypeArray> actionTypeArray;
   std::shared_ptr<OverseerArray> overseerArray;
-
-  FrontendSettings *frontendSettings;
-  MeasGroup *measGroup;
+  std::shared_ptr<FrontendSettings> frontendSettings;
+  std::shared_ptr<MeasGroup> measGroup;
+  
   LogArray *logArray;
 
 };

@@ -24,7 +24,7 @@ class NcursesAddon {
   unsigned int perPage;
   unsigned int maxPage;
 
-  AddonsArray *addonsArray;
+  std::shared_ptr<AddonsArray> addonsArray;
 };
 
 #endif

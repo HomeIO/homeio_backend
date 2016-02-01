@@ -66,11 +66,11 @@ class HomeIO {
   std::shared_ptr<IoServer> ioServer;
   std::shared_ptr<ActionTypeArray> actionTypeArray;
   std::shared_ptr<OverseerArray> overseerArray;
+  std::shared_ptr<FileStorage> fileStorage;
+  std::shared_ptr<AddonsArray> addonsArray;
+  std::shared_ptr<FrontendSettings> frontendSettings;
+  std::shared_ptr<MeasGroup> measGroup;
 
-  FileStorage *fileStorage;
-  FrontendSettings *frontendSettings;
-  MeasGroup *measGroup;
-  AddonsArray *addonsArray;
   NcursesUI *ncursesUI;
   LogArray *logArray;
 };
