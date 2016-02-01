@@ -2,8 +2,8 @@
 
 MeasType::MeasType() {
   buffer = std::make_shared<MeasBuffer>();
+  measTypeStorage = std::make_shared<MeasTypeStorage>();
 
-  measTypeStorage = new MeasTypeStorage;
   // default storage parameters
   minTimeDiffToStore = 1000;
   maxTimeDiffToStore = 3600000;

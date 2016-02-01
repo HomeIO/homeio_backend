@@ -48,6 +48,7 @@ class MeasType {
   std::string fetchString(unsigned int raw);
 
   std::shared_ptr<MeasBuffer> buffer;
+  std::shared_ptr<MeasTypeStorage> measTypeStorage;
 
   std::string name; // name of measurements
   std::string unit; // value is presented in unit
@@ -69,7 +70,7 @@ class MeasType {
   bool started;
 
   IoProxy *ioProxy;
-  MeasTypeStorage *measTypeStorage;
+
   LogArray *logArray;
 
   unsigned long int timeToIndex(unsigned long long t);
