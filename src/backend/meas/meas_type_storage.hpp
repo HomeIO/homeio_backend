@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "storage_hash.hpp"
 
@@ -23,10 +24,10 @@ class MeasTypeStorage {
 
   std::vector < double > buffer;
 
-  StorageHash *sh;
+  std::shared_ptr<StorageHash> sh;
   void clearBuffer();
-  std::vector < StorageHash > storageBuffer;
-  std::vector < StorageHash > prepareStorageBuffer();
+  std::vector < std::shared_ptr<StorageHash> > storageBuffer;
+  std::vector < std::shared_ptr<StorageHash> > prepareStorageBuffer();
   std::string storageBufferJson();
   std::string storageFullJson();
 

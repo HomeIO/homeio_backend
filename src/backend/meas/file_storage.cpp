@@ -52,13 +52,14 @@ void FileStorage::performMeasStore() {
   logArray->log("FileStorage", "finish meas file storage");
 }
 
-void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector <StorageHash> storageVector) {
+void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector <std::shared_ptr<StorageHash>> storageVector) {
   if (storageVector.size() == 0) {
     logArray->log("FileStorage", "[" + measType->name + "] no data to store");
     return;
   } else {
     // mark last time stored
-    measType->lastStored = storageVector.back().timeTo;
+    std::shared_ptr<StorageHash> tmpSh = storageVector.back();
+    measType->lastStored = tmpSh->timeTo;
   }
 
   unsigned long int measCount = 0;
@@ -69,11 +70,13 @@ void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector
   logArray->log("FileStorage", "[" + measType->name + "] path: " + filename);
 
   outfile.open(filename, std::ios_base::app);
-  for(std::vector<StorageHash>::iterator it = storageVector.begin(); it != storageVector.end(); ++it) {
+  for(std::vector<std::shared_ptr<StorageHash>>::iterator it = storageVector.begin(); it != storageVector.end(); ++it) {
+    std::shared_ptr<StorageHash> tmpSh = *it;
+
     outfile << measType->name << "; ";
-    outfile << std::to_string(it->timeFrom) << "; ";
-    outfile << std::to_string(it->timeTo) << "; ";
-    outfile << std::to_string(it->value) << std::endl;
+    outfile << std::to_string(tmpSh->timeFrom) << "; ";
+    outfile << std::to_string(tmpSh->timeTo) << "; ";
+    outfile << std::to_string(tmpSh->value) << std::endl;
 
     measCount++;
   }

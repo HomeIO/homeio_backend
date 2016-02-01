@@ -73,8 +73,8 @@ class MeasType {
   std::shared_ptr<LogArray> logArray;
 
   unsigned long int timeToIndex(unsigned long long t);
-  std::vector < StorageHash > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
-  std::vector < StorageHash > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < std::shared_ptr<StorageHash> > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < std::shared_ptr<StorageHash> > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
   std::string storageJson(unsigned long long timeFrom, unsigned long long timeTo);
   unsigned long long lastStored;
 

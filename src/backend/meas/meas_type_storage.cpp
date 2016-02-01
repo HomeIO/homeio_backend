@@ -11,7 +11,7 @@ void MeasTypeStorage::clearBuffer() {
   buffer.clear();
 }
 
-std::vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
+std::vector < std::shared_ptr<StorageHash> > MeasTypeStorage::prepareStorageBuffer() {
   storageBuffer.clear();
   unsigned long int i = 0;
   bool storeElement = false;
@@ -23,7 +23,7 @@ std::vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
   }
 
   // create first StorageHash
-  sh = new StorageHash( timeFrom, timeFrom + interval, buffer.front() );
+  sh = std::make_shared<StorageHash>( timeFrom, timeFrom + interval, buffer.front() );
 
   for(std::vector<double>::iterator it = buffer.begin(); it != buffer.end(); ++it) {
     storeElement = false;
@@ -46,9 +46,9 @@ std::vector < StorageHash > MeasTypeStorage::prepareStorageBuffer() {
     // if store, push hash to buffer and create new one
     if (storeElement) {
       sh->timeTo = currentTimeFrom;
-      storageBuffer.push_back(*sh);
+      storageBuffer.push_back(sh);
 
-      sh = new StorageHash( currentTimeFrom, currentTimeTo, *it );
+      sh = std::make_shared<StorageHash>( currentTimeFrom, currentTimeTo, *it );
     }
 
     // end of loop
@@ -82,12 +82,13 @@ bool MeasTypeStorage::maxTimeDiffCheck(unsigned long long p, unsigned long long 
 std::string MeasTypeStorage::storageBufferJson() {
   std::string json;
 
-  std::vector < StorageHash > shBuffer = prepareStorageBuffer();
+  std::vector < std::shared_ptr<StorageHash> > shBuffer = prepareStorageBuffer();
 
   json = "[";
 
-  for(std::vector<StorageHash>::iterator it = shBuffer.begin(); it != shBuffer.end(); ++it) {
-    json += it->toJson() + ",";
+  for(std::vector<std::shared_ptr<StorageHash>>::iterator it = shBuffer.begin(); it != shBuffer.end(); ++it) {
+    std::shared_ptr<StorageHash> tmpSh = *it;
+    json += tmpSh->toJson() + ",";
   }
   // remove last coma
   if (json[json.size() - 1] == ',') {

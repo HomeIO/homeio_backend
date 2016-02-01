@@ -192,7 +192,7 @@ std::string MeasType::rawForIndexJson(unsigned long int indexFrom, unsigned long
   return buffer->jsonArray(indexFrom, indexTo, 0);
 }
 
-std::vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {
+std::vector < std::shared_ptr<StorageHash> > MeasType::prepareStorage(unsigned long long timeFrom, unsigned long long timeTo) {
   measTypeStorage->minTimeDiffToStore = minTimeDiffToStore;
   measTypeStorage->maxTimeDiffToStore = maxTimeDiffToStore;
   measTypeStorage->valueDiffToStore = valueDiffToStore;
@@ -216,9 +216,9 @@ std::vector < StorageHash > MeasType::prepareStorage(unsigned long long timeFrom
   return measTypeStorage->prepareStorageBuffer();
 }
 
-std::vector < StorageHash > MeasType::storageArray(unsigned long long timeFrom, unsigned long long timeTo) {
+std::vector < std::shared_ptr<StorageHash> > MeasType::storageArray(unsigned long long timeFrom, unsigned long long timeTo) {
   Helper::storageMutex.lock();
-  std::vector < StorageHash > tmp = prepareStorage(timeFrom, timeTo);
+  std::vector < std::shared_ptr<StorageHash> > tmp = prepareStorage(timeFrom, timeTo);
   Helper::storageMutex.unlock();
 
   return tmp;

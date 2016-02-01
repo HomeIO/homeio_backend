@@ -17,7 +17,7 @@ class FileStorage {
   void start();
   void stop();
   void performMeasStore();
-  void storeMeasArray(std::shared_ptr<MeasType>, std::vector <StorageHash> storageVector);
+  void storeMeasArray(std::shared_ptr<MeasType>, std::vector <std::shared_ptr<StorageHash>> storageVector);
 
   std::string path;
   std::string measPrefix;
@@ -31,7 +31,7 @@ class FileStorage {
   std::mutex shutdownMutex;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  
+
   std::shared_ptr<LogArray> logArray;
 };
 
