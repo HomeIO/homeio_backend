@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+
 #include "../utils/helper.hpp"
 #include "log_item.hpp"
 
@@ -13,12 +15,12 @@ class LogArray {
   void log(std::string m, std::string c);
   void logError(std::string c);
   void logError(std::string m, std::string c);
-  void addLogItem(LogItem *li);
+  void addLogItem(std::shared_ptr<LogItem>);
   void limit(unsigned int maxLines);
   void consoleOutput();
 
   unsigned int maxHistory;
-  std::vector <LogItem*> logBuffer;
+  std::vector <std::shared_ptr<LogItem>> logBuffer;
 };
 
 

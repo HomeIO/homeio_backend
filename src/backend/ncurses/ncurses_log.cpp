@@ -33,7 +33,7 @@ void NcursesLog::render(WINDOW *w) {
   for (i = 0; i < perPage; i++) {
     j = logArray->logBuffer.size() - 1 - (perPage * page) - i;
     if (j < logArray->logBuffer.size()) {
-      LogItem *li = logArray->logBuffer.at(j) ;
+      std::shared_ptr<LogItem> li = logArray->logBuffer.at(j) ;
 
       if (li->error) {
         wattron(w, NC_COLOR_PAIR_ERROR_SET);

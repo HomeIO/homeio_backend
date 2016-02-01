@@ -5,32 +5,30 @@ LogArray::LogArray() {
 }
 
 void LogArray::log(std::string c) {
-  LogItem *li = new LogItem(c);
+  std::shared_ptr<LogItem> li = std::make_shared<LogItem>(c);
   addLogItem(li);
 }
 
 void LogArray::log(std::string m, std::string c) {
-  LogItem *li = new LogItem(m, c);
+  std::shared_ptr<LogItem> li = std::make_shared<LogItem>(m, c);
   addLogItem(li);
 }
 
 void LogArray::logError(std::string c) {
-  LogItem *li = new LogItem(c);
+  std::shared_ptr<LogItem> li = std::make_shared<LogItem>(c);
   li->error = true;
   addLogItem(li);
 }
 
 void LogArray::logError(std::string m, std::string c) {
-  LogItem *li = new LogItem(m, c);
+  std::shared_ptr<LogItem> li = std::make_shared<LogItem>(m, c);
   li->error = true;
   addLogItem(li);
 }
 
-void LogArray::addLogItem(LogItem *li) {
+void LogArray::addLogItem(std::shared_ptr<LogItem> li) {
   if ( (unsigned int) logBuffer.size() >= (unsigned int) maxHistory ) {
-    LogItem *d = logBuffer.at(0);
     logBuffer.erase( logBuffer.begin() );
-    delete d;
   }
   logBuffer.push_back(li);
 }
