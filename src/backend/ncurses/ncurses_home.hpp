@@ -26,6 +26,8 @@ class NcursesHome {
   void render(WINDOW *w);
   void renderStatus(WINDOW *w, unsigned char row, bool status);
 
+  std::shared_ptr<Spy> spy;
+
   IoServer *ioServer;
   MeasFetcher *measFetcher;
   OverseerArray *overseerArray;
@@ -33,7 +35,6 @@ class NcursesHome {
   FileStorage *fileStorage;
   MeasBufferBackupStorage *measBufferBackupStorage;
   AddonsArray *addonsArray;
-  Spy *spy;
 
   LogArray *logArray;
 };

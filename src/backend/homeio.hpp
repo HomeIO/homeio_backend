@@ -55,7 +55,9 @@ class HomeIO {
 
   void copyInternalDelays();
 
-  Boot *boot;
+  std::shared_ptr<Boot> boot;
+  std::shared_ptr<Spy> spy;
+
   MeasTypeArray *measTypeArray;
   MeasFetcher *measFetcher;
   IoProxy *ioProxy;
@@ -67,7 +69,7 @@ class HomeIO {
   FileStorage *fileStorage;
   MeasBufferBackupStorage *measBufferBackupStorage;
   FrontendSettings *frontendSettings;
-  Spy *spy;
+
   MeasGroup *measGroup;
   AddonsArray *addonsArray;
   NcursesUI *ncursesUI;

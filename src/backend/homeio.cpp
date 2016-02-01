@@ -3,7 +3,9 @@
 HomeIO::HomeIO() {
   prepareDirectories();
 
-  boot = new Boot;
+  boot = std::make_shared<Boot>();
+  spy = std::make_shared<Spy>();
+
   logArray = new LogArray;
   measTypeArray = new MeasTypeArray;
   measFetcher = new MeasFetcher;
@@ -16,7 +18,6 @@ HomeIO::HomeIO() {
   fileStorage = new FileStorage;
   measBufferBackupStorage = new MeasBufferBackupStorage;
   frontendSettings = new FrontendSettings;
-  spy = new Spy;
   measGroup = new MeasGroup;
   addonsArray = new AddonsArray;
   ncursesUI = new NcursesUI;
@@ -85,11 +86,9 @@ HomeIO::~HomeIO() {
   delete fileStorage;
   delete measBufferBackupStorage;
   delete frontendSettings;
-  delete spy;
   delete measGroup;
   delete addonsArray;
   delete ncursesUI;
-  delete boot;
 }
 
 void HomeIO::prepareDirectories() {
