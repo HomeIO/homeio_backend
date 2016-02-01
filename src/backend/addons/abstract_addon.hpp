@@ -15,7 +15,7 @@ class AbstractAddon {
   virtual void render();
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
   std::string name;
   WINDOW *window;

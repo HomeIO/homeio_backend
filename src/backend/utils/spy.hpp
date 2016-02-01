@@ -33,7 +33,7 @@ class Spy {
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
   unsigned long int cycleInterval;
   unsigned long long lastTime;

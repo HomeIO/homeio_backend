@@ -71,8 +71,8 @@ class HomeIO {
   std::shared_ptr<FrontendSettings> frontendSettings;
   std::shared_ptr<MeasGroup> measGroup;
 
-  NcursesUI *ncursesUI;
-  LogArray *logArray;
+  std::shared_ptr<NcursesUI> ncursesUI;
+  std::shared_ptr<LogArray> logArray;
 };
 
 void* measStartThread(void*);

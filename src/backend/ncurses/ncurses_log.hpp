@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <memory>
 
 #include "../utils/helper.hpp"
 #include "ncurses_colors.hpp"
@@ -22,7 +23,7 @@ class NcursesLog {
   unsigned int perPage;
   unsigned int maxPage;
 
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 };
 
 #endif

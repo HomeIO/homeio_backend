@@ -37,7 +37,7 @@ class Overseer {
 
   std::shared_ptr<MeasType> meas;
   ActionType *action;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
   Overseer();
   bool check();

@@ -16,7 +16,7 @@ class ActionTypeArray {
 
   std::vector <ActionType> actionTypes;
   IoProxy *ioProxy;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 };
 
 //#include "action_type_array.cpp"

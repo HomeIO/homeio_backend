@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <cstring>
+#include <memory>
 
 #include <sys/socket.h> // socket definitions
 #include <sys/types.h> // socket types
@@ -45,7 +46,7 @@ class IoTcpServer {
   struct tm * timeinfo;
   bool verbose;
 
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
   IoTcpServer();
   int createTcpServer();

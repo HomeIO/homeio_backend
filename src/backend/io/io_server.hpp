@@ -2,6 +2,7 @@
 #define	IO_SERVER_HPP
 
 #include <mutex>
+#include <memory>
 
 #include "io_config.hpp"
 #include "io_tcp_server.hpp"
@@ -30,7 +31,7 @@ class IoServer {
 
   IoRS *rs;
   IoTcpServer *tcp;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
 };
 

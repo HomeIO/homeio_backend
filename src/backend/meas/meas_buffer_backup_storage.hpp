@@ -33,7 +33,7 @@ class MeasBufferBackupStorage {
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 };
 
 //#include "meas_buffer_backup_storage.cpp"

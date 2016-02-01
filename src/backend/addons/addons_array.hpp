@@ -25,7 +25,7 @@ class AddonsArray {
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 };
 
 //#include "addons_array.cpp"

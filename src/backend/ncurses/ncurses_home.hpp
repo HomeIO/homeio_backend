@@ -35,7 +35,7 @@ class NcursesHome {
   std::shared_ptr<FileStorage> fileStorage;
   std::shared_ptr<AddonsArray> addonsArray;
 
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 };
 
 #endif

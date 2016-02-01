@@ -18,9 +18,8 @@ HomeIO::HomeIO() {
   addonsArray = std::make_shared<AddonsArray>();
   frontendSettings = std::make_shared<FrontendSettings>();
   measGroup = std::make_shared<MeasGroup>();
-
-  logArray = new LogArray;
-  ncursesUI = new NcursesUI;
+  logArray = std::make_shared<LogArray>();
+  ncursesUI = std::make_shared<NcursesUI>();
 
   // setup some variables
   measFetcher->measTypeArray = measTypeArray;

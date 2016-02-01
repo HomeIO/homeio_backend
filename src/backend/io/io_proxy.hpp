@@ -10,6 +10,7 @@
 #include <netdb.h> //hostent
 #include <unistd.h>
 #include <mutex>
+#include <memory>
 
 #include "../utils/helper.hpp"
 #include "../log/log_array.hpp"
@@ -18,12 +19,12 @@ class IoProxy {
  public:
   IoProxy();
   ~IoProxy();
-  
+
   std::string address;
   uint16_t port;
   bool verbose;
   std::mutex tcpMutex;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
   in_addr *tmpAddr;
 
   unsigned int fetch(unsigned char commandChar, unsigned char responseSize);

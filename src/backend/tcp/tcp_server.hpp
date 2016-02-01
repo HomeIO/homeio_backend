@@ -40,7 +40,7 @@ class TcpServer {
   std::shared_ptr<TcpCommand> tcpCommand;
   std::shared_ptr<MeasTypeArray> measTypeArray;
 
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
   unsigned long long usDelay;
 

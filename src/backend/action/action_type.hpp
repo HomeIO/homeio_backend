@@ -35,7 +35,7 @@ class ActionType {
 
   std::shared_ptr<IoProxy> ioProxy;
 
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
 
 };
 

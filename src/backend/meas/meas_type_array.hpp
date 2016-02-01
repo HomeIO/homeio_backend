@@ -17,7 +17,7 @@ class MeasTypeArray {
 
   std::vector <std::shared_ptr<MeasType>> measTypes;
   IoProxy *ioProxy;
-  LogArray *logArray;
+  std::shared_ptr<LogArray> logArray;
   unsigned int i;
 
   // used by other utils like overseers, storage, to
