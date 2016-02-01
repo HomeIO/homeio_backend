@@ -21,13 +21,13 @@ NcursesUI::NcursesUI() {
 
   page = 0;
 
-  meas = new NcursesMeas;
-  home = new NcursesHome;
-  log = new NcursesLog;
-  overseer = new NcursesOverseer;
-  action = new NcursesAction;
-  addon = new NcursesAddon;
-  stats = new NcursesStats;
+  meas = std::make_unique<NcursesMeas>();
+  home = std::make_unique<NcursesHome>();
+  log = std::make_unique<NcursesLog>();
+  overseer = std::make_unique<NcursesOverseer>();
+  action = std::make_unique<NcursesAction>();
+  addon = std::make_unique<NcursesAddon>();
+  stats = std::make_unique<NcursesStats>();
 }
 
 void NcursesUI::start() {

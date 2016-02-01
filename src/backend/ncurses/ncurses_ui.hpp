@@ -5,6 +5,7 @@
 #include <menu.h>
 #include <iostream>
 #include <string>
+#include <memory>
 
 #include "ncurses_meas.hpp"
 #include "ncurses_home.hpp"
@@ -30,13 +31,13 @@ class NcursesUI {
   bool isRunning;
   bool ready;
 
-  NcursesHome *home;
-  NcursesMeas *meas;
-  NcursesLog *log;
-  NcursesOverseer *overseer;
-  NcursesAction *action;
-  NcursesAddon *addon;
-  NcursesStats *stats;
+  std::unique_ptr<NcursesHome> home;
+  std::unique_ptr<NcursesMeas> meas;
+  std::unique_ptr<NcursesLog> log;
+  std::unique_ptr<NcursesOverseer> overseer;
+  std::unique_ptr<NcursesAction> action;
+  std::unique_ptr<NcursesAddon> addon;
+  std::unique_ptr<NcursesStats> stats;
 
   WINDOW *local_win;
 

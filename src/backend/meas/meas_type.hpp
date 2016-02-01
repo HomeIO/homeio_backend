@@ -80,7 +80,7 @@ class MeasType {
 
   // stats
   std::string statsJson(unsigned long long timeFrom, unsigned long long timeTo);
-  std::vector < MeasTrend > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
+  std::vector < std::shared_ptr<MeasTrend> > getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo);
 
 };
 

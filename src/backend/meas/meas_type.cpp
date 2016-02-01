@@ -234,8 +234,8 @@ std::string MeasType::storageJson(unsigned long long timeFrom, unsigned long lon
   return tmp;
 }
 
-std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
-  std::vector < MeasTrend > result;
+std::vector < std::shared_ptr<MeasTrend> > MeasType::getTrendsBetween(unsigned long long timeFrom, unsigned long long timeTo) {
+  std::vector < std::shared_ptr<MeasTrend> > result;
 
   std::vector < unsigned int > rawBuffer = buffer->getFromBuffer(timeToIndex(timeFrom), timeToIndex(timeTo), 0);
 
@@ -250,7 +250,7 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
   bool createNew = false;
   unsigned char newType = MeasTrend::typeStable;
 
-  MeasTrend *tempTrend = new MeasTrend;
+  std::shared_ptr<MeasTrend> tempTrend = std::make_shared<MeasTrend>();
   tempTrend->tmpType = 0; // default equal
   tempTrend->rawFrom = rawBuffer[0];
   tempTrend->rawTo = rawBuffer[0];
@@ -289,10 +289,10 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
       tempTrend->timeTo = timeFrom + tempInterval * ( *it - *rawBuffer.begin() );
 
       if (tempTrend->timeDiff() > 0) {
-        result.push_back(*tempTrend);
+        result.push_back(tempTrend);
       }
 
-      tempTrend = new MeasTrend;
+      tempTrend = std::make_shared<MeasTrend>();
       tempTrend->tmpType = newType; // default equal
       tempTrend->rawFrom = *it;
       tempTrend->valueFrom = rawToValue(tempTrend->rawFrom);
@@ -308,29 +308,31 @@ std::vector < MeasTrend > MeasType::getTrendsBetween(unsigned long long timeFrom
   }
 
   // add last element
-  result.push_back(*tempTrend);
+  result.push_back(tempTrend);
 
   return result;
 }
 
 std::string MeasType::statsJson(unsigned long long timeFrom, unsigned long long timeTo) {
-  std::vector < MeasTrend > result = getTrendsBetween(timeFrom, timeTo);
+  std::vector < std::shared_ptr<MeasTrend> > result = getTrendsBetween(timeFrom, timeTo);
 
   std::string trendString = "[";
 
-  for(std::vector<MeasTrend>::iterator it = result.begin(); it != result.end(); ++it) {
-    trendString += "{";
-    trendString += "\"type\":" + std::to_string(it->type()) + ",";
-    trendString += "\"timeDiff\":" + std::to_string(it->timeDiff() ) + ",";
-    trendString += "\"valueDiff\":" + std::to_string(it->valueDiff() ) + ",";
-    trendString += "\"trend\":" + std::to_string(it->trend() ) + ",";
+  for(std::vector<std::shared_ptr<MeasTrend>>::iterator it = result.begin(); it != result.end(); ++it) {
+    std::shared_ptr<MeasTrend> mt = *it;
 
-    trendString += "\"rawFrom\":" + std::to_string(it->rawFrom) + ",";
-    trendString += "\"rawTo\":" + std::to_string(it->rawTo) + ",";
-    trendString += "\"valueFrom\":" + std::to_string(it->valueFrom) + ",";
-    trendString += "\"valueTo\":" + std::to_string(it->valueTo) + ",";
-    trendString += "\"timeFrom\":" + std::to_string(it->timeFrom) + ",";
-    trendString += "\"timeTo\":" + std::to_string(it->timeTo);
+    trendString += "{";
+    trendString += "\"type\":" + std::to_string(mt->type()) + ",";
+    trendString += "\"timeDiff\":" + std::to_string(mt->timeDiff() ) + ",";
+    trendString += "\"valueDiff\":" + std::to_string(mt->valueDiff() ) + ",";
+    trendString += "\"trend\":" + std::to_string(mt->trend() ) + ",";
+
+    trendString += "\"rawFrom\":" + std::to_string(mt->rawFrom) + ",";
+    trendString += "\"rawTo\":" + std::to_string(mt->rawTo) + ",";
+    trendString += "\"valueFrom\":" + std::to_string(mt->valueFrom) + ",";
+    trendString += "\"valueTo\":" + std::to_string(mt->valueTo) + ",";
+    trendString += "\"timeFrom\":" + std::to_string(mt->timeFrom) + ",";
+    trendString += "\"timeTo\":" + std::to_string(mt->timeTo);
 
     trendString += "},";
   }
