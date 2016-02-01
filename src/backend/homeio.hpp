@@ -64,8 +64,8 @@ class HomeIO {
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<IoProxy> ioProxy;
   std::shared_ptr<IoServer> ioServer;
+  std::shared_ptr<ActionTypeArray> actionTypeArray;
 
-  ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FileStorage *fileStorage;
   FrontendSettings *frontendSettings;

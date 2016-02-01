@@ -50,8 +50,8 @@ class TcpCommand {
 
   std::shared_ptr<MeasFetcher> measFetcher;
   std::shared_ptr<MeasTypeArray> measTypeArray;
+  std::shared_ptr<ActionTypeArray> actionTypeArray;
 
-  ActionTypeArray *actionTypeArray;
   OverseerArray *overseerArray;
   FrontendSettings *frontendSettings;
   MeasGroup *measGroup;

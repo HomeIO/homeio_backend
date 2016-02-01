@@ -23,7 +23,7 @@ class NcursesAction {
   unsigned int perPage;
   unsigned int maxPage;
 
-  ActionTypeArray *actionTypeArray;
+  std::shared_ptr<ActionTypeArray> actionTypeArray;
 };
 
 #endif

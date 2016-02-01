@@ -19,8 +19,8 @@ class OverseerArray {
   Overseer *byName(std::string s);
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-  
-  ActionTypeArray *actionTypeArray;
+  std::shared_ptr<ActionTypeArray> actionTypeArray;
+
   LogArray *logArray;
   std::vector <Overseer> overseers;
   unsigned long int cycleInterval;

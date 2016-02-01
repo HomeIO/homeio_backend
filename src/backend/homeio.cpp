@@ -12,9 +12,9 @@ HomeIO::HomeIO() {
   measTypeArray = std::make_shared<MeasTypeArray>();
   ioProxy = std::make_shared<IoProxy>();
   ioServer = std::make_shared<IoServer>();
+  actionTypeArray = std::make_shared<ActionTypeArray>();
 
   logArray = new LogArray;
-  actionTypeArray = new ActionTypeArray;
   overseerArray = new OverseerArray;
   fileStorage = new FileStorage;
   frontendSettings = new FrontendSettings;
