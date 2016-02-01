@@ -1,7 +1,7 @@
 #include "meas_type.hpp"
 
 MeasType::MeasType() {
-  buffer = new MeasBuffer;
+  buffer = std::make_shared<MeasBuffer>();
 
   measTypeStorage = new MeasTypeStorage;
   // default storage parameters

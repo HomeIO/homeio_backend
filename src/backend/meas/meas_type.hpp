@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <vector>
 #include <time.h>
+#include <memory>
 
 #include "../io/io_proxy.hpp"
 #include "meas_buffer.hpp"
@@ -46,7 +47,7 @@ class MeasType {
   void prepareFetch();
   std::string fetchString(unsigned int raw);
 
-  MeasBuffer *buffer;
+  std::shared_ptr<MeasBuffer> buffer;
 
   std::string name; // name of measurements
   std::string unit; // value is presented in unit

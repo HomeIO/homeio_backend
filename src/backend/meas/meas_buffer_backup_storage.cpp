@@ -63,7 +63,7 @@ void MeasBufferBackupStorage::performDump() {
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     std::ofstream outfile;
     std::string filename = pathForMeasType(&*it);
-    MeasBuffer *measBuffer = it->buffer;
+    std::shared_ptr<MeasBuffer> measBuffer = it->buffer;
 
     logArray->log("MeasBufferBackupStorage", "[" + it->name + "] DUMP path " + filename);
 
@@ -101,7 +101,7 @@ void MeasBufferBackupStorage::performRestore() {
   for(std::vector<MeasType>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     std::ifstream infile;
     std::string filename = pathForMeasType(&*it);
-    MeasBuffer *measBuffer = it->buffer;
+    std::shared_ptr<MeasBuffer> measBuffer = it->buffer;
 
     infile.open(filename, std::ios_base::in);
 
