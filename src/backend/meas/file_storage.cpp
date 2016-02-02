@@ -9,6 +9,9 @@ FileStorage::FileStorage() {
   isRunning = true;
   ready = false;
   changing = false;
+  work = false;
+  #define MEAS_STORE_STATUS_NULL 0
+  #define MEAS_STORE_STATUS_STORE 1
 }
 
 void FileStorage::start() {
@@ -46,9 +49,12 @@ void FileStorage::stop() {
 
   changing = false;
   ready = false;
+  currentMeasIndex = 0;
+  intStatus = MEAS_STORE_STATUS_NULL;
 }
 
 void FileStorage::performMeasStore() {
+  work = true;
   currentTime = Helper::mTime();
 
   logArray->log("FileStorage", "start meas file storage");
@@ -56,9 +62,12 @@ void FileStorage::performMeasStore() {
   for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     std::shared_ptr<MeasType> measType = *it;
     storeMeasArray(measType, measType->storageArray(measType->lastStored, currentTime));
+    currentMeasIndex++;
   }
 
+  work = false;
   logArray->log("FileStorage", "finish meas file storage");
+  currentMeasIndex = 0;
 }
 
 void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector <std::shared_ptr<StorageHash>> storageVector) {
@@ -92,4 +101,11 @@ void FileStorage::storeMeasArray(std::shared_ptr<MeasType> measType, std::vector
   outfile.close();
 
   logArray->log("FileStorage", "[" + measType->name + "] stored with " + std::to_string(measCount) + " meas");
+}
+
+std::string FileStorage::statusText() {
+  if (intStatus == MEAS_STORE_STATUS_STORE) {
+    return "Store " + std::to_string(currentMeasIndex + 1) + "/" + std::to_string(measTypeArray->measTypes.size());
+  }
+  return "";
 }

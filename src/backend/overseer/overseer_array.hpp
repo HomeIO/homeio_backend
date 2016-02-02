@@ -11,6 +11,9 @@
 #include "../meas/meas_type_array.hpp"
 #include "../log/log_array.hpp"
 
+#define OVERSEER_ARRAY_STATUS_NULL 0
+#define OVERSEER_ARRAY_STATUS_WAIT_FOR_MEAS 1
+
 class OverseerArray {
  public:
   OverseerArray();
@@ -18,6 +21,7 @@ class OverseerArray {
   void start();
   void stop();
   std::shared_ptr<Overseer> byName(std::string s);
+  std::string statusText();
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<ActionTypeArray> actionTypeArray;
@@ -31,6 +35,8 @@ class OverseerArray {
   bool isRunning;
   bool ready;
   bool changing;
+  bool work;
+  unsigned char intStatus;
   std::mutex shutdownMutex;
 };
 

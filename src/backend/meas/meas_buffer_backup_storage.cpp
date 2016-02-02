@@ -9,12 +9,13 @@ MeasBufferBackupStorage::MeasBufferBackupStorage() {
   isRunning = true;
   ready = false;
   changing = false;
+  work = false;
+  currentMeasIndex = 0;
+  intStatus = MEAS_BUFFER_BACKUP_STATUS_NULL;
 }
 
 void MeasBufferBackupStorage::start() {
   changing = true;
-
-  Helper::longSleep(usDelay);
 
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
   // TODO maybe add S_IWOTH
@@ -23,6 +24,9 @@ void MeasBufferBackupStorage::start() {
   // not need to wait, because other modules can be run
   ready = true;
   changing = false;
+
+  // first run not at start
+  Helper::longSleep(usDelay);
 
   // wait for enough measurements
   measTypeArray->delayTillReady();
@@ -66,9 +70,12 @@ std::string MeasBufferBackupStorage::pathForMeasType(std::shared_ptr<MeasType> m
 }
 
 void MeasBufferBackupStorage::performDump() {
+  intStatus = MEAS_BUFFER_BACKUP_STATUS_DUMP;
+  work = true;
   unsigned long int i = 0;
   logArray->log("MeasBufferBackupStorage", "start");
 
+  currentMeasIndex = 0;
   for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
     std::shared_ptr<MeasType> measType = *it;
     std::ofstream outfile;
@@ -94,17 +101,23 @@ void MeasBufferBackupStorage::performDump() {
     }
 
     outfile.close();
+    currentMeasIndex++;
   }
 
   logArray->log("MeasBufferBackupStorage", "end");
+  work = false;
+  intStatus = MEAS_BUFFER_BACKUP_STATUS_NULL;
 }
 
 void MeasBufferBackupStorage::performRestore() {
+  work = true;
+  intStatus = MEAS_BUFFER_BACKUP_STATUS_RESTORE;
+
   unsigned long int i = 0;
   std::string line;
   unsigned int tmpRaw;
   unsigned long long storeTime, count, interval;
-  //struct stat sBuffer;
+  currentMeasIndex = 0;
 
   logArray->log("MeasBufferBackupStorage", "start");
 
@@ -180,8 +193,20 @@ void MeasBufferBackupStorage::performRestore() {
     }
 
     infile.close();
-
+    currentMeasIndex++;
   }
 
   logArray->log("MeasBufferBackupStorage", "end");
+  work = false;
+  intStatus = MEAS_BUFFER_BACKUP_STATUS_NULL;
+}
+
+std::string MeasBufferBackupStorage::statusText() {
+  if (intStatus == MEAS_BUFFER_BACKUP_STATUS_RESTORE) {
+    return "Restoring " + std::to_string(currentMeasIndex + 1) + "/" + std::to_string(measTypeArray->measTypes.size());
+  }
+  if (intStatus == MEAS_BUFFER_BACKUP_STATUS_DUMP) {
+    return "Store " + std::to_string(currentMeasIndex + 1) + "/" + std::to_string(measTypeArray->measTypes.size());
+  }
+  return "";
 }

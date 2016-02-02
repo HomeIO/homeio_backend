@@ -53,8 +53,6 @@ class HomeIO {
   unsigned char stop();
   bool isSafeToShutdown();
 
-  void copyInternalDelays();
-
   std::shared_ptr<Boot> boot;
   std::shared_ptr<Spy> spy;
   std::shared_ptr<MeasFetcher> measFetcher;

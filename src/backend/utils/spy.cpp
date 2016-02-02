@@ -15,6 +15,7 @@ Spy::Spy() {
   isRunning = true;
   ready = false;
   changing = false;
+  work = false;
 }
 
 
@@ -40,6 +41,7 @@ void Spy::stop() {
 
 
 void Spy::announceAll() {
+  work = true;
   url = hiveHost + urlPath;
 
   for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
@@ -51,6 +53,7 @@ void Spy::announceAll() {
 
   lastTime = Helper::mTime();
   logArray->log("Spy", "announce completed");
+  work = false;
 }
 
 unsigned char Spy::annouceMeas(std::string name, double value) {

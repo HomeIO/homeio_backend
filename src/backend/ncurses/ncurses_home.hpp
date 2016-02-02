@@ -16,7 +16,7 @@ class NcursesHome {
  public:
   NcursesHome();
   void render(WINDOW *w);
-  void renderStatus(WINDOW *w, unsigned char row, bool status, bool changing);
+  void renderStatus(WINDOW *w, unsigned char row, bool status, bool changing, bool working, std::string statusText);
 
   std::shared_ptr<Boot> boot;
   std::shared_ptr<LogArray> logArray;

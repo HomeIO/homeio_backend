@@ -3,6 +3,7 @@
 MeasFetcher::MeasFetcher() {
   ready = false;
   changing = false;
+  work = false;
 
   // default intervals
   betweenMeasInterval = 5000;
@@ -23,6 +24,7 @@ void MeasFetcher::start() {
 
   while(isRunning) {
     shutdownMutex.lock();
+    work = true;
 
     for(std::vector<std::shared_ptr<MeasType>>::iterator it = measTypeArray->measTypes.begin(); it != measTypeArray->measTypes.end(); ++it) {
       std::shared_ptr<MeasType> m = *it;
@@ -36,6 +38,8 @@ void MeasFetcher::start() {
         measTypeArray->isReady = true;
       }
     }
+
+    work = false;
     shutdownMutex.unlock();
 
     Helper::longSleep(cycleInterval);

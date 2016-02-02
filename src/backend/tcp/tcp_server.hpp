@@ -47,6 +47,7 @@ class TcpServer {
   bool isRunning;
   bool ready;
   bool changing;
+  bool work;
   std::mutex shutdownMutex;
 
  private:

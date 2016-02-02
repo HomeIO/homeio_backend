@@ -6,6 +6,7 @@ TcpServer::TcpServer() {
   isRunning = true;
   ready = false;
   changing = false;
+  work = false;
 }
 
 void TcpServer::start() {
@@ -34,6 +35,7 @@ void TcpServer::start() {
     }
 
     shutdownMutex.lock();
+    work = true;
 
     // Retrieve command
     readLine(conn_s, MAX_LINE - 1);
@@ -41,6 +43,7 @@ void TcpServer::start() {
     processCommand();
     writeLine(conn_s);
 
+    work = false;
     shutdownMutex.unlock();
 
     // Close the connected socket

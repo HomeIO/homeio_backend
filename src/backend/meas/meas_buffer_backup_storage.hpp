@@ -12,6 +12,10 @@
 #include "meas_buffer.hpp"
 #include "../log/log_array.hpp"
 
+#define MEAS_BUFFER_BACKUP_STATUS_NULL 0
+#define MEAS_BUFFER_BACKUP_STATUS_RESTORE 1
+#define MEAS_BUFFER_BACKUP_STATUS_DUMP 2
+
 class MeasBufferBackupStorage {
  public:
   MeasBufferBackupStorage();
@@ -22,6 +26,8 @@ class MeasBufferBackupStorage {
 
   std::string pathForMeasType(std::shared_ptr<MeasType> measType);
 
+  std::string statusText();
+
   std::string path;
   unsigned long long cycleInterval;
   unsigned long long thresholdTimeRange;
@@ -30,6 +36,9 @@ class MeasBufferBackupStorage {
   bool isRunning;
   bool ready;
   bool changing;
+  bool work;
+  unsigned int currentMeasIndex;
+  unsigned char intStatus;
   std::mutex shutdownMutex;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;

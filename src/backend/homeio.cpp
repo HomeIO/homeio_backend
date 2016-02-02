@@ -251,17 +251,7 @@ void *shutdownWatchThread(void *argument) {
   return NULL;
 }
 
-void HomeIO::copyInternalDelays() {
-  fileStorage->usDelay += measFetcher->cycleInterval * 4;
-  measBufferBackupStorage->usDelay += measFetcher->cycleInterval * 6;
-  overseerArray->usDelay += measFetcher->cycleInterval * 5;
-  tcpServer->usDelay += measFetcher->cycleInterval * 2;
-  spy->usDelay += measFetcher->cycleInterval * 3;
-}
-
 unsigned char HomeIO::start() {
-  copyInternalDelays();
-
   const char NUM_THREADS = 8;
   pthread_t threads[NUM_THREADS];
   int i;

@@ -6,6 +6,7 @@ AddonsArray::AddonsArray() {
   isRunning = true;
   ready = false;
   changing = false;
+  work = false;
 }
 
 void AddonsArray::start() {
@@ -13,21 +14,25 @@ void AddonsArray::start() {
 
   logArray->log("AddonsArray", "start");
 
+  work = true;
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
     (*itr)->measTypeArray = measTypeArray;
     (*itr)->logArray = logArray;
     (*itr)->setup();
   }
+  work = false;
 
   ready = true;
   changing = false;
 
   while(isRunning) {
+    work = true;
     shutdownMutex.lock();
     for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
       (*itr)->perform();
     }
     shutdownMutex.unlock();
+    work = false;
 
     Helper::longSleep(cycleInterval);
   }

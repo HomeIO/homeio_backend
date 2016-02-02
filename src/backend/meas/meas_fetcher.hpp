@@ -24,6 +24,7 @@ class MeasFetcher {
 
   bool ready;
   bool changing;
+  bool work;
   bool isRunning;
   std::mutex shutdownMutex;
 };

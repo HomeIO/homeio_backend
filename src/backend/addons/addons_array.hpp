@@ -22,6 +22,7 @@ class AddonsArray {
   bool isRunning;
   bool ready;
   bool changing;
+  bool work;
   std::mutex shutdownMutex;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
