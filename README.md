@@ -26,7 +26,7 @@ How it works?
 
 Please take a moment and look this sample video.
 
-<div class="vimeo"><iframe src='http://player.vimeo.com/video/135051782' width="600" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen> </iframe></div>
+[![HomeIO demo](https://i.vimeocdn.com/video/528816542.webp?mw=600&mh=400)](https://vimeo.com/135051782)
 
 Scenario:
 
