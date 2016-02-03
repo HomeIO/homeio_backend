@@ -64,4 +64,4 @@ Am I missing something?
 
 I am only author of this system so everything is abvious for me, but you may
 find that a lot of is missing. Please do not hesitate, [post issue](https://github.com/HomeIO/homeio_backend/issues/new)
-or [email me](mailto::homeio@interia.eu).
+or [email me](mailto:homeio@interia.eu).
