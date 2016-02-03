@@ -11,6 +11,10 @@ class PlantMonitorItem {
  public:
   std::string measName;
   std::shared_ptr<MeasType> measType;
+
+  void process();
+
+  // unsigned long long 
 };
 
 #endif

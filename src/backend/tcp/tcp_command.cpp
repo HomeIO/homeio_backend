@@ -206,8 +206,8 @@ std::string TcpCommand::processMeasRawHistoryForTimeCommand(std::string command)
     response += ",\"lastTime\":" + std::to_string( foundMeasType->buffer->lastTime );
     response += ",\"firstTime\":" + std::to_string( foundMeasType->buffer->firstTime );
     response += ",\"originalInterval\":" + std::to_string( foundMeasType->buffer->calcInterval() );
-    response += ",\"responseIndexInterval\":" + std::to_string( foundMeasType->buffer->responseIndexInterval );
-    response += ",\"interval\":" + std::to_string( foundMeasType->buffer->calcInterval() * foundMeasType->buffer->responseIndexInterval );
+    response += ",\"responseIndexInterval\":" + std::to_string( foundMeasType->buffer->tempResponseIndexInterval() );
+    response += ",\"interval\":" + std::to_string( foundMeasType->buffer->calcInterval() * foundMeasType->buffer->tempResponseIndexInterval() );
     response += ",\"count\":" + std::to_string( foundMeasType->buffer->count );
     response += ",\"usingMiliSeconds\":1";
     response += ",\"data\": " + bufferString;

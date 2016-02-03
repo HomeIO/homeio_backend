@@ -1,67 +1,64 @@
 #ifndef MEAS_BUFFER
 #define	MEAS_BUFFER
 
-#define meas_buffer_elemt unsigned int
-
 #include <math.h>
 #include <vector>
 #include <string>
 #include <memory>
 
+#include "meas_definitions.hpp"
 #include "../utils/helper.hpp"
 #include "../log/log_array.hpp"
 
 class MeasBuffer {
+ private:
+  meas_buffer_index index(meas_buffer_index i);
+  meas_buffer_index responseIndexInterval;
+  std::vector < meas_buffer_element > buffer;
+
  public:
   MeasBuffer();
-  MeasBuffer(unsigned long int _maxSize);
+  MeasBuffer(meas_buffer_index _maxSize);
+  void clearAndResize(meas_buffer_index _maxSize);
+  meas_buffer_index add(meas_buffer_element raw);
+  meas_buffer_element at(meas_buffer_index i);
+  meas_buffer_element last();
 
-  void clearAndResize(unsigned long int _maxSize);
-  unsigned long int add(unsigned int raw);
-  unsigned int at(unsigned long int i);
-  unsigned int last();
-  unsigned long int index(unsigned long int i);
   unsigned long int memorySize();
-  bool stored(unsigned long int i);
+  bool stored(meas_buffer_index i);
 
   // extension - remove one time spikes
   bool removeSpikes;
   // detect if b is spike near a and c
-  bool isSpike(unsigned int a, unsigned int b, unsigned int c);
+  bool isSpike(meas_buffer_element a, meas_buffer_element b, meas_buffer_element c);
   // detect if last stored measuremt is spike
   // it can only be done one measurement after that
-  bool wasSpike(unsigned int latestRaw);
+  bool wasSpike(meas_buffer_element latestRaw);
   // iterate buffer and filter spikes
   void filterStoredSpikes();
 
+  meas_buffer_index tempResponseIndexInterval();
+  meas_buffer_index calculateIndexInterval(meas_buffer_index lower, meas_buffer_index higher, meas_buffer_index responseMaxSize);
+  std::vector < unsigned int > getFromBuffer(meas_buffer_index from, meas_buffer_index to, meas_buffer_index responseMaxSize);
 
-
-  unsigned long int responseIndexInterval;
-  unsigned long int calculateIndexInterval(unsigned long int lower, unsigned long int higher, unsigned long int responseMaxSize);
-  std::vector < unsigned int > getFromBuffer(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize);
-
-  std::string jsonArray(unsigned long int from, unsigned long int to, unsigned long int responseMaxSize);
+  std::string jsonArray(meas_buffer_index from, meas_buffer_index to, meas_buffer_index responseMaxSize);
   std::string toJson();
 
-  unsigned long int maxSize;
+  meas_buffer_index maxSize;
   // position of current raw
-  unsigned long int offset;
+  meas_buffer_index offset;
   // how many raws were added
-  unsigned long int count;
+  meas_buffer_index count;
 
   unsigned char elementSize;
 
-  unsigned long int calcInterval();
-  unsigned long long lastTime, firstTime, lastTimeForCount;
+  meas_buffer_index calcInterval();
+  meas_time lastTime, firstTime, lastTimeForCount;
   // it's not very accurate
-  unsigned long long earliestTime();
+  meas_time earliestTime();
 
   std::shared_ptr<LogArray> logArray;
 
- private:
-  std::vector < meas_buffer_elemt > buffer;
-
 };
 
-//#include "meas_buffer.cpp"
 #endif
