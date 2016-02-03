@@ -4,6 +4,7 @@
 #include <string>
 #include <sys/stat.h>
 #include <fstream>
+#include <memory>
 
 #include "abstract_addon.hpp"
 #include "plant_monitor_item.hpp"
@@ -20,7 +21,7 @@ class PlantMonitorAddon : public AbstractAddon {
   void render();
 
   std::vector <std::string> plantMeasNames;
-  std::vector <PlantMonitorItem> plantMonitorItems;
+  std::vector <std::shared_ptr<PlantMonitorItem>> plantMonitorItems;
 
   unsigned long long lastTime;
   std::string path;

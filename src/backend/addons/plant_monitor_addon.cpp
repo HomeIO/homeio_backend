@@ -1,6 +1,7 @@
 #include "plant_monitor_addon.hpp"
 
-#define NC_PLANT_MONITOR_ADDON_NAME 0
+#define NC_PLANT_MONITOR_ADDON_NAME 1
+#define NC_PLANT_MONITOR_ADDON_VALUE NC_PLANT_MONITOR_ADDON_NAME + 22
 
 PlantMonitorAddon::PlantMonitorAddon() {
   name = "PlantMonitor";
@@ -12,9 +13,9 @@ void PlantMonitorAddon::setup() {
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
 
   for(std::vector<std::string>::iterator it = plantMeasNames.begin(); it != plantMeasNames.end(); ++it) {
-    PlantMonitorItem pmi;
-    pmi.measName = *it;
-    pmi.measType = measTypeArray->byName(*it);
+    std::shared_ptr<PlantMonitorItem> pmi = std::make_shared<PlantMonitorItem>();
+    pmi->measName = *it;
+    pmi->measType = measTypeArray->byName(*it);
     plantMonitorItems.push_back(pmi);
   }
 }
@@ -38,10 +39,11 @@ void PlantMonitorAddon::render() {
 
   int i = 3;
 
-  for(std::vector<PlantMonitorItem>::iterator it = plantMonitorItems.begin(); it != plantMonitorItems.end(); ++it) {
+  for(std::vector<std::shared_ptr<PlantMonitorItem>>::iterator it = plantMonitorItems.begin(); it != plantMonitorItems.end(); ++it) {
+    std::shared_ptr<PlantMonitorItem> pmi = (*it);
     wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-    mvwprintw(window, 1, i, (*it).measName.c_str() );
-    mvwprintw(window, 20, i, "t" );
+    mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_NAME, pmi->measName.c_str() );
+    mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->lastFormattedValue().c_str() );
     wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
     i++;

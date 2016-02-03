@@ -23,9 +23,13 @@ class MeasType {
   unsigned int fetch();
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);
+  std::string valueToFormatted(double v);
+  std::string rawToFormattedValue(unsigned int raw);
   double valueAt(unsigned long int i);
+  std::string valueAtFormatted(unsigned long int i);
   unsigned int lastRaw();
   double lastValue();
+  std::string lastFormattedValue();
   double lastValueFor(unsigned long int);
   std::string toJson();
   std::string rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo);

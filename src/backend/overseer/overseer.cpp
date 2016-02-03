@@ -58,7 +58,7 @@ std::string Overseer::toJson() {
   json += "\"checkLastExecutionTime\":" + std::to_string(checkLastExecutionTime()) + ",";
 
   json += "\"currentValue\":" + std::to_string(currentValue()) + ",";
-  json += "\"currentAvgValue\":" + std::to_string(meas->currentAvgValue());
+  json += "\"currentAvgValue\":" + std::to_string(measType->currentAvgValue());
 
   json += "}";
 
@@ -81,7 +81,7 @@ std::string Overseer::timeBufferToJson() {
 }
 
 double Overseer::currentValue() {
-  double value = meas->lastValueFor(windowSize);
+  double value = measType->lastValueFor(windowSize);
 
   return value;
 }
@@ -90,7 +90,7 @@ unsigned int Overseer::execute() {
   //logArray->log("Overseer", "[" + name + "] execute now");
 
   unsigned int result;
-  result = action->execute();
+  result = actionType->execute();
 
   if (result == 0) {
     if (hitCount < 100000) hitCount++; // TODO
@@ -145,4 +145,12 @@ bool Overseer::checkLastExecutionTime() {
   } else {
     return false;
   }
+}
+
+std::string Overseer::tempValueFormatted() {
+  return measType->valueToFormatted(tempValue);
+}
+
+std::string Overseer::thresholdValueFormatted() {
+  return measType->valueToFormatted(thresholdValue);
 }

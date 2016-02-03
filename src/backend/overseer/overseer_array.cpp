@@ -40,8 +40,8 @@ void OverseerArray::start() {
   work = true;
   for(std::vector<std::shared_ptr<Overseer>>::iterator it = overseers.begin(); it != overseers.end(); ++it) {
     std::shared_ptr<Overseer> overseer = *it;
-    overseer->meas = measTypeArray->byName(overseer->measName);
-    overseer->action = actionTypeArray->byName(overseer->actionName);
+    overseer->measType = measTypeArray->byName(overseer->measName);
+    overseer->actionType = actionTypeArray->byName(overseer->actionName);
     overseer->logArray = logArray;
     overseer->check();
   }

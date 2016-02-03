@@ -53,34 +53,6 @@ void MeasType::prepareFetch() {
   started = true;
 }
 
-// deprecated
-// used in old meas fetched log output
-std::string MeasType::fetchString(unsigned int raw) {
-  std::string tmpString = "";
-  std::string partialString = "";
-
-  tmpString += " raw ";
-  tmpString += Helper::strColor(RESET, BLUE, BLACK);
-
-  partialString = std::to_string(raw);
-  partialString.insert(0, 10 - partialString.length(), ' ');
-  tmpString += partialString;
-
-  tmpString += Helper::strColor(RESET, GREEN, BLACK);
-  tmpString += " , ";
-  tmpString += Helper::strColor(RESET, BLUE, BLACK);
-
-  std::ostringstream os;
-  os << std::setprecision(5) << rawToValue(raw);
-  partialString = os.str();
-  partialString.insert(0, 12 - partialString.length(), ' ');
-  tmpString += partialString;
-
-  tmpString += Helper::strColor(RESET, GREEN, BLACK);
-
-  return "MeasBuffer [" + name + "] " + tmpString;
-}
-
 unsigned int MeasType::addRaw(unsigned int _raw) {
   buffer->add(_raw);
   return 0;
@@ -348,4 +320,26 @@ std::string MeasType::statsJson(unsigned long long timeFrom, unsigned long long 
   responseString += "\"trends\":" + trendString + "}";
 
   return responseString;
+}
+
+std::string MeasType::rawToFormattedValue(unsigned int raw) {
+  return valueToFormatted(rawToValue(raw));
+}
+
+std::string MeasType::valueToFormatted(double v) {
+  std::string tmpString;
+  std::ostringstream os;
+  os << std::setprecision(5) << v;
+  tmpString = os.str();
+  tmpString += " ";
+  tmpString += unit;
+  return tmpString;
+}
+
+std::string MeasType::valueAtFormatted(unsigned long int i) {
+  return rawToFormattedValue(buffer->at(i));
+}
+
+std::string MeasType::lastFormattedValue() {
+  return rawToFormattedValue(lastRaw());
 }

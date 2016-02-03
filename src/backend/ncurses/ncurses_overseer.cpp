@@ -78,13 +78,7 @@ void NcursesOverseer::renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int
   mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_NAME, o->measName.c_str() );
   wattroff(w, NC_COLOR_PAIR_NAME_LESSER_SET);
 
-
-  std::string valueString = "";
-  std::ostringstream os;
-  os << std::setprecision(5) << o->tempValue;
-  valueString += os.str();;
-  valueString += " ";
-  valueString += o->meas->unit;
+  std::string valueString = o->tempValueFormatted();
 
   wattron(w, NC_COLOR_PAIR_VALUE_SET);
   mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_VALUE, valueString.c_str() );
@@ -98,12 +92,7 @@ void NcursesOverseer::renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int
   }
   wattroff(w, NC_COLOR_PAIR_SYMBOL_SET);
 
-  valueString = "";
-  std::ostringstream osThreshold;
-  osThreshold << std::setprecision(5) << o->thresholdValue;
-  valueString += osThreshold.str();;
-  valueString += " ";
-  valueString += o->meas->unit;
+  valueString = o->thresholdValueFormatted();
 
   wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
   mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_THRESHOLD, valueString.c_str() );

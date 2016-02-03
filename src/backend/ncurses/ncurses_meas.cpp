@@ -51,19 +51,9 @@ void NcursesMeas::render(WINDOW *w) {
 }
 
 void NcursesMeas::renderMeas(WINDOW *w, std::shared_ptr<MeasType> m, int i) {
-  std::string valueString = "";
-
-  std::ostringstream os;
-  os << std::setprecision(5) << m->lastValue();
-  valueString += os.str();;
-  valueString += " ";
-  valueString += m->unit;
-
-  std::string rawString = "";
-  rawString += std::to_string(m->lastRaw());
-
-  std::string offsetString = "";
-  offsetString += std::to_string(m->buffer->offset);
+  std::string valueString = m->lastFormattedValue();
+  std::string rawString = std::to_string(m->lastRaw());
+  std::string offsetString = std::to_string(m->buffer->offset);
 
   wattron(w, NC_COLOR_PAIR_NAME_SET);
   mvwprintw(w, i, 1 + NC_MEAS_NAME, m->name.c_str() );

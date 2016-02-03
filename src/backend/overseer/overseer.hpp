@@ -15,12 +15,14 @@ class Overseer {
   std::string measName; // name of measurements which should observe
 
   double thresholdValue; // execute if value is higher than this
+  std::string thresholdValueFormatted(); // execute if value is higher than this - formatted version
   bool isMax; // when true execute only if higher
   unsigned long int windowSize; // use average of measurements
   unsigned char priority; // used in frontend
 
   double tempValue; // last calculated value
   bool tempResult; // last checked result
+  std::string tempValueFormatted(); // last checked value formatted
 
   unsigned long long hitCount; // how many it was executed
 
@@ -35,8 +37,8 @@ class Overseer {
   void markExecutionTime();
   bool checkLastExecutionTime();
 
-  std::shared_ptr<MeasType> meas;
-  std::shared_ptr<ActionType> action;
+  std::shared_ptr<MeasType> measType;
+  std::shared_ptr<ActionType> actionType;
   std::shared_ptr<LogArray> logArray;
 
   Overseer();
