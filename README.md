@@ -58,6 +58,13 @@ Features
   generated energy, time utilization. Or you can put there dedicated control algorithms.
 * Ncurses UI - most crucial information are accessible from console      
 
+Possible use cases:
+-------------------
+
+* Aquarium: monitor water temperature, dissolved oxygen, control light and heater
+* Greenhouse: monitor air temperature and humidity, soil moisture
+* Houseplant: monitor soil moisture, air temperature to analyze watering interval
+  (second HomeIO instance is used there)
 
 Am I missing something?
 -----------------------
