@@ -31,6 +31,10 @@ void PlantMonitorAddon::perform() {
 }
 
 void PlantMonitorAddon::calculateStats() {
+  for(std::vector<std::shared_ptr<PlantMonitorItem>>::iterator it = plantMonitorItems.begin(); it != plantMonitorItems.end(); ++it) {
+    std::shared_ptr<PlantMonitorItem> pmi = (*it);
+    pmi->process();
+  }
 }
 
 void PlantMonitorAddon::render() {
