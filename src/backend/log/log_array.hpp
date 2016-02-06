@@ -15,12 +15,16 @@ class LogArray {
   void log(std::string m, std::string c);
   void logError(std::string c);
   void logError(std::string m, std::string c);
+  void logFatal(std::string c);
+  void logFatal(std::string m, std::string c);
   void addLogItem(std::shared_ptr<LogItem>);
   void limit(unsigned int maxLines);
   void consoleOutput();
+  void consoleOutputLast();
 
   unsigned int maxHistory;
   std::vector <std::shared_ptr<LogItem>> logBuffer;
+  std::mutex addMutex;
 };
 
 

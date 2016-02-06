@@ -7,7 +7,7 @@ IoTcpServer::IoTcpServer() {
 // Create TCP listening socket
 int IoTcpServer::createTcpServer() {
   if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    logArray->logError("IoServer", "ECHOSERV: Error creating listening socket.");
+    logArray->logFatal("IoServer", "ECHOSERV: Error creating listening socket.");
     exit(EXIT_FAILURE);
   }
 
@@ -29,12 +29,12 @@ int IoTcpServer::createTcpServer() {
       listening socket, and call listen()  */
 
   if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-    logArray->logError("IoServer", "ECHOSERV: Error calling bind()");
+    logArray->logFatal("IoServer", "ECHOSERV: Error calling bind()");
     exit(EXIT_FAILURE);
   }
 
   if (listen(list_s, IO_SERVER_LISTENQ) < 0) {
-    logArray->logError("IoServer", "ECHOSERV: Error calling listen()");
+    logArray->logFatal("IoServer", "ECHOSERV: Error calling listen()");
     exit(EXIT_FAILURE);
   }
 
@@ -45,7 +45,7 @@ int IoTcpServer::createTcpServer() {
 
 int IoTcpServer::waitForCommand() {
   if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-    logArray->logError("IoServer", "ECHOSERV: Error calling accept()");
+    logArray->logFatal("IoServer", "ECHOSERV: Error calling accept()");
     exit(EXIT_FAILURE);
   }
 
@@ -77,7 +77,7 @@ ssize_t IoTcpServer::writeTcp() {
 
 void IoTcpServer::closeSocket() {
   if (close(conn_s) < 0) {
-    logArray->logError("IoServer", "ECHOSERV: Error calling close()");
+    logArray->logFatal("IoServer", "ECHOSERV: Error calling close()");
     exit(EXIT_FAILURE);
   }
 }

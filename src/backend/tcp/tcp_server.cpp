@@ -30,7 +30,7 @@ void TcpServer::start() {
   while (isRunning) {
     // Wait for a connection, then accept() it
     if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
-      logArray->logError("TCP", "TcpServer::start(): Error calling accept()");
+      logArray->logFatal("TCP", "TcpServer::start(): Error calling accept()");
       exit(EXIT_FAILURE);
     }
 
@@ -48,7 +48,7 @@ void TcpServer::start() {
 
     // Close the connected socket
     if (close(conn_s) < 0) {
-      logArray->logError("TCP", "TcpServer::start(): Error calling close()");
+      logArray->logFatal("TCP", "TcpServer::start(): Error calling close()");
       exit(EXIT_FAILURE);
     }
   }
@@ -127,7 +127,7 @@ int TcpServer::createTcpServer() {
 
   /*  Create the listening socket  */
   if ((list_s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    logArray->logError("TCP", "TcpServer::createTcpServer(): Error creating listening socket.");
+    logArray->logFatal("TCP", "TcpServer::createTcpServer(): Error creating listening socket.");
     exit(EXIT_FAILURE);
   }
 
@@ -150,12 +150,12 @@ int TcpServer::createTcpServer() {
       listening socket, and call listen()  */
 
   if (bind(list_s, (struct sockaddr *) &servaddr, sizeof (servaddr)) < 0) {
-    logArray->logError("TCP", "TcpServer::createTcpServer(): Error calling bind()");
+    logArray->logFatal("TCP", "TcpServer::createTcpServer(): Error calling bind()");
     exit(EXIT_FAILURE);
   }
 
   if (listen(list_s, LISTENQ) < 0) {
-    logArray->logError("TCP", "TcpServer::createTcpServer(): Error calling listen()");
+    logArray->logFatal("TCP", "TcpServer::createTcpServer(): Error calling listen()");
     exit(EXIT_FAILURE);
   }
 
