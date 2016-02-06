@@ -18,10 +18,12 @@ void PlantMonitorItem::process() {
   for (i = 1; i < measType->buffer->count; i++) {
     tmpValue = measType->valueAt(i);
 
-    if (lastValue > (tmpValue - 5.0)) {
+    if ((lastValue > 10.0) && (tmpValue > 10.0) && (lastValue > (tmpValue - 5.0))) {
       msWateredAgo = i * (meas_time) measType->buffer->calcInterval();
       break;
     }
+
+    lastValue = tmpValue;
   }
 }
 
