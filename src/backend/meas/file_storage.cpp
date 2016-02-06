@@ -10,8 +10,8 @@ FileStorage::FileStorage() {
   ready = false;
   changing = false;
   work = false;
-  #define MEAS_STORE_STATUS_NULL 0
-  #define MEAS_STORE_STATUS_STORE 1
+#define MEAS_STORE_STATUS_NULL 0
+#define MEAS_STORE_STATUS_STORE 1
 }
 
 void FileStorage::start() {

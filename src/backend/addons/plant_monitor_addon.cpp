@@ -2,6 +2,7 @@
 
 #define NC_PLANT_MONITOR_ADDON_NAME 1
 #define NC_PLANT_MONITOR_ADDON_VALUE NC_PLANT_MONITOR_ADDON_NAME + 22
+#define NC_PLANT_MONITOR_ADDON_LAST_WATERED NC_PLANT_MONITOR_ADDON_VALUE + 22
 
 PlantMonitorAddon::PlantMonitorAddon() {
   name = "PlantMonitor";
@@ -44,6 +45,7 @@ void PlantMonitorAddon::render() {
     wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
     mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_NAME, pmi->measName.c_str() );
     mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->lastFormattedValue().c_str() );
+    mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_LAST_WATERED, (std::to_string(pmi->msWateredAgo / (1000 * 60)) + " min").c_str() );
     wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
     i++;

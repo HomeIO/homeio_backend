@@ -9,12 +9,13 @@
 
 class PlantMonitorItem {
  public:
+  PlantMonitorItem();
   std::string measName;
   std::shared_ptr<MeasType> measType;
 
   void process();
 
-  // unsigned long long 
+  unsigned long long msWateredAgo;
 };
 
 #endif
