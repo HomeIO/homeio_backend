@@ -169,7 +169,7 @@ int main() {
   PlantMonitorAddon *pma = new PlantMonitorAddon;
   pma->plantMeasNames.push_back("moisture_shadow");
   pma->plantMeasNames.push_back("moisture_external");
-  pma->plantMeasNames.push_back("moisture_external");
+  pma->plantMeasNames.push_back("moisture_top");
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
 
   // addons
