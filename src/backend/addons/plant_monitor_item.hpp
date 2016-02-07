@@ -7,6 +7,7 @@
 #include "../utils/helper.hpp"
 #include "../meas/meas_type.hpp"
 
+
 class PlantMonitorItem {
  public:
   PlantMonitorItem();
@@ -16,6 +17,7 @@ class PlantMonitorItem {
   void process();
 
   unsigned long long msWateredAgo;
+  double preWater, postWater;
 };
 
 #endif

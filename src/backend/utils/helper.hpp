@@ -20,6 +20,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "../meas/meas_definitions.hpp"
 
 #define RESET           0
 #define BRIGHT          1
@@ -50,6 +51,7 @@ class Helper {
   static std::string currentTime();
   static std::string detailCurrentTime();
   static std::string currentDateSafe();
+  static std::string intervalToString(meas_time timeInterval);
   static unsigned long long uTime();
   static unsigned long long mTime();
   static unsigned int onlyMiliseconds();

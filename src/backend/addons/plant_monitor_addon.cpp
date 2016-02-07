@@ -34,7 +34,11 @@ void PlantMonitorAddon::calculateStats() {
   for(std::vector<std::shared_ptr<PlantMonitorItem>>::iterator it = plantMonitorItems.begin(); it != plantMonitorItems.end(); ++it) {
     std::shared_ptr<PlantMonitorItem> pmi = (*it);
     pmi->process();
+
+    logArray->log("PlantMonitorAddon", "finished process " + pmi-> measName + ":" + std::to_string(pmi->preWater) + "," + std::to_string(pmi->postWater));
   }
+
+  logArray->log("PlantMonitorAddon", "finished calculateStats()");
 }
 
 void PlantMonitorAddon::render() {
@@ -49,7 +53,7 @@ void PlantMonitorAddon::render() {
     wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
     mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_NAME, pmi->measName.c_str() );
     mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->lastFormattedValue().c_str() );
-    mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_LAST_WATERED, (std::to_string(pmi->msWateredAgo / (1000 * 60)) + " min").c_str() );
+    mvwprintw(window, i, NC_PLANT_MONITOR_ADDON_LAST_WATERED, Helper::intervalToString(pmi->msWateredAgo).c_str() );
     wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
     i++;

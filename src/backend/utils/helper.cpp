@@ -43,6 +43,44 @@ std::string Helper::detailCurrentTime() {
   return t;
 }
 
+std::string Helper::intervalToString(meas_time timeInterval) {
+  // ms
+  if (timeInterval < 1000) {
+    return std::to_string(timeInterval) + " ms";
+  } else {
+    timeInterval = timeInterval / 1000;
+  }
+
+  // s
+  if (timeInterval < 300) {
+    return std::to_string(timeInterval) + " s";
+  } else {
+    timeInterval = timeInterval / 60;
+  }
+
+  // min
+  if (timeInterval < 300) {
+    return std::to_string(timeInterval) + " min";
+  } else {
+    timeInterval = timeInterval / 60;
+  }
+
+  // hours
+  if (timeInterval < (24*5)) {
+    return std::to_string(timeInterval) + " hours";
+  } else {
+    timeInterval = timeInterval / 24;
+  }
+
+  // days
+  //if (timeInterval < 1000) {
+  return std::to_string(timeInterval) + " days";
+  //} else {
+  //  timeInterval = timeInterval / 1000;
+  //}
+}
+
+
 unsigned long long Helper::uTime() {
   unsigned long long ut = (unsigned long long) (std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1)) ;
   return ut;
