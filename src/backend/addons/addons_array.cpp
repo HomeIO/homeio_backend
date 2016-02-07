@@ -27,11 +27,15 @@ void AddonsArray::start() {
 
   while(isRunning) {
     work = true;
+    logArray->log("AddonsArray", "cycle start");
+
     shutdownMutex.lock();
     for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
       (*itr)->perform();
     }
     shutdownMutex.unlock();
+    
+    logArray->log("AddonsArray", "cycle stop");
     work = false;
 
     Helper::longSleep(cycleInterval);

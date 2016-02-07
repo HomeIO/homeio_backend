@@ -30,6 +30,10 @@ void NcursesLog::render(WINDOW *w) {
   unsigned int i;
   long unsigned int j;
 
+  // fix concurrent segfaults
+  // TODO copy buffer in future maybe
+  logArray->addMutex.lock();
+
   for (i = 0; i < perPage; i++) {
     j = logArray->logBuffer.size() - 1 - (perPage * page) - i;
     if (j < logArray->logBuffer.size()) {
@@ -45,5 +49,7 @@ void NcursesLog::render(WINDOW *w) {
 
     }
   }
+
+  logArray->addMutex.unlock();
 
 }

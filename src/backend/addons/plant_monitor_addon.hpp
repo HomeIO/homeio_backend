@@ -10,6 +10,9 @@
 #include "plant_monitor_item.hpp"
 #include "../utils/helper.hpp"
 
+#define PLANT_MONITOR_ADDON_INTERVAL 20*1000
+//1*60*1000
+
 class PlantMonitorAddon : public AbstractAddon {
  public:
   PlantMonitorAddon();

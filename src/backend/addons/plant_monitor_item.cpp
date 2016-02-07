@@ -19,10 +19,19 @@ void PlantMonitorItem::process() {
   newValue = oldValue;
 
   for (i = 1; i < measType->buffer->count; i++) {
+
+
     oldValue = measType->valueAt(i);
 
     if ((oldValue > 10.0) && (newValue > 10.0) && (oldValue < (newValue - 5.0))) {
-      msWateredAgo = i * (meas_time) measType->buffer->calcInterval();
+      logArray->log("PlantMonitorItem", "int " + std::to_string( measType->buffer->calcInterval() ));
+      logArray->log("PlantMonitorItem", "last " + std::to_string( measType->buffer->lastTimeForCount ));
+      logArray->log("PlantMonitorItem", "firstTime " + std::to_string( measType->buffer->firstTime ));
+      logArray->log("PlantMonitorItem", "count " + std::to_string( measType->buffer->count ));
+      logArray->log("PlantMonitorItem", "offset " + std::to_string( measType->buffer->offset ));
+
+
+      msWateredAgo = ((meas_time) i) * ((meas_time) measType->buffer->calcInterval());
       preWater = oldValue;
       postWater = newValue;
       break;

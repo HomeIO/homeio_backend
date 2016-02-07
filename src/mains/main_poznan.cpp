@@ -165,7 +165,7 @@ int main() {
   // ram buffer resize
   h->measFetcher->maxBufferSize = 2000000;
 
-  // addons
+  //addons
   PlantMonitorAddon *pma = new PlantMonitorAddon;
   pma->plantMeasNames.push_back("moisture_shadow");
   pma->plantMeasNames.push_back("moisture_external");

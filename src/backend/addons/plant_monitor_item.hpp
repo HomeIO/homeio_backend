@@ -6,6 +6,7 @@
 
 #include "../utils/helper.hpp"
 #include "../meas/meas_type.hpp"
+#include "../log/log_array.hpp"
 
 
 class PlantMonitorItem {
@@ -18,6 +19,8 @@ class PlantMonitorItem {
 
   unsigned long long msWateredAgo;
   double preWater, postWater;
+
+  std::shared_ptr<LogArray> logArray;
 };
 
 #endif

@@ -61,7 +61,7 @@ meas_buffer_index MeasBuffer::add(meas_buffer_element raw) {
 
 
 meas_buffer_index MeasBuffer::calcInterval() {
-  if (offset == 0) {
+  if ((offset == 0) && (count == 0)) {
     return 1; // not to fuck up all this shit somewhere
   } else {
     meas_time timeCount = lastTimeForCount - firstTime;
