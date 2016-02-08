@@ -93,13 +93,19 @@ void PlantMonitorAddon::render() {
 
     // dry speed
     wattron(window, NC_COLOR_PAIR_LESSER_SET);
-    mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_NAME, "min");
+    mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_NAME, "dry speed");
     wattroff(window, NC_COLOR_PAIR_LESSER_SET);
 
-    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-    mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, std::to_string(pmi->drySpeed).c_str() );
-    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
+    if (pmi->drySpeed > 0.0) {
+      double invertedSpeed = 1.0 / pmi->drySpeed;
+      wattron(window, NC_COLOR_PAIR_SYMBOL_SET);
+      mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, Helper::intervalToString( (meas_time) (invertedSpeed) ).c_str() );
+      wattroff(window, NC_COLOR_PAIR_SYMBOL_SET);
+    } else {
+      wattron(window, NC_COLOR_PAIR_LESSER_SET);
+      mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, "---" );
+      wattroff(window, NC_COLOR_PAIR_LESSER_SET);
+    }
 
     i++;
   }
