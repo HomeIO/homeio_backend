@@ -43,7 +43,7 @@ void PlantMonitorItem::process() {
     }
 
     // min
-    if (minValue < oldValue) {
+    if (minValue > oldValue) {
       minValue = oldValue;
       minValueAgo = ((meas_time) i) * measInterval;
     }
@@ -64,6 +64,11 @@ void PlantMonitorItem::process() {
     newValue = oldValue;
   }
 
+  logArray->log("PlantMonitorItem", "tempRegions " + std::to_string( tempRegions ));
+  logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
+  logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
+  logArray->log("PlantMonitorItem", "tempDrySpeedSum " + std::to_string( tempDrySpeedSum ));
+
   if (tempRegions > 0) {
     drySpeed = tempDrySpeedSum / (double) tempRegions;
   }
@@ -74,11 +79,11 @@ void PlantMonitorItem::process() {
     oldValue = measType->valueAt(i);
 
     if (wasWateredNow(oldValue, newValue)) {
-      logArray->log("PlantMonitorItem", "int " + std::to_string( measType->buffer->calcInterval() ));
-      logArray->log("PlantMonitorItem", "last " + std::to_string( measType->buffer->lastTimeForCount ));
-      logArray->log("PlantMonitorItem", "firstTime " + std::to_string( measType->buffer->firstTime ));
-      logArray->log("PlantMonitorItem", "count " + std::to_string( measType->buffer->count ));
-      logArray->log("PlantMonitorItem", "offset " + std::to_string( measType->buffer->offset ));
+      // logArray->log("PlantMonitorItem", "int " + std::to_string( measType->buffer->calcInterval() ));
+      // logArray->log("PlantMonitorItem", "last " + std::to_string( measType->buffer->lastTimeForCount ));
+      // logArray->log("PlantMonitorItem", "firstTime " + std::to_string( measType->buffer->firstTime ));
+      // logArray->log("PlantMonitorItem", "count " + std::to_string( measType->buffer->count ));
+      // logArray->log("PlantMonitorItem", "offset " + std::to_string( measType->buffer->offset ));
 
       msWateredAgo = ((meas_time) i) * measInterval;
       preWater = oldValue;
