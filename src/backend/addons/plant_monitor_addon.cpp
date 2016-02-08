@@ -57,9 +57,9 @@ void PlantMonitorAddon::render() {
     mvwprintw(window, 3 + 5*i, NC_PLANT_MONITOR_ADDON_NAME, pmi->measName.c_str() );
     wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
-    wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
     mvwprintw(window, 3 + 5*i, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->lastFormattedValue().c_str() );
-    wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
 
     wattron(window, NC_COLOR_PAIR_TEXT_SET);
     mvwprintw(window, 3 + 5*i, NC_PLANT_MONITOR_ADDON_LAST_WATERED, Helper::intervalToString(pmi->msWateredAgo).c_str() );
@@ -70,9 +70,9 @@ void PlantMonitorAddon::render() {
     mvwprintw(window, 3 + 5*i + 1, NC_PLANT_MONITOR_ADDON_NAME, "max");
     wattroff(window, NC_COLOR_PAIR_LESSER_SET);
 
-    wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
     mvwprintw(window, 3 + 5*i + 1, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->valueToFormatted(pmi->maxValue).c_str() );
-    wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
 
     wattron(window, NC_COLOR_PAIR_TEXT_SET);
     mvwprintw(window, 3 + 5*i + 1, NC_PLANT_MONITOR_ADDON_LAST_WATERED, Helper::intervalToString(pmi->maxValueAgo).c_str() );
@@ -83,13 +83,23 @@ void PlantMonitorAddon::render() {
     mvwprintw(window, 3 + 5*i + 2, NC_PLANT_MONITOR_ADDON_NAME, "min");
     wattroff(window, NC_COLOR_PAIR_LESSER_SET);
 
-    wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
     mvwprintw(window, 3 + 5*i + 2, NC_PLANT_MONITOR_ADDON_VALUE, pmi->measType->valueToFormatted(pmi->minValue).c_str() );
-    wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
 
     wattron(window, NC_COLOR_PAIR_TEXT_SET);
     mvwprintw(window, 3 + 5*i + 2, NC_PLANT_MONITOR_ADDON_LAST_WATERED, Helper::intervalToString(pmi->minValueAgo).c_str() );
     wattroff(window, NC_COLOR_PAIR_TEXT_SET);
+
+    // dry speed
+    wattron(window, NC_COLOR_PAIR_LESSER_SET);
+    mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_NAME, "min");
+    wattroff(window, NC_COLOR_PAIR_LESSER_SET);
+
+    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, std::to_string(pmi->drySpeed).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
 
     i++;
   }

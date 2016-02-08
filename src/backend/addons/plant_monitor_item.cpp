@@ -7,22 +7,67 @@ PlantMonitorItem::PlantMonitorItem() {
 
   minValue = 0.0;
   maxValue = 0.0;
+
+  drySpeed = 0.0;
 }
 
 void PlantMonitorItem::process() {
+  if (0 == measType->buffer->count) {
+    return;
+  }
+
   meas_buffer_index i = 0;
   double oldValue = 0.0;
   double newValue = 0.0;
   meas_time measInterval = (meas_time) measType->buffer->calcInterval();
 
-  if (0 == measType->buffer->count) {
-    return;
-  }
+  double tempDryValueDiff = 0.0;
+  double tempDryTimeDiff = 0.0;
+  double tempDrySpeedSum = 0.0;
+  unsigned long int tempRegions = 0;
+  meas_buffer_index tempLastWateredIndex = 0;
 
   oldValue = measType->valueAt(0);
   newValue = oldValue;
   minValue = oldValue;
   maxValue = oldValue;
+
+  // min and max value
+  for (i = 1; i < measType->buffer->count; i++) {
+    oldValue = measType->valueAt(i);
+
+    // max
+    if (maxValue < oldValue) {
+      maxValue = oldValue;
+      maxValueAgo = ((meas_time) i) * measInterval;
+    }
+
+    // min
+    if (minValue < oldValue) {
+      minValue = oldValue;
+      minValueAgo = ((meas_time) i) * measInterval;
+    }
+
+    // dry speed
+    if ( (newValue - oldValue) > 1.0 ) {
+      tempDryValueDiff = measType->valueAt(i) - measType->valueAt(tempLastWateredIndex);
+      tempDryTimeDiff = (double) (tempLastWateredIndex - i) * (double) (measInterval);
+
+      if (tempDryTimeDiff > 100.0) {
+        tempDrySpeedSum += (tempDryValueDiff / tempDryTimeDiff);
+        tempRegions++;
+      }
+
+      tempLastWateredIndex = i;
+    }
+
+    newValue = oldValue;
+  }
+
+  if (tempRegions > 0) {
+    drySpeed = tempDrySpeedSum / (double) tempRegions;
+  }
+
 
   // last watered
   for (i = 1; i < measType->buffer->count; i++) {
@@ -44,22 +89,6 @@ void PlantMonitorItem::process() {
     newValue = oldValue;
   }
 
-  // min and max value
-  for (i = 1; i < measType->buffer->count; i++) {
-    oldValue = measType->valueAt(i);
-
-    if (maxValue < oldValue) {
-      maxValue = oldValue;
-      maxValueAgo = ((meas_time) i) * measInterval;
-    }
-
-    if (minValue < oldValue) {
-      minValue = oldValue;
-      minValueAgo = ((meas_time) i) * measInterval;
-    }
-
-    newValue = oldValue;
-  }
 }
 
 bool PlantMonitorItem::wasWateredNow(double oldValue, double newValue) {
