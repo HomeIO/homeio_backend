@@ -70,10 +70,10 @@ void PlantMonitorItem::process() {
     newValue = oldValue;
   }
 
-  logArray->log("PlantMonitorItem", "tempRegions " + std::to_string( tempRegions ));
-  logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
-  logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
-  logArray->log("PlantMonitorItem", "tempDrySpeedSum " + std::to_string( tempDrySpeedSum ));
+  // logArray->log("PlantMonitorItem", "tempRegions " + std::to_string( tempRegions ));
+  // logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
+  // logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
+  // logArray->log("PlantMonitorItem", "tempDrySpeedSum " + std::to_string( tempDrySpeedSum ));
 
   if (tempRegions > 0) {
     drySpeed = tempDrySpeedSum / (double) tempRegions;
@@ -104,9 +104,7 @@ void PlantMonitorItem::process() {
   // prediction
   oldValue = measType->valueAt(0);
   if (oldValue > waterAtValue) {
-    // next water time / water drop = last water time / current drop
-    // next water time = last water time * water drop / current drop
-    double t = (((double) msWateredAgo) * (postWater - oldValue)) / (oldValue - waterAtValue);
+    double t = (((double) msWateredAgo) * (oldValue - waterAtValue) / (postWater - oldValue));
     waterNeededIn = (meas_time) t;
 
     logArray->log("PlantMonitorItem", "msWateredAgo " + std::to_string( msWateredAgo ));
