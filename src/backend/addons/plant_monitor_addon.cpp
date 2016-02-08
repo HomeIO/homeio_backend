@@ -97,9 +97,9 @@ void PlantMonitorAddon::render() {
     wattroff(window, NC_COLOR_PAIR_LESSER_SET);
 
     if (pmi->drySpeed > 0.0) {
-      double invertedSpeed = 1.0 / pmi->drySpeed;
+      meas_time speedInterval = (meas_time) (1000.0 / pmi->drySpeed);
       wattron(window, NC_COLOR_PAIR_SYMBOL_SET);
-      mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, Helper::intervalToString( (meas_time) (invertedSpeed) ).c_str() );
+      mvwprintw(window, 3 + 5*i + 3, NC_PLANT_MONITOR_ADDON_VALUE, Helper::intervalToString( speedInterval ).c_str() );
       wattroff(window, NC_COLOR_PAIR_SYMBOL_SET);
     } else {
       wattron(window, NC_COLOR_PAIR_LESSER_SET);

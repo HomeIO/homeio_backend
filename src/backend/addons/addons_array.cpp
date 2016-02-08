@@ -34,7 +34,7 @@ void AddonsArray::start() {
       (*itr)->perform();
     }
     shutdownMutex.unlock();
-    
+
     // logArray->log("AddonsArray", "cycle stop");
     work = false;
 
