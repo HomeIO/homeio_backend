@@ -56,8 +56,8 @@ void PlantMonitorItem::process() {
       tempDryValueDiff = measType->valueAt(tempLastWateredIndex) - measType->valueAt(i);
       tempDryTimeDiff = ( ( (double) (i) - (double) (tempLastWateredIndex) ) * (double) (measInterval) ) / 1000.0;
 
-      logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
-      logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
+      // logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
+      // logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
 
       if ( (tempDryTimeDiff > 100.0) && (tempDryValueDiff > 0.5) ) {
         tempDrySpeedSum += (tempDryValueDiff / tempDryTimeDiff);
