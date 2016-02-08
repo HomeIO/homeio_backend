@@ -52,21 +52,21 @@ std::string Helper::intervalToString(meas_time timeInterval) {
   }
 
   // s
-  if (timeInterval < 300) {
+  if (timeInterval < 600) {
     return std::to_string(timeInterval) + " s";
   } else {
     timeInterval = timeInterval / 60;
   }
 
   // min
-  if (timeInterval < 300) {
+  if (timeInterval < 600) {
     return std::to_string(timeInterval) + " min";
   } else {
     timeInterval = timeInterval / 60;
   }
 
   // hours
-  if (timeInterval < (24*5)) {
+  if (timeInterval < (24*7)) {
     return std::to_string(timeInterval) + " hours";
   } else {
     timeInterval = timeInterval / 24;

@@ -9,6 +9,9 @@ PlantMonitorItem::PlantMonitorItem() {
   maxValue = 0.0;
 
   drySpeed = 0.0;
+  waterNeededIn = 0;
+
+  waterAtValue = 50.0;
 }
 
 void PlantMonitorItem::process() {
@@ -91,10 +94,20 @@ void PlantMonitorItem::process() {
       msWateredAgo = ((meas_time) i) * measInterval;
       preWater = oldValue;
       postWater = newValue;
+
       break;
     }
 
     newValue = oldValue;
+  }
+
+  // prediction
+  oldValue = measType->valueAt(0);
+  if (oldValue > waterAtValue) {
+    // next water time / water drop = last water time / current drop
+    // next water time = last water time * water drop / current drop
+    double t = ((double) msWateredAgo) * (postWater - oldValue) / (oldValue - waterAtValue);
+    waterNeededIn = (meas_time) t;
   }
 
 }

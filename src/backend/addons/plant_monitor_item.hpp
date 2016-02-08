@@ -21,6 +21,8 @@ class PlantMonitorItem {
   unsigned long long msWateredAgo;
   double preWater, postWater;
   double drySpeed;
+  meas_time waterNeededIn;
+  double waterAtValue;
 
   meas_value minValue;
   meas_time minValueAgo;
