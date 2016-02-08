@@ -50,8 +50,8 @@ void PlantMonitorItem::process() {
 
     // dry speed
     if ( (newValue - oldValue) > 1.0 ) {
-      tempDryValueDiff = measType->valueAt(i) - measType->valueAt(tempLastWateredIndex);
-      tempDryTimeDiff = (double) (tempLastWateredIndex - i) * (double) (measInterval);
+      tempDryValueDiff = measType->valueAt(tempLastWateredIndex) - measType->valueAt(i);
+      tempDryTimeDiff = ( (double) (tempLastWateredIndex - i) * (double) (measInterval) ) / 1000.0;
 
       if (tempDryTimeDiff > 100.0) {
         tempDrySpeedSum += (tempDryValueDiff / tempDryTimeDiff);
