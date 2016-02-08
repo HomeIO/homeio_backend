@@ -7,7 +7,7 @@
 #include "../utils/helper.hpp"
 #include "../meas/meas_type.hpp"
 #include "../log/log_array.hpp"
-
+#include "../meas/meas_definitions.hpp"
 
 class PlantMonitorItem {
  public:
@@ -16,9 +16,16 @@ class PlantMonitorItem {
   std::shared_ptr<MeasType> measType;
 
   void process();
+  bool wasWateredNow(double oldValue, double newValue);
 
   unsigned long long msWateredAgo;
   double preWater, postWater;
+
+  meas_value minValue;
+  meas_time minValueAgo;
+
+  meas_value maxValue;
+  meas_time maxValueAgo;
 
   std::shared_ptr<LogArray> logArray;
 };
