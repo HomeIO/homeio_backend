@@ -52,7 +52,7 @@ void PlantMonitorItem::process() {
     }
 
     // dry speed - unit per second
-    if ( (newValue - oldValue) > 2.0 ) {
+    if ( (newValue - oldValue) > 3.0 ) {
       tempDryValueDiff = measType->valueAt(tempLastWateredIndex) - measType->valueAt(i);
       tempDryTimeDiff = ( ( (double) (i) - (double) (tempLastWateredIndex) ) * (double) (measInterval) ) / 1000.0;
 
@@ -70,10 +70,10 @@ void PlantMonitorItem::process() {
     newValue = oldValue;
   }
 
-  logArray->log("PlantMonitorItem", "=tempRegions " + std::to_string( tempRegions ));
-  logArray->log("PlantMonitorItem", "=tempDryValueDiff " + std::to_string( tempDryValueDiff ));
-  logArray->log("PlantMonitorItem", "=tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
-  logArray->log("PlantMonitorItem", "=tempDrySpeedSum " + std::to_string( tempDrySpeedSum ));
+  logArray->log("PlantMonitorItem", "tempRegions " + std::to_string( tempRegions ));
+  logArray->log("PlantMonitorItem", "tempDryValueDiff " + std::to_string( tempDryValueDiff ));
+  logArray->log("PlantMonitorItem", "tempDryTimeDiff " + std::to_string( tempDryTimeDiff ));
+  logArray->log("PlantMonitorItem", "tempDrySpeedSum " + std::to_string( tempDrySpeedSum ));
 
   if (tempRegions > 0) {
     drySpeed = tempDrySpeedSum / (double) tempRegions;
@@ -106,14 +106,19 @@ void PlantMonitorItem::process() {
   if (oldValue > waterAtValue) {
     // next water time / water drop = last water time / current drop
     // next water time = last water time * water drop / current drop
-    double t = ((double) msWateredAgo) * (postWater - oldValue) / (oldValue - waterAtValue);
+    double t = (((double) msWateredAgo) * (postWater - oldValue)) / (oldValue - waterAtValue);
     waterNeededIn = (meas_time) t;
+
+    logArray->log("PlantMonitorItem", "msWateredAgo " + std::to_string( msWateredAgo ));
+    logArray->log("PlantMonitorItem", "postWater " + std::to_string( postWater ));
+    logArray->log("PlantMonitorItem", "oldValue " + std::to_string( oldValue ));
+    logArray->log("PlantMonitorItem", "waterAtValue " + std::to_string( waterAtValue ));
   }
 
 }
 
 bool PlantMonitorItem::wasWateredNow(double oldValue, double newValue) {
-  if ((oldValue > 10.0) && (newValue > 10.0) && (oldValue < (newValue - 3.0))) {
+  if ((oldValue > 10.0) && (newValue > 10.0) && (oldValue < (newValue - 4.0))) {
     return true;
   } else {
     return false;
