@@ -9,12 +9,12 @@ std::mutex Helper::storageMutex;
 std::string Helper::currentDateSafe() {
   time_t currentTimeObject;
   struct tm * currentTimeInfo;
-  char currentTimeBuffer[20];
+  char currentTimeBuffer[TIME_STRING_MAX_BUFFER];
 
   time (&currentTimeObject);
   currentTimeInfo = localtime (&currentTimeObject);
 
-  strftime (currentTimeBuffer, 80, "%Y_%m_%d", currentTimeInfo);
+  strftime (currentTimeBuffer, TIME_STRING_MAX_BUFFER, "%Y_%m_%d", currentTimeInfo);
 
   return std::string(currentTimeBuffer);
 }
@@ -30,6 +30,11 @@ std::string Helper::currentTime() {
   strftime (currentTimeBuffer, 80, "%Y-%m-%d %H:%M:%S", currentTimeInfo);
 
   return std::string(currentTimeBuffer);
+}
+
+time_t Helper::timeToObject(meas_time t) {
+  time_t tt = (meas_time) ( ((double) t) / 1000.0);
+  return tt;
 }
 
 std::string Helper::detailCurrentTime() {
@@ -80,6 +85,29 @@ std::string Helper::intervalToString(meas_time timeInterval) {
   //}
 }
 
+std::string Helper::timeToTimeString(meas_time mt) {
+  time_t t = timeToObject(mt);
+
+  struct tm * currentTimeInfo;
+  char currentTimeBuffer[TIME_STRING_MAX_BUFFER];
+  currentTimeInfo = localtime (&t);
+
+  strftime (currentTimeBuffer, TIME_STRING_MAX_BUFFER,  "%H:%M:%S", currentTimeInfo);
+
+  return std::string(currentTimeBuffer);
+}
+
+std::string Helper::timeToDateTimeString(meas_time mt) {
+  time_t t = timeToObject(mt);
+
+  struct tm * currentTimeInfo;
+  char currentTimeBuffer[TIME_STRING_MAX_BUFFER];
+  currentTimeInfo = localtime (&t);
+
+  strftime (currentTimeBuffer, TIME_STRING_MAX_BUFFER,  "%Y-%m-%d %H:%M:%S", currentTimeInfo);
+
+  return std::string(currentTimeBuffer);
+}
 
 unsigned long long Helper::uTime() {
   unsigned long long ut = (unsigned long long) (std::chrono::system_clock::now().time_since_epoch()  / std::chrono::microseconds(1)) ;

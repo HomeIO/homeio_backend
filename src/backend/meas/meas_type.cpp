@@ -327,12 +327,18 @@ std::string MeasType::rawToFormattedValue(unsigned int raw) {
 }
 
 std::string MeasType::valueToFormatted(double v) {
+  return formattedValue(v, unit);
+}
+
+std::string MeasType::formattedValue(double v, std::string un) {
   std::string tmpString;
   std::ostringstream os;
   os << std::setprecision(5) << v;
   tmpString = os.str();
-  tmpString += " ";
-  tmpString += unit;
+  if (un != "") {
+    tmpString += " ";
+    tmpString += un;
+  }
   return tmpString;
 }
 

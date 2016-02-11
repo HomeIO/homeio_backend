@@ -39,6 +39,8 @@
 #define CYAN            6
 #define WHITE           7
 
+#define TIME_STRING_MAX_BUFFER 20
+
 class Helper {
  public:
   //static time_t currentTimeObject;
@@ -51,7 +53,10 @@ class Helper {
   static std::string currentTime();
   static std::string detailCurrentTime();
   static std::string currentDateSafe();
+  static time_t timeToObject(meas_time t);
   static std::string intervalToString(meas_time timeInterval);
+  static std::string timeToTimeString(meas_time timeInterval);
+  static std::string timeToDateTimeString(meas_time mt);
   static unsigned long long uTime();
   static unsigned long long mTime();
   static unsigned int onlyMiliseconds();

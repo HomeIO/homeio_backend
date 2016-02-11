@@ -4,10 +4,13 @@
 #include <string>
 #include <sys/stat.h>
 #include <fstream>
+#include <vector>
+#include <memory>
 
 #include "abstract_addon.hpp"
 #include "wind_turbine_stat.hpp"
 #include "../utils/helper.hpp"
+#include "../meas/meas_definitions.hpp"
 
 class WindTurbineStatsAddon : public AbstractAddon {
  public:
@@ -23,7 +26,9 @@ class WindTurbineStatsAddon : public AbstractAddon {
   std::string measCoil;
   std::string measResistor;
 
-  WindTurbineStat s, prevS;
+  unsigned char bufferMax;
+  std::vector<std::shared_ptr<WindTurbineStat>> bufferStat;
+  void addToBuffer(std::shared_ptr<WindTurbineStat> wts);
 
   double coilThresholdVoltage;
   double batteryThresholdCurrent;
@@ -34,8 +39,9 @@ class WindTurbineStatsAddon : public AbstractAddon {
   unsigned long long lastTime;
 
   unsigned long long calculateTimeFrom();
-  WindTurbineStat calculateStats(unsigned long long t);
-  void store();
+  std::shared_ptr<WindTurbineStat> calculateStats(unsigned long long t);
+  void store(std::shared_ptr<WindTurbineStat> s);
+  void repopulateFromBuffer();
 };
 
 #endif

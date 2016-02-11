@@ -1,9 +1,5 @@
 #include "wind_turbine_stats_addon.hpp"
 
-#define NC_WS_ADDON_NAME 0
-#define NC_WS_ADDON_VALUE 23
-#define NC_WS_ADDON_PREV 45
-
 WindTurbineStatsAddon::WindTurbineStatsAddon() {
   name = "WindTurbineStats";
   lastTime = 0;
@@ -11,6 +7,8 @@ WindTurbineStatsAddon::WindTurbineStatsAddon() {
   batteryThresholdCurrent = 0.5;
 
   path = "stats";
+
+  bufferMax = 40;
 }
 
 void WindTurbineStatsAddon::setup() {
@@ -23,15 +21,35 @@ void WindTurbineStatsAddon::perform() {
   // so it won't calculate and write
   if (lastTime == 0) {
     lastTime = calculateTimeFrom();
+    repopulateFromBuffer();
   }
 
   if (calculateTimeFrom() > lastTime) {
     // calculate now
 
     lastTime = calculateTimeFrom();
-    s = calculateStats(lastTime);
-    store();
+    std::shared_ptr<WindTurbineStat> wts = calculateStats(lastTime);
+    addToBuffer(wts);
+    store(wts);
   }
+}
+
+void WindTurbineStatsAddon::repopulateFromBuffer() {
+  meas_time t = lastTime - (meas_time)(bufferMax) * hour;
+
+  while (t < lastTime) {
+    std::shared_ptr<WindTurbineStat> wts = calculateStats(t);
+    addToBuffer(wts);
+
+    t += hour;
+  }
+}
+
+void WindTurbineStatsAddon::addToBuffer(std::shared_ptr<WindTurbineStat> wts) {
+  if ( (unsigned char) bufferStat.size() >= (unsigned char) bufferMax ) {
+    bufferStat.erase( bufferStat.begin() );
+  }
+  bufferStat.push_back(wts);
 }
 
 unsigned long long WindTurbineStatsAddon::calculateTimeFrom() {
@@ -41,11 +59,11 @@ unsigned long long WindTurbineStatsAddon::calculateTimeFrom() {
   return t;
 }
 
-WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
-  prevS = s;
+std::shared_ptr<WindTurbineStat> WindTurbineStatsAddon::calculateStats(unsigned long long t) {
+  std::shared_ptr<WindTurbineStat> s = std::make_shared<WindTurbineStat>();
 
-  s.time = t;
-  s.timeLength = hour;
+  s->time = t;
+  s->timeLength = hour;
 
   unsigned long j = 0;
 
@@ -106,7 +124,7 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
       maxBattCurrent = doubleTmp;
     }
   }
-  s.work = w;
+  s->work = w;
 
   // coil time
   std::shared_ptr<MeasType> coil = measTypeArray->byName(measCoil);
@@ -138,17 +156,17 @@ WindTurbineStat WindTurbineStatsAddon::calculateStats(unsigned long long t) {
     }
   }
 
-  s.coilTime = coilTime;
-  s.battCurrentTime = battCurrentTime;
-  s.resistorTime = resistorTime;
-  s.maxBattCurrent = maxBattCurrent;
-  s.maxCoilVoltage = maxCoilVoltage;
-  s.maxBattVoltage = maxBattVoltage;
+  s->coilTime = coilTime;
+  s->battCurrentTime = battCurrentTime;
+  s->resistorTime = resistorTime;
+  s->maxBattCurrent = maxBattCurrent;
+  s->maxCoilVoltage = maxCoilVoltage;
+  s->maxBattVoltage = maxBattVoltage;
 
   return s;
 }
 
-void WindTurbineStatsAddon::store() {
+void WindTurbineStatsAddon::store(std::shared_ptr<WindTurbineStat> s) {
   std::ofstream outfile;
   std::string currentDate = Helper::currentDateSafe();
   std::string filename = path + "/wind_turbine_stats_" + currentDate + ".csv";
@@ -156,167 +174,148 @@ void WindTurbineStatsAddon::store() {
   logArray->log("WindTurbineStats", "store path " + filename);
 
   outfile.open(filename, std::ios_base::app);
-  outfile << s.time << "; ";
-  outfile << s.work << "; ";
-  outfile << s.timeLength << "; ";
-  outfile << s.coilTime << "; ";
-  outfile << s.battCurrentTime << "; ";
-  outfile << s.resistorTime << "; ";
-  outfile << s.maxBattCurrent << "; ";
-  outfile << s.maxBattVoltage << "; ";
-  outfile << s.maxCoilVoltage << "; ";
+  outfile << s->time << "; ";
+  outfile << s->work << "; ";
+  outfile << s->timeLength << "; ";
+  outfile << s->coilTime << "; ";
+  outfile << s->battCurrentTime << "; ";
+  outfile << s->resistorTime << "; ";
+  outfile << s->maxBattCurrent << "; ";
+  outfile << s->maxBattVoltage << "; ";
+  outfile << s->maxCoilVoltage << "; ";
   outfile << std::endl;
   outfile.close();
 
   logArray->log("WindTurbineStats", "stored");
 }
 
+#define NC_WS_ADDON_TIME 0
+#define NC_WS_ADDON_WORK NC_WS_ADDON_TIME + 11
+#define NC_WS_ADDON_COIL_TIME NC_WS_ADDON_WORK + 13
+#define NC_WS_ADDON_BATT_TIME NC_WS_ADDON_COIL_TIME + 11
+#define NC_WS_ADDON_RES_TIME NC_WS_ADDON_BATT_TIME + 11
+#define NC_WS_ADDON_MAX_BATT_CURRENT NC_WS_ADDON_RES_TIME + 11
+#define NC_WS_ADDON_MAX_BATT_VOLTAGE NC_WS_ADDON_MAX_BATT_CURRENT + 12
+#define NC_WS_ADDON_MAX_COIL_VOLTAGE NC_WS_ADDON_MAX_BATT_VOLTAGE + 12
+
+#define NS_WS_ADDON_COLOR_HIGH NC_COLOR_PAIR_ERROR_SET
+#define NS_WS_ADDON_COLOR_MED NC_COLOR_PAIR_NAME_SET
+#define NS_WS_ADDON_COLOR_LOW NC_COLOR_PAIR_VALUE_SET
+
 void WindTurbineStatsAddon::render() {
   wattron(window, NC_COLOR_PAIR_NAME_SET);
-  mvwprintw(window, 1, 1, "Wind Turbine Addon" );
+  mvwprintw(window, 1, 1, "Wind Turbine Stats Addon" );
   wattroff(window, NC_COLOR_PAIR_NAME_SET);
 
   int i = 3;
 
   // time
   wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "time" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_TIME, "time" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_WORK, "work" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_COIL_TIME, "coil time" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_BATT_TIME, "batt time" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_RES_TIME, "res time" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_MAX_BATT_CURRENT, "max b cur" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_MAX_BATT_VOLTAGE, "max b v" );
+  mvwprintw(window, i, 1 + NC_WS_ADDON_MAX_COIL_VOLTAGE, "max coil v" );
+
   wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.time).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+  if (bufferStat.size() == 0) {
+    return;
+  }
 
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.time).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+  for (int j = 0; j < (unsigned char) bufferStat.size(); j++) {
+    int iRow = i + 1 + j;
 
-  i++;
+    if (iRow >= (LINES - 3)) {
+      break;
+    }
 
-  // work time
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "work" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    std::shared_ptr<WindTurbineStat> s = bufferStat.at(bufferStat.size() - 1 - j);
 
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.work).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_SET);
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_TIME, Helper::timeToTimeString(s->time).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.work).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
-
-  i++;
-
-  // timeLength
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "timeLength" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.timeLength).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.timeLength).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    float w = s->work / 3600.0;
+    if (w > 100.0) {
+      wattron(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (w > 30.0) {
+      wattron(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattron(window, NS_WS_ADDON_COLOR_LOW);
+    }
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_WORK, MeasType::formattedValue(w, "Wh").c_str() );
+    if (w > 100.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (w > 30.0) {
+      wattron(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattroff(window, NS_WS_ADDON_COLOR_LOW);
+    }
 
 
-  i++;
+    wattron(window, NC_COLOR_PAIR_VALUE_SET);
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_COIL_TIME, Helper::intervalToString(s->coilTime).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
-  // coilTime
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "coilTime" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_SET);
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_BATT_TIME, Helper::intervalToString(s->battCurrentTime).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.coilTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+    wattron(window, NC_COLOR_PAIR_VALUE_SET);
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_RES_TIME, Helper::intervalToString(s->resistorTime).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.coilTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    if (s->maxBattCurrent > 5.0) {
+      wattron(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxBattCurrent > 2.0) {
+      wattron(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattron(window, NS_WS_ADDON_COLOR_LOW);
+    }
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_MAX_BATT_CURRENT, MeasType::formattedValue(s->maxBattCurrent, "A").c_str() );
+    if (s->maxBattCurrent > 5.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxBattCurrent > 2.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattroff(window, NS_WS_ADDON_COLOR_LOW);
+    }
 
+    if (s->maxBattVoltage > 37.0) {
+      wattron(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxBattVoltage > 34.0) {
+      wattron(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattron(window, NS_WS_ADDON_COLOR_LOW);
+    }
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_MAX_BATT_VOLTAGE, MeasType::formattedValue(s->maxBattVoltage, "V").c_str() );
+    if (s->maxBattVoltage > 37.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxBattVoltage > 34.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattroff(window, NS_WS_ADDON_COLOR_LOW);
+    }
 
-  i++;
-
-  // battCurrentTime
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "battCurrentTime" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.battCurrentTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.battCurrentTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
-
-  i++;
-
-  // resistorTime
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "resistorTime" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.resistorTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.resistorTime).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
-
-  i++;
-
-  // maxBattCurrent
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxBattCurrent" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxBattCurrent).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxBattCurrent).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
-
-  i++;
-
-  // maxBattVoltage
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxBattVoltage" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxBattVoltage).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxBattVoltage).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
-
-  i++;
-
-  // maxBattVoltage
-  wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_NAME, "maxCoilVoltage" );
-  wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_VALUE, std::to_string(s.maxCoilVoltage).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_SET);
-
-  wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-  mvwprintw(window, i, 1 + NC_WS_ADDON_PREV, std::to_string(prevS.maxCoilVoltage).c_str() );
-  wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
+    if (s->maxCoilVoltage > 28.0) {
+      wattron(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxCoilVoltage > 24.0) {
+      wattron(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattron(window, NS_WS_ADDON_COLOR_LOW);
+    }
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_MAX_COIL_VOLTAGE, MeasType::formattedValue(s->maxCoilVoltage, "V").c_str() );
+    if (s->maxCoilVoltage > 28.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_HIGH);
+    } else if (s->maxCoilVoltage > 24.0) {
+      wattroff(window, NS_WS_ADDON_COLOR_MED);
+    } else {
+      wattroff(window, NS_WS_ADDON_COLOR_LOW);
+    }
+  }
 
 }
