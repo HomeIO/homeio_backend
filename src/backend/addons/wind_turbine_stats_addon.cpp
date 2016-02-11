@@ -321,7 +321,7 @@ void WindTurbineStatsAddon::render() {
 }
 
 std::string WindTurbineStatsAddon::toJson() {
-  std::string json = "{\"data\": [";
+  std::string json = "{\"array\": [";
   std::string itemJson;
 
   for (int j = 0; j < (unsigned char) bufferStat.size(); j++) {
@@ -337,7 +337,6 @@ std::string WindTurbineStatsAddon::toJson() {
     itemJson += ", \"maxBattCurrent\": " + std::to_string(wst->maxBattCurrent);
     itemJson += ", \"maxBattVoltage\": " + std::to_string(wst->maxBattVoltage);
     itemJson += ", \"maxCoilVoltage\": " + std::to_string(wst->maxCoilVoltage);
-    itemJson += ", \"work\": " + std::to_string(wst->work);
 
     itemJson += "}";
     itemJson += ",";
@@ -350,6 +349,18 @@ std::string WindTurbineStatsAddon::toJson() {
     json.resize(json.size() - 1);
   }
 
-  json += "]}";
+  std::string keyDesc = "[";
+  keyDesc += "{\"key\": \"time\", \"type\": \"time\"},";
+  keyDesc += "{\"key\": \"work\", \"type\": \"float\", \"unit\": \"Wh\", \"coeff\": 0.0002777777777777778},";
+  keyDesc += "{\"key\": \"timeLength\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"coilTime\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"battCurrentTime\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"resistorTime\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"maxBattCurrent\", \"type\": \"float\", \"unit\": \"A\"},";
+  keyDesc += "{\"key\": \"maxBattVoltage\", \"type\": \"float\", \"unit\": \"V\"},";
+  keyDesc += "{\"key\": \"maxCoilVoltage\", \"type\": \"float\", \"unit\": \"V\"}";
+  keyDesc += "]";
+
+  json += "], \"name\": \"" + name + "\", \"keys\": " + keyDesc + "}";
   return json;
 }
