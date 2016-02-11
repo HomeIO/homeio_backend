@@ -13,6 +13,8 @@ class AbstractAddon {
   virtual void setup();
   virtual void perform();
   virtual void render();
+  virtual std::string toJson();
+  virtual std::string toJsonSummary();
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<LogArray> logArray;
@@ -21,5 +23,4 @@ class AbstractAddon {
   WINDOW *window;
 };
 
-//#include "abstract_addon.cpp"
 #endif

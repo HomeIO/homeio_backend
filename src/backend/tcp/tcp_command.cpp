@@ -61,6 +61,12 @@ std::string TcpCommand::processCommand(std::string command) {
   if (commandName == "overseerShow") {
     response = processOverseerShowCommand(command);
   }
+  if (commandName == "addonIndex") {
+    response = processAddonIndexCommand(command);
+  }
+  if (commandName == "addonShow") {
+    response = processAddonShowCommand(command);
+  }
   if (commandName == "settings") {
     response = processSettingsCommand(command);
   }
@@ -447,6 +453,32 @@ std::string TcpCommand::processOverseerShowCommand(std::string command) {
     response = "{\"status\":0,\"object\":" + foundOverseer->toJson() + "}";
   } else {
     response = "{\"status\":1,\"overseer\":\"" + overseerName + "\",\"reason\":\"overseer_not_found\"}";
+  }
+
+  return response;
+}
+
+// addons#index
+std::string TcpCommand::processAddonIndexCommand(std::string command) {
+  UNUSED(command);
+  std::string response, detailsResponse;
+
+  response = "{\"status\":0,\"array\":" + addonsArray->indexJson();
+  response += detailsResponse + "}";
+
+  return response;
+}
+
+// addons#show
+std::string TcpCommand::processAddonShowCommand(std::string command) {
+  std::string response, addonName;
+  addonName = command.substr(0, command.find(";"));
+  command = command.substr(command.find(";") + 1);
+
+  if (addonsArray->exists(addonName)) {
+    response = "{\"status\":0,\"object\":" + addonsArray->showJson(addonName) + "}";
+  } else {
+    response = "{\"status\":1,\"overseer\":\"" + addonName + "\",\"reason\":\"addon_not_found\"}";
   }
 
   return response;

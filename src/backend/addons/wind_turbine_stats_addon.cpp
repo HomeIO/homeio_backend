@@ -1,7 +1,7 @@
 #include "wind_turbine_stats_addon.hpp"
 
 WindTurbineStatsAddon::WindTurbineStatsAddon() {
-  name = "WindTurbineStats";
+  name = "wind_turbine_stats";
   lastTime = 0;
   coilThresholdVoltage = 5.0;
   batteryThresholdCurrent = 0.5;
@@ -318,4 +318,38 @@ void WindTurbineStatsAddon::render() {
     }
   }
 
+}
+
+std::string WindTurbineStatsAddon::toJson() {
+  std::string json = "{\"data\": [";
+  std::string itemJson;
+
+  for (int j = 0; j < (unsigned char) bufferStat.size(); j++) {
+    std::shared_ptr<WindTurbineStat> wst = bufferStat.at(bufferStat.size() - 1 - j);
+
+    itemJson = "{";
+    itemJson += "\"time\": " + std::to_string(wst->time);
+    itemJson += ", \"work\": " + std::to_string(wst->work);
+    itemJson += ", \"timeLength\": " + std::to_string(wst->timeLength);
+    itemJson += ", \"coilTime\": " + std::to_string(wst->coilTime);
+    itemJson += ", \"battCurrentTime\": " + std::to_string(wst->battCurrentTime);
+    itemJson += ", \"resistorTime\": " + std::to_string(wst->resistorTime);
+    itemJson += ", \"maxBattCurrent\": " + std::to_string(wst->maxBattCurrent);
+    itemJson += ", \"maxBattVoltage\": " + std::to_string(wst->maxBattVoltage);
+    itemJson += ", \"maxCoilVoltage\": " + std::to_string(wst->maxCoilVoltage);
+    itemJson += ", \"work\": " + std::to_string(wst->work);
+
+    itemJson += "}";
+    itemJson += ",";
+
+    json += itemJson;
+  }
+
+  // remove last coma
+  if (json[json.size() - 1] == ',') {
+    json.resize(json.size() - 1);
+  }
+
+  json += "]}";
+  return json;
 }

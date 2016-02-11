@@ -17,6 +17,10 @@ class AddonsArray {
   void stop();
   void add(AbstractAddon *a);
 
+  bool exists(std::string n);
+  std::string indexJson();
+  std::string showJson(std::string n);
+
   std::vector <std::unique_ptr<AbstractAddon>> addons;
   unsigned long int cycleInterval;
   bool isRunning;
@@ -26,7 +30,6 @@ class AddonsArray {
   std::mutex shutdownMutex;
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
-
   std::shared_ptr<LogArray> logArray;
 };
 

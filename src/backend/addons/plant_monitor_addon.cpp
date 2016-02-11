@@ -7,7 +7,7 @@
 #define NC_PLANT_PER_ITEM 5
 
 PlantMonitorAddon::PlantMonitorAddon() {
-  name = "PlantMonitor";
+  name = "plant_monitor";
   path = "stats";
 }
 

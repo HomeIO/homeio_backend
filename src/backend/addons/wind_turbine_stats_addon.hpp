@@ -20,6 +20,7 @@ class WindTurbineStatsAddon : public AbstractAddon {
   void setup();
   void perform();
   void render();
+  std::string toJson();
 
   std::string measNameU;
   std::string measNameI;

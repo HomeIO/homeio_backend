@@ -9,13 +9,10 @@
 #include "../meas/meas_type_array.hpp"
 #include "../meas/meas_fetcher.hpp"
 #include "../meas/meas_group.hpp"
-
 #include "../action/action_type_array.hpp"
-
 #include "../overseer/overseer_array.hpp"
-
+#include "../addons/addons_array.hpp"
 #include "../utils/frontend_settings.hpp"
-
 #include "../log/log_array.hpp"
 
 class TcpCommand {
@@ -43,6 +40,9 @@ class TcpCommand {
   std::string processOverseerIndexCommand(std::string command);
   std::string processOverseerShowCommand(std::string command);
 
+  std::string processAddonIndexCommand(std::string command);
+  std::string processAddonShowCommand(std::string command);
+
   std::string processSettingsCommand(std::string command);
   std::string processStatsCommand(std::string command);
 
@@ -54,6 +54,7 @@ class TcpCommand {
   std::shared_ptr<OverseerArray> overseerArray;
   std::shared_ptr<FrontendSettings> frontendSettings;
   std::shared_ptr<MeasGroup> measGroup;
+  std::shared_ptr<AddonsArray> addonsArray;
 
   std::shared_ptr<LogArray> logArray;
 

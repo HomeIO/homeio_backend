@@ -53,3 +53,37 @@ void AddonsArray::stop() {
   changing = false;
   ready = false;
 }
+
+bool AddonsArray::exists(std::string n) {
+  for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
+    if ( (*itr)->name == n ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+std::string AddonsArray::indexJson() {
+  std::string s = "[";
+
+  for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
+    s += (*itr)->toJsonSummary() + ",";
+  }
+  // remove last coma
+  if (s[s.size() - 1] == ',') {
+    s.resize(s.size() - 1);
+  }
+
+  s += "]";
+  return s;
+}
+
+std::string AddonsArray::showJson(std::string n) {
+  for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
+    if ( (*itr)->name == n ) {
+      return (*itr)->toJson();
+    }
+  }
+  return "NULL";
+}

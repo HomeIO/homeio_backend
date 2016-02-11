@@ -33,6 +33,7 @@ HomeIO::HomeIO() {
   tcpCommand->overseerArray = overseerArray;
   tcpCommand->frontendSettings = frontendSettings;
   tcpCommand->measGroup = measGroup;
+  tcpCommand->addonsArray = addonsArray;
 
   ncursesUI->meas->measTypeArray = measTypeArray;
   ncursesUI->action->actionTypeArray = actionTypeArray;
