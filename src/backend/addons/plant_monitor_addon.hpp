@@ -22,6 +22,7 @@ class PlantMonitorAddon : public AbstractAddon {
   void perform();
   void calculateStats();
   void render();
+  std::string toJson();
 
   std::vector <std::string> plantMeasNames;
   std::vector <std::shared_ptr<PlantMonitorItem>> plantMonitorItems;

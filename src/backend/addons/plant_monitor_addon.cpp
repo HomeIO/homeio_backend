@@ -122,3 +122,51 @@ void PlantMonitorAddon::render() {
     i++;
   }
 }
+
+
+std::string PlantMonitorAddon::toJson() {
+  std::string json = "{\"array\": [";
+  std::string itemJson;
+
+  for(std::vector<std::shared_ptr<PlantMonitorItem>>::iterator it = plantMonitorItems.begin(); it != plantMonitorItems.end(); ++it) {
+    std::shared_ptr<PlantMonitorItem> pmi = (*it);
+
+    itemJson = "{";
+    itemJson += "\"msWateredAgo\": " + std::to_string(pmi->msWateredAgo);
+    itemJson += ", \"preWater\": " + std::to_string(pmi->preWater);
+    itemJson += ", \"postWater\": " + std::to_string(pmi->postWater);
+    itemJson += ", \"drySpeed\": " + std::to_string(pmi->drySpeed);
+    itemJson += ", \"waterNeededIn\": " + std::to_string(pmi->waterNeededIn);
+    itemJson += ", \"waterAtValue\": " + std::to_string(pmi->waterAtValue);
+    itemJson += ", \"minValue\": " + std::to_string(pmi->minValue);
+    itemJson += ", \"minValueAgo\": " + std::to_string(pmi->minValueAgo);
+    itemJson += ", \"maxValue\": " + std::to_string(pmi->maxValue);
+    itemJson += ", \"maxValueAgo\": " + std::to_string(pmi->maxValueAgo);
+
+    itemJson += "}";
+    itemJson += ",";
+
+    json += itemJson;
+  }
+
+  // remove last coma
+  if (json[json.size() - 1] == ',') {
+    json.resize(json.size() - 1);
+  }
+
+  std::string keyDesc = "[";
+  keyDesc += "{\"key\": \"msWateredAgo\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"preWater\", \"type\": \"float\", \"unit\": \"%\"},";
+  keyDesc += "{\"key\": \"postWater\", \"type\": \"float\", \"unit\": \"%\"},";
+  keyDesc += "{\"key\": \"drySpeed\", \"type\": \"float\", \"unit\": \"%/s\"},";
+  keyDesc += "{\"key\": \"waterNeededIn\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"waterAtValue\", \"type\": \"float\", \"unit\": \"%\"},";
+  keyDesc += "{\"key\": \"minValue\", \"type\": \"float\", \"unit\": \"%\"},";
+  keyDesc += "{\"key\": \"minValueAgo\", \"type\": \"interval\"},";
+  keyDesc += "{\"key\": \"maxValue\", \"type\": \"float\", \"unit\": \"%\"},";
+  keyDesc += "{\"key\": \"maxValueAgo\", \"type\": \"interval\"}";
+  keyDesc += "]";
+
+  json += "], \"name\": \"" + name + "\", \"keys\": " + keyDesc + "}";
+  return json;
+}
