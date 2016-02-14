@@ -187,18 +187,18 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
 
     // max battery voltage
     doubleTmp = u->rawToValue( uRaw.at(j) );
-    if (maxBattVoltage < doubleTmp) {
+    if ( (doubleTmp < 60.0) && ((maxBattVoltage < doubleTmp) ) {
       maxBattVoltage = doubleTmp;
     }
 
     // battery current time
     doubleTmp = i->rawToValue( iRaw.at(j) );
-    if (doubleTmp >= batteryThresholdCurrent ) {
+    if ( (doubleTmp < 50.0) && (doubleTmp >= batteryThresholdCurrent ) ) {
       battCurrentTime += intervalInt;
     }
 
     // max battery current
-    if (maxBattCurrent < doubleTmp) {
+    if ( (doubleTmp < 50.0) && (maxBattCurrent < doubleTmp) ) {
       maxBattCurrent = doubleTmp;
     }
   }
@@ -218,7 +218,7 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
     }
 
     // max coil voltage
-    if (maxCoilVoltage < doubleTmp) {
+    if ( (doubleTmp < 60.0) && (maxCoilVoltage < doubleTmp) ) {
       maxCoilVoltage = doubleTmp;
     }
   }
