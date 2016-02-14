@@ -132,7 +132,10 @@ std::string PlantMonitorAddon::toJson() {
     std::shared_ptr<PlantMonitorItem> pmi = (*it);
 
     itemJson = "{";
-    itemJson += "\"msWateredAgo\": " + std::to_string(pmi->msWateredAgo);
+
+    itemJson += "\"measName\": \"" + pmi->measName + "\"";
+    itemJson += ", \"value\": " + std::to_string(pmi->value());
+    itemJson += ", \"msWateredAgo\": " + std::to_string(pmi->msWateredAgo);
     itemJson += ", \"preWater\": " + std::to_string(pmi->preWater);
     itemJson += ", \"postWater\": " + std::to_string(pmi->postWater);
     itemJson += ", \"drySpeed\": " + std::to_string(pmi->drySpeed);
@@ -155,6 +158,8 @@ std::string PlantMonitorAddon::toJson() {
   }
 
   std::string keyDesc = "[";
+  keyDesc += "{\"key\": \"measName\", \"type\": \"string\"},";
+  keyDesc += "{\"key\": \"value\", \"type\": \"float\", \"unit\": \"%\"},";
   keyDesc += "{\"key\": \"msWateredAgo\", \"type\": \"interval\"},";
   keyDesc += "{\"key\": \"preWater\", \"type\": \"float\", \"unit\": \"%\"},";
   keyDesc += "{\"key\": \"postWater\", \"type\": \"float\", \"unit\": \"%\"},";

@@ -14,6 +14,10 @@ PlantMonitorItem::PlantMonitorItem() {
   waterAtValue = 50.0;
 }
 
+double PlantMonitorItem::value() {
+  return measType->valueAt(0);
+}
+
 void PlantMonitorItem::process() {
   if (0 == measType->buffer->count) {
     return;
@@ -30,7 +34,7 @@ void PlantMonitorItem::process() {
   unsigned long int tempRegions = 0;
   meas_buffer_index tempLastWateredIndex = 0;
 
-  oldValue = measType->valueAt(0);
+  oldValue = value();
   newValue = oldValue;
   minValue = oldValue;
   maxValue = oldValue;

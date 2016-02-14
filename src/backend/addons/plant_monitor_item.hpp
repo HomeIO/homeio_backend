@@ -18,6 +18,7 @@ class PlantMonitorItem {
   void process();
   bool wasWateredNow(double oldValue, double newValue);
 
+  double value();
   unsigned long long msWateredAgo;
   double preWater, postWater;
   double drySpeed;
