@@ -21,6 +21,10 @@ class WindTurbineStat {
   double maxCoilVoltage;
   double maxBattVoltage;
 
+  double avgBattCurrent;
+  double avgCoilVoltage;
+  double avgBattVoltage;
+
   std::string toCsv();
   void fromCsv(std::string s);
   std::string toJson();

@@ -13,6 +13,10 @@ WindTurbineStat::WindTurbineStat() {
   maxBattCurrent = 0.0;
   maxCoilVoltage = 0.0;
   maxBattVoltage = 0.0;
+
+  avgBattCurrent = 0.0;
+  avgCoilVoltage = 0.0;
+  avgBattVoltage = 0.0;
 }
 
 std::string WindTurbineStat::toCsv() {
@@ -26,6 +30,10 @@ std::string WindTurbineStat::toCsv() {
   s += std::to_string(maxBattCurrent) + "; ";
   s += std::to_string(maxBattVoltage) + "; ";
   s += std::to_string(maxCoilVoltage) + "; ";
+  s += std::to_string(avgBattCurrent) + "; ";
+  s += std::to_string(avgCoilVoltage) + "; ";
+  s += std::to_string(avgBattVoltage) + "; ";
+
 
   return s;
 }
@@ -60,6 +68,15 @@ void WindTurbineStat::fromCsv(std::string s) {
 
   std::getline(ss, token, ';');
   maxCoilVoltage = std::atof(token.c_str());
+
+  std::getline(ss, token, ';');
+  avgBattCurrent = std::atof(token.c_str());
+
+  std::getline(ss, token, ';');
+  avgBattVoltage = std::atof(token.c_str());
+
+  std::getline(ss, token, ';');
+  avgCoilVoltage = std::atof(token.c_str());
 }
 
 std::string WindTurbineStat::toJson() {
@@ -73,6 +90,9 @@ std::string WindTurbineStat::toJson() {
   s += ", \"maxBattCurrent\": " + std::to_string(maxBattCurrent);
   s += ", \"maxBattVoltage\": " + std::to_string(maxBattVoltage);
   s += ", \"maxCoilVoltage\": " + std::to_string(maxCoilVoltage);
+  s += ", \"avgBattCurrent\": " + std::to_string(avgBattCurrent);
+  s += ", \"avgBattVoltage\": " + std::to_string(avgBattVoltage);
+  s += ", \"avgCoilVoltage\": " + std::to_string(avgCoilVoltage);
   s += "}";
   return s;
 }

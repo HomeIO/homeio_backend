@@ -155,6 +155,10 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
   double intervalDouble = 0.0;
   unsigned long int intervalInt = 0;
   unsigned long int rawSize = 0;
+  double sumTmp = 0.0;
+  double sumTmpB = 0.0;
+  long sumCount = 0;
+  long sumCountB = 0;
 
   unsigned long int coilTime = 0;
   unsigned long int battCurrentTime = 0;
@@ -176,6 +180,12 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
     rawSize = iRaw.size();
   }
 
+  // clear for avg
+  sumTmp = 0.0;
+  sumTmpB = 0.0;
+  sumCount = 0;
+  sumCountB = 0;
+
   for (j = 0; j < rawSize; j++ ) {
     // work
     // V*A*s
@@ -187,8 +197,11 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
 
     // max battery voltage
     doubleTmp = u->rawToValue( uRaw.at(j) );
-    if ( (doubleTmp < 60.0) && ((maxBattVoltage < doubleTmp) ) {
+    if ( (doubleTmp < 60.0) && (maxBattVoltage < doubleTmp) ) {
       maxBattVoltage = doubleTmp;
+
+      sumTmp += doubleTmp;
+      sumCount++;
     }
 
     // battery current time
@@ -200,11 +213,26 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
     // max battery current
     if ( (doubleTmp < 50.0) && (maxBattCurrent < doubleTmp) ) {
       maxBattCurrent = doubleTmp;
+
+      sumTmpB += doubleTmp;
+      sumCountB++;
     }
   }
   s->work = w;
+  s->maxBattCurrent = maxBattCurrent;
+  s->battCurrentTime = battCurrentTime;
+  s->maxBattVoltage = maxBattVoltage;
+
+  if ( sumCountB > 0) {
+    s->avgBattCurrent = sumTmpB / ( (double) sumCountB );
+  }
+  if ( sumCount > 0) {
+    s->avgBattVoltage = sumTmp / ( (double) sumCount );
+  }
 
   // coil time
+  sumTmp = 0.0;
+  sumCount = 0;
 
   std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(s->time), coil->timeToIndex(s->time + interval), 0);
   intervalInt = coil->buffer->calcInterval();
@@ -220,7 +248,17 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
     // max coil voltage
     if ( (doubleTmp < 60.0) && (maxCoilVoltage < doubleTmp) ) {
       maxCoilVoltage = doubleTmp;
+
+      sumTmp += doubleTmp;
+      sumCount++;
     }
+  }
+
+  s->coilTime = coilTime;
+  s->maxCoilVoltage = maxCoilVoltage;
+
+  if ( sumCount > 0) {
+    s->avgCoilVoltage = sumTmp / ( (double) sumCount );
   }
 
   // resistor time
@@ -234,12 +272,8 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
     }
   }
 
-  s->coilTime = coilTime;
-  s->battCurrentTime = battCurrentTime;
   s->resistorTime = resistorTime;
-  s->maxBattCurrent = maxBattCurrent;
-  s->maxCoilVoltage = maxCoilVoltage;
-  s->maxBattVoltage = maxBattVoltage;
+
 }
 
 void WindTurbinePeriodicStatsAddon::addToBuffer(std::shared_ptr<WindTurbineStat> wts) {
