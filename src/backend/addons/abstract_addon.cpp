@@ -13,6 +13,10 @@ void AbstractAddon::render() {
   wattroff(window, NC_COLOR_PAIR_NAME_SET);
 }
 
+void AbstractAddon::stop() {
+}
+
+
 std::string AbstractAddon::toJson() {
   return "null";
 }

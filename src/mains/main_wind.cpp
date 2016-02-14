@@ -333,12 +333,19 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
-  WindTurbineStatsAddon *wts = new WindTurbineStatsAddon;
-  wts->measNameU = "batt_u";
-  wts->measNameI = "i_gen_batt";
-  wts->measCoil = "coil_1_u";
-  wts->measResistor = "res_pwm_avg";
-  h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(wts));
+  // std::unique_ptr<WindTurbineStatsAddon> wts = std::make_unique<WindTurbineStatsAddon>();
+  // wts->measNameU = "batt_u";
+  // wts->measNameI = "i_gen_batt";
+  // wts->measCoil = "coil_1_u";
+  // wts->measResistor = "res_pwm_avg";
+  // h->addonsArray->addons.push_back(std::move(wts));
+
+  std::unique_ptr<WindTurbineDailyStatsAddon> wtds = std::make_unique<WindTurbineDailyStatsAddon>();
+  wtds->measNameU = "batt_u";
+  wtds->measNameI = "i_gen_batt";
+  wtds->measCoil = "coil_1_u";
+  wtds->measResistor = "res_pwm_avg";
+  h->addonsArray->addons.push_back(std::move(wtds));
 
   // UI
   h->ncursesUI->interval = 1000;

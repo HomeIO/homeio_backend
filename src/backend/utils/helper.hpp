@@ -13,6 +13,7 @@
 #include <limits>
 #include <fstream>
 #include <sys/stat.h>
+#include <cmath>
 
 #include <unistd.h>
 #include <sys/resource.h>
@@ -57,6 +58,7 @@ class Helper {
   static std::string intervalToString(meas_time timeInterval);
   static std::string timeToTimeString(meas_time timeInterval);
   static std::string timeToDateTimeString(meas_time mt);
+  static std::string timeToDateString(meas_time mt);
   static unsigned long long uTime();
   static unsigned long long mTime();
   static unsigned int onlyMiliseconds();

@@ -47,6 +47,9 @@ void AddonsArray::stop() {
   changing = true;
 
   shutdownMutex.lock();
+  for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
+    (*itr)->stop();
+  }
   shutdownMutex.unlock();
   logArray->log("AddonsArray", "stop");
 

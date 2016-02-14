@@ -1,9 +1,10 @@
-#ifndef WIND_TURBINE_STATS_ADDON_HPP
-#define	WIND_TURBINE_STATS_ADDON_HPP
+#ifndef WIND_TURBINE_DAILY_STATS_ADDON_HPP
+#define	WIND_TURBINE_DAILY_STATS_ADDON_HPP
 
 #include <string>
 #include <sys/stat.h>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <memory>
 
@@ -12,13 +13,18 @@
 #include "../utils/helper.hpp"
 #include "../meas/meas_definitions.hpp"
 
-class WindTurbineStatsAddon : public AbstractAddon {
+class WindTurbineDailyStatsAddon : public AbstractAddon {
  public:
-  WindTurbineStatsAddon();
+  WindTurbineDailyStatsAddon();
 
   void setup();
+  std::string backupFilename();
+  void restore();
+  void dump();
+  meas_time normalizeTime(meas_time t);
   void perform();
   void render();
+  void stop();
   std::string toJson();
 
   std::string measNameU;
@@ -31,20 +37,20 @@ class WindTurbineStatsAddon : public AbstractAddon {
   std::shared_ptr<MeasType> coil;
   std::shared_ptr<MeasType> resistor;
 
-  unsigned char bufferMax;
+  unsigned int bufferMax;
   std::vector<std::shared_ptr<WindTurbineStat>> bufferStat;
   void addToBuffer(std::shared_ptr<WindTurbineStat> wts);
 
   double coilThresholdVoltage;
   double batteryThresholdCurrent;
 
-  static constexpr unsigned long long hour = 60*60*1000;
+  static constexpr unsigned long long day = 24*3600*1000;
 
   std::string path;
-  unsigned long long lastTime;
+  meas_time lastTime;
+  meas_time interval;
 
-  unsigned long long calculateTimeFrom();
-  std::shared_ptr<WindTurbineStat> calculateStats(unsigned long long t);
+  void updateStats(std::shared_ptr<WindTurbineStat> s);
   void store(std::shared_ptr<WindTurbineStat> s);
   void repopulateFromBuffer();
 };

@@ -167,6 +167,8 @@ void MeasBufferBackupStorage::performRestore() {
           infile >> tmpRaw;
           measBuffer->add(tmpRaw);
         }
+        infile.close();
+        
         logArray->log("MeasBufferBackupStorage", "[" + measType->name + "] RESTORE loaded");
 
         // modify times

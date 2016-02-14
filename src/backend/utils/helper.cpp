@@ -53,28 +53,28 @@ std::string Helper::intervalToString(meas_time timeInterval) {
   if (timeInterval < 1000) {
     return std::to_string(timeInterval) + " ms";
   } else {
-    timeInterval = timeInterval / 1000;
+    timeInterval = std::round((double)timeInterval / 1000.0);
   }
 
   // s
   if (timeInterval < 600) {
     return std::to_string(timeInterval) + " s";
   } else {
-    timeInterval = timeInterval / 60;
+    timeInterval = std::round((double)timeInterval / 60.0);
   }
 
   // min
   if (timeInterval < 600) {
     return std::to_string(timeInterval) + " min";
   } else {
-    timeInterval = timeInterval / 60;
+    timeInterval = std::round((double)timeInterval / 60.0);
   }
 
   // hours
   if (timeInterval < (24*7)) {
     return std::to_string(timeInterval) + " hours";
   } else {
-    timeInterval = timeInterval / 24;
+    timeInterval = std::round((double)timeInterval / 24.0);
   }
 
   // days
@@ -105,6 +105,18 @@ std::string Helper::timeToDateTimeString(meas_time mt) {
   currentTimeInfo = localtime (&t);
 
   strftime (currentTimeBuffer, TIME_STRING_MAX_BUFFER,  "%Y-%m-%d %H:%M:%S", currentTimeInfo);
+
+  return std::string(currentTimeBuffer);
+}
+
+std::string Helper::timeToDateString(meas_time mt) {
+  time_t t = timeToObject(mt);
+
+  struct tm * currentTimeInfo;
+  char currentTimeBuffer[TIME_STRING_MAX_BUFFER];
+  currentTimeInfo = localtime (&t);
+
+  strftime (currentTimeBuffer, TIME_STRING_MAX_BUFFER,  "%Y-%m-%d", currentTimeInfo);
 
   return std::string(currentTimeBuffer);
 }

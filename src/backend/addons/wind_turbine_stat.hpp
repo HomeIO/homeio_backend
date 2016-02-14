@@ -1,6 +1,10 @@
 #ifndef WIND_TURBINE_STATS_HPP
 #define	WIND_TURBINE_STATS_HPP
 
+#include <string>
+#include <sstream>
+#include <cstdlib>
+
 class WindTurbineStat {
  public:
   WindTurbineStat();
@@ -16,6 +20,10 @@ class WindTurbineStat {
   double maxBattCurrent;
   double maxCoilVoltage;
   double maxBattVoltage;
+
+  std::string toCsv();
+  void fromCsv(std::string s);
+  std::string toJson();
 } ;
 
 //#include "wind_turbine_stat.cpp"
