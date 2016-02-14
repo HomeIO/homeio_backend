@@ -1,7 +1,7 @@
-#include "wind_turbine_daily_stats_addon.hpp"
+#include "wind_turbine_periodic_stats_addon.hpp"
 
-WindTurbineDailyStatsAddon::WindTurbineDailyStatsAddon() {
-  name = "wind_turbine_daily_stats";
+WindTurbinePeriodicStatsAddon::WindTurbinePeriodicStatsAddon() {
+  name = "wind_turbine_periodic_stats";
   lastTime = 0;
   coilThresholdVoltage = 5.0;
   batteryThresholdCurrent = 0.5;
@@ -9,13 +9,20 @@ WindTurbineDailyStatsAddon::WindTurbineDailyStatsAddon() {
   path = "stats";
 
   bufferMax = 60;
-  interval = 5000; // TODO
+  calcInterval = 60000; // every minute
+  interval = 24*3600*1000; // how often calculate, default - daily status
+
+  storeDailyFiles = false;
+  storeEnabled = true;
 }
 
-void WindTurbineDailyStatsAddon::setup() {
+void WindTurbinePeriodicStatsAddon::setup() {
   // create path at start, no wait
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
-  restore();
+
+  if (storeEnabled) {
+    restore();
+  }
 
   u = measTypeArray->byName(measNameU);
   i = measTypeArray->byName(measNameI);
@@ -23,15 +30,26 @@ void WindTurbineDailyStatsAddon::setup() {
   resistor = measTypeArray->byName(measResistor);
 }
 
-void WindTurbineDailyStatsAddon::stop() {
-  dump();
+void WindTurbinePeriodicStatsAddon::stop() {
+  if (storeEnabled) {
+    dump();
+  }
 }
 
-std::string WindTurbineDailyStatsAddon::backupFilename() {
-  return "stats/addon_backup" + name + ".txt";
+std::string WindTurbinePeriodicStatsAddon::backupFilename() {
+  return path + "/addon_backup_" + name + ".txt";
 }
 
-void WindTurbineDailyStatsAddon::restore() {
+std::string WindTurbinePeriodicStatsAddon::storeFilename(std::shared_ptr<WindTurbineStat> s) {
+  if (storeDailyFiles) {
+    return path + "/" + name + "_" + Helper::currentDateSafe() + "_stats.csv";
+  } else {
+    return path + "/" + name + "_stats.csv";
+  }
+}
+
+
+void WindTurbinePeriodicStatsAddon::restore() {
   std::ifstream infile;
   infile.open(backupFilename(), std::ios_base::in);
   if (infile.good()) {
@@ -40,7 +58,7 @@ void WindTurbineDailyStatsAddon::restore() {
 
     getline(infile, line);
     count = std::atoi(line.c_str());
-    logArray->log("WindTurbineDailyStatsAddon", "load backup: " + std::to_string(count));
+    logArray->log("WindTurbinePeriodicStatsAddon", "load backup: " + std::to_string(count));
 
     getline(infile, line);
 
@@ -55,7 +73,7 @@ void WindTurbineDailyStatsAddon::restore() {
   infile.close();
 }
 
-void WindTurbineDailyStatsAddon::dump() {
+void WindTurbinePeriodicStatsAddon::dump() {
   std::ofstream outfile;
   outfile.open(backupFilename(), std::ios_base::out);
   outfile << bufferStat.size() << "\n";
@@ -70,33 +88,33 @@ void WindTurbineDailyStatsAddon::dump() {
   outfile.close();
 }
 
-meas_time WindTurbineDailyStatsAddon::normalizeTime(meas_time t) {
-  return t - (t % day);
+meas_time WindTurbinePeriodicStatsAddon::normalizeTime(meas_time t) {
+  return t - (t % interval);
 }
 
-void WindTurbineDailyStatsAddon::perform() {
+void WindTurbinePeriodicStatsAddon::perform() {
   if (lastTime > ( Helper::mTime() - interval) ) {
     return;
   }
 
   meas_time initialTime = normalizeTime( i->buffer->earliestTime() );
-  meas_time endTime = normalizeTime( Helper::mTime() ) + day;
+  meas_time endTime = normalizeTime( Helper::mTime() ) + interval;
   meas_time t = initialTime;
 
-  logArray->log("WindTurbineDailyStatsAddon", "initialTime: " + std::to_string(initialTime));
-  logArray->log("WindTurbineDailyStatsAddon", "endTime:" + std::to_string(endTime));
+  logArray->log("WindTurbinePeriodicStatsAddon", "initialTime: " + std::to_string(initialTime));
+  logArray->log("WindTurbinePeriodicStatsAddon", "endTime:" + std::to_string(endTime));
 
   if (bufferStat.size() == 0) {
     // repopulate
     while (t < endTime) {
-      logArray->log("WindTurbineDailyStatsAddon", "repopulate: " + std::to_string(t));
+      logArray->log("WindTurbinePeriodicStatsAddon", "repopulate: " + std::to_string(t));
 
       std::shared_ptr<WindTurbineStat> s = std::make_shared<WindTurbineStat>();
       s->time = t;
       updateStats(s);
       addToBuffer(s);
 
-      t += day;
+      t += interval;
     }
 
   } else {
@@ -105,15 +123,19 @@ void WindTurbineDailyStatsAddon::perform() {
     t = s->time;
     updateStats(s);
 
-    while ( (t + day) < endTime) {
-      logArray->log("WindTurbineDailyStatsAddon", "append fresh: " + std::to_string(t));
+    while ( (t + interval) < endTime) {
+      logArray->log("WindTurbinePeriodicStatsAddon", "append fresh: " + std::to_string(t));
 
       std::shared_ptr<WindTurbineStat> s = std::make_shared<WindTurbineStat>();
       s->time = t;
       updateStats(s);
       addToBuffer(s);
 
-      t += day;
+      if (storeEnabled) {
+        store(s);
+      }
+
+      t += interval;
     }
 
   }
@@ -121,8 +143,8 @@ void WindTurbineDailyStatsAddon::perform() {
   lastTime = Helper::mTime();
 }
 
-void WindTurbineDailyStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s) {
-  s->timeLength = day;
+void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s) {
+  s->timeLength = interval;
 
   unsigned long j = 0;
 
@@ -142,8 +164,8 @@ void WindTurbineDailyStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s)
   double maxBattVoltage = 0.0;
 
   // work
-  std::vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(s->time), u->timeToIndex(s->time + day), 0);
-  std::vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(s->time), i->timeToIndex(s->time + day), 0);
+  std::vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(s->time), u->timeToIndex(s->time + interval), 0);
+  std::vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(s->time), i->timeToIndex(s->time + interval), 0);
 
   intervalDouble = (double) u->buffer->calcInterval();
   intervalInt = i->buffer->calcInterval();
@@ -184,7 +206,7 @@ void WindTurbineDailyStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s)
 
   // coil time
 
-  std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(s->time), coil->timeToIndex(s->time + day), 0);
+  std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(s->time), coil->timeToIndex(s->time + interval), 0);
   intervalInt = coil->buffer->calcInterval();
 
   for (j = 0; j < coilRaw.size(); j++ ) {
@@ -203,7 +225,7 @@ void WindTurbineDailyStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s)
 
   // resistor time
 
-  std::vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(s->time), resistor->timeToIndex(s->time + day), 0);
+  std::vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(s->time), resistor->timeToIndex(s->time + interval), 0);
   intervalInt = resistor->buffer->calcInterval();
 
   for (j = 0; j < resistorRaw.size(); j++ ) {
@@ -220,7 +242,7 @@ void WindTurbineDailyStatsAddon::updateStats(std::shared_ptr<WindTurbineStat> s)
   s->maxBattVoltage = maxBattVoltage;
 }
 
-void WindTurbineDailyStatsAddon::addToBuffer(std::shared_ptr<WindTurbineStat> wts) {
+void WindTurbinePeriodicStatsAddon::addToBuffer(std::shared_ptr<WindTurbineStat> wts) {
   if ( (unsigned char) bufferStat.size() >= (unsigned char) bufferMax ) {
     bufferStat.erase( bufferStat.begin() );
   }
@@ -229,23 +251,21 @@ void WindTurbineDailyStatsAddon::addToBuffer(std::shared_ptr<WindTurbineStat> wt
 
 
 
-void WindTurbineDailyStatsAddon::store(std::shared_ptr<WindTurbineStat> s) {
+void WindTurbinePeriodicStatsAddon::store(std::shared_ptr<WindTurbineStat> s) {
   std::ofstream outfile;
-  std::string currentDate = Helper::currentDateSafe();
-  std::string filename = path + "/wind_turbine_daily_stats.csv";
 
-  logArray->log("WindTurbineDailyStatsAddon", "store path " + filename);
+  logArray->log("WindTurbinePeriodicStatsAddon", "store path " + storeFilename(s));
 
-  outfile.open(filename, std::ios_base::app);
+  outfile.open(storeFilename(s), std::ios_base::app);
   outfile << s->toCsv();
   outfile << std::endl;
   outfile.close();
 
-  logArray->log("WindTurbineDailyStatsAddon", "stored");
+  logArray->log("WindTurbinePeriodicStatsAddon", "stored");
 }
 
 #define NC_WS_ADDON_TIME 0
-#define NC_WS_ADDON_WORK NC_WS_ADDON_TIME + 11
+#define NC_WS_ADDON_WORK NC_WS_ADDON_TIME + 20
 #define NC_WS_ADDON_COIL_TIME NC_WS_ADDON_WORK + 13
 #define NC_WS_ADDON_BATT_TIME NC_WS_ADDON_COIL_TIME + 11
 #define NC_WS_ADDON_RES_TIME NC_WS_ADDON_BATT_TIME + 11
@@ -257,9 +277,9 @@ void WindTurbineDailyStatsAddon::store(std::shared_ptr<WindTurbineStat> s) {
 #define NS_WS_ADDON_COLOR_MED NC_COLOR_PAIR_NAME_SET
 #define NS_WS_ADDON_COLOR_LOW NC_COLOR_PAIR_VALUE_SET
 
-void WindTurbineDailyStatsAddon::render() {
+void WindTurbinePeriodicStatsAddon::render() {
   wattron(window, NC_COLOR_PAIR_NAME_SET);
-  mvwprintw(window, 1, 1, "Wind Turbine Daily Stats Addon" );
+  mvwprintw(window, 1, 1, ("Wind Turbine Periodic Stats Addon - " + Helper::intervalToString(interval)).c_str() );
   wattroff(window, NC_COLOR_PAIR_NAME_SET);
 
   int i = 3;
@@ -291,7 +311,7 @@ void WindTurbineDailyStatsAddon::render() {
     std::shared_ptr<WindTurbineStat> s = bufferStat.at(bufferStat.size() - 1 - j);
 
     wattron(window, NC_COLOR_PAIR_VALUE_SET);
-    mvwprintw(window, iRow, 1 + NC_WS_ADDON_TIME, Helper::timeToDateString(s->time).c_str() );
+    mvwprintw(window, iRow, 1 + NC_WS_ADDON_TIME, Helper::timeToDateTimeString(s->time).c_str() );
     wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
     float w = s->work / 3600.0;
@@ -375,7 +395,7 @@ void WindTurbineDailyStatsAddon::render() {
 
 }
 
-std::string WindTurbineDailyStatsAddon::toJson() {
+std::string WindTurbinePeriodicStatsAddon::toJson() {
   std::string json = "{\"array\": [";
 
   for (int j = 0; j < (unsigned char) bufferStat.size(); j++) {

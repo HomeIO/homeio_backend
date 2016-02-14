@@ -333,19 +333,49 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
-  // std::unique_ptr<WindTurbineStatsAddon> wts = std::make_unique<WindTurbineStatsAddon>();
-  // wts->measNameU = "batt_u";
-  // wts->measNameI = "i_gen_batt";
-  // wts->measCoil = "coil_1_u";
-  // wts->measResistor = "res_pwm_avg";
-  // h->addonsArray->addons.push_back(std::move(wts));
+  // old stats, only to test new version
+  std::unique_ptr<WindTurbineStatsAddon> wts = std::make_unique<WindTurbineStatsAddon>();
+  wts->measNameU = "batt_u";
+  wts->measNameI = "i_gen_batt";
+  wts->measCoil = "coil_1_u";
+  wts->measResistor = "res_pwm_avg";
+  h->addonsArray->addons.push_back(std::move(wts));
 
-  std::unique_ptr<WindTurbineDailyStatsAddon> wtds = std::make_unique<WindTurbineDailyStatsAddon>();
+  // new stats
+  std::unique_ptr<WindTurbinePeriodicStatsAddon> wtds = std::make_unique<WindTurbinePeriodicStatsAddon>();
+  wtds->name = "wind_daily_stats";
+  wtds->bufferMax = 365;
+  wtds->calcInterval = 5*60*1000; // every 5 minutes
+  wtds->interval = 24*60*60*1000; // daily
   wtds->measNameU = "batt_u";
   wtds->measNameI = "i_gen_batt";
   wtds->measCoil = "coil_1_u";
   wtds->measResistor = "res_pwm_avg";
   h->addonsArray->addons.push_back(std::move(wtds));
+
+  std::unique_ptr<WindTurbinePeriodicStatsAddon> wths = std::make_unique<WindTurbinePeriodicStatsAddon>();
+  wths->name = "wind_hourly_stats";
+  wths->bufferMax = 7*24;
+  wths->storeDailyFiles = true;
+  wths->calcInterval = 1*60*1000; // every 5 minutes
+  wths->interval = 60*60*1000; // hourly
+  wths->measNameU = "batt_u";
+  wths->measNameI = "i_gen_batt";
+  wths->measCoil = "coil_1_u";
+  wths->measResistor = "res_pwm_avg";
+  h->addonsArray->addons.push_back(std::move(wths));
+
+  std::unique_ptr<WindTurbinePeriodicStatsAddon> wtms = std::make_unique<WindTurbinePeriodicStatsAddon>();
+  wtms->name = "wind_minutes_stats";
+  wtms->bufferMax = 60;
+  wtms->storeEnabled = false;
+  wtms->calcInterval = 5*1000; // every 5 minutes
+  wtms->interval = 60*1000; // minute
+  wtms->measNameU = "batt_u";
+  wtms->measNameI = "i_gen_batt";
+  wtms->measCoil = "coil_1_u";
+  wtms->measResistor = "res_pwm_avg";
+  h->addonsArray->addons.push_back(std::move(wtms));
 
   // UI
   h->ncursesUI->interval = 1000;

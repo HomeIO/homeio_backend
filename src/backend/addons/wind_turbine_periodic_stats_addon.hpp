@@ -13,12 +13,13 @@
 #include "../utils/helper.hpp"
 #include "../meas/meas_definitions.hpp"
 
-class WindTurbineDailyStatsAddon : public AbstractAddon {
+class WindTurbinePeriodicStatsAddon : public AbstractAddon {
  public:
-  WindTurbineDailyStatsAddon();
+  WindTurbinePeriodicStatsAddon();
 
   void setup();
   std::string backupFilename();
+  std::string storeFilename(std::shared_ptr<WindTurbineStat> s);
   void restore();
   void dump();
   meas_time normalizeTime(meas_time t);
@@ -44,11 +45,13 @@ class WindTurbineDailyStatsAddon : public AbstractAddon {
   double coilThresholdVoltage;
   double batteryThresholdCurrent;
 
-  static constexpr unsigned long long day = 24*3600*1000;
+  meas_time interval;
+  bool storeDailyFiles; // if true store in different file everyday
+  bool storeEnabled; // if false not store stats to file
 
   std::string path;
   meas_time lastTime;
-  meas_time interval;
+  meas_time calcInterval;
 
   void updateStats(std::shared_ptr<WindTurbineStat> s);
   void store(std::shared_ptr<WindTurbineStat> s);
