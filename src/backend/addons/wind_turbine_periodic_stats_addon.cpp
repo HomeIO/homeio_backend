@@ -3,6 +3,8 @@
 WindTurbinePeriodicStatsAddon::WindTurbinePeriodicStatsAddon() {
   name = "wind_turbine_periodic_stats";
   lastTime = 0;
+  lastStoreTime = 0;
+
   coilThresholdVoltage = 5.0;
   batteryThresholdCurrent = 0.5;
 
@@ -58,8 +60,13 @@ void WindTurbinePeriodicStatsAddon::restore() {
 
     getline(infile, line);
     count = std::atoi(line.c_str());
+    getline(infile, line);
+    lastStoreTime = std::stoull(line.c_str());
+
     logArray->log("WindTurbinePeriodicStatsAddon", "load backup: " + std::to_string(count));
 
+    getline(infile, line);
+    getline(infile, line);
     getline(infile, line);
 
     for (int i = 0; i < count; i++) {
@@ -77,6 +84,10 @@ void WindTurbinePeriodicStatsAddon::dump() {
   std::ofstream outfile;
   outfile.open(backupFilename(), std::ios_base::out);
   outfile << bufferStat.size() << "\n";
+  outfile << lastStoreTime << "\n";
+
+  outfile << std::endl;
+  outfile << std::endl;
   outfile << std::endl;
 
   for (unsigned int i = 0; i < bufferStat.size(); i++ ) {
@@ -131,13 +142,22 @@ void WindTurbinePeriodicStatsAddon::perform() {
       updateStats(s);
       addToBuffer(s);
 
-      if (storeEnabled) {
-        store(s);
-      }
-
       t += interval;
     }
+  }
 
+
+
+  // iterate and store
+  if (storeEnabled) {
+    for (unsigned int i = 0; i < bufferStat.size(); i++) {
+      std::shared_ptr<WindTurbineStat> s = bufferStat[i];
+
+      if (s->time > lastStoreTime) {
+        store(s);
+        lastStoreTime = s->time;
+      }
+    }
   }
 
   lastTime = Helper::mTime();

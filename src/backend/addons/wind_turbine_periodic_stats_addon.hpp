@@ -52,6 +52,7 @@ class WindTurbinePeriodicStatsAddon : public AbstractAddon {
   std::string path;
   meas_time lastTime;
   meas_time calcInterval;
+  meas_time lastStoreTime;
 
   void updateStats(std::shared_ptr<WindTurbineStat> s);
   void store(std::shared_ptr<WindTurbineStat> s);

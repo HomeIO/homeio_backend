@@ -72,7 +72,7 @@ std::string Helper::intervalToString(meas_time timeInterval) {
 
   // hours
   if (timeInterval < (24*7)) {
-    return std::to_string(timeInterval) + " hours";
+    return std::to_string(timeInterval) + " h";
   } else {
     timeInterval = std::round((double)timeInterval / 24.0);
   }
