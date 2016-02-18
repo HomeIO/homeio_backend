@@ -163,7 +163,7 @@ std::string PlantMonitorAddon::toJson() {
   keyDesc += "{\"key\": \"msWateredAgo\", \"type\": \"interval\"},";
   keyDesc += "{\"key\": \"preWater\", \"type\": \"float\", \"unit\": \"%\"},";
   keyDesc += "{\"key\": \"postWater\", \"type\": \"float\", \"unit\": \"%\"},";
-  keyDesc += "{\"key\": \"drySpeed\", \"type\": \"float\", \"unit\": \"%/s\"},";
+  keyDesc += "{\"key\": \"drySpeed\", \"type\": \"float\", \"unit\": \"%/day\", \"coeff\": " + std::to_string(24*60*60) + "},";
   keyDesc += "{\"key\": \"waterNeededIn\", \"type\": \"interval\"},";
   keyDesc += "{\"key\": \"waterAtValue\", \"type\": \"float\", \"unit\": \"%\"},";
   keyDesc += "{\"key\": \"minValue\", \"type\": \"float\", \"unit\": \"%\"},";

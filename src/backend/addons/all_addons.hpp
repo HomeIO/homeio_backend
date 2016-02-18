@@ -6,5 +6,6 @@
 #include "wind_turbine_stats_addon.hpp"
 #include "wind_turbine_periodic_stats_addon.hpp"
 #include "plant_monitor_addon.hpp"
+#include "meas_periodic_stats_addon.hpp"
 
 #endif

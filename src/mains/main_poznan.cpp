@@ -172,9 +172,31 @@ int main() {
   pma->plantMeasNames.push_back("moisture_top");
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
 
-  // addons
-  //SampleAddon *sa = new SampleAddon;
-  //h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(sa));
+  // new stats
+  std::unique_ptr<MeasPeriodicStatsAddon> mps_light = std::make_unique<MeasPeriodicStatsAddon>();
+  mps_light->name = "stats_light";
+  mps_light->bufferMax = 365;
+  mps_light->calcInterval = 5*60*1000; // every 5 minutes
+  mps_light->interval = 24*60*60*1000; // daily
+  mps_light->measName = "light";
+  h->addonsArray->addons.push_back(std::move(mps_light));
+
+  std::unique_ptr<MeasPeriodicStatsAddon> mps_ext_temp = std::make_unique<MeasPeriodicStatsAddon>();
+  mps_ext_temp->name = "stats_ext_temperature";
+  mps_ext_temp->bufferMax = 365;
+  mps_ext_temp->calcInterval = 5*60*1000; // every 5 minutes
+  mps_ext_temp->interval = 24*60*60*1000; // daily
+  mps_ext_temp->measName = "ext_temperature";
+  h->addonsArray->addons.push_back(std::move(mps_ext_temp));
+
+  std::unique_ptr<MeasPeriodicStatsAddon> mps_moisture_shadow = std::make_unique<MeasPeriodicStatsAddon>();
+  mps_moisture_shadow->name = "stats_moisture_shadow";
+  mps_moisture_shadow->bufferMax = 365;
+  mps_moisture_shadow->calcInterval = 5*60*1000; // every 5 minutes
+  mps_moisture_shadow->interval = 24*60*60*1000; // daily
+  mps_moisture_shadow->measName = "moisture_shadow";
+  h->addonsArray->addons.push_back(std::move(mps_moisture_shadow));
+
 
   h->start();
 
