@@ -355,7 +355,7 @@ int main() {
 
   std::unique_ptr<WindTurbinePeriodicStatsAddon> wths = std::make_unique<WindTurbinePeriodicStatsAddon>();
   wths->name = "wind_hourly_stats";
-  wths->bufferMax = 7*24;
+  wths->bufferMax = 60*24;
   wths->storeDailyFiles = true;
   wths->calcInterval = 1*60*1000; // every 5 minutes
   wths->interval = 60*60*1000; // hourly
@@ -367,7 +367,7 @@ int main() {
 
   std::unique_ptr<WindTurbinePeriodicStatsAddon> wtms = std::make_unique<WindTurbinePeriodicStatsAddon>();
   wtms->name = "wind_minutes_stats";
-  wtms->bufferMax = 60;
+  wtms->bufferMax = 120;
   wtms->storeEnabled = false;
   wtms->calcInterval = 5*1000; // every 5 minutes
   wtms->interval = 60*1000; // minute

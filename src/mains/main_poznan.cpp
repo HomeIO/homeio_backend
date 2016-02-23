@@ -181,7 +181,7 @@ int main() {
 
   std::unique_ptr<FactoryMeasPeriodic> fmph = std::make_unique<FactoryMeasPeriodic>();
   fmph->namePrefix = "stats_hourly_";
-  fmph->bufferMax = 24*7;
+  fmph->bufferMax = 60*24;
   fmph->calcInterval = 5*60*1000; // every 5 minutes
   fmph->interval = 60*60*1000; // daily
   fmph->makeItSo(h->measTypeArray, h->addonsArray);
