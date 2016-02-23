@@ -22,7 +22,6 @@ void MeasPeriodicStatsAddon::setup() {
   if (storeEnabled) {
     restore();
   }
-
   meas = measTypeArray->byName(measName);
 }
 
@@ -206,6 +205,14 @@ void MeasPeriodicStatsAddon::updateStats(std::shared_ptr<MeasPeriodicStat> s) {
 }
 
 void MeasPeriodicStatsAddon::addToBuffer(std::shared_ptr<MeasPeriodicStat> wts) {
+  for (unsigned int i = 0; i < bufferStat.size(); i++) {
+    std::shared_ptr<MeasPeriodicStat> s = bufferStat[i];
+    if (s->time == wts->time) {
+      bufferStat[i] = wts;
+      return;
+    }
+  }
+
   if ( (unsigned char) bufferStat.size() >= (unsigned char) bufferMax ) {
     bufferStat.erase( bufferStat.begin() );
   }
@@ -293,10 +300,10 @@ std::string MeasPeriodicStatsAddon::toJson() {
   }
 
   std::string keyDesc = "[";
-  keyDesc += "{\"key\": \"time\", \"type\": \"time\"},";
-  keyDesc += "{\"key\": \"min\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"},";
-  keyDesc += "{\"key\": \"avg\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"},";
-  keyDesc += "{\"key\": \"max\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"},";
+  keyDesc += "{\"key\": \"time\", \"type\": \"time\"}";
+  keyDesc += ",{\"key\": \"min\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
+  keyDesc += ",{\"key\": \"avg\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
+  keyDesc += ",{\"key\": \"max\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
   keyDesc += "]";
 
   json += "], \"name\": \"" + name + "\", \"keys\": " + keyDesc + "}";
