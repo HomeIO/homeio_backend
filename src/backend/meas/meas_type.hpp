@@ -23,7 +23,7 @@ class MeasType {
   unsigned int fetch();
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);
-  static std::string formattedValue(double v, std::string un); 
+  static std::string formattedValue(double v, std::string un);
   std::string valueToFormatted(double v);
   std::string rawToFormattedValue(unsigned int raw);
   double valueAt(unsigned long int i);

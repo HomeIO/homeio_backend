@@ -13,7 +13,7 @@ class AbstractAddon {
   virtual void setup();
   virtual void perform();
   virtual void render();
-  virtual void stop();  
+  virtual void stop();
   virtual std::string toJson();
   virtual std::string toJsonSummary();
 
