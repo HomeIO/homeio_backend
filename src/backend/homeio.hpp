@@ -28,6 +28,7 @@
 
 #include "addons/addons_array.hpp"
 #include "addons/all_addons.hpp"
+#include "addons/factory_meas_periodic.hpp"
 
 #include "log/log_array.hpp"
 

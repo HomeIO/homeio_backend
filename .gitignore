@@ -1,3 +1,4 @@
 homeio
 bin/*
 build
+**/*.gch
