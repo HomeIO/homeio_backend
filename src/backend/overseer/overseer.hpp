@@ -10,6 +10,7 @@
 
 class Overseer {
  public:
+  bool enabled; // only checked if true
   std::string name; // name of overseer
   std::string actionName; // name of action which execute when conditions are met
   std::string measName; // name of measurements which should observe

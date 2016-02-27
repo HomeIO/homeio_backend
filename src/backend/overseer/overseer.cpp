@@ -1,6 +1,8 @@
 #include "overseer_array.hpp"
 
 Overseer::Overseer() {
+  enabled = true;
+
   hitCount = 0;
   tempValue = 0.0;
   tempResult = false;
@@ -16,6 +18,10 @@ Overseer::Overseer() {
 }
 
 bool Overseer::check() {
+  if (enabled == false) {
+    return false;
+  }
+
   if (checkLastExecutionTime() == false) {
     return false;
   }

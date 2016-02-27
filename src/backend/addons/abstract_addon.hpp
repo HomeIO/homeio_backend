@@ -5,6 +5,9 @@
 #include <ncurses.h>
 
 #include "../meas/meas_type_array.hpp"
+#include "../action/action_type_array.hpp"
+#include "../overseer/overseer_array.hpp"
+
 #include "../log/log_array.hpp"
 #include "../ncurses/ncurses_colors.hpp"
 
@@ -18,6 +21,9 @@ class AbstractAddon {
   virtual std::string toJsonSummary();
 
   std::shared_ptr<MeasTypeArray> measTypeArray;
+  std::shared_ptr<ActionTypeArray> actionTypeArray;
+  std::shared_ptr<OverseerArray> overseerArray;
+
   std::shared_ptr<LogArray> logArray;
 
   std::string name;

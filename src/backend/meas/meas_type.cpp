@@ -47,9 +47,6 @@ void MeasType::prepareFetch() {
   // mark buffer to fix spikes
   buffer->removeSpikes = extBackendRemoveSpikes;
 
-  // deprecated
-  //logPrefix = "MeasBuffer [" + name + "] ";
-  //logPrefix.append(35 - logPrefix.length(), ' ');
   started = true;
 }
 

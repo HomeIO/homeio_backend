@@ -333,6 +333,10 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
+  // super overseer
+  std::unique_ptr<WindTurbineSuperOverseer> wso = std::make_unique<WindTurbineSuperOverseer>();
+  h->addonsArray->addons.push_back(std::move(wso));
+
   // old stats, only to test new version
   std::unique_ptr<WindTurbineStatsAddon> wts = std::make_unique<WindTurbineStatsAddon>();
   wts->measNameU = "batt_u";
@@ -390,6 +394,8 @@ int main() {
   fmph->calcInterval = 5*60*1000; // every 5 minutes
   fmph->interval = 60*60*1000; // daily
   fmph->makeItSo(h->measTypeArray, h->addonsArray);
+
+
 
   // UI
   h->ncursesUI->interval = 1000;

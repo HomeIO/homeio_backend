@@ -31,15 +31,18 @@ class MeasBuffer {
   bool removeSpikes;
   // detect if b is spike near a and c
   bool isSpike(meas_buffer_element a, meas_buffer_element b, meas_buffer_element c);
+  bool isSpikeAtIndex(meas_buffer_index a, meas_buffer_index b, meas_buffer_index c);
+  bool isSpikeAtIndex(meas_buffer_index a);
   // detect if last stored measuremt is spike
   // it can only be done one measurement after that
   bool wasSpike(meas_buffer_element latestRaw);
   // iterate buffer and filter spikes
   void filterStoredSpikes();
+  std::vector < meas_buffer_element > filterVector(std::vector < meas_buffer_element > v);
 
   meas_buffer_index tempResponseIndexInterval();
   meas_buffer_index calculateIndexInterval(meas_buffer_index lower, meas_buffer_index higher, meas_buffer_index responseMaxSize);
-  std::vector < unsigned int > getFromBuffer(meas_buffer_index from, meas_buffer_index to, meas_buffer_index responseMaxSize);
+  std::vector < meas_buffer_element > getFromBuffer(meas_buffer_index from, meas_buffer_index to, meas_buffer_index responseMaxSize);
 
   std::string jsonArray(meas_buffer_index from, meas_buffer_index to, meas_buffer_index responseMaxSize);
   std::string toJson();

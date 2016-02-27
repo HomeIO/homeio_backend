@@ -58,7 +58,10 @@ HomeIO::HomeIO() {
   fileStorage->measTypeArray = measTypeArray;
   measBufferBackupStorage->measTypeArray = measTypeArray;
   spy->measTypeArray = measTypeArray;
+
   addonsArray->measTypeArray = measTypeArray;
+  addonsArray->actionTypeArray = actionTypeArray;
+  addonsArray->overseerArray = overseerArray;
 
   tcpServer->logArray = logArray;
   tcpCommand->logArray = logArray;
@@ -77,19 +80,6 @@ HomeIO::HomeIO() {
 }
 
 HomeIO::~HomeIO() {
-  // delete logArray;
-  // delete measTypeArray;
-  // delete ioProxy;
-  // delete tcpCommand;
-  // delete ioServer;
-  // delete actionTypeArray;
-  // delete overseerArray;
-  // delete fileStorage;
-  // delete measBufferBackupStorage;
-  // delete frontendSettings;
-  // delete measGroup;
-  // delete addonsArray;
-  // delete ncursesUI;
 }
 
 void HomeIO::prepareDirectories() {

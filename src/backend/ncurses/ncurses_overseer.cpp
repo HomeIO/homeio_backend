@@ -99,7 +99,9 @@ void NcursesOverseer::renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int
   wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
 
   wattron(w, NC_COLOR_PAIR_SYMBOL_SET);
-  if (o->tempResult) {
+  if (o->enabled == false) {
+    mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "DISABLED" );
+  } else if (o->tempResult) {
     mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "HIT" );
   } else {
     mvwprintw(w, i + NC_OVERSEER_2, 1 + NC_OVERSEER_2_MEAS_RESULT, "-" );
@@ -119,10 +121,10 @@ void NcursesOverseer::renderOverseer(WINDOW *w, std::shared_ptr<Overseer> o, int
     wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
     mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_SECONDS_AGO, "-" );
     wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
-
   }
 
   wattron(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
   mvwprintw(w, i + NC_OVERSEER_3, 1 + NC_OVERSEER_3_ACTION_HITS, std::to_string( o->hitCount ).c_str() );
   wattroff(w, NC_COLOR_PAIR_VALUE_LESSER_SET);
+
 }

@@ -190,6 +190,8 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
   // work
   std::vector < unsigned int > uRaw = u->buffer->getFromBuffer(u->timeToIndex(s->time), u->timeToIndex(s->time + interval), 0);
   std::vector < unsigned int > iRaw = i->buffer->getFromBuffer(i->timeToIndex(s->time), i->timeToIndex(s->time + interval), 0);
+  uRaw = u->buffer->filterVector(uRaw);
+  iRaw = i->buffer->filterVector(iRaw);
 
   intervalDouble = (double) u->buffer->calcInterval();
   intervalInt = i->buffer->calcInterval();
@@ -255,7 +257,9 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
   sumCount = 0;
 
   std::vector < unsigned int > coilRaw = coil->buffer->getFromBuffer(coil->timeToIndex(s->time), coil->timeToIndex(s->time + interval), 0);
+  coilRaw = coil->buffer->filterVector(coilRaw);
   intervalInt = coil->buffer->calcInterval();
+
 
   for (j = 0; j < coilRaw.size(); j++ ) {
     doubleTmp = coil->rawToValue( coilRaw.at(j) );
@@ -284,6 +288,7 @@ void WindTurbinePeriodicStatsAddon::updateStats(std::shared_ptr<WindTurbineStat>
   // resistor time
 
   std::vector < unsigned int > resistorRaw = resistor->buffer->getFromBuffer(resistor->timeToIndex(s->time), resistor->timeToIndex(s->time + interval), 0);
+  resistorRaw = resistor->buffer->filterVector(resistorRaw);
   intervalInt = resistor->buffer->calcInterval();
 
   for (j = 0; j < resistorRaw.size(); j++ ) {

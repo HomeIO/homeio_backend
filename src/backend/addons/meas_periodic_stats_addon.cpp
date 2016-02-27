@@ -169,8 +169,9 @@ void MeasPeriodicStatsAddon::updateStats(std::shared_ptr<MeasPeriodicStat> s) {
   double minValue = 0.0;
   double avgValue = 0.0;
 
-
   std::vector < unsigned int > raw = meas->buffer->getFromBuffer(meas->timeToIndex(s->time), meas->timeToIndex(s->time + interval), 0);
+  raw = meas->buffer->filterVector(raw);
+
   rawSize = raw.size();
 
   sumTmp = 0.0;
@@ -182,7 +183,6 @@ void MeasPeriodicStatsAddon::updateStats(std::shared_ptr<MeasPeriodicStat> s) {
     minValue = doubleTmp;
 
     for (j = 0; j < rawSize; j++ ) {
-      // max battery voltage
       doubleTmp = meas->rawToValue( raw.at(j) );
       if (maxValue < doubleTmp) {
         maxValue = doubleTmp;

@@ -78,13 +78,26 @@ bool MeasBuffer::isSpike(meas_buffer_element a, meas_buffer_element b, meas_buff
   int absA = abs( (int) a - (int) c );
   int absB = abs( (int) a - (int) b );
 
-  if (absB > 10 * (absA + 1) ) {
+  if (absB > 5 * (absA + 1) ) {
     logArray->log("MeasBuffer", "found SPIKE " + std::to_string(a) + " - " + std::to_string(b) + " - " + std::to_string(c) );
     return true;
   } else {
     return false;
   }
+}
 
+bool MeasBuffer::isSpikeAtIndex(meas_buffer_index a, meas_buffer_index b, meas_buffer_index c) {
+  return isSpike(at(a), at(b), at(c));
+}
+
+bool MeasBuffer::isSpikeAtIndex(meas_buffer_index a) {
+  if (a < 1) {
+    return false;
+  }
+  if ( (stored(a) == false) || (stored(a-1) == false) || (stored(a+1) == false) ) {
+    return false;
+  }
+  return isSpikeAtIndex(a+1, a, a-1);
 }
 
 bool MeasBuffer::wasSpike(meas_buffer_element latestRaw) {
@@ -107,12 +120,41 @@ void MeasBuffer::filterStoredSpikes() {
   // iterate buffer
   for (i = 1; i < (count - 1); i++) {
     // check if spike within closest raws
-    if ( isSpike( at(i+1), at(i), at(i-1)) ) {
+    if ( isSpikeAtIndex( i+1, i, i-1) ) {
       // overwrite
       buffer[index(i)] = buffer[index(i+1)];
     }
   }
 }
+
+std::vector < meas_buffer_element > MeasBuffer::filterVector(std::vector < meas_buffer_element > v) {
+  if (v.size() < 3) {
+    return v; // too small
+  }
+
+  meas_buffer_index i;
+  for (i = 0; i < v.size(); i++) {
+    if ( (i > 0) && (i < (v.size() - 1) ) ) {
+      // check only within available raws
+      if ( isSpike(i + 1, i, i - 1) ) {
+        v[i] = v[i+1];
+      }
+    } else if (i == 0) {
+      // check latest
+      if ( isSpike(2, 0, 1) ) {
+        v[0] = v[1];
+      }
+    } else if (i == (v.size() - 1) ) {
+      // check earliest
+      if ( isSpike(v.size() - 3, v.size() - 1, v.size() - 2) ) {
+        v[v.size() - 1] = v[v.size() - 2];
+      }
+    }
+  }
+
+  return v;
+}
+
 
 meas_buffer_element MeasBuffer::at(meas_buffer_index i) {
   return buffer[index(i)];

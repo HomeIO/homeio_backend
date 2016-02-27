@@ -17,10 +17,16 @@ void AddonsArray::start() {
   work = true;
   for (auto itr = addons.begin(); itr != addons.end(); ++itr) {
     (*itr)->measTypeArray = measTypeArray;
+    (*itr)->actionTypeArray = actionTypeArray;
+    (*itr)->overseerArray = overseerArray;
+
     (*itr)->logArray = logArray;
     (*itr)->setup();
   }
   work = false;
+
+  // most addons uses measurements
+  measTypeArray->delayTillReady();
 
   ready = true;
   changing = false;
