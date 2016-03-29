@@ -38,8 +38,10 @@ void MeasPeriodicStat::fromCsv(std::string s) {
   max = std::atof(token.c_str());
 
   std::getline(ss, token, ';');
-  if (token.size() > 0) {
+  try {
     count = std::stoull(token.c_str());
+  } catch (const std::invalid_argument& ia) {
+	  //std::cerr << "Invalid argument: " << ia.what() << '\n';
   }
 }
 
