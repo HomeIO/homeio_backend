@@ -5,12 +5,16 @@
 #include <sstream>
 #include <cstdlib>
 
+#include "../meas/meas_definitions.hpp"
+
 class MeasPeriodicStat {
  public:
   MeasPeriodicStat();
 
   unsigned long long time;
   unsigned long long timeLength;
+
+  meas_buffer_index count;
 
   double min;
   double avg;

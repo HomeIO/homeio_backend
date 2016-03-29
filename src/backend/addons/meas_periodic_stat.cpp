@@ -3,6 +3,7 @@
 MeasPeriodicStat::MeasPeriodicStat() {
   time = 0;
   timeLength = 0;
+  count = 0;
 
   min = 0.0;
   avg = 0.0;
@@ -15,6 +16,7 @@ std::string MeasPeriodicStat::toCsv() {
   s += std::to_string(min) + "; ";
   s += std::to_string(avg) + "; ";
   s += std::to_string(max) + "; ";
+  s += std::to_string(count) + "; ";
 
   return s;
 }
@@ -34,6 +36,11 @@ void MeasPeriodicStat::fromCsv(std::string s) {
 
   std::getline(ss, token, ';');
   max = std::atof(token.c_str());
+
+  std::getline(ss, token, ';');
+  if (token.size() > 0) {
+    count = std::stoull(token.c_str());
+  }
 }
 
 std::string MeasPeriodicStat::toJson() {
@@ -42,6 +49,7 @@ std::string MeasPeriodicStat::toJson() {
   s += ", \"min\": " + std::to_string(min);
   s += ", \"avg\": " + std::to_string(avg);
   s += ", \"max\": " + std::to_string(max);
+  s += ", \"count\": " + std::to_string(count);
   s += "}";
   return s;
 }

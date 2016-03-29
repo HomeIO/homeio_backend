@@ -153,6 +153,11 @@ void MeasPeriodicStatsAddon::perform() {
     }
   }
 
+  // store memory backup
+  if (storeEnabled) {
+    dump();
+  }
+
   lastTime = Helper::mTime();
 }
 
@@ -162,7 +167,7 @@ void MeasPeriodicStatsAddon::updateStats(std::shared_ptr<MeasPeriodicStat> s) {
   meas_buffer_index rawSize = 0;
   meas_buffer_index j = 0;
   double sumTmp = 0.0;
-  long sumCount = 0;
+  meas_buffer_index sumCount = 0;
   double doubleTmp = 0.0;
 
   double maxValue = 0.0;
@@ -202,6 +207,7 @@ void MeasPeriodicStatsAddon::updateStats(std::shared_ptr<MeasPeriodicStat> s) {
   s->max = maxValue;
   s->min = minValue;
   s->avg = avgValue;
+  s->count = sumCount;
 }
 
 void MeasPeriodicStatsAddon::addToBuffer(std::shared_ptr<MeasPeriodicStat> wts) {
@@ -238,6 +244,7 @@ void MeasPeriodicStatsAddon::store(std::shared_ptr<MeasPeriodicStat> s) {
 #define NC_S_ADDON_MIN NC_S_ADDON_TIME + 30
 #define NC_S_ADDON_AVG NC_S_ADDON_MIN + 20
 #define NC_S_ADDON_MAX NC_S_ADDON_AVG + 20
+#define NC_S_ADDON_COUNT NC_S_ADDON_MAX + 20
 
 void MeasPeriodicStatsAddon::render() {
   wattron(window, NC_COLOR_PAIR_NAME_SET);
@@ -252,6 +259,7 @@ void MeasPeriodicStatsAddon::render() {
   mvwprintw(window, i, 1 + NC_S_ADDON_MIN, "min" );
   mvwprintw(window, i, 1 + NC_S_ADDON_AVG, "avg" );
   mvwprintw(window, i, 1 + NC_S_ADDON_MAX, "max" );
+  mvwprintw(window, i, 1 + NC_S_ADDON_COUNT, "count" );
   wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
   if (bufferStat.size() == 0) {
@@ -282,6 +290,10 @@ void MeasPeriodicStatsAddon::render() {
     wattron(window, NC_COLOR_PAIR_VALUE_SET);
     mvwprintw(window, iRow, 1 + NC_S_ADDON_MAX, meas->valueToFormatted(s->max).c_str() );
     wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+
+    wattron(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
+    mvwprintw(window, iRow, 1 + NC_S_ADDON_COUNT, std::to_string(s->count).c_str() );
+    wattroff(window, NC_COLOR_PAIR_VALUE_LESSER_SET);
   }
 }
 
@@ -304,6 +316,7 @@ std::string MeasPeriodicStatsAddon::toJson() {
   keyDesc += ",{\"key\": \"min\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
   keyDesc += ",{\"key\": \"avg\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
   keyDesc += ",{\"key\": \"max\", \"type\": \"float\", \"unit\": \"" + meas->unit + "\"}";
+  keyDesc += ",{\"key\": \"count\", \"type\": \"integer\"}";
   keyDesc += "]";
 
   json += "], \"name\": \"" + name + "\", \"keys\": " + keyDesc + "}";

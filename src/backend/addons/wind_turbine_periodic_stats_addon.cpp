@@ -150,14 +150,16 @@ void WindTurbinePeriodicStatsAddon::perform() {
 
   // iterate and store
   if (storeEnabled) {
-    // for (unsigned int i = 0; i < bufferStat.size(); i++) {
-    //   std::shared_ptr<WindTurbineStat> s = bufferStat[i];
-    //
-    //   if (s->time > lastStoreTime) {
-    //     store(s);
-    //     lastStoreTime = s->time;
-    //   }
-    // }
+    for (unsigned int i = 0; i < bufferStat.size(); i++) {
+      std::shared_ptr<WindTurbineStat> s = bufferStat[i];
+
+      if (s->time > lastStoreTime) {
+        store(s);
+        lastStoreTime = s->time;
+      }
+    }
+
+    dump();
   }
 
   lastTime = Helper::mTime();
