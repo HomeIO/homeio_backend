@@ -43,11 +43,28 @@ void MeasType::prepareFetch() {
   if (started) {
     return;
   }
+  // copy everything which could not be done in constructor
 
   // mark buffer to fix spikes
   buffer->removeSpikes = extBackendRemoveSpikes;
 
   started = true;
+}
+
+void MeasType::enableRangeFilter(double filterMin, double filterMax, double defaultValue) {
+  buffer->filterSpike = true;
+  buffer->defaultRaw = valueToRaw(defaultValue);
+
+  if (coefficientLinear > 0.0) {
+    buffer->filterMin = valueToRaw(filterMin);
+    buffer->filterMax = valueToRaw(filterMax);
+  } else {
+    // some measurements (like soil moisture) use negative coefficient
+    // so we must reverse ranges
+    buffer->filterMin = valueToRaw(filterMax);
+    buffer->filterMax = valueToRaw(filterMin);
+  }
+
 }
 
 unsigned int MeasType::addRaw(unsigned int _raw) {
@@ -101,9 +118,17 @@ void MeasType::recalculateAvg() {
   }
 }
 
-double MeasType::rawToValue(unsigned int _raw) {
+double MeasType::rawToValue(meas_buffer_element _raw) {
   return (double)((int) _raw + coefficientOffset) * coefficientLinear;
 }
+
+meas_buffer_element MeasType::valueToRaw(double v) {
+  double tmp = v;
+  tmp = tmp / coefficientLinear;
+  tmp = tmp - (double) coefficientOffset;
+  return (meas_buffer_element) tmp;
+}
+
 
 double MeasType::valueAt(unsigned long int i) {
   return rawToValue(buffer->at(i));

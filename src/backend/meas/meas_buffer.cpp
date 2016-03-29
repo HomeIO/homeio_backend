@@ -5,6 +5,11 @@ MeasBuffer::MeasBuffer() {
   elementSize = sizeof(meas_buffer_element);
   clearAndResize(maxSize);
   removeSpikes = false;
+
+  defaultRaw = 0;
+  filterSpike = false;
+  filterMin = 0;
+  filterMax = 1024;
 }
 
 MeasBuffer::MeasBuffer(meas_buffer_index _maxSize) {
@@ -34,6 +39,17 @@ meas_buffer_index MeasBuffer::add(meas_buffer_element raw) {
   if ( (removeSpikes) && (wasSpike(raw)) ) {
     buffer[offset] = at(1);
   }
+
+  // filter spikes
+  if ( (filterSpike) && (isErrorValue(raw)) ) {
+    if (count == 0) {
+      // very rare - first raw is not within proper range
+      buffer[offset] = defaultRaw;
+    } else {
+      buffer[offset] = at(1);
+    }
+  }
+
 
   // must be here because in other case first measurement is equal 0
   if (count == 0) {
@@ -100,6 +116,29 @@ bool MeasBuffer::isSpikeAtIndex(meas_buffer_index a) {
   return isSpikeAtIndex(a+1, a, a-1);
 }
 
+bool MeasBuffer::isErrorValue(meas_buffer_element a) {
+  if (filterSpike == false) {
+    return false;
+  }
+
+  if ( ( a > filterMax) || ( a < filterMin) ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool MeasBuffer::isErrorValueAtIndex(meas_buffer_index a) {
+  if (a < 1) {
+    return false;
+  }
+  if (stored(a) == false) {
+    return false;
+  }
+  return isErrorValue(at(a));
+}
+
+
 bool MeasBuffer::wasSpike(meas_buffer_element latestRaw) {
   // not enough data
   if (count <= 3) {
@@ -115,14 +154,29 @@ void MeasBuffer::filterStoredSpikes() {
     return;
   }
 
-  meas_buffer_index i;
+  meas_buffer_index i, j;
 
   // iterate buffer
   for (i = 1; i < (count - 1); i++) {
     // check if spike within closest raws
-    if ( isSpikeAtIndex( i+1, i, i-1) ) {
+    if (isSpikeAtIndex( i+1, i, i-1)) {
       // overwrite
       buffer[index(i)] = buffer[index(i+1)];
+    }
+
+    if (isErrorValueAtIndex(i)) {
+      for (j = i; j < count; j++) {
+        // iterate to find correct value
+        if (isErrorValueAtIndex(j)) {
+          buffer[index(i)] = buffer[index(j)];
+          break;
+        }
+      }
+    }
+
+    // if it is still error
+    if (isErrorValueAtIndex(i)) {
+      buffer[index(i)] = defaultRaw;
     }
   }
 }

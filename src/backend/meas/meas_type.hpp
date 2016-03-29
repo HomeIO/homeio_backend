@@ -23,6 +23,7 @@ class MeasType {
   unsigned int fetch();
   unsigned int addRaw(unsigned int);
   double rawToValue(unsigned int);
+  meas_buffer_element valueToRaw(double v);
   static std::string formattedValue(double v, std::string un);
   std::string valueToFormatted(double v);
   std::string rawToFormattedValue(unsigned int raw);
@@ -72,6 +73,8 @@ class MeasType {
   bool extRemoveSpikes;
   // not its something to remove them in backend
   bool extBackendRemoveSpikes;
+
+  void enableRangeFilter(double min, double max, double defaultValue);
 
   bool started;
 

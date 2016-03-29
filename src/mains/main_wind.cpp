@@ -62,6 +62,7 @@ int main() {
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 2.0;
   m->priority = 1;
+  m->enableRangeFilter(-10.0, 90.0, 36.0);
   h->measTypeArray->add(m);
 
 
@@ -73,6 +74,7 @@ int main() {
   m->coefficientLinear = 0.191;
   m->coefficientOffset = -512;
   m->priority = 1;
+  m->enableRangeFilter(-2.0, 30.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -82,6 +84,7 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
   m->coefficientOffset = -512;
+  m->enableRangeFilter(-2.0, 20.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -91,6 +94,7 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.191;
   m->coefficientOffset = -512;
+  m->enableRangeFilter(-2.0, 25.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -109,6 +113,7 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
   m->coefficientOffset = 0;
+  m->enableRangeFilter(-1.0, 50.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -118,6 +123,7 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
   m->coefficientOffset = 0;
+  m->enableRangeFilter(-1.0, 50.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -127,6 +133,7 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.0777126099706744868;
   m->coefficientOffset = 0;
+  m->enableRangeFilter(-1.0, 50.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -134,6 +141,7 @@ int main() {
   m->unit = "pwm";
   m->command = 'p';
   m->responseSize = 2;
+  m->enableRangeFilter(0.0, 255.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -141,6 +149,7 @@ int main() {
   m->unit = "pwm";
   m->command = 'q';
   m->responseSize = 2;
+  m->enableRangeFilter(0.0, 255.0, 0.0);
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
@@ -148,6 +157,7 @@ int main() {
   m->unit = "bit array";
   m->command = 'o';
   m->responseSize = 1;
+  m->enableRangeFilter(0.0, 255.0, 0.0);
   h->measTypeArray->add(m);
 
   // end measurements here
