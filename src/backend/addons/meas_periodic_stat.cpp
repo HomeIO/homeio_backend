@@ -40,7 +40,10 @@ void MeasPeriodicStat::fromCsv(std::string s) {
   std::getline(ss, token, ';');
   try {
     count = std::stoull(token.c_str());
-  } catch (const std::invalid_argument& ia) {
+  }
+  // catch (const std::invalid_argument& ia)
+  catch (std::exception& e)
+  {
 	  //std::cerr << "Invalid argument: " << ia.what() << '\n';
   }
 }
