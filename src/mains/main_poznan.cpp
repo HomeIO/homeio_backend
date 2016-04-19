@@ -172,6 +172,11 @@ int main() {
   pma->plantMeasNames.push_back("moisture_top");
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
 
+  SunStatsAddon *ssa = new SunStatsAddon;
+  ssa->name = "sun_stats";
+  ssa->lightMeasName = "light";
+  h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(ssa));
+
   std::unique_ptr<FactoryMeasPeriodic> fmpd = std::make_unique<FactoryMeasPeriodic>();
   fmpd->namePrefix = "stats_daily_";
   fmpd->bufferMax = 365;

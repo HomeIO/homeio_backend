@@ -2,3 +2,5 @@ homeio
 bin/*
 build
 **/*.gch
+data/**
+stats/**
