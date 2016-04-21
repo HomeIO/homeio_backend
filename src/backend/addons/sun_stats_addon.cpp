@@ -8,7 +8,7 @@ SunStatsAddon::SunStatsAddon() {
   path = "stats";
 
   bufferMax = 60;
-  calcInterval = 60000; // every minute
+  calcInterval = 300000; // every 5 minutes
 
   storeDailyFiles = false;
   storeEnabled = true;
@@ -19,7 +19,7 @@ void SunStatsAddon::setup() {
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
 
   if (storeEnabled) {
-    //restore();
+    restore();
   }
 
   lightMeas = measTypeArray->byName(lightMeasName);
@@ -162,6 +162,7 @@ meas_time SunStatsAddon::normalizeTime(meas_time t) {
 
 void SunStatsAddon::updateStats(std::shared_ptr<SunStat> s) {
   s->timeLength = interval;
+  s->sunIntegrated = 0;
   //s->sunriseTime = s->time;
 
   meas_buffer_index iFrom = lightMeas->timeToIndex(s->time);
@@ -171,6 +172,7 @@ void SunStatsAddon::updateStats(std::shared_ptr<SunStat> s) {
   meas_time lightInterval = lightMeas->buffer->calcInterval();
 
   double lightValue;
+  double lightIntegrated;
 
   std::vector < unsigned int > raw = lightMeas->buffer->getFromBuffer(iFrom, iTo, 0);
   raw = lightMeas->buffer->filterVector(raw);
@@ -178,7 +180,7 @@ void SunStatsAddon::updateStats(std::shared_ptr<SunStat> s) {
   for (i = 0; i < raw.size(); i++ ) {
     lightValue = lightMeas->avgValueAt(iTo - i, 10);
     if (lightValue > 2.0) {
-      logArray->log("SunStatsAddon", "found 2 at " + std::to_string(i));
+      //logArray->log("SunStatsAddon", "found 2 at " + std::to_string(i));
       s->sunriseTime2 = s->time + (i * lightInterval);
       s->foundSunriseTime2 = true;
       break;
@@ -188,13 +190,28 @@ void SunStatsAddon::updateStats(std::shared_ptr<SunStat> s) {
   for (i = 0; i < raw.size(); i++ ) {
     lightValue = lightMeas->avgValueAt(iTo - i, 10);
     if (lightValue > 8.0) {
-      logArray->log("SunStatsAddon", "found 8 at " + std::to_string(i));
       s->sunriseTime8 = s->time + (i * lightInterval);
       s->foundSunriseTime8 = true;
       break;
     }
   }
 
+  for (i = 0; i < raw.size(); i++ ) {
+    lightValue = lightMeas->avgValueAt(iTo - i, 10);
+    if (lightValue > 40.0) {
+      s->sunTime40 = s->time + (i * lightInterval);
+      s->foundSunTime40 = true;
+      break;
+    }
+  }
+
+  for (i = 0; i < raw.size(); i++ ) {
+    lightValue = lightMeas->valueAt(iTo - i);
+    if (lightValue > 40.0) {
+      s->sunInterval40 += lightInterval;
+    }
+    s->sunIntegrated += ( lightValue * (double)(lightInterval) / 1000000);
+  }
 
   // // index is reverse of time
   // for (i = iTo; i <= iFrom; i-- ) {
@@ -236,10 +253,17 @@ void SunStatsAddon::store(std::shared_ptr<SunStat> s) {
 }
 
 #define NC_SS_ADDON_TIME 0
-#define NC_SS_ADDON_TIME_COLUMN 15
+#define NC_SS_ADDON_TIME_COLUMN 16
 #define NC_SS_ADDON_SUNRISE_2 NC_SS_ADDON_TIME + NC_SS_ADDON_TIME_COLUMN
 #define NC_SS_ADDON_SUNRISE_8 NC_SS_ADDON_SUNRISE_2 + NC_SS_ADDON_TIME_COLUMN
 #define NC_SS_ADDON_SUNRISE_DIFF NC_SS_ADDON_SUNRISE_8 + NC_SS_ADDON_TIME_COLUMN
+#define NC_SS_ADDON_SUN_40 NC_SS_ADDON_SUNRISE_DIFF + NC_SS_ADDON_TIME_COLUMN
+#define NC_SS_ADDON_SUN_INTERVAL_40 NC_SS_ADDON_SUN_40 + NC_SS_ADDON_TIME_COLUMN
+#define NC_SS_ADDON_SUN_INTEGRATED NC_SS_ADDON_SUN_INTERVAL_40 + NC_SS_ADDON_TIME_COLUMN
+
+#define NS_SS_ADDON_COLOR_HIGH NC_COLOR_PAIR_ERROR_SET
+#define NS_SS_ADDON_COLOR_MED NC_COLOR_PAIR_NAME_SET
+#define NS_SS_ADDON_COLOR_LOW NC_COLOR_PAIR_VALUE_SET
 
 void SunStatsAddon::render() {
   wattron(window, NC_COLOR_PAIR_NAME_SET);
@@ -251,9 +275,12 @@ void SunStatsAddon::render() {
   // time
   wattron(window, NC_COLOR_PAIR_NAME_LESSER_SET);
   mvwprintw(window, i, 1 + NC_SS_ADDON_TIME, "time" );
-  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_2, "sunrise (2)" );
-  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_8, "sunrise (8)" );
-  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_DIFF, "sunrise (diff)" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_2, "first rise" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_8, "second rise" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUNRISE_DIFF, "diff" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUN_40, "big rise" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUN_INTERVAL_40, "sunny int" );
+  mvwprintw(window, i, 1 + NC_SS_ADDON_SUN_INTEGRATED, "tot amount" );
   wattroff(window, NC_COLOR_PAIR_NAME_LESSER_SET);
 
   if (bufferStat.size() == 0) {
@@ -270,7 +297,7 @@ void SunStatsAddon::render() {
     std::shared_ptr<SunStat> s = bufferStat.at(bufferStat.size() - 1 - j);
 
     wattron(window, NC_COLOR_PAIR_VALUE_SET);
-    mvwprintw(window, iRow, 1 + NC_SS_ADDON_TIME, Helper::timeToTimeString(s->time).c_str() );
+    mvwprintw(window, iRow, 1 + NC_SS_ADDON_TIME, Helper::timeToDateString(s->time).c_str() );
     wattroff(window, NC_COLOR_PAIR_VALUE_SET);
 
     if (s->foundSunriseTime2) {
@@ -290,6 +317,34 @@ void SunStatsAddon::render() {
       mvwprintw(window, iRow, 1 + NC_SS_ADDON_SUNRISE_DIFF, Helper::intervalToString(s->sunriseTime8 - s->sunriseTime2).c_str() );
       wattroff(window, NC_COLOR_PAIR_VALUE_SET);
     }
+
+    if (s->foundSunTime40) {
+      wattron(window, NC_COLOR_PAIR_VALUE_SET);
+      mvwprintw(window, iRow, 1 + NC_SS_ADDON_SUN_40, Helper::timeToTimeString(s->sunTime40).c_str() );
+      //
+      mvwprintw(window, iRow, 1 + NC_SS_ADDON_SUN_INTERVAL_40, MeasType::formattedValue(((double)(s->sunInterval40) / (3600.0*1000.0)), "h").c_str() );
+      wattroff(window, NC_COLOR_PAIR_VALUE_SET);
+    }
+
+    if (s->sunIntegrated > 3000.0) {
+      wattron(window, NS_SS_ADDON_COLOR_HIGH);
+    } else if (s->sunIntegrated > 2000.0) {
+      wattron(window, NS_SS_ADDON_COLOR_MED);
+    } else {
+      wattron(window, NS_SS_ADDON_COLOR_LOW);
+    }
+
+    mvwprintw(window, iRow, 1 + NC_SS_ADDON_SUN_INTEGRATED, MeasType::formattedValue(s->sunIntegrated, "").c_str() );
+
+    if (s->sunIntegrated > 3000.0) {
+      wattroff(window, NS_SS_ADDON_COLOR_HIGH);
+    } else if (s->sunIntegrated > 2000.0) {
+      wattroff(window, NS_SS_ADDON_COLOR_MED);
+    } else {
+      wattroff(window, NS_SS_ADDON_COLOR_LOW);
+    }
+
+
 
   }
 }

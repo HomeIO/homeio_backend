@@ -11,24 +11,20 @@ class SunStat {
  public:
   SunStat();
 
-  unsigned long long time;
-  unsigned long long timeLength;
+  meas_time time;
+  meas_time timeLength;
 
   bool foundSunriseTime2;
-  unsigned long long sunriseTime2;
+  meas_time sunriseTime2;
 
   bool foundSunriseTime8;
-  unsigned long long sunriseTime8;
+  meas_time sunriseTime8;
 
   bool foundSunTime40;
-  unsigned long long sunTime40;
+  meas_time sunTime40;
+  meas_time sunInterval40;
 
-
-  meas_buffer_index count;
-
-  double min;
-  double avg;
-  double max;
+  float sunIntegrated;
 
   std::string toCsv();
   void fromCsv(std::string s);
