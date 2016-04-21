@@ -32,7 +32,7 @@ class AddonsArray {
   std::shared_ptr<MeasTypeArray> measTypeArray;
   std::shared_ptr<ActionTypeArray> actionTypeArray;
   std::shared_ptr<OverseerArray> overseerArray;
-  
+
   std::shared_ptr<LogArray> logArray;
 };
 

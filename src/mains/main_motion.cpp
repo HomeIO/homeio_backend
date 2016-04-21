@@ -7,20 +7,20 @@ int main() {
   h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002; // you can write your own tools using provided proxy
 
-/*
-  m = std::make_shared<MeasType>();
-  m->name = "motion"; // should be unique
-  m->unit = ""; // example: V, A, %
-  m->command = 'm'; // byte command sent to arduino
-  m->responseSize = 2; // atmega ADC uses 2 bytes
-  m->coefficientLinear = 1.0; // value = (raw + offeset) * linear
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000; // not store/archive if last store was consist of last 5s
-  m->maxTimeDiffToStore = 3600000; // in case of no measurement change, perform store after 1h
-  m->valueDiffToStore = 0.5; // perform store if abs(value - last store value) > 0.5
-  m->priority = 1; // only used in frontend
-  h->measTypeArray->add(m);
-*/
+  /*
+    m = std::make_shared<MeasType>();
+    m->name = "motion"; // should be unique
+    m->unit = ""; // example: V, A, %
+    m->command = 'm'; // byte command sent to arduino
+    m->responseSize = 2; // atmega ADC uses 2 bytes
+    m->coefficientLinear = 1.0; // value = (raw + offeset) * linear
+    m->coefficientOffset = 0;
+    m->minTimeDiffToStore = 5000; // not store/archive if last store was consist of last 5s
+    m->maxTimeDiffToStore = 3600000; // in case of no measurement change, perform store after 1h
+    m->valueDiffToStore = 0.5; // perform store if abs(value - last store value) > 0.5
+    m->priority = 1; // only used in frontend
+    h->measTypeArray->add(m);
+  */
 
   std::shared_ptr<MeasType> m; // shared pointers is lazy, but good, way to fight memory leaks and segfaults
   m = std::make_shared<MeasType>();
