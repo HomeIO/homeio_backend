@@ -14,7 +14,15 @@ class SunStat {
   unsigned long long time;
   unsigned long long timeLength;
 
-  unsigned long long sunriseTime;
+  bool foundSunriseTime2;
+  unsigned long long sunriseTime2;
+
+  bool foundSunriseTime8;
+  unsigned long long sunriseTime8;
+
+  bool foundSunTime40;
+  unsigned long long sunTime40;
+
 
   meas_buffer_index count;
 

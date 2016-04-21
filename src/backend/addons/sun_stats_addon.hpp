@@ -32,8 +32,10 @@ class SunStatsAddon : public AbstractAddon {
   std::shared_ptr<MeasType> lightMeas;
 
   unsigned int bufferMax;
+  std::vector<std::shared_ptr<SunStat>> bufferStat;
+  void addToBuffer(std::shared_ptr<SunStat> ss);
 
-  meas_time interval;
+  const meas_time interval = 24*3600*1000; // how often calculate, default - daily stats;
   bool storeDailyFiles; // if true store in different file everyday
   bool storeEnabled; // if false not store stats to file
 
@@ -42,6 +44,9 @@ class SunStatsAddon : public AbstractAddon {
   meas_time calcInterval;
   meas_time lastStoreTime;
 
+  void updateStats(std::shared_ptr<SunStat> s);
+  void store(std::shared_ptr<SunStat> s);
+  void repopulateFromBuffer();
 };
 
 #endif

@@ -130,8 +130,36 @@ meas_buffer_element MeasType::valueToRaw(double v) {
 }
 
 
-double MeasType::valueAt(unsigned long int i) {
+double MeasType::valueAt(meas_buffer_index i) {
   return rawToValue(buffer->at(i));
+}
+
+double MeasType::avgValueAt(meas_buffer_index j, meas_buffer_index window) {
+  int c = 0;
+  double s = 0;
+
+  meas_buffer_index i, iFrom, iTo;
+
+  if (j >= window) {
+    iFrom = j - window;
+  } else {
+    iFrom = 0;
+  }
+  iTo = j + window;
+
+  for (i = iFrom; i < iTo; i++) {
+    if (buffer->stored(i)) {
+      c++;
+      s += valueAt(i);
+    }
+  }
+
+  if (c > 0) {
+    return s / (double) (c);
+  } else {
+    return 0.0;
+  }
+
 }
 
 std::string MeasType::toJson() {
@@ -172,6 +200,10 @@ unsigned long int MeasType::timeToIndex(unsigned long long t) {
   unsigned long int tempIndex = (unsigned long int) (tempTime / tempInterval );
 
   return tempIndex;
+}
+
+meas_time MeasType::indexToTime(meas_buffer_index i) {
+  return buffer->lastTime - (((meas_time) i) * buffer->calcInterval());
 }
 
 std::string MeasType::rawForTimeJson(unsigned long long timeFrom, unsigned long long timeTo) {

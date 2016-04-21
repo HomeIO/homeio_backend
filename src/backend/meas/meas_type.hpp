@@ -27,7 +27,8 @@ class MeasType {
   static std::string formattedValue(double v, std::string un);
   std::string valueToFormatted(double v);
   std::string rawToFormattedValue(unsigned int raw);
-  double valueAt(unsigned long int i);
+  double valueAt(meas_buffer_index i);
+  double avgValueAt(meas_buffer_index i, meas_buffer_index window);
   std::string valueAtFormatted(unsigned long int i);
   unsigned int lastRaw();
   double lastValue();
@@ -80,7 +81,8 @@ class MeasType {
 
   std::shared_ptr<LogArray> logArray;
 
-  unsigned long int timeToIndex(unsigned long long t);
+  meas_buffer_index timeToIndex(meas_time t);
+  meas_time indexToTime(meas_buffer_index i);
   std::vector < std::shared_ptr<StorageHash> > prepareStorage(unsigned long long timeFrom, unsigned long long timeTo);
   std::vector < std::shared_ptr<StorageHash> > storageArray(unsigned long long timeFrom, unsigned long long timeTo);
   std::string storageJson(unsigned long long timeFrom, unsigned long long timeTo);

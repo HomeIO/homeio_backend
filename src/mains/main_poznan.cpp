@@ -166,30 +166,30 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000;
 
   //addons
-  PlantMonitorAddon *pma = new PlantMonitorAddon;
-  pma->plantMeasNames.push_back("moisture_shadow");
-  pma->plantMeasNames.push_back("moisture_external");
-  pma->plantMeasNames.push_back("moisture_top");
-  h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
-
   SunStatsAddon *ssa = new SunStatsAddon;
   ssa->name = "sun_stats";
   ssa->lightMeasName = "light";
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(ssa));
 
-  std::unique_ptr<FactoryMeasPeriodic> fmpd = std::make_unique<FactoryMeasPeriodic>();
-  fmpd->namePrefix = "stats_daily_";
-  fmpd->bufferMax = 365;
-  fmpd->calcInterval = 10*60*1000; // every 5 minutes
-  fmpd->interval = 24*60*60*1000; // daily
-  fmpd->makeItSo(h->measTypeArray, h->addonsArray);
-
-  std::unique_ptr<FactoryMeasPeriodic> fmph = std::make_unique<FactoryMeasPeriodic>();
-  fmph->namePrefix = "stats_hourly_";
-  fmph->bufferMax = 60*24;
-  fmph->calcInterval = 5*60*1000; // every 5 minutes
-  fmph->interval = 60*60*1000; // daily
-  fmph->makeItSo(h->measTypeArray, h->addonsArray);
+  // PlantMonitorAddon *pma = new PlantMonitorAddon;
+  // pma->plantMeasNames.push_back("moisture_shadow");
+  // pma->plantMeasNames.push_back("moisture_external");
+  // pma->plantMeasNames.push_back("moisture_top");
+  // h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(pma));
+  //
+  // std::unique_ptr<FactoryMeasPeriodic> fmpd = std::make_unique<FactoryMeasPeriodic>();
+  // fmpd->namePrefix = "stats_daily_";
+  // fmpd->bufferMax = 365;
+  // fmpd->calcInterval = 10*60*1000; // every 5 minutes
+  // fmpd->interval = 24*60*60*1000; // daily
+  // fmpd->makeItSo(h->measTypeArray, h->addonsArray);
+  //
+  // std::unique_ptr<FactoryMeasPeriodic> fmph = std::make_unique<FactoryMeasPeriodic>();
+  // fmph->namePrefix = "stats_hourly_";
+  // fmph->bufferMax = 60*24;
+  // fmph->calcInterval = 5*60*1000; // every 5 minutes
+  // fmph->interval = 60*60*1000; // daily
+  // fmph->makeItSo(h->measTypeArray, h->addonsArray);
 
 
   h->start();
