@@ -370,7 +370,11 @@ std::string SunStatsAddon::toJson() {
 
   std::string keyDesc = "[";
   keyDesc += "{\"key\": \"time\", \"type\": \"time\"}";
-  keyDesc += ",{\"key\": \"sunrise\", \"type\": \"time\"}";
+  keyDesc += ",{\"key\": \"sunriseTime2\", \"type\": \"time\"}";
+  keyDesc += ",{\"key\": \"sunriseTime8\", \"type\": \"time\"}";
+  keyDesc += ",{\"key\": \"sunTime40\", \"type\": \"time\"}";
+  keyDesc += ",{\"key\": \"sunInterval40\", \"type\": \"interval\"}";
+  keyDesc += ",{\"key\": \"sunIntegrated\", \"type\": \"float\"}";
   keyDesc += "]";
 
   json += "], \"name\": \"" + name + "\", \"keys\": " + keyDesc + "}";
