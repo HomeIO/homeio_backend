@@ -206,11 +206,14 @@ void SunStatsAddon::updateStats(std::shared_ptr<SunStat> s) {
   }
 
   for (i = 0; i < raw.size(); i++ ) {
-    lightValue = lightMeas->valueAt(iTo - i);
-    if (lightValue > 40.0) {
-      s->sunInterval40 += lightInterval;
+    if (lightMeas->buffer->stored(iTo - i)) {
+      // was SEGFAULT
+      lightValue = lightMeas->valueAt(iTo - i);
+      if (lightValue > 40.0) {
+        s->sunInterval40 += lightInterval;
+      }
+      s->sunIntegrated += ( lightValue * (double)(lightInterval) / 1000000);
     }
-    s->sunIntegrated += ( lightValue * (double)(lightInterval) / 1000000);
   }
 
   // // index is reverse of time
