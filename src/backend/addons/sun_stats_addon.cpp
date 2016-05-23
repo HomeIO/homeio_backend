@@ -1,7 +1,7 @@
 #include "sun_stats_addon.hpp"
 
 SunStatsAddon::SunStatsAddon() {
-  name = "meas_periodic_stats";
+  name = "sun_stats";
   lastTime = 0;
   lastStoreTime = 0;
 
@@ -15,6 +15,8 @@ SunStatsAddon::SunStatsAddon() {
 }
 
 void SunStatsAddon::setup() {
+  name = "sun_stats";
+
   // create path at start, no wait
   mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH);
 

@@ -167,7 +167,7 @@ int main() {
 
   //addons
   SunStatsAddon *ssa = new SunStatsAddon;
-  ssa->name = "sun_stats";
+  //ssa->name = "sun_stats";
   ssa->lightMeasName = "light";
   h->addonsArray->addons.push_back(std::unique_ptr<AbstractAddon>(ssa));
 

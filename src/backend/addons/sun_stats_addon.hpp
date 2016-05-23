@@ -26,8 +26,6 @@ class SunStatsAddon : public AbstractAddon {
   void stop();
   std::string toJson();
 
-  std::string name;
-
   std::string lightMeasName;
   std::shared_ptr<MeasType> lightMeas;
 
