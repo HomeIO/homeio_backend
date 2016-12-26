@@ -258,6 +258,7 @@ int main() {
   o->windowSize = 100;
   h->overseerArray->add(o);
 
+  // // new inverter
   // o = std::make_shared<Overseer>();
   // o->name = "turn_on_inverter_A_on_high_coil";
   // o->actionName = "inverter_A_on";
@@ -343,9 +344,10 @@ int main() {
   h->measFetcher->maxBufferSize = 2000000; // 4000000;
 
   // addons
-  // super overseer
-  std::unique_ptr<WindTurbineSuperOverseer> wso = std::make_unique<WindTurbineSuperOverseer>();
-  h->addonsArray->addons.push_back(std::move(wso));
+  // // super overseer
+  // // is not needed now because old inverters were removed
+  // std::unique_ptr<WindTurbineSuperOverseer> wso = std::make_unique<WindTurbineSuperOverseer>();
+  // h->addonsArray->addons.push_back(std::move(wso));
 
   // old stats, only to test new version
   std::unique_ptr<WindTurbineStatsAddon> wts = std::make_unique<WindTurbineStatsAddon>();
