@@ -241,7 +241,7 @@ int main() {
   // string name of measurement
   o->measName = "batt_u";
   // critical value
-  o->thresholdValue = 58.0;
+  o->thresholdValue = 60.0; // 58.0
   // check if value is higher
   o->isMax = true;
   // use average value using X raw measurements
@@ -253,7 +253,7 @@ int main() {
   o->name = "no_brake_on_low_batt_voltage";
   o->actionName = "turn_off_brake";
   o->measName = "batt_u";
-  o->thresholdValue = 42.0;
+  o->thresholdValue = 44.0; // 42.0
   o->isMax = false;
   o->windowSize = 100;
   h->overseerArray->add(o);
