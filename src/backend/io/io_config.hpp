@@ -3,7 +3,9 @@
 
 
 // 8e1, see termios.h for more information
-#define RS_FLAGS CS8 | CREAD | CLOCAL | PARENB
+// https://www.gnu.org/software/libc/manual/html_node/Control-Modes.html
+#define RS_FLAGS CS8 | CREAD
+//| CLOCAL
 // speed
 //#define RS_SPEED B9600 // default Arduino
 #define RS_SPEED B38400

@@ -8,20 +8,6 @@ int main() {
   h->ioProxy->port = 2002;
 
   std::shared_ptr<MeasType> m;
-  m = std::make_shared<MeasType>();
-  m->name = "temperature";
-  m->unit = "C";
-  m->command = 't';
-  m->responseSize = 2;
-  // 0C - 0V - 0ADC
-  // 20C - 0.2C - 1024 * (0.2 / 5) ~ 41ADC
-  m->coefficientLinear = 0.2878; //(5.0 / 1023.0) / 0.01;
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
-  m->priority = 0;
-  h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
   m->name = "sync";
@@ -35,6 +21,48 @@ int main() {
   m->valueDiffToStore = 0.5;
   m->priority = 0;
   h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "usb_rasp_current";
+  m->unit = "A";
+  m->command = 'a';
+  m->responseSize = 2;
+  // direct: 512 -> 0A
+  // multiplied 8192 -> 0A
+  // multiplied 16384 -> 5A
+  m->coefficientLinear = 0.0006103515625;
+  m->coefficientOffset = -8192;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "battery_voltage";
+  m->unit = "V";
+  m->command = 'A';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.2;
+  m->coefficientOffset = -512;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  // m = std::make_shared<MeasType>();
+  // m->name = "battery_charge_current";
+  // m->unit = "A";
+  // m->command = 'b';
+  // m->responseSize = 2;
+  // m->coefficientLinear = 0.0006103515625;
+  // m->coefficientOffset = -8192;
+  // m->minTimeDiffToStore = 5000;
+  // m->maxTimeDiffToStore = 3600000;
+  // m->valueDiffToStore = 0.5;
+  // m->priority = 0;
+  // h->measTypeArray->add(m);
 
   h->ioServer->port = "/dev/ttyACM0";
 

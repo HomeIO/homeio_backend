@@ -13,7 +13,7 @@ IoRS::IoRS() {
 
 // Open RS port and set all parameters. Parameters are stored in config.h
 int IoRS::openRS() {
-  ttyFileDescriptor = open(port.c_str(), O_RDWR);
+  ttyFileDescriptor = open(port.c_str(), O_RDWR | O_NONBLOCK);
 
   cfsetospeed(&tio, RS_SPEED);
   cfsetispeed(&tio, RS_SPEED);
