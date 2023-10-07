@@ -31,6 +31,8 @@ class IoRS {
   unsigned char *buffer;
   unsigned char count_command;
   unsigned char count_response;
+
+  unsigned int speed;
 };
 
 //#include "rs.cpp"

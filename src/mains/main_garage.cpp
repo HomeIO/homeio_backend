@@ -7,20 +7,10 @@ int main() {
   h->ioProxy->address = "localhost";
   h->ioProxy->port = 2002;
 
-  std::shared_ptr<MeasType> m;
+  // lowered speed because of some comm issues
+  h->ioServer->rs->speed = B9600;
 
-  m = std::make_shared<MeasType>();
-  m->name = "sync";
-  m->unit = "x";
-  m->command = 's';
-  m->responseSize = 1;
-  m->coefficientLinear = 1.0;
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
-  m->priority = 0;
-  h->measTypeArray->add(m);
+  std::shared_ptr<MeasType> m;
 
   m = std::make_shared<MeasType>();
   m->name = "usb_rasp_current";
@@ -51,18 +41,111 @@ int main() {
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  // m = std::make_shared<MeasType>();
-  // m->name = "battery_charge_current";
-  // m->unit = "A";
-  // m->command = 'b';
-  // m->responseSize = 2;
-  // m->coefficientLinear = 0.0006103515625;
-  // m->coefficientOffset = -8192;
-  // m->minTimeDiffToStore = 5000;
-  // m->maxTimeDiffToStore = 3600000;
-  // m->valueDiffToStore = 0.5;
-  // m->priority = 0;
-  // h->measTypeArray->add(m);
+  m = std::make_shared<MeasType>();
+  m->name = "battery_charge_current";
+  m->unit = "A";
+  m->command = 'b';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.0006103515625;
+  m->coefficientOffset = -8192;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "temperature_internal";
+  m->unit = "C";
+  m->command = 'q';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.01;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "humidity_internal";
+  m->unit = "%";
+  m->command = 'Q';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.1;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "temperature_garage";
+  m->unit = "C";
+  m->command = 'r';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.01;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "humidity_garage";
+  m->unit = "%";
+  m->command = 'R';
+  m->responseSize = 2;
+  m->coefficientLinear = 0.1;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "pv_sensor";
+  m->unit = ".";
+  m->command = 'z';
+  m->responseSize = 2;
+  m->coefficientLinear = 1.0;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "sync";
+  m->unit = ".";
+  m->command = 's';
+  m->responseSize = 1;
+  m->coefficientLinear = 1.0;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  m = std::make_shared<MeasType>();
+  m->name = "loop_debug";
+  m->unit = ".";
+  m->command = 'l';
+  m->responseSize = 1;
+  m->coefficientLinear = 1.0;
+  m->coefficientOffset = 0;
+  m->minTimeDiffToStore = 5000;
+  m->maxTimeDiffToStore = 3600000;
+  m->valueDiffToStore = 0.5;
+  m->priority = 0;
+  h->measTypeArray->add(m);
+
+  // end of measurements
 
   h->ioServer->port = "/dev/ttyACM0";
 
