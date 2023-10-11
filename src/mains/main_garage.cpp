@@ -22,7 +22,7 @@ int main() {
   // multiplied 16384 -> 5A
   m->coefficientLinear = 0.0006103515625;
   m->coefficientOffset = -8192;
-  m->minTimeDiffToStore = 5000;
+  m->minTimeDiffToStore = 10000;
   m->maxTimeDiffToStore = 3600000;
   m->valueDiffToStore = 0.5;
   m->priority = 0;
@@ -35,9 +35,9 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.2;
   m->coefficientOffset = -512;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->minTimeDiffToStore = 10000;
+  m->maxTimeDiffToStore = 3600000 * 4; // 4 hours
+  m->valueDiffToStore = 0.4;
   m->priority = 0;
   h->measTypeArray->add(m);
 
@@ -48,8 +48,8 @@ int main() {
   m->responseSize = 2;
   m->coefficientLinear = 0.0006103515625;
   m->coefficientOffset = -8192;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
+  m->minTimeDiffToStore = 10000;
+  m->maxTimeDiffToStore = 3600000 * 5; // 5 hours
   m->valueDiffToStore = 0.5;
   m->priority = 0;
   h->measTypeArray->add(m);
@@ -57,93 +57,97 @@ int main() {
   m = std::make_shared<MeasType>();
   m->name = "temperature_internal";
   m->unit = "C";
-  m->command = 'q';
+  //m->command = 'q'; // switched garage-internal
+  m->command = 'r';
   m->responseSize = 2;
   m->coefficientLinear = 0.01;
   m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
+  m->minTimeDiffToStore = 10000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 0.2;
   m->priority = 0;
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
   m->name = "humidity_internal";
   m->unit = "%";
-  m->command = 'Q';
+  //m->command = 'Q'; // switched garage-internal
+  m->command = 'R';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
   m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
+  m->minTimeDiffToStore = 10000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 1.0;
   m->priority = 0;
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
   m->name = "temperature_garage";
   m->unit = "C";
-  m->command = 'r';
+  //m->command = 'r'; // switched garage-internal
+  m->command = 'q';
   m->responseSize = 2;
   m->coefficientLinear = 0.01;
   m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
+  m->minTimeDiffToStore = 10000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 0.2;
   m->priority = 0;
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
   m->name = "humidity_garage";
   m->unit = "%";
-  m->command = 'R';
+  //m->command = 'R'; // switched garage-internal
+  m->command = 'Q';
   m->responseSize = 2;
   m->coefficientLinear = 0.1;
   m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
+  m->minTimeDiffToStore = 10000;
   m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->valueDiffToStore = 1.0;
   m->priority = 0;
   h->measTypeArray->add(m);
 
   m = std::make_shared<MeasType>();
   m->name = "pv_sensor";
-  m->unit = ".";
+  m->unit = "%";
   m->command = 'z';
   m->responseSize = 2;
-  m->coefficientLinear = 1.0;
+  m->coefficientLinear = 0.09765625; // 100.0 / 1024.0
   m->coefficientOffset = 0;
   m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
+  m->maxTimeDiffToStore = 3600000 * 4; // 4 hours
+  m->valueDiffToStore = 3.0;
   m->priority = 0;
   h->measTypeArray->add(m);
 
-  m = std::make_shared<MeasType>();
-  m->name = "sync";
-  m->unit = ".";
-  m->command = 's';
-  m->responseSize = 1;
-  m->coefficientLinear = 1.0;
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
-  m->priority = 0;
-  h->measTypeArray->add(m);
+  // m = std::make_shared<MeasType>();
+  // m->name = "sync";
+  // m->unit = ".";
+  // m->command = 's';
+  // m->responseSize = 1;
+  // m->coefficientLinear = 1.0;
+  // m->coefficientOffset = 0;
+  // m->minTimeDiffToStore = 5000;
+  // m->maxTimeDiffToStore = 3600000;
+  // m->valueDiffToStore = 0.5;
+  // m->priority = 0;
+  // h->measTypeArray->add(m);
 
-  m = std::make_shared<MeasType>();
-  m->name = "loop_debug";
-  m->unit = ".";
-  m->command = 'l';
-  m->responseSize = 1;
-  m->coefficientLinear = 1.0;
-  m->coefficientOffset = 0;
-  m->minTimeDiffToStore = 5000;
-  m->maxTimeDiffToStore = 3600000;
-  m->valueDiffToStore = 0.5;
-  m->priority = 0;
-  h->measTypeArray->add(m);
+  // m = std::make_shared<MeasType>();
+  // m->name = "loop_debug";
+  // m->unit = ".";
+  // m->command = 'l';
+  // m->responseSize = 1;
+  // m->coefficientLinear = 1.0;
+  // m->coefficientOffset = 0;
+  // m->minTimeDiffToStore = 5000;
+  // m->maxTimeDiffToStore = 3600000;
+  // m->valueDiffToStore = 0.5;
+  // m->priority = 0;
+  // h->measTypeArray->add(m);
 
   // end of measurements
 
@@ -168,7 +172,8 @@ int main() {
   h->spy->hiveHost = "http://hive.homeio.org";
   h->spy->siteName = "garage";
 
-  h->measGroup->addGroup("temperature", "temperature_garage");
+  h->measGroup->addGroup("temperature", "temperature_garage,temperature_internal");
+  h->measGroup->addGroup("humidity", "humidity_garage,humidity_internal");
 
   // buffer storage
   h->measBufferBackupStorage->cycleInterval = (long) 20*60*1000*1000; // 20 minutes
@@ -176,7 +181,7 @@ int main() {
   h->measBufferBackupStorage->usDelay = 60*1000*1000; // 1 minute
 
   // ram buffer resize
-  h->measFetcher->maxBufferSize = 2000000;
+  h->measFetcher->maxBufferSize = 4000000;
 
   // std::unique_ptr<FactoryMeasPeriodic> fmpd = std::make_unique<FactoryMeasPeriodic>();
   // fmpd->namePrefix = "stats_daily_";
